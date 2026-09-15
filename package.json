@@ -1,0 +1,42 @@
+{
+  "name": "dropp",
+  "version": "1.0.0",
+  "description": "DROPP - Social commerce marketplace",
+  "private": true,
+  "packageManager": "pnpm@12.4.1",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+
+    "api:dev": "pnpm --filter api start:dev",
+    "api:build": "pnpm --filter api build",
+    "api:start": "pnpm --filter api start:prod",
+    "api:lint": "pnpm --filter api lint",
+    "api:test": "pnpm --filter api test",
+    "api:test:watch": "pnpm --filter api test:watch",
+    "api:test:e2e": "pnpm --filter api test:e2e",
+    "api:typecheck": "pnpm --filter api exec tsc --noEmit",
+
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose stop postgres",
+    "db:restart": "docker compose restart postgres",
+    "db:logs": "docker compose logs -f postgres",
+    "db:status": "docker compose ps postgres",
+
+    "prisma:generate": "prisma generate",
+    "prisma:validate": "prisma validate",
+    "prisma:format": "prisma format",
+    "prisma:studio": "prisma studio",
+
+    "format": "pnpm --filter api format",
+    "format:check": "pnpm --filter api exec prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "prisma": "7.10.0",
+    "turbo": "^2.10.12"
+  }
+}
