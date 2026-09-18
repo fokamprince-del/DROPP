@@ -1,0 +1,36 @@
+// Enums du domaine paiements
+
+enum MoyenPaiement {
+  MOBILE_MONEY_MTN
+  MOBILE_MONEY_ORANGE
+}
+
+enum StatutPaiement {
+  EN_ATTENTE
+  SUCCES
+  ECHOUE
+  ANNULE
+  REMBOURSE
+}
+
+enum FournisseurPaiement {
+  CAMPAY
+  MONETBIL
+}
+
+enum StatutSequestre {
+  BLOQUE
+  LIBERE
+  REMBOURSE
+}
+
+enum TypeRemboursement {
+  TOTAL
+  PARTIEL
+}
+
+enum StatutRemboursement {
+  EN_ATTENTE
+  EFFECTUE
+  ECHOUE
+}

@@ -20,4 +20,13 @@ export const validationSchema = Joi.object({
       scheme: ['postgresql'],
     })
     .required(),
+  JWT_ACCESS_SECRET: Joi.string()
+    .min(32)
+    .required(),
+  JWT_ACCESS_TTL: Joi.string()
+    .pattern(/^\d+[smhd]$/)
+    .default('15m'),
+  JWT_REFRESH_TTL: Joi.string()
+    .pattern(/^\d+[smhd]$/)
+    .default('30d'),
 });

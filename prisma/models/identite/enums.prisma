@@ -1,0 +1,32 @@
+// Enums du domaine identite
+
+enum StatutCompte {
+  ACTIF
+  EN_ATTENTE_VERIFICATION
+  SUSPENDU_TEMP
+  SUSPENDU_DEF
+  SUPPRIME
+}
+
+enum StatutVendeur {
+  EN_ATTENTE_VALIDATION
+  ACTIF
+  SUSPENDU
+}
+
+enum StatutClient {
+  ACTIF
+  SUSPENDU
+  DESACTIVE
+}
+
+enum TypeAdresse {
+  LIVRAISON
+  FACTURATION
+  AUTRE
+}
+
+enum TypeCodeVerification {
+  INSCRIPTION
+  REINITIALISATION_MOT_DE_PASSE
+}

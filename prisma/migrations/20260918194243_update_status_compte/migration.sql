@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "StatutCompte" ADD VALUE 'EN_ATTENTE_VERIFICATION';

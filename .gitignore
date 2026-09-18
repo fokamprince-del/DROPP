@@ -29,3 +29,5 @@ Thumbs.db
 
 # Generated code
 apps/api/src/generated/
+
+todo.md

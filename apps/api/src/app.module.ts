@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 import { validationSchema } from './configuration/validation.js';
 import configuration from './configuration/configuration.js';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './infrastructure/database/prisma.module.js';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { AuthentificationModule } from './modules/auth/auth.module.js';
 
 @Module({
   imports: [
@@ -15,9 +15,15 @@ import { PrismaModule } from './infrastructure/database/prisma.module.js';
       load: [configuration],
       validationSchema,
     }),
-    PrismaModule
+
+    ThrottlerModule.forRoot([
+      {
+        name: 'court',
+        ttl: 60_000,
+        limit: 20,
+      },
+    ]),
+    AuthentificationModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

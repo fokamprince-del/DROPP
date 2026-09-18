@@ -1,0 +1,7 @@
+// Enums du domaine boutiques
+
+enum StatutBoutique {
+  EN_ATTENTE
+  ACTIVE
+  SUSPENDUE
+}

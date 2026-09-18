@@ -1,7 +1,35 @@
 export default () => ({
   app: {
-    name: process.env.APP_NAME ?? 'DROPP API',
-    environment: process.env.NODE_ENV ?? 'development',
-    port: Number(process.env.PORT ?? 3000),
+    name:
+      process.env.APP_NAME ??
+      'DROPP API',
+
+    environment:
+      process.env.NODE_ENV ??
+      'development',
+
+    port: Number(
+      process.env.PORT ?? 3000,
+    ),
+  },
+
+  jwt: {
+    accessSecret:
+      process.env.JWT_ACCESS_SECRET!,
+
+    accessTtl:
+      process.env.JWT_ACCESS_TTL ??
+      '15m',
+  },
+
+  refreshToken: {
+    ttl:
+      process.env.REFRESH_TOKEN_TTL ??
+      '30d',
+  },
+
+  database: {
+    url:
+      process.env.DATABASE_URL,
   },
 });
