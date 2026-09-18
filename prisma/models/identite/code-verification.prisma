@@ -1,16 +1,17 @@
 model CodeVerification {
-  id String @id @default(uuid()) @db.Uuid
-  utilisateurId String? @map("utilisateur_id") @db.Uuid
-  destination String
-  codeHash String @map("code_hash")
-  type TypeCodeVerification
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  dateExpiration DateTime @map("date_expiration") @db.Timestamptz(3)
-  nombreTentatives Int @default(0) @map("nombre_tentatives")
-  dateUtilisation DateTime? @map("date_utilisation") @db.Timestamptz(3)
-  utilisateur Utilisateur? @relation(fields:[utilisateurId], references:[id], onDelete:Cascade)
+  id               String               @id @default(uuid()) @db.Uuid
+  utilisateurId    String?              @map("utilisateur_id") @db.Uuid
+  destination      String
+  codeHash         String               @map("code_hash")
+  type             TypeCodeVerification
+  dateCreation     DateTime             @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateExpiration   DateTime             @map("date_expiration") @db.Timestamptz(3)
+  nombreTentatives Int                  @default(0) @map("nombre_tentatives")
+  dateUtilisation  DateTime?            @map("date_utilisation") @db.Timestamptz(3)
+  utilisateur      Utilisateur?         @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
   @@index([utilisateurId])
-  @@index([destination,type])
+  @@index([destination, type])
   @@index([dateExpiration])
   @@map("codes_verification")
 }

@@ -1,16 +1,17 @@
 model Commande {
-  id String @id @default(uuid()) @db.Uuid
-  passageCommandeId String @unique @map("passage_commande_id") @db.Uuid
-  utilisateurId String @map("utilisateur_id") @db.Uuid
-  statut StatutCommande @default(EN_ATTENTE_PAIEMENT)
-  montantTotal Decimal @map("montant_total") @db.Decimal(12,2)
-  devise String @default("XAF")
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  passageCommande PassageCommande @relation(fields:[passageCommandeId], references:[id])
-  utilisateur Utilisateur @relation(fields:[utilisateurId], references:[id])
-  sousCommandes SousCommande[]
+  id                  String                    @id @default(uuid()) @db.Uuid
+  passageCommandeId   String                    @unique @map("passage_commande_id") @db.Uuid
+  utilisateurId       String                    @map("utilisateur_id") @db.Uuid
+  statut              StatutCommande            @default(EN_ATTENTE_PAIEMENT)
+  montantTotal        Decimal                   @map("montant_total") @db.Decimal(12, 2)
+  devise              String                    @default("XAF")
+  dateCreation        DateTime                  @default(now()) @map("date_creation") @db.Timestamptz(3)
+  passageCommande     PassageCommande           @relation(fields: [passageCommandeId], references: [id])
+  utilisateur         Utilisateur               @relation(fields: [utilisateurId], references: [id])
+  sousCommandes       SousCommande[]
   allocationsPaiement AllocationPaiement[]
-  adresseLivraison AdresseLivraisonCommande?
+  adresseLivraison    AdresseLivraisonCommande?
+
   @@index([utilisateurId])
   @@index([statut])
   @@index([dateCreation])

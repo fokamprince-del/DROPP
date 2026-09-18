@@ -1,12 +1,13 @@
 model RevueKyc {
-  id String @id @default(uuid()) @db.Uuid
-  dossierKycId String @map("dossier_kyc_id") @db.Uuid
-  administrateurId String @map("administrateur_id") @db.Uuid
-  statut StatutKyc
-  commentaire String?
-  dateRevue DateTime @default(now()) @map("date_revue") @db.Timestamptz(3)
-  dossierKyc DossierKyc @relation(fields:[dossierKycId], references:[id], onDelete:Cascade)
-  administrateur Utilisateur @relation("AdministrateurRevueKyc", fields:[administrateurId], references:[id])
+  id               String      @id @default(uuid()) @db.Uuid
+  dossierKycId     String      @map("dossier_kyc_id") @db.Uuid
+  administrateurId String      @map("administrateur_id") @db.Uuid
+  statut           StatutKyc
+  commentaire      String?
+  dateRevue        DateTime    @default(now()) @map("date_revue") @db.Timestamptz(3)
+  dossierKyc       DossierKyc  @relation(fields: [dossierKycId], references: [id], onDelete: Cascade)
+  administrateur   Utilisateur @relation("AdministrateurRevueKyc", fields: [administrateurId], references: [id])
+
   @@index([dossierKycId])
   @@index([administrateurId])
   @@map("revues_kyc")

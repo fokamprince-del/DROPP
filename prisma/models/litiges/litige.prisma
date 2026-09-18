@@ -1,14 +1,15 @@
 model Litige {
-  id String @id @default(uuid()) @db.Uuid
-  sousCommandeId String @map("sous_commande_id") @db.Uuid
-  utilisateurId String @map("utilisateur_id") @db.Uuid
-  motif String
-  statut StatutLitige @default(OUVERT)
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  dateResolution DateTime? @map("date_resolution") @db.Timestamptz(3)
-  sousCommande SousCommande @relation(fields:[sousCommandeId], references:[id])
-  utilisateur Utilisateur @relation(fields:[utilisateurId], references:[id])
-  preuves PreuveLitige[]
+  id             String         @id @default(uuid()) @db.Uuid
+  sousCommandeId String         @map("sous_commande_id") @db.Uuid
+  utilisateurId  String         @map("utilisateur_id") @db.Uuid
+  motif          String
+  statut         StatutLitige   @default(OUVERT)
+  dateCreation   DateTime       @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateResolution DateTime?      @map("date_resolution") @db.Timestamptz(3)
+  sousCommande   SousCommande   @relation(fields: [sousCommandeId], references: [id])
+  utilisateur    Utilisateur    @relation(fields: [utilisateurId], references: [id])
+  preuves        PreuveLitige[]
+
   @@index([sousCommandeId])
   @@index([utilisateurId])
   @@index([statut])

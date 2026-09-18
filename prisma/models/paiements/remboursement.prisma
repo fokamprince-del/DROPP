@@ -1,12 +1,13 @@
 model Remboursement {
-  id String @id @default(uuid()) @db.Uuid
-  sousCommandeId String @map("sous_commande_id") @db.Uuid
-  montant Decimal @db.Decimal(12,2)
-  type TypeRemboursement
-  statut StatutRemboursement @default(EN_ATTENTE)
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  dateExecution DateTime? @map("date_execution") @db.Timestamptz(3)
-  sousCommande SousCommande @relation(fields:[sousCommandeId], references:[id])
+  id             String              @id @default(uuid()) @db.Uuid
+  sousCommandeId String              @map("sous_commande_id") @db.Uuid
+  montant        Decimal             @db.Decimal(12, 2)
+  type           TypeRemboursement
+  statut         StatutRemboursement @default(EN_ATTENTE)
+  dateCreation   DateTime            @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateExecution  DateTime?           @map("date_execution") @db.Timestamptz(3)
+  sousCommande   SousCommande        @relation(fields: [sousCommandeId], references: [id])
+
   @@index([sousCommandeId])
   @@index([statut])
   @@map("remboursements")

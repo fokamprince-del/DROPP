@@ -1,12 +1,13 @@
 model Abonnement {
-  id String @id @default(uuid()) @db.Uuid
-  utilisateurId String @map("utilisateur_id") @db.Uuid
-  vendeurId String @map("vendeur_id") @db.Uuid
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  statut StatutAbonnement @default(ACTIF)
-  utilisateur Utilisateur @relation(fields:[utilisateurId], references:[id], onDelete:Cascade)
-  vendeur Vendeur @relation(fields:[vendeurId], references:[id], onDelete:Cascade)
-  @@unique([utilisateurId,vendeurId])
+  id            String           @id @default(uuid()) @db.Uuid
+  utilisateurId String           @map("utilisateur_id") @db.Uuid
+  vendeurId     String           @map("vendeur_id") @db.Uuid
+  dateCreation  DateTime         @default(now()) @map("date_creation") @db.Timestamptz(3)
+  statut        StatutAbonnement @default(ACTIF)
+  utilisateur   Utilisateur      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  vendeur       Vendeur          @relation(fields: [vendeurId], references: [id], onDelete: Cascade)
+
+  @@unique([utilisateurId, vendeurId])
   @@index([vendeurId])
   @@map("abonnements")
 }

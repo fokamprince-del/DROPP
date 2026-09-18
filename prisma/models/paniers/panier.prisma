@@ -1,12 +1,13 @@
 model Panier {
-  id String @id @default(uuid()) @db.Uuid
-  utilisateurId String @map("utilisateur_id") @db.Uuid
-  statut StatutPanier @default(ACTIF)
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  dateModification DateTime @updatedAt @map("date_modification") @db.Timestamptz(3)
-  utilisateur Utilisateur @relation(fields:[utilisateurId], references:[id], onDelete:Cascade)
-  articles ArticlePanier[]
+  id               String            @id @default(uuid()) @db.Uuid
+  utilisateurId    String            @map("utilisateur_id") @db.Uuid
+  statut           StatutPanier      @default(ACTIF)
+  dateCreation     DateTime          @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime          @updatedAt @map("date_modification") @db.Timestamptz(3)
+  utilisateur      Utilisateur       @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  articles         ArticlePanier[]
   passagesCommande PassageCommande[]
+
   @@index([utilisateurId])
   @@index([statut])
   @@map("paniers")

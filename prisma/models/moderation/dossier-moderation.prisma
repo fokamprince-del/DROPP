@@ -1,11 +1,12 @@
 model DossierModeration {
-  id String @id @default(uuid()) @db.Uuid
-  administrateurId String? @map("administrateur_id") @db.Uuid
-  statut StatutModeration @default(OUVERT)
-  action ActionModeration @default(AUCUNE)
-  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
-  dateCloture DateTime? @map("date_cloture") @db.Timestamptz(3)
-  administrateur Utilisateur? @relation("AdministrateurModeration", fields:[administrateurId], references:[id])
+  id               String           @id @default(uuid()) @db.Uuid
+  administrateurId String?          @map("administrateur_id") @db.Uuid
+  statut           StatutModeration @default(OUVERT)
+  action           ActionModeration @default(AUCUNE)
+  dateCreation     DateTime         @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateCloture      DateTime?        @map("date_cloture") @db.Timestamptz(3)
+  administrateur   Utilisateur?     @relation("AdministrateurModeration", fields: [administrateurId], references: [id])
+
   @@index([administrateurId])
   @@index([statut])
   @@map("dossiers_moderation")

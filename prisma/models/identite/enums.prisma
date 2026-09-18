@@ -2,6 +2,7 @@
 
 enum StatutCompte {
   ACTIF
+  EN_ATTENTE_VERIFICATION
   SUSPENDU_TEMP
   SUSPENDU_DEF
   SUPPRIME
@@ -11,6 +12,12 @@ enum StatutVendeur {
   EN_ATTENTE_VALIDATION
   ACTIF
   SUSPENDU
+}
+
+enum StatutClient {
+  ACTIF
+  SUSPENDU
+  DESACTIVE
 }
 
 enum TypeAdresse {

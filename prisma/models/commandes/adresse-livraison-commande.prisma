@@ -1,13 +1,14 @@
 model AdresseLivraisonCommande {
-  id String @id @default(uuid()) @db.Uuid
-  commandeId String @unique @map("commande_id") @db.Uuid
-  ville String
-  quartier String?
-  lieu String
+  id          String                                @id @default(uuid()) @db.Uuid
+  commandeId  String                                @unique @map("commande_id") @db.Uuid
+  ville       String
+  quartier    String?
+  lieu        String
   indications String?
-  latitude Decimal? @db.Decimal(10,7)
-  longitude Decimal? @db.Decimal(10,7)
-  position Unsupported("geography(Point,4326)")?
-  commande Commande @relation(fields:[commandeId], references:[id], onDelete:Cascade)
+  latitude    Decimal?                              @db.Decimal(10, 7)
+  longitude   Decimal?                              @db.Decimal(10, 7)
+  position    Unsupported("geography(Point,4326)")?
+  commande    Commande                              @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+
   @@map("adresses_livraison_commandes")
 }
