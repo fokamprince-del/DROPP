@@ -1,0 +1,15 @@
+// Enums du domaine notifications
+
+enum TypeNotification {
+  COMMANDE
+  PAIEMENT
+  MESSAGE
+  PROMOTION
+  SYSTEME
+  SECURITE
+}
+
+enum PlateformeAppareil {
+  ANDROID
+  IOS
+}

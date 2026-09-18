@@ -1,0 +1,12 @@
+model PreuveLitige {
+  id String @id @default(uuid()) @db.Uuid
+  litigeId String @map("litige_id") @db.Uuid
+  mediaId String @map("media_id") @db.Uuid
+  type TypePreuveLitige
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  litige Litige @relation(fields:[litigeId], references:[id], onDelete:Cascade)
+  media Media @relation(fields:[mediaId], references:[id])
+  @@index([litigeId])
+  @@index([mediaId])
+  @@map("preuves_litiges")
+}

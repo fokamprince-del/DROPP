@@ -1,0 +1,30 @@
+model Panier {
+  id               String            @id @default(uuid()) @db.Uuid
+  utilisateurId    String            @map("utilisateur_id") @db.Uuid
+  statut           StatutPanier      @default(ACTIF)
+  dateCreation     DateTime          @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime          @updatedAt @map("date_modification") @db.Timestamptz(3)
+  utilisateur      Utilisateur       @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  articles         ArticlePanier[]
+  passagesCommande PassageCommande[]
+
+  @@index([utilisateurId])
+  @@index([statut])
+  @@map("paniers")
+}
+
+model ArticlePanier {
+  id                String          @id @default(uuid()) @db.Uuid
+  panierId          String          @map("panier_id") @db.Uuid
+  varianteProduitId String          @map("variante_produit_id") @db.Uuid
+  quantite          Int
+  prixUnitaire      Decimal         @map("prix_unitaire") @db.Decimal(12, 2)
+  dateAjout         DateTime        @default(now()) @map("date_ajout") @db.Timestamptz(3)
+  dateModification  DateTime        @updatedAt @map("date_modification") @db.Timestamptz(3)
+  panier            Panier          @relation(fields: [panierId], references: [id], onDelete: Cascade)
+  varianteProduit   VarianteProduit @relation(fields: [varianteProduitId], references: [id])
+
+  @@unique([panierId, varianteProduitId])
+  @@index([varianteProduitId])
+  @@map("articles_paniers")
+}

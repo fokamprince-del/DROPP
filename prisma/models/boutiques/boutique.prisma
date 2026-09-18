@@ -1,0 +1,15 @@
+model Boutique {
+  id String @id @db.Uuid
+  nom String
+  description String?
+  biographie String?
+  statut StatutBoutique @default(EN_ATTENTE)
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime @updatedAt @map("date_modification") @db.Timestamptz(3)
+  vendeur Vendeur @relation(fields:[id], references:[id], onDelete:Cascade)
+  produits Produit[]
+  publications Publication[]
+  stories Story[]
+  @@index([statut])
+  @@map("boutiques")
+}

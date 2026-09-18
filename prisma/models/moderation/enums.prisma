@@ -1,0 +1,29 @@
+// Enums du domaine moderation
+
+enum StatutSignalement {
+  OUVERT
+  EN_COURS
+  TRAITE
+  REJETE
+}
+
+enum PrioriteSignalement {
+  BASSE
+  NORMALE
+  HAUTE
+  CRITIQUE
+}
+
+enum StatutModeration {
+  OUVERT
+  EN_COURS
+  CLOTURE
+}
+
+enum ActionModeration {
+  AUCUNE
+  MASQUER
+  SUPPRIMER
+  SUSPENDRE
+  REJETER
+}

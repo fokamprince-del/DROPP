@@ -1,0 +1,16 @@
+model VarianteProduit {
+  id String @id @default(uuid()) @db.Uuid
+  produitId String @map("produit_id") @db.Uuid
+  sku String @unique
+  nom String
+  attributs Json
+  prix Decimal? @db.Decimal(12,2)
+  stockDisponible Int @default(0) @map("stock_disponible")
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime @updatedAt @map("date_modification") @db.Timestamptz(3)
+  produit Produit @relation(fields:[produitId], references:[id], onDelete:Cascade)
+  articlesPanier ArticlePanier[]
+  lignesCommande LigneSousCommande[]
+  @@index([produitId])
+  @@map("variantes_produits")
+}

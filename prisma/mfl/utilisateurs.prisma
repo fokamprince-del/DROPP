@@ -1,0 +1,110 @@
+model Utilisateur {
+  id                      String                    @id @default(uuid()) @db.Uuid
+  nom                     String
+  prenom                  String
+  email                   String                    @unique
+  telephone               String                    @unique
+  motDePasseHash          String                    @map("mot_de_passe_hash")
+  photoProfilUrl          String?                   @map("photo_profil_url")
+  dateInscription         DateTime                  @default(now()) @map("date_inscription") @db.Timestamptz(3)
+  statutCompte            StatutCompte              @default(ACTIF) @map("statut_compte")
+  derniereConnexion       DateTime?                 @map("derniere_connexion") @db.Timestamptz(3)
+  updatedAt               DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  client                  Client?
+  vendeur                 Vendeur?
+  roles                   UtilisateurRole[]
+  adresses                Adresse[]
+  likes                   Aime[]
+  commentaires            Commentaire[]
+  favorisPublications     FavoriPublication[]
+  favorisProduits         FavoriProduit[]
+  abonnements             Abonnement[]
+  participants            ParticipantConversation[]
+  messagesEnvoyes         Message[]                 @relation("ExpediteurMessage")
+  revuesKyc               RevueKyc[]                @relation("AdministrateurRevueKyc")
+  paniers                 Panier[]
+  passagesCommande        PassageCommande[]
+  commandes               Commande[]
+  portefeuilles           Portefeuille[]
+  signalements            Signalement[]             @relation("EmetteurSignalement")
+  litiges                 Litige[]
+  notifications           Notification[]
+  preferencesNotification PreferenceNotification[]
+  appareils               Appareil[]
+  dossiersModeration      DossierModeration[]       @relation("AdministrateurModeration")
+  audits                  JournalAudit[]            @relation("AdministrateurAudit")
+
+  @@map("utilisateurs")
+}
+
+model Client {
+  id           String       @id @db.Uuid
+  dateCreation DateTime     @default(now()) @map("date_creation") @db.Timestamptz(3)
+  statut       StatutCompte @default(ACTIF)
+  utilisateur  Utilisateur  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("clients")
+}
+
+model Vendeur {
+  id                      String            @id @db.Uuid
+  dateDebut               DateTime          @default(now()) @map("date_debut") @db.Timestamptz(3)
+  statutVendeur           StatutVendeur     @default(EN_ATTENTE_VALIDATION) @map("statut_vendeur")
+  commissionPersonnalisee Decimal?          @map("commission_personnalisee") @db.Decimal(12, 2)
+  biographie              String?
+  utilisateur             Utilisateur       @relation(fields: [id], references: [id], onDelete: Cascade)
+  boutique                Boutique?
+  produits                Produit[]
+  publications            Publication[]
+  stories                 Story[]
+  abonnements             Abonnement[]
+  dossiersKyc             DossierKyc[]
+  sousCommandes           ArticleCommande[]
+
+  @@index([statutVendeur])
+  @@map("vendeurs")
+}
+
+model Role {
+  id           String            @id @default(uuid()) @db.Uuid
+  nom          String            @unique
+  description  String?
+  utilisateurs UtilisateurRole[]
+
+  @@map("roles")
+}
+
+model UtilisateurRole {
+  utilisateurId   String      @map("utilisateur_id") @db.Uuid
+  roleId          String      @map("role_id") @db.Uuid
+  dateAttribution DateTime    @default(now()) @map("date_attribution") @db.Timestamptz(3)
+  utilisateur     Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  role            Role        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([utilisateurId, roleId])
+  @@index([roleId])
+  @@map("utilisateur_roles")
+}
+
+model Adresse {
+  id            String      @id @default(uuid()) @db.Uuid
+  utilisateurId String      @map("utilisateur_id") @db.Uuid
+  type          TypeAdresse
+  ligne1        String
+  ligne2        String?
+  ville         String
+  region        String?
+  pays          String
+  codePostal    String?     @map("code_postal")
+  latitude      Decimal?    @db.Decimal(10, 7)
+  longitude     Decimal?    @db.Decimal(10, 7)
+  estPrincipale Boolean     @default(false) @map("est_principale")
+  dateCreation  DateTime    @default(now()) @map("date_creation") @db.Timestamptz(3)
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@index([utilisateurId])
+  @@index([type])
+  @@map("adresses")
+}
+
+// ==== 2. Boutique du vendeur ====

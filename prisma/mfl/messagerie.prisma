@@ -1,0 +1,58 @@
+model Conversation {
+  id                   String                    @id @default(uuid()) @db.Uuid
+  type                 TypeConversation
+  statut               StatutConversation        @default(ACTIVE)
+  dateCreation         DateTime                  @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateDerniereActivite DateTime                  @default(now()) @map("date_derniere_activite") @db.Timestamptz(3)
+  participants         ParticipantConversation[]
+  messages             Message[]
+
+  @@index([statut])
+  @@index([dateDerniereActivite])
+  @@map("conversations")
+}
+
+model ParticipantConversation {
+  conversationId String       @map("conversation_id") @db.Uuid
+  utilisateurId  String       @map("utilisateur_id") @db.Uuid
+  dateEntree     DateTime     @default(now()) @map("date_entree") @db.Timestamptz(3)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  utilisateur    Utilisateur  @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@id([conversationId, utilisateurId])
+  @@index([utilisateurId])
+  @@map("participants_conversations")
+}
+
+model Message {
+  id             String               @id @default(uuid()) @db.Uuid
+  conversationId String               @map("conversation_id") @db.Uuid
+  expediteurId   String               @map("expediteur_id") @db.Uuid
+  contenu        String?
+  type           TypeMessage
+  statut         StatutMessage        @default(ENVOYE)
+  dateCreation   DateTime             @default(now()) @map("date_creation") @db.Timestamptz(3)
+  conversation   Conversation         @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  expediteur     Utilisateur          @relation("ExpediteurMessage", fields: [expediteurId], references: [id])
+  piecesJointes  PieceJointeMessage[]
+
+  @@index([conversationId])
+  @@index([expediteurId])
+  @@index([dateCreation])
+  @@map("messages")
+}
+
+model PieceJointeMessage {
+  id        String    @id @default(uuid()) @db.Uuid
+  messageId String    @map("message_id") @db.Uuid
+  mediaId   String    @map("media_id") @db.Uuid
+  type      TypeMedia
+  message   Message   @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  media     Media     @relation(fields: [mediaId], references: [id])
+
+  @@index([messageId])
+  @@index([mediaId])
+  @@map("pieces_jointes_messages")
+}
+
+// ==== 6. KYC ====

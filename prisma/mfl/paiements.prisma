@@ -1,0 +1,84 @@
+model Paiement {
+  id                String               @id @default(uuid()) @db.Uuid
+  passageCommandeId String               @map("passage_commande_id") @db.Uuid
+  montant           Decimal              @db.Decimal(12, 2)
+  devise            String               @default("XAF")
+  moyenPaiement     MoyenPaiement        @map("moyen_paiement")
+  statut            StatutPaiement       @default(EN_ATTENTE)
+  dateCreation      DateTime             @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateConfirmation  DateTime?            @map("date_confirmation") @db.Timestamptz(3)
+  passageCommande   PassageCommande      @relation(fields: [passageCommandeId], references: [id])
+  tentatives        TentativePaiement[]
+  allocations       AllocationPaiement[]
+  ecritures         EcritureComptable[]
+
+  @@index([passageCommandeId])
+  @@index([statut])
+  @@index([dateCreation])
+  @@map("paiements")
+}
+
+model TentativePaiement {
+  id                   String              @id @default(uuid()) @db.Uuid
+  paiementId           String              @map("paiement_id") @db.Uuid
+  fournisseur          FournisseurPaiement
+  referenceFournisseur String              @map("reference_fournisseur")
+  montant              Decimal             @db.Decimal(12, 2)
+  statut               StatutPaiement      @default(EN_ATTENTE)
+  dateCreation         DateTime            @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateConfirmation     DateTime?           @map("date_confirmation") @db.Timestamptz(3)
+  paiement             Paiement            @relation(fields: [paiementId], references: [id], onDelete: Cascade)
+
+  @@unique([fournisseur, referenceFournisseur])
+  @@index([paiementId])
+  @@index([statut])
+  @@map("tentatives_paiements")
+}
+
+model AllocationPaiement {
+  id           String   @id @default(uuid()) @db.Uuid
+  paiementId   String   @map("paiement_id") @db.Uuid
+  commandeId   String   @map("commande_id") @db.Uuid
+  montant      Decimal  @db.Decimal(12, 2)
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  paiement     Paiement @relation(fields: [paiementId], references: [id], onDelete: Cascade)
+  commande     Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+
+  @@unique([paiementId, commandeId])
+  @@index([commandeId])
+  @@map("allocations_paiements")
+}
+
+model Sequestre {
+  id                   String          @id @default(uuid()) @db.Uuid
+  commandeId           String          @map("commande_id") @db.Uuid
+  montant              Decimal         @db.Decimal(12, 2)
+  devise               String          @default("XAF")
+  statut               StatutSequestre @default(BLOQUE)
+  motif                String?
+  dateBlocage          DateTime        @default(now()) @map("date_blocage") @db.Timestamptz(3)
+  dateLiberationPrevue DateTime?       @map("date_liberation_prevue") @db.Timestamptz(3)
+  dateLiberation       DateTime?       @map("date_liberation") @db.Timestamptz(3)
+  commande             ArticleCommande @relation(fields: [commandeId], references: [id])
+
+  @@index([commandeId])
+  @@index([statut])
+  @@map("sequestres")
+}
+
+model Remboursement {
+  id            String              @id @default(uuid()) @db.Uuid
+  commandeId    String              @map("commande_id") @db.Uuid
+  montant       Decimal             @db.Decimal(12, 2)
+  type          TypeRemboursement
+  statut        StatutRemboursement @default(EN_ATTENTE)
+  dateCreation  DateTime            @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateExecution DateTime?           @map("date_execution") @db.Timestamptz(3)
+  commande      ArticleCommande     @relation(fields: [commandeId], references: [id])
+
+  @@index([commandeId])
+  @@index([statut])
+  @@map("remboursements")
+}
+
+// ==== 9. Portefeuille & Retrait ====

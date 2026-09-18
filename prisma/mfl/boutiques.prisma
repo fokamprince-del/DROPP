@@ -1,0 +1,62 @@
+model Boutique {
+  id               String                 @id @db.Uuid
+  nom              String
+  description      String?
+  biographie       String?
+  statut           StatutBoutique         @default(EN_ATTENTE)
+  dateCreation     DateTime               @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime               @updatedAt @map("date_modification") @db.Timestamptz(3)
+  vendeur          Vendeur                @relation(fields: [id], references: [id], onDelete: Cascade)
+  localisations    LocalisationBoutique[]
+  horaires         HoraireBoutique[]
+  contacts         ContactBoutique[]
+
+  @@index([statut])
+  @@map("boutiques")
+}
+
+model LocalisationBoutique {
+  id           String                                @id @default(uuid()) @db.Uuid
+  boutiqueId   String                                @map("boutique_id") @db.Uuid
+  adresse      String
+  ville        String
+  region       String?
+  pays         String
+  latitude     Decimal?                              @db.Decimal(10, 7)
+  longitude    Decimal?                              @db.Decimal(10, 7)
+  position     Unsupported("geography(Point,4326)")?
+  dateCreation DateTime                              @default(now()) @map("date_creation") @db.Timestamptz(3)
+  boutique     Boutique                              @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+
+  @@index([boutiqueId])
+  @@map("localisations_boutiques")
+}
+
+model HoraireBoutique {
+  id             String      @id @default(uuid()) @db.Uuid
+  boutiqueId     String      @map("boutique_id") @db.Uuid
+  jourSemaine    JourSemaine @map("jour_semaine")
+  heureOuverture DateTime?   @map("heure_ouverture") @db.Time(0)
+  heureFermeture DateTime?   @map("heure_fermeture") @db.Time(0)
+  ferme          Boolean     @default(false)
+  dateCreation   DateTime    @default(now()) @map("date_creation") @db.Timestamptz(3)
+  boutique       Boutique    @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+
+  @@unique([boutiqueId, jourSemaine])
+  @@map("horaires_boutiques")
+}
+
+model ContactBoutique {
+  id           String              @id @default(uuid()) @db.Uuid
+  boutiqueId   String              @map("boutique_id") @db.Uuid
+  type         TypeContactBoutique
+  valeur       String
+  estPrincipal Boolean             @default(false) @map("est_principal")
+  dateCreation DateTime            @default(now()) @map("date_creation") @db.Timestamptz(3)
+  boutique     Boutique            @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+
+  @@index([boutiqueId])
+  @@map("contacts_boutiques")
+}
+
+// ==== 3. Catalogue (Produits & Variantes) ====

@@ -1,0 +1,12 @@
+model Avis {
+  id String @id @default(uuid()) @db.Uuid
+  utilisateurId String @map("utilisateur_id") @db.Uuid
+  ligneArticleCommandeId String @unique @map("ligne_article_commande_id") @db.Uuid
+  note Int
+  commentaire String?
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  utilisateur Utilisateur @relation(fields:[utilisateurId], references:[id], onDelete:Cascade)
+  ligneArticleCommande LigneArticleCommande @relation(fields:[ligneArticleCommandeId], references:[id])
+  @@index([utilisateurId])
+  @@map("avis")
+}

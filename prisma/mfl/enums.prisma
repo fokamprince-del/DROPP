@@ -1,0 +1,317 @@
+enum StatutCompte {
+  ACTIF
+  SUSPENDU_TEMP
+  SUSPENDU_DEF
+  SUPPRIME
+}
+
+enum StatutVendeur {
+  EN_ATTENTE_VALIDATION
+  ACTIF
+  SUSPENDU
+}
+
+enum TypeAdresse {
+  LIVRAISON
+  FACTURATION
+  AUTRE
+}
+
+enum JourSemaine {
+  LUNDI
+  MARDI
+  MERCREDI
+  JEUDI
+  VENDREDI
+  SAMEDI
+  DIMANCHE
+}
+
+enum TypeContactBoutique {
+  TELEPHONE
+  WHATSAPP
+  EMAIL
+  AUTRE
+}
+
+enum StatutBoutique {
+  EN_ATTENTE
+  ACTIVE
+  SUSPENDUE
+}
+
+enum StatutCategorie {
+  ACTIVE
+  INACTIVE
+}
+
+enum StatutProduit {
+  BROUILLON
+  PROCESSING
+  PUBLIE
+  REJETE
+  ARCHIVE
+}
+
+enum TypeMedia {
+  VIDEO
+  IMAGE
+}
+
+enum StatutTraitementMedia {
+  PROCESSING
+  PRET
+  ECHEC
+}
+
+enum TypePublication {
+  VIDEO
+  IMAGE
+  CARROUSEL
+}
+
+enum VisibiliteContenu {
+  PUBLIC
+  ABONNES
+}
+
+enum StatutPublication {
+  PROCESSING
+  PUBLIEE
+  REJETEE
+  SUPPRIMEE
+}
+
+enum StatutCommentaire {
+  VISIBLE
+  MASQUE_MODERATION
+  SUPPRIME
+}
+
+enum StatutAbonnement {
+  ACTIF
+  MUET
+  BLOQUE
+}
+
+enum TypeConversation {
+  DIRECTE
+  GROUPE
+}
+
+enum StatutConversation {
+  ACTIVE
+  ARCHIVEE
+  FERMEE
+}
+
+enum TypeMessage {
+  TEXTE
+  IMAGE
+  VIDEO
+  FICHIER
+  LOCALISATION
+}
+
+enum StatutMessage {
+  ENVOYE
+  LU
+}
+
+enum StatutKyc {
+  EN_ATTENTE
+  VALIDE
+  REJETE
+}
+
+enum TypeDocumentKyc {
+  CNI_RECTO
+  CNI_VERSO
+  PHOTO_FACIALE
+}
+
+enum StatutDocumentKyc {
+  SOUMIS
+  VALIDE
+  REJETE
+}
+
+enum TypeVerificationKyc {
+  FACIALE
+  MANUELLE
+}
+
+enum StatutVerificationKyc {
+  EN_ATTENTE
+  VALIDE
+  REJETE
+  ERREUR
+}
+
+enum StatutPanier {
+  ACTIF
+  ABANDONNE
+  CONVERTI
+}
+
+enum StatutPassageCommande {
+  EN_COURS
+  COMPLETE
+  EXPIRE
+  ANNULE
+}
+
+// Parent and vendor sub-order lifecycle.
+enum StatutCommande {
+  EN_ATTENTE_PAIEMENT
+  NOUVELLE
+  EN_COURS
+  EXPEDIEE
+  LIVREE
+  ANNULEE
+  EN_LITIGE
+}
+
+enum MoyenPaiement {
+  MOBILE_MONEY_MTN
+  MOBILE_MONEY_ORANGE
+  PORTEFEUILLE
+}
+
+enum StatutPaiement {
+  EN_ATTENTE
+  SUCCES
+  ECHOUE
+  ANNULE
+  REMBOURSE
+}
+
+enum FournisseurPaiement {
+  CAMPAY
+  MONETBIL
+}
+
+enum StatutSequestre {
+  BLOQUE
+  LIBERE
+  REMBOURSE
+}
+
+enum TypeRemboursement {
+  TOTAL
+  PARTIEL
+}
+
+enum StatutRemboursement {
+  EN_ATTENTE
+  EFFECTUE
+  ECHOUE
+}
+
+enum TypePortefeuille {
+  CLIENT
+  VENDEUR
+  DROPP
+}
+
+enum StatutPortefeuille {
+  ACTIF
+  BLOQUE
+  FERME
+}
+
+enum TypeTransactionPortefeuille {
+  DEPOT
+  ACHAT
+  REMBOURSEMENT
+  GAIN_PARRAINAGE
+  RETRAIT
+  COMMISSION
+}
+
+enum StatutTransactionPortefeuille {
+  EN_ATTENTE
+  CONFIRMEE
+  ECHOUEE
+  ANNULEE
+}
+
+enum MoyenRetrait {
+  MTN
+  ORANGE
+}
+
+enum StatutRetrait {
+  EN_COURS
+  EFFECTUE
+  REJETE
+}
+
+enum TypeCompteComptable {
+  ACTIF
+  PASSIF
+  CHARGE
+  PRODUIT
+}
+
+enum StatutJournalComptable {
+  BROUILLON
+  VALIDE
+  ANNULE
+}
+
+enum StatutSignalement {
+  OUVERT
+  EN_COURS
+  TRAITE
+  REJETE
+}
+
+enum PrioriteSignalement {
+  BASSE
+  NORMALE
+  HAUTE
+  CRITIQUE
+}
+
+enum StatutModeration {
+  OUVERT
+  EN_COURS
+  CLOTURE
+}
+
+enum ActionModeration {
+  AUCUNE
+  MASQUER
+  SUPPRIMER
+  SUSPENDRE
+  REJETER
+}
+
+enum StatutLitige {
+  OUVERT
+  EN_ARBITRAGE
+  RESOLU
+}
+
+enum TypePreuveLitige {
+  PHOTO
+  VIDEO
+  DOCUMENT
+}
+
+enum TypeNotification {
+  COMMANDE
+  PAIEMENT
+  MESSAGE
+  PROMOTION
+  SYSTEME
+  SECURITE
+}
+
+enum PlateformeAppareil {
+  ANDROID
+  IOS
+}
+
+// ==== 1. Identite, Profils & RBAC ====

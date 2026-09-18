@@ -1,0 +1,21 @@
+model Publication {
+  id String @id @default(uuid()) @db.Uuid
+  boutiqueId String @map("boutique_id") @db.Uuid
+  contenu String?
+  type TypePublication
+  visibilite VisibiliteContenu @default(PUBLIC)
+  statut StatutPublication @default(PROCESSING)
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime @updatedAt @map("date_modification") @db.Timestamptz(3)
+  boutique Boutique @relation(fields:[boutiqueId], references:[id])
+  medias MediaPublication[]
+  produits PublicationProduit[]
+  likes Aime[]
+  commentaires Commentaire[]
+  favoris FavoriPublication[]
+  signalements Signalement[]
+  @@index([boutiqueId])
+  @@index([statut])
+  @@index([dateCreation])
+  @@map("publications")
+}

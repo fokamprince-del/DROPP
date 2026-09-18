@@ -1,0 +1,31 @@
+// Enums du domaine kyc
+
+enum StatutKyc {
+  EN_ATTENTE
+  VALIDE
+  REJETE
+}
+
+enum TypeDocumentKyc {
+  CNI_RECTO
+  CNI_VERSO
+  PHOTO_FACIALE
+}
+
+enum StatutDocumentKyc {
+  SOUMIS
+  VALIDE
+  REJETE
+}
+
+enum TypeVerificationKyc {
+  FACIALE
+  MANUELLE
+}
+
+enum StatutVerificationKyc {
+  EN_ATTENTE
+  VALIDE
+  REJETE
+  ERREUR
+}

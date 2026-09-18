@@ -1,0 +1,13 @@
+// Enums du domaine litiges
+
+enum StatutLitige {
+  OUVERT
+  EN_ARBITRAGE
+  RESOLU
+}
+
+enum TypePreuveLitige {
+  PHOTO
+  VIDEO
+  DOCUMENT
+}

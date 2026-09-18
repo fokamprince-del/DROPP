@@ -1,0 +1,14 @@
+model Categorie {
+  id String @id @default(uuid()) @db.Uuid
+  parentId String? @map("parent_id") @db.Uuid
+  nom String
+  description String?
+  statut StatutCategorie @default(ACTIVE)
+  dateCreation DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+  parent Categorie? @relation("HierarchieCategorie", fields:[parentId], references:[id])
+  enfants Categorie[] @relation("HierarchieCategorie")
+  produits Produit[]
+  @@index([parentId])
+  @@index([statut])
+  @@map("categories")
+}
