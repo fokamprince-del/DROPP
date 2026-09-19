@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { validationSchema } from './configuration/validation.js';
 import configuration from './configuration/configuration.js';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaModule } from './infrastructure/database/prisma.module.js';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthentificationModule } from './modules/auth/auth.module.js';
+import { LoggerHttpMiddleware } from './infrastructure/http/logger-http.middelware.js';
 
 @Module({
   imports: [
@@ -26,4 +26,8 @@ import { AuthentificationModule } from './modules/auth/auth.module.js';
     AuthentificationModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerHttpMiddleware).forRoutes('*');
+  }
+}

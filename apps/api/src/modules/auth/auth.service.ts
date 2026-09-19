@@ -329,16 +329,14 @@ export class AuthentificationService {
       },
     });
 
+    this.smsProvider.envoyerCodeVerification(
+      utilisateur.telephone,
+      code,
+    );
+
     return {
       message:
         'Si un compte correspondant existe, un nouveau code sera envoyé.',
-
-      ...(this.configService.get('auth.exposeDevelopmentOtp') ===
-        'true'
-        ? {
-            codeDeveloppement: code,
-          }
-        : {}),
     };
   }
 
