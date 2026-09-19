@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { SmsModule } from '../../infrastructure/sms/sms.module.js';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
+import { AuthentificationController } from './auth.controller.js';
 
 @Module({
   imports: [
@@ -22,28 +23,22 @@ import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.getOrThrow<string>(
-          'jwt.accessSecret',
-        ),
+        secret: configService.getOrThrow<string>('jwt.accessSecret'),
         signOptions: {
-          expiresIn: configService.getOrThrow<string>(
-            'jwt.accessTtl',
-          ) as any,
+          expiresIn: configService.getOrThrow<string>('jwt.accessTtl') as any,
         },
       }),
     }),
   ],
-
+  controllers: [AuthentificationController],
   providers: [
     AuthentificationService,
     MotDePasseService,
     OtpService,
     SessionService,
-    JwtStrategy
+    JwtStrategy,
   ],
 
-  exports: [
-    AuthentificationService,
-  ],
+  exports: [AuthentificationService],
 })
 export class AuthentificationModule {}

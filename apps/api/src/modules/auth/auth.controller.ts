@@ -1,13 +1,5 @@
-import {
-  Body,
-  Controller,
-  Ip,
-  Param,
-  Post,
-} from '@nestjs/common';
-import {
-  Throttle,
-} from '@nestjs/throttler';
+import { Body, Controller, Ip, Param, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 
 import { AuthentificationService } from './auth.service.js';
 
@@ -28,14 +20,8 @@ export class AuthentificationController {
 
   @Public()
   @Post('inscription')
-  async inscrire(
-    @Body() dto: InscriptionDto,
-    @Ip() adresseIp: string,
-  ) {
-    return this.authentificationService.inscrire(
-      dto,
-      adresseIp,
-    );
+  async inscrire(@Body() dto: InscriptionDto, @Ip() adresseIp: string) {
+    return this.authentificationService.inscrire(dto, adresseIp);
   }
 
   @Public()
@@ -44,10 +30,8 @@ export class AuthentificationController {
       ttl: 60_000,
       limit: 5,
     },
-  })  
-  @Post(
-    'inscription/:utilisateurId/verification',
-  )
+  })
+  @Post('inscription/:utilisateurId/verification')
   async verifierInscription(
     @Param('utilisateurId')
     utilisateurId: string,
@@ -55,10 +39,7 @@ export class AuthentificationController {
     @Body()
     dto: VerificationOtpDto,
   ) {
-    return this.authentificationService.verifierInscription(
-      utilisateurId,
-      dto,
-    );
+    return this.authentificationService.verifierInscription(utilisateurId, dto);
   }
 
   @Public()
@@ -73,17 +54,15 @@ export class AuthentificationController {
     @Body()
     dto: RenvoiCodeDto,
   ) {
-    return this.authentificationService.renvoyerCode(
-      dto,
-    );
+    return this.authentificationService.renvoyerCode(dto);
   }
 
   @Public()
   @Throttle({
-    court:{
+    court: {
       ttl: 60_000,
       limit: 5,
-    }
+    },
   })
   @Post('connexion')
   async connecter(
@@ -93,14 +72,11 @@ export class AuthentificationController {
     @Ip()
     adresseIp: string,
   ) {
-    return this.authentificationService.connecter(
-      dto,
-      adresseIp,
-    );
+    return this.authentificationService.connecter(dto, adresseIp);
   }
 
   @Public()
-    @Throttle({
+  @Throttle({
     court: {
       ttl: 60_000,
       limit: 5,
@@ -111,9 +87,7 @@ export class AuthentificationController {
     @Body()
     dto: RenouvellementTokenDto,
   ) {
-    return this.authentificationService.renouveler(
-      dto,
-    );
+    return this.authentificationService.renouveler(dto);
   }
 
   @Public()
