@@ -1,0 +1,31 @@
+// Enums du domaine contenu
+
+enum TypePublication {
+  VIDEO
+  IMAGE
+  CARROUSEL
+}
+
+enum VisibiliteContenu {
+  PUBLIC
+  ABONNES
+}
+
+enum StatutPublication {
+  PROCESSING
+  PUBLIEE
+  REJETEE
+  SUPPRIMEE
+}
+
+enum StatutCommentaire {
+  VISIBLE
+  MASQUE_MODERATION
+  SUPPRIME
+}
+
+enum StatutAbonnement {
+  ACTIF
+  MUET
+  BLOQUE
+}

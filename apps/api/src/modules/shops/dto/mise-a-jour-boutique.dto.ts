@@ -1,5 +1,29 @@
-import { PartialType } from '@nestjs/common';
+import { Transform } from 'class-transformer';
+import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
-import { EnregistrerBoutiqueDto } from './enregistrer-boutique.dto.js';
+export class MiseAJourBoutiqueDto {
+	@IsOptional()
+	@IsString()
+	@Transform(({ value }) =>
+		typeof value === 'string' ? value.trim() : value,
+	)
+	@MinLength(2)
+	@MaxLength(120)
+	nom?: string;
 
-export class MiseAJourBoutiqueDto extends PartialType(EnregistrerBoutiqueDto) {}
+	@IsOptional()
+	@IsString()
+	@Transform(({ value }) =>
+		typeof value === 'string' ? value.trim() : value,
+	)
+	@MaxLength(2000)
+	description?: string | null;
+
+	@IsOptional()
+	@IsString()
+	@Transform(({ value }) =>
+		typeof value === 'string' ? value.trim() : value,
+	)
+	@MaxLength(2000)
+	biographie?: string | null;
+}

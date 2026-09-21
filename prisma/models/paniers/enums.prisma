@@ -1,0 +1,7 @@
+// Enums du domaine paniers
+
+enum StatutPanier {
+  ACTIF
+  ABANDONNE
+  CONVERTI
+}

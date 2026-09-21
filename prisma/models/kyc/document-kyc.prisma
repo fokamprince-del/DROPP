@@ -1,0 +1,15 @@
+model DocumentKyc {
+  id           String            @id @default(uuid()) @db.Uuid
+  dossierKycId String            @map("dossier_kyc_id") @db.Uuid
+  typeDocument TypeDocumentKyc   @map("type_document")
+  cleStockage  String            @map("cle_stockage")
+  nomOriginal  String            @map("nom_original")
+  typeMime     String            @map("type_mime")
+  taille       BigInt
+  statut       StatutDocumentKyc @default(SOUMIS)
+  dateCreation DateTime          @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dossierKyc   DossierKyc        @relation(fields: [dossierKycId], references: [id], onDelete: Cascade)
+
+  @@index([dossierKycId])
+  @@map("documents_kyc")
+}

@@ -1,0 +1,21 @@
+model Media {
+  id                String                @id @default(uuid()) @db.Uuid
+  typeMedia         TypeMedia             @map("type_media")
+  cleStockage       String                @map("cle_stockage")
+  typeMime          String                @map("type_mime")
+  taille            BigInt
+  largeur           Int?
+  hauteur           Int?
+  duree             Int?
+  statutTraitement  StatutTraitementMedia @default(PROCESSING) @map("statut_traitement")
+  dateCreation      DateTime              @default(now()) @map("date_creation") @db.Timestamptz(3)
+  mediaProduits     MediaProduit[]
+  mediaPublications MediaPublication[]
+  stories           Story[]
+  piecesJointes     PieceJointeMessage[]
+  preuvesLitige     PreuveLitige[]
+
+  @@index([statutTraitement])
+  @@index([dateCreation])
+  @@map("medias")
+}

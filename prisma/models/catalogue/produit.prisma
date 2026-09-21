@@ -1,0 +1,25 @@
+model Produit {
+  id               String               @id @default(uuid()) @db.Uuid
+  boutiqueId       String               @map("boutique_id") @db.Uuid
+  categorieId      String               @map("categorie_id") @db.Uuid
+  nom              String
+  description      String?
+  statut           StatutProduit        @default(BROUILLON)
+  prixBase         Decimal              @map("prix_base") @db.Decimal(12, 2)
+  dateCreation     DateTime             @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateModification DateTime             @updatedAt @map("date_modification") @db.Timestamptz(3)
+  boutique         Boutique             @relation(fields: [boutiqueId], references: [id])
+  categorie        Categorie            @relation(fields: [categorieId], references: [id])
+  variantes        VarianteProduit[]
+  medias           MediaProduit[]
+  publications     PublicationProduit[]
+  favoris          FavoriProduit[]
+  signalements     Signalement[]
+  lignesCommande   LigneSousCommande[]
+
+  @@index([boutiqueId])
+  @@index([categorieId])
+  @@index([statut])
+  @@index([dateCreation])
+  @@map("produits")
+}

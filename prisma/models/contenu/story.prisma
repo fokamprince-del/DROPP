@@ -1,0 +1,16 @@
+model Story {
+  id             String            @id @default(uuid()) @db.Uuid
+  boutiqueId     String            @map("boutique_id") @db.Uuid
+  mediaId        String            @map("media_id") @db.Uuid
+  ordreCreation  Int               @default(0) @map("ordre_creation")
+  visibilite     VisibiliteContenu @default(PUBLIC)
+  statut         StatutPublication @default(PROCESSING)
+  dateCreation   DateTime          @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateExpiration DateTime          @map("date_expiration") @db.Timestamptz(3)
+  boutique       Boutique          @relation(fields: [boutiqueId], references: [id])
+  media          Media             @relation(fields: [mediaId], references: [id])
+
+  @@index([boutiqueId])
+  @@index([dateExpiration])
+  @@map("stories")
+}

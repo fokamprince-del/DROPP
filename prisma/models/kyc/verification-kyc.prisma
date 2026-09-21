@@ -1,0 +1,15 @@
+model VerificationKyc {
+  id               String                @id @default(uuid()) @db.Uuid
+  dossierKycId     String                @map("dossier_kyc_id") @db.Uuid
+  typeVerification TypeVerificationKyc   @map("type_verification")
+  statut           StatutVerificationKyc @default(EN_ATTENTE)
+  commentaire      String?
+  dateVerification DateTime?             @map("date_verification") @db.Timestamptz(3)
+  scoreMatching    Decimal?              @map("score_matching") @db.Decimal(5, 4)
+  seuilDecision    Decimal?              @map("seuil_decision") @db.Decimal(5, 4)
+  dossierKyc       DossierKyc            @relation(fields: [dossierKycId], references: [id], onDelete: Cascade)
+
+  @@index([dossierKycId])
+  @@index([statut])
+  @@map("verifications_kyc")
+}

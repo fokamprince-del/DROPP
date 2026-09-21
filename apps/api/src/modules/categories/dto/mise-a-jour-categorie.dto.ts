@@ -1,5 +1,25 @@
-import { PartialType } from '@nestjs/common';
+import { Transform } from 'class-transformer';
+import { IsOptional, IsString, IsUUID, MaxLength, MinLength } from 'class-validator';
 
-import { CreerCategorieDto } from './creer-categorie.dto.js';
+export class MiseAJourCategorieDto {
+	@IsOptional()
+	@IsUUID()
+	parentId?: string | null;
 
-export class MiseAJourCategorieDto extends PartialType(CreerCategorieDto) {}
+	@IsOptional()
+	@IsString()
+	@Transform(({ value }) =>
+		typeof value === 'string' ? value.trim() : value,
+	)
+	@MinLength(2)
+	@MaxLength(120)
+	nom?: string;
+
+	@IsOptional()
+	@IsString()
+	@Transform(({ value }) =>
+		typeof value === 'string' ? value.trim() : value,
+	)
+	@MaxLength(1000)
+	description?: string | null;
+}

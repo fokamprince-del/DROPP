@@ -1,0 +1,40 @@
+model Utilisateur {
+  id                          String                       @id @default(uuid()) @db.Uuid
+  nom                         String
+  prenom                      String
+  email                       String                       @unique
+  telephone                   String                       @unique
+  motDePasseHash              String                       @map("mot_de_passe_hash")
+  photoProfilUrl              String?                      @map("photo_profil_url")
+  dateInscription             DateTime                     @default(now()) @map("date_inscription") @db.Timestamptz(3)
+  statutCompte                StatutCompte                 @default(ACTIF) @map("statut_compte")
+  derniereConnexion           DateTime?                    @map("derniere_connexion") @db.Timestamptz(3)
+  sessions                    Session[]
+  codesVerification           CodeVerification[]
+  reinitialisationsMotDePasse ReinitialisationMotDePasse[]
+  updatedAt                   DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  client                      Client?
+  vendeur                     Vendeur?
+  roles                       UtilisateurRole[]
+  likes                       Aime[]
+  commentaires                Commentaire[]
+  favorisPublications         FavoriPublication[]
+  favorisProduits             FavoriProduit[]
+  abonnements                 Abonnement[]
+  participants                ParticipantConversation[]
+  messagesEnvoyes             Message[]                    @relation("ExpediteurMessage")
+  revuesKyc                   RevueKyc[]                   @relation("AdministrateurRevueKyc")
+  paniers                     Panier[]
+  passagesCommande            PassageCommande[]
+  commandes                   Commande[]
+  signalements                Signalement[]                @relation("EmetteurSignalement")
+  litiges                     Litige[]
+  notifications               Notification[]
+  preferencesNotification     PreferenceNotification[]
+  appareils                   Appareil[]
+  avis                        Avis[]
+  dossiersModeration          DossierModeration[]          @relation("AdministrateurModeration")
+  audits                      JournalAudit[]               @relation("AdministrateurAudit")
+
+  @@map("utilisateurs")
+}

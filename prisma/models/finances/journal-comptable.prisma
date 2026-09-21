@@ -1,0 +1,12 @@
+model JournalComptable {
+  id            String                 @id @default(uuid()) @db.Uuid
+  date          DateTime               @default(now()) @db.Timestamptz(3)
+  typeOperation String                 @map("type_operation")
+  description   String?
+  statut        StatutJournalComptable @default(BROUILLON)
+  ecritures     EcritureComptable[]
+
+  @@index([date])
+  @@index([statut])
+  @@map("journaux_comptables")
+}

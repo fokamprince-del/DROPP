@@ -1,0 +1,17 @@
+model Message {
+  id             String               @id @default(uuid()) @db.Uuid
+  conversationId String               @map("conversation_id") @db.Uuid
+  expediteurId   String               @map("expediteur_id") @db.Uuid
+  contenu        String?
+  type           TypeMessage
+  statut         StatutMessage        @default(ENVOYE)
+  dateCreation   DateTime             @default(now()) @map("date_creation") @db.Timestamptz(3)
+  conversation   Conversation         @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  expediteur     Utilisateur          @relation("ExpediteurMessage", fields: [expediteurId], references: [id])
+  piecesJointes  PieceJointeMessage[]
+
+  @@index([conversationId])
+  @@index([expediteurId])
+  @@index([dateCreation])
+  @@map("messages")
+}

@@ -1,0 +1,20 @@
+model Adresse {
+  id            String      @id @default(uuid()) @db.Uuid
+  clientId      String      @map("client_id") @db.Uuid
+  type          TypeAdresse
+  ligne1        String
+  ligne2        String?
+  ville         String
+  region        String?
+  pays          String
+  codePostal    String?     @map("code_postal")
+  latitude      Decimal?    @db.Decimal(10, 7)
+  longitude     Decimal?    @db.Decimal(10, 7)
+  estPrincipale Boolean     @default(false) @map("est_principale")
+  dateCreation  DateTime    @default(now()) @map("date_creation") @db.Timestamptz(3)
+  client        Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([type])
+  @@map("adresses")
+}

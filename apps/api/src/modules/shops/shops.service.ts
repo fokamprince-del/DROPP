@@ -17,9 +17,6 @@ const boutiqueSelection = {
   statut: true,
   dateCreation: true,
   dateModification: true,
-  localisation: true,
-  horaires: true,
-  contacts: true,
 } as const;
 
 @Injectable()

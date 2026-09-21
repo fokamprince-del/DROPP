@@ -1,0 +1,17 @@
+model Notification {
+  id            String           @id @default(uuid()) @db.Uuid
+  utilisateurId String           @map("utilisateur_id") @db.Uuid
+  type          TypeNotification
+  titre         String
+  contenu       String
+  estLu         Boolean          @default(false) @map("est_lu")
+  dateCreation  DateTime         @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateLecture   DateTime?        @map("date_lecture") @db.Timestamptz(3)
+  utilisateur   Utilisateur      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@index([utilisateurId])
+  @@index([type])
+  @@index([estLu])
+  @@index([dateCreation])
+  @@map("notifications")
+}
