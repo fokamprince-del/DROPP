@@ -7,7 +7,7 @@ model Utilisateur {
   motDePasseHash              String                       @map("mot_de_passe_hash")
   photoProfilUrl              String?                      @map("photo_profil_url")
   dateInscription             DateTime                     @default(now()) @map("date_inscription") @db.Timestamptz(3)
-  statutCompte                StatutCompte                 @default(ACTIF) @map("statut_compte")
+  statutCompte                StatutCompte                 @default(EN_ATTENTE_VERIFICATION) @map("statut_compte")
   derniereConnexion           DateTime?                    @map("derniere_connexion") @db.Timestamptz(3)
   sessions                    Session[]
   codesVerification           CodeVerification[]

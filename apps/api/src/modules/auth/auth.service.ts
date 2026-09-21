@@ -40,6 +40,12 @@ export class AuthentificationService {
     dto: InscriptionDto,
     adresseIp?: string,
   ) {
+    if (dto.role === 'admin') {
+      throw new UnauthorizedException(
+        'Inscription en tant qu’administrateur non autorisée.',
+      );
+    }
+
     const email = dto.email
       .trim()
       .toLowerCase();
@@ -89,11 +95,19 @@ export class AuthentificationService {
                 },
               });
 
-            await tx.client.create({
-              data: {
-                id: utilisateur.id,
-              },
-            });
+            if (dto.role === 'client') {
+              await tx.client.create({
+                data: {
+                  id: utilisateur.id,
+                },
+              });
+            } else if (dto.role === 'vendeur') {
+              await tx.vendeur.create({
+                data: {
+                  id: utilisateur.id,
+                },
+              });
+            }
 
             await tx.codeVerification.create({
               data: {
@@ -116,7 +130,7 @@ export class AuthentificationService {
               },
             });
 
-            return utilisateur;
+            return {...utilisateur};
           },
         );
 

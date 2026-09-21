@@ -7,6 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Role } from '../types/user-authentified.type.js';
 
 export class InscriptionDto {
   @Transform(({ value }) =>
@@ -50,6 +51,10 @@ export class InscriptionDto {
     message: 'Le numéro de téléphone doit être au format +237XXXXXXXXX.',
   })
   telephone!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  role!: Role;
 
   @IsString()
   @MinLength(12)
