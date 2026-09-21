@@ -1,9 +1,0 @@
-model Client {
-  id           String       @id @db.Uuid
-  dateCreation DateTime     @default(now()) @map("date_creation") @db.Timestamptz(3)
-  statutClient StatutClient @default(ACTIF)
-  utilisateur  Utilisateur  @relation(fields: [id], references: [id], onDelete: Cascade)
-  adresses     Adresse[]
-
-  @@map("clients")
-}

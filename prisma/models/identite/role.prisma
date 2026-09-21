@@ -1,8 +1,0 @@
-model Role {
-  id           String            @id @default(uuid()) @db.Uuid
-  nom          String            @unique
-  description  String?
-  utilisateurs UtilisateurRole[]
-
-  @@map("roles")
-}

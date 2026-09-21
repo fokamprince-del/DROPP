@@ -11,6 +11,8 @@ import { SmsModule } from '../../infrastructure/sms/sms.module.js';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
 import { AuthentificationController } from './auth.controller.js';
+import { AuthentificationGuard } from './guards/auth.guard.js';
+import { RolesGuard } from './guards/roles.guard.js';
 
 @Module({
   imports: [
@@ -37,8 +39,14 @@ import { AuthentificationController } from './auth.controller.js';
     OtpService,
     SessionService,
     JwtStrategy,
+    AuthentificationGuard,
+    RolesGuard,
   ],
 
-  exports: [AuthentificationService],
+  exports: [
+    AuthentificationService,
+    AuthentificationGuard,
+    RolesGuard,
+  ],
 })
 export class AuthentificationModule {}
