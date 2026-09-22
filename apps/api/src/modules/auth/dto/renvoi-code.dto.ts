@@ -1,18 +1,9 @@
-import { Transform } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  MaxLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class RenvoiCodeDto {
-  @Transform(({ value }) =>
-    typeof value === 'string'
-      ? value.trim().toLowerCase()
-      : value,
-  )
-  @IsEmail()
+  /** Téléphone ou email — même valeur que celle utilisée à l'inscription. */
+  @IsString()
   @IsNotEmpty()
   @MaxLength(254)
-  email!: string;
+  destination!: string;
 }

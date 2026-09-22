@@ -3,7 +3,7 @@ model UtilisateurRole {
   roleId          String      @map("role_id") @db.Uuid
   dateAttribution DateTime    @default(now()) @map("date_attribution") @db.Timestamptz(3)
   utilisateur     Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
-  role            Role        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  role            Role        @relation(fields: [roleId], references: [id], onDelete: Restrict)
 
   @@id([utilisateurId, roleId])
   @@index([roleId])

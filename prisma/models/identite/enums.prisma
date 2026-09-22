@@ -1,11 +1,14 @@
-// Enums du domaine identite
-
 enum StatutCompte {
-  ACTIF
   EN_ATTENTE_VERIFICATION
+  ACTIF
   SUSPENDU_TEMP
   SUSPENDU_DEF
   SUPPRIME
+}
+
+enum StatutClient {
+  ACTIF
+  SUSPENDU
 }
 
 enum StatutVendeur {
@@ -14,19 +17,32 @@ enum StatutVendeur {
   SUSPENDU
 }
 
-enum StatutClient {
-  ACTIF
-  SUSPENDU
-  DESACTIVE
+enum TypeCodeVerification {
+  INSCRIPTION
+  REINITIALISATION_MOT_DE_PASSE
+  VERIFICATION_NOUVEAU_TELEPHONE
+  VERIFICATION_EMAIL
+}
+
+enum CanalVerification {
+  SMS
+  EMAIL
+}
+
+enum MethodeAuthentification {
+  TELEPHONE_MDP
+  EMAIL_MDP
+  GOOGLE
+  APPLE
+}
+
+enum FournisseurIdentite {
+  GOOGLE
+  APPLE
 }
 
 enum TypeAdresse {
   LIVRAISON
   FACTURATION
   AUTRE
-}
-
-enum TypeCodeVerification {
-  INSCRIPTION
-  REINITIALISATION_MOT_DE_PASSE
 }
