@@ -1,40 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import {
-  ExtractJwt,
-  Strategy,
-} from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { UtilisateurAuthentifie } from '../types/user-authentified.type.js';
+import type { PayloadJwt } from '../services/jeton.service.js';
 
-interface JwtPayload {
-  sub: string;
+export interface UtilisateurConnecte {
+  id: string;
+  statutCompte: string;
+  telephoneVerifie: boolean;
 }
 
+const STATUTS_AUTORISES = new Set(['ACTIF', 'EN_ATTENTE_VERIFICATION']);
+
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    configService: ConfigService,
-  ) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+  constructor(config: ConfigService) {
     super({
-      jwtFromRequest:
-        ExtractJwt.fromAuthHeaderAsBearerToken(),
-
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-
-      secretOrKey:
-        configService.getOrThrow<string>(
-          'jwt.accessSecret',
-        ),
+      secretOrKey: config.getOrThrow<string>('jwt.accessSecret'),
+      algorithms: ['HS256'],
     });
   }
 
-  async validate(
-    payload: JwtPayload,
-  ): Promise<UtilisateurAuthentifie> {
+  /**
+   * Appelé après vérification de la signature.
+   * Pas de requête en base : le JWT est stateless.
+   * La révocation de compte prend effet à l'expiration du token (15 min max).
+   * Pour les actions sensibles, utilisez @RequiertReauthentification().
+   */
+  validate(payload: PayloadJwt): UtilisateurConnecte {
+    if (!STATUTS_AUTORISES.has(payload.statutCompte)) {
+      throw new UnauthorizedException('Compte indisponible.');
+    }
     return {
-      utilisateurId: payload.sub,
+      id: payload.sub,
+      statutCompte: payload.statutCompte,
+      telephoneVerifie: payload.tel,
     };
   }
 }

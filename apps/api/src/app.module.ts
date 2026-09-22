@@ -2,9 +2,12 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { validationSchema } from './configuration/validation.js';
 import configuration from './configuration/configuration.js';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthentificationModule } from './modules/auth/auth.module.js';
 import { LoggerHttpMiddleware } from './infrastructure/http/logger-http.middelware.js';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard.js';
+import { TelephoneVerifieGuard } from './modules/auth/guards/telephone-verifier.guard.js';
 
 @Module({
   imports: [
@@ -24,6 +27,11 @@ import { LoggerHttpMiddleware } from './infrastructure/http/logger-http.middelwa
       },
     ]),
     AuthentificationModule,
+  ],
+  providers: [
+      { provide: APP_GUARD, useClass: ThrottlerGuard },
+      { provide: APP_GUARD, useClass: JwtAuthGuard },
+      { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
   ],
 })
 export class AppModule {

@@ -1,109 +1,141 @@
-import { Body, Controller, Ip, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Ip,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 
-import { AuthentificationService } from './auth.service.js';
-
 import { Public } from './decorators/public.decorator.js';
+import { CurrentUser } from './decorators/current-user.decorator.js';
+import type { UtilisateurConnecte } from './strategies/jwt.strategy.js';
 
-import { ConnexionDto } from './dto/connexion.dto.js';
-import { DemandeReinitialisationDto } from './dto/demande-reinitialisation.dto.js';
 import { InscriptionDto } from './dto/inscription.dto.js';
+import { VerifierOtpDto } from './dto/verifier-otp.dto.js';
+import { ConnexionDto } from './dto/connexion.dto.js';
+import { RefreshTokenDto } from './dto/refresh-token.dto.js';
+import { MotDePasseOublieDto } from './dto/mot-de-passe-oublie.dto.js';
+import { ReinitialisationMdpDto } from './dto/reinitialisation-mdp.dto.js';
+
+import { InscriptionService } from './use-cases/inscription.service.js';
+import { VerificationTelephoneService } from './use-cases/verification-telephone.service.js';
+import { ConnexionService } from './use-cases/connexion.service.js';
+import { RefreshTokenService } from './use-cases/refresh-token.service.js';
+import { DeconnexionService } from './use-cases/deconnexion.service.js';
+import { MotDePasseOublieService } from './use-cases/mot-de-passe-oublie.service.js';
+import { ReinitialisationMdpService } from './use-cases/reinitialisation-mdp.service.js';
+import { SessionsService } from './use-cases/sessions.service.js';
+import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
 import { RenvoiCodeDto } from './dto/renvoi-code.dto.js';
-import { RenouvellementTokenDto } from './dto/renouvellement-token.dto.js';
-import { VerificationOtpDto } from './dto/verification-otp.dto.js';
+
+/** Throttle nommé "court" : aligné sur la config ThrottlerModule de AppModule. */
+const THROTTLE_SENSIBLE = { court: { limit: 5, ttl: 60_000 } };
+const THROTTLE_STANDARD = { court: { limit: 10, ttl: 60_000 } };
 
 @Controller('auth')
 export class AuthentificationController {
   constructor(
-    private readonly authentificationService: AuthentificationService,
+    private readonly inscriptionService: InscriptionService,
+    private readonly verificationTelephoneService: VerificationTelephoneService,
+    private readonly renvoiCodeService: RenvoiCodeService,
+    private readonly connexionService: ConnexionService,
+    private readonly refreshTokenService: RefreshTokenService,
+    private readonly deconnexionService: DeconnexionService,
+    private readonly motDePasseOublieService: MotDePasseOublieService,
+    private readonly reinitialisationMdpService: ReinitialisationMdpService,
+    private readonly sessionsService: SessionsService,
   ) {}
 
   @Public()
+  @Throttle(THROTTLE_STANDARD)
   @Post('inscription')
-  async inscrire(@Body() dto: InscriptionDto, @Ip() adresseIp: string) {
-    return this.authentificationService.inscrire(dto, adresseIp);
+  @HttpCode(HttpStatus.CREATED)
+  inscrire(@Body() dto: InscriptionDto) {
+    return this.inscriptionService.executer(dto);
   }
 
   @Public()
-  @Throttle({
-    court: {
-      ttl: 60_000,
-      limit: 5,
-    },
-  })
-  @Post('inscription/:utilisateurId/verification')
-  async verifierInscription(
-    @Param('utilisateurId')
-    utilisateurId: string,
-
-    @Body()
-    dto: VerificationOtpDto,
-  ) {
-    return this.authentificationService.verifierInscription(utilisateurId, dto);
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('verifier-telephone')
+  @HttpCode(HttpStatus.OK)
+  verifierTelephone(@Body() dto: VerifierOtpDto, @Ip() ip: string) {
+    return this.verificationTelephoneService.executer(dto, ip);
   }
 
   @Public()
-  @Throttle({
-    court: {
-      ttl: 60_000,
-      limit: 5,
-    },
-  })
-  @Post('verification/renvoi')
-  async renvoyerCode(
-    @Body()
-    dto: RenvoiCodeDto,
-  ) {
-    return this.authentificationService.renvoyerCode(dto);
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('renvoyer-code')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  renvoyerCode(@Body() dto: RenvoiCodeDto) {
+    return this.renvoiCodeService.executer(dto);
   }
 
   @Public()
-  @Throttle({
-    court: {
-      ttl: 60_000,
-      limit: 5,
-    },
-  })
+  @Throttle(THROTTLE_SENSIBLE)
   @Post('connexion')
-  async connecter(
-    @Body()
-    dto: ConnexionDto,
-
-    @Ip()
-    adresseIp: string,
-  ) {
-    return this.authentificationService.connecter(dto, adresseIp);
+  @HttpCode(HttpStatus.OK)
+  connecter(@Body() dto: ConnexionDto, @Ip() ip: string) {
+    return this.connexionService.executer(dto, ip);
   }
 
   @Public()
-  @Throttle({
-    court: {
-      ttl: 60_000,
-      limit: 5,
-    },
-  })
-  @Post('renouvellement')
-  async renouveler(
-    @Body()
-    dto: RenouvellementTokenDto,
+  @Throttle(THROTTLE_STANDARD)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  rafraichir(@Body() dto: RefreshTokenDto) {
+    return this.refreshTokenService.executer(dto.refreshToken);
+  }
+
+  @Post('deconnexion')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deconnecter(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Body('sessionId') sessionId: string,
   ) {
-    return this.authentificationService.renouveler(dto);
+    return this.deconnexionService.executer(sessionId, utilisateur.id);
+  }
+
+  @Post('deconnecter-partout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deconnecterPartout(@CurrentUser() utilisateur: UtilisateurConnecte) {
+    return this.deconnexionService.deconnecterPartout(utilisateur.id);
+  }
+
+  @Get('sessions')
+  listerSessions(@CurrentUser() utilisateur: UtilisateurConnecte) {
+    return this.sessionsService.lister(utilisateur.id);
+  }
+
+  @Delete('sessions/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  revoquerSession(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Param('id') sessionId: string,
+  ) {
+    return this.deconnexionService.executer(sessionId, utilisateur.id);
   }
 
   @Public()
-  @Post('reinitialisation/demande')
-  async demanderReinitialisation(
-    @Body()
-    _dto: DemandeReinitialisationDto,
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('mot-de-passe-oublie')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  motDePasseOublie(@Body() dto: MotDePasseOublieDto) {
+    return this.motDePasseOublieService.executer(dto);
+  }
+
+  @Public()
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('reinitialiser-mot-de-passe')
+  @HttpCode(HttpStatus.OK)
+  reinitialiserMotDePasse(
+    @Body() dto: ReinitialisationMdpDto,
+    @Ip() ip: string,
   ) {
-    /*
-     * Fonctionnalité volontairement non implémentée
-     * ici tant que le flux de réinitialisation complet
-     * n'est pas verrouillé.
-     */
-    return {
-      message:
-        'Si un compte correspondant existe, une procédure de réinitialisation sera envoyée.',
-    };
+    return this.reinitialisationMdpService.executer(dto, ip);
   }
 }

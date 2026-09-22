@@ -1,19 +1,17 @@
-import {
-  createParamDecorator,
-  ExecutionContext,
-} from '@nestjs/common';
+import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
+import type { Request } from 'express';
 
-import { UtilisateurAuthentifie } from '../types/user-authentified.type.js';
+import type { UtilisateurConnecte } from '../strategies/jwt.strategy.js';
 
-export const UtilisateurCourant = createParamDecorator(
-  (
-    _data: unknown,
-    context: ExecutionContext,
-  ): UtilisateurAuthentifie => {
-    const request = context
-      .switchToHttp()
-      .getRequest<{ user: UtilisateurAuthentifie }>();
-
-    return request.user;
+/**
+ * Injecte l'utilisateur connecté dans le paramètre de la méthode du contrôleur.
+ *
+ * @example
+ * async maRoute(@CurrentUser() utilisateur: UtilisateurConnecte) { ... }
+ */
+export const CurrentUser = createParamDecorator(
+  (_data: unknown, ctx: ExecutionContext): UtilisateurConnecte => {
+    const request = ctx.switchToHttp().getRequest<Request>();
+    return request.user as UtilisateurConnecte;
   },
 );
