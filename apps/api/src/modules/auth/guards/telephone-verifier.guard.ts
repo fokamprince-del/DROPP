@@ -8,7 +8,7 @@ import { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
 
 import { CLE_TELEPHONE_VERIFIE } from '../decorators/require-telephone-verifie.decorator.js';
-import type { UtilisateurConnecte } from '../strategies/jwt.strategy.js';
+import { UtilisateurConnecte } from '../types/utilisateur-connecte.js';
 
 @Injectable()
 export class TelephoneVerifieGuard implements CanActivate {

@@ -4,12 +4,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import type { PayloadJwt } from '../services/jeton.service.js';
+import { UtilisateurConnecte } from '../types/utilisateur-connecte.js';
 
-export interface UtilisateurConnecte {
-  id: string;
-  statutCompte: string;
-  telephoneVerifie: boolean;
-}
+
 
 const STATUTS_AUTORISES = new Set(['ACTIF', 'EN_ATTENTE_VERIFICATION']);
 

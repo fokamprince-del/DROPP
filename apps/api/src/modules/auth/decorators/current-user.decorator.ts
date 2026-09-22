@@ -1,7 +1,7 @@
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
 
-import type { UtilisateurConnecte } from '../strategies/jwt.strategy.js';
+import { UtilisateurConnecte } from '../types/utilisateur-connecte.js';
 
 /**
  * Injecte l'utilisateur connecté dans le paramètre de la méthode du contrôleur.

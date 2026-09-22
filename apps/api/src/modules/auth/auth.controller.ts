@@ -13,7 +13,7 @@ import { Throttle } from '@nestjs/throttler';
 
 import { Public } from './decorators/public.decorator.js';
 import { CurrentUser } from './decorators/current-user.decorator.js';
-import type { UtilisateurConnecte } from './strategies/jwt.strategy.js';
+import type { UtilisateurConnecte } from './types/utilisateur-connecte.js';
 
 import { InscriptionDto } from './dto/inscription.dto.js';
 import { VerifierOtpDto } from './dto/verifier-otp.dto.js';

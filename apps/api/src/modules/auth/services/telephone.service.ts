@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
+import { isValidPhoneNumber, parsePhoneNumberWithError } from 'libphonenumber-js';
 
 const REGION_DEFAUT = 'CM' as const;
 
@@ -14,7 +14,7 @@ export class TelephoneService {
     if (!isValidPhoneNumber(brut, REGION_DEFAUT)) {
       throw new BadRequestException('Numéro de téléphone invalide.');
     }
-    return parsePhoneNumber(brut, REGION_DEFAUT).format('E.164');
+    return parsePhoneNumberWithError(brut, REGION_DEFAUT).format('E.164');
   }
 
   estValide(numero: string): boolean {
