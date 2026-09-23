@@ -11,6 +11,7 @@ model VarianteProduit {
   produit          Produit             @relation(fields: [produitId], references: [id], onDelete: Cascade)
   articlesPanier   ArticlePanier[]
   lignesCommande   LigneSousCommande[]
+  reservations     ReservationStock[]
 
   @@index([produitId])
   @@map("variantes_produits")

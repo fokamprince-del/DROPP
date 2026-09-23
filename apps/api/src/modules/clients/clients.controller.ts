@@ -8,28 +8,27 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
 
-import { AuthentificationGuard } from '../auth/guards/auth.guard.js';
-import type { UtilisateurAuthentifie } from '../auth/types/user-authentified.type.js';
+import { Client } from '../auth/decorators/profils.decorator.js';
+import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
 import { CreerAdresseDto } from './dto/creer-adresse.dto.js';
 import { MiseAJourAdresseDto } from './dto/mise-a-jour-adresse.dto.js';
 import { ClientsService } from './clients.service.js';
 
 type RequeteAuthentifiee = Request & {
-  user: UtilisateurAuthentifie;
+  user: UtilisateurConnecte;
 };
 
 @Controller('clients')
-@UseGuards(AuthentificationGuard)
+@Client()
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
   @Get('me')
   obtenirProfil(@Req() requete: RequeteAuthentifiee) {
-    return this.clientsService.obtenirProfil(requete.user.utilisateurId);
+    return this.clientsService.obtenirProfil(requete.user.id);
   }
 
   @Post('me/adresses')
@@ -37,7 +36,7 @@ export class ClientsController {
     @Req() requete: RequeteAuthentifiee,
     @Body() dto: CreerAdresseDto,
   ) {
-    return this.clientsService.creerAdresse(requete.user.utilisateurId, dto);
+    return this.clientsService.creerAdresse(requete.user.id, dto);
   }
 
   @Patch('me/adresses/:adresseId')
@@ -47,7 +46,7 @@ export class ClientsController {
     @Body() dto: MiseAJourAdresseDto,
   ) {
     return this.clientsService.mettreAJourAdresse(
-      requete.user.utilisateurId,
+      requete.user.id,
       adresseId,
       dto,
     );
@@ -60,7 +59,7 @@ export class ClientsController {
     @Param('adresseId') adresseId: string,
   ): Promise<void> {
     await this.clientsService.supprimerAdresse(
-      requete.user.utilisateurId,
+      requete.user.id,
       adresseId,
     );
   }

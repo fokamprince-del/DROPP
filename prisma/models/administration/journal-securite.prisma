@@ -1,0 +1,15 @@
+model JournalSecurite {
+  id            String                @id @default(uuid()) @db.Uuid
+  utilisateurId String?               @map("utilisateur_id") @db.Uuid
+  evenement     TypeEvenementSecurite
+  adresseIp     String?               @map("adresse_ip")
+  appareilId    String?               @map("appareil_id") @db.Uuid
+  details       Json?
+  dateCreation  DateTime              @default(now()) @map("date_creation") @db.Timestamptz(3)
+  utilisateur   Utilisateur?          @relation("AdministrateurSecurite", fields: [utilisateurId], references: [id], onDelete: SetNull)
+
+  @@index([utilisateurId])
+  @@index([evenement])
+  @@index([dateCreation])
+  @@map("journaux_securite")
+}

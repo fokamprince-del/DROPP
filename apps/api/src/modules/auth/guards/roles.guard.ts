@@ -9,7 +9,7 @@ import type { Request } from 'express';
 
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { ROLES_KEY } from '../decorators/roles.decorator.js';
-import type { UtilisateurAuthentifie } from '../types/user-authentified.type.js';
+import type { UtilisateurConnecte } from '../types/utilisateur-connecte.js';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -29,7 +29,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const requete = context.switchToHttp().getRequest<
-      Request & { user?: UtilisateurAuthentifie }
+      Request & { user?: UtilisateurConnecte }
     >();
 
     if (!requete.user) {
@@ -38,7 +38,7 @@ export class RolesGuard implements CanActivate {
 
     const attribution = await this.prisma.utilisateurRole.findFirst({
       where: {
-        utilisateurId: requete.user.utilisateurId,
+        utilisateurId: requete.user.id,
         role: { nom: { in: rolesRequis } },
       },
       select: { roleId: true },

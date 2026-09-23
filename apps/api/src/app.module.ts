@@ -3,15 +3,20 @@ import { APP_GUARD } from '@nestjs/core';
 import { validationSchema } from './configuration/validation.js';
 import configuration from './configuration/configuration.js';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthentificationModule } from './modules/auth/auth.module.js';
 import { LoggerHttpMiddleware } from './infrastructure/http/logger-http.middelware.js';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard.js';
+import { TelephoneVerifieGuard } from './modules/auth/guards/telephone-verifier.guard.js';
+import { ProduitsModule } from './modules/produits/produits.module.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { ClientsModule } from './modules/clients/clients.module.js';
 import { SellersModule } from './modules/sellers/sellers.module.js';
 import { ShopsModule } from './modules/shops/shops.module.js';
 import { CategoriesModule } from './modules/categories/categories.module.js';
-import { AuthentificationGuard } from './modules/auth/guards/auth.guard.js';
+import { PublicationsModule } from './modules/publications/publications.module.js';
+import { StoriesModule } from './modules/stories/stories.module.js';
+import { LikesModule } from './modules/likes/likes.module.js';
 
 @Module({
   imports: [
@@ -31,17 +36,20 @@ import { AuthentificationGuard } from './modules/auth/guards/auth.guard.js';
       },
     ]),
     AuthentificationModule,
+    ProduitsModule,
     UsersModule,
     ClientsModule,
     SellersModule,
     ShopsModule,
     CategoriesModule,
+    PublicationsModule,
+    StoriesModule,
+    LikesModule,
   ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthentificationGuard,
-    },
+      { provide: APP_GUARD, useClass: ThrottlerGuard },
+      { provide: APP_GUARD, useClass: JwtAuthGuard },
+      { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
   ],
 })
 export class AppModule {

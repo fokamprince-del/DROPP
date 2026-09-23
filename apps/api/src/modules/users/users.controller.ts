@@ -4,27 +4,24 @@ import {
   Get,
   Patch,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
 
-import { AuthentificationGuard } from '../auth/guards/auth.guard.js';
-import type { UtilisateurAuthentifie } from '../auth/types/user-authentified.type.js';
+import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
 import { MiseAJourProfilDto } from './dto/mise-a-jour-profil.dto.js';
 import { UsersService } from './users.service.js';
 
 type RequeteAuthentifiee = Request & {
-  user: UtilisateurAuthentifie;
+  user: UtilisateurConnecte;
 };
 
 @Controller('users')
-@UseGuards(AuthentificationGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
   obtenirProfil(@Req() requete: RequeteAuthentifiee) {
-    return this.usersService.obtenirProfil(requete.user.utilisateurId);
+    return this.usersService.obtenirProfil(requete.user.id);
   }
 
   @Patch('me')
@@ -33,7 +30,7 @@ export class UsersController {
     @Body() dto: MiseAJourProfilDto,
   ) {
     return this.usersService.mettreAJourProfil(
-      requete.user.utilisateurId,
+      requete.user.id,
       dto,
     );
   }

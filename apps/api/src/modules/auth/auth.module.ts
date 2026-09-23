@@ -1,52 +1,97 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-import { AuthentificationService } from './auth.service.js';
-import { MotDePasseService } from './services/mot-de-passe.service.js';
-import { OtpService } from './services/otp.service.js';
-import { SessionService } from './services/session.service.js';
-import { JwtStrategy } from './strategies/jwt.strategy.js';
-import { SmsModule } from '../../infrastructure/sms/sms.module.js';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule, type JwtModuleOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+
 import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
+import { SmsModule } from '../../infrastructure/sms/sms.module.js';
+
 import { AuthentificationController } from './auth.controller.js';
-import { AuthentificationGuard } from './guards/auth.guard.js';
+import { RoleAdminGuard } from './guards/admin.guard.js';
+import { ProfilClientGuard } from './guards/client.guard.js';
 import { RolesGuard } from './guards/roles.guard.js';
+import { ProfilVendeurGuard } from './guards/vendeur.guard.js';
+
+import { JetonService } from './services/jeton.service.js';
+import { MotDePasseService } from './services/mot-de-passe.service.js';
+import { NotificationService } from './services/notification.service.js';
+import { OtpService } from './services/otp.service.js';
+import { SessionsService } from './use-cases/sessions.service.js';
+import { TelephoneService } from './services/telephone.service.js';
+
+import { ConnexionService } from './use-cases/connexion.service.js';
+import { DeconnexionService } from './use-cases/deconnexion.service.js';
+import { InscriptionService } from './use-cases/inscription.service.js';
+import { MotDePasseOublieService } from './use-cases/mot-de-passe-oublie.service.js';
+import { ReinitialisationMdpService } from './use-cases/reinitialisation-mdp.service.js';
+import { RefreshTokenService } from './use-cases/refresh-token.service.js';
+import { VerificationTelephoneService } from './use-cases/verification-telephone.service.js';
+
+import { JwtStrategy } from './strategies/jwt.strategy.js';
+
+// NotificationProvider : stub en dev, vrai fournisseur plus tard
+import { NOTIFICATION_PROVIDER } from '../../infrastructure/notification/notification-provider.contract.js';
+import { NotificationProviderStub } from '../../infrastructure/notification/notification-provider.stub.js';
+import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
 
 @Module({
   imports: [
     PrismaModule,
     SmsModule,
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-    }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.getOrThrow<string>('jwt.accessSecret'),
+      useFactory: (config: ConfigService): JwtModuleOptions => ({
+        secret: config.getOrThrow<string>('jwt.accessSecret'),
         signOptions: {
-          expiresIn: configService.getOrThrow<string>('jwt.accessTtl') as any,
+          algorithm: 'HS256',
+          expiresIn: config.getOrThrow<number>('auth.accessTokenTtlSeconds'),
         },
+        verifyOptions: { algorithms: ['HS256'] },
       }),
     }),
   ],
-  controllers: [AuthentificationController],
-  providers: [
-    AuthentificationService,
-    MotDePasseService,
-    OtpService,
-    SessionService,
-    JwtStrategy,
-    AuthentificationGuard,
-    RolesGuard,
-  ],
 
-  exports: [
-    AuthentificationService,
-    AuthentificationGuard,
+  controllers: [AuthentificationController],
+
+  providers: [
+    // Services techniques
+    JetonService,
+    MotDePasseService,
+    NotificationService,
+    OtpService,
+    TelephoneService,
+
+    // Cas d'usage
+    ConnexionService,
+    DeconnexionService,
+    InscriptionService,
+    MotDePasseOublieService,
+    ReinitialisationMdpService,
+    RefreshTokenService,
+    SessionsService,
+    RenvoiCodeService,
+    VerificationTelephoneService,
+
+    // Stratégie Passport
+    JwtStrategy,
     RolesGuard,
+    RoleAdminGuard,
+    ProfilClientGuard,
+    ProfilVendeurGuard,
+
+    // NotificationProvider provisoire (stub SMS)
+    // À remplacer par un vrai fournisseur ou un BullMQ producer
+    {
+      provide: NOTIFICATION_PROVIDER,
+      useClass: NotificationProviderStub,
+    },
+  ],
+  exports: [
+    RolesGuard,
+    RoleAdminGuard,
+    ProfilClientGuard,
+    ProfilVendeurGuard,
   ],
 })
 export class AuthentificationModule {}

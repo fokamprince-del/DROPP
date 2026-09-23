@@ -1,22 +1,22 @@
-import { Body, Controller, Get, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
 import type { Request } from 'express';
 
-import { AuthentificationGuard } from '../auth/guards/auth.guard.js';
-import type { UtilisateurAuthentifie } from '../auth/types/user-authentified.type.js';
+import { Vendeur } from '../auth/decorators/profils.decorator.js';
+import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
 import { EnregistrerBoutiqueDto } from './dto/enregistrer-boutique.dto.js';
 import { MiseAJourBoutiqueDto } from './dto/mise-a-jour-boutique.dto.js';
 import { ShopsService } from './shops.service.js';
 
-type RequeteAuthentifiee = Request & { user: UtilisateurAuthentifie };
+type RequeteAuthentifiee = Request & { user: UtilisateurConnecte };
 
 @Controller('shops')
-@UseGuards(AuthentificationGuard)
+@Vendeur()
 export class ShopsController {
   constructor(private readonly shopsService: ShopsService) {}
 
   @Get('me')
   obtenirMaBoutique(@Req() requete: RequeteAuthentifiee) {
-    return this.shopsService.obtenirMaBoutique(requete.user.utilisateurId);
+    return this.shopsService.obtenirMaBoutique(requete.user.id);
   }
 
   @Post()
@@ -24,7 +24,7 @@ export class ShopsController {
     @Req() requete: RequeteAuthentifiee,
     @Body() dto: EnregistrerBoutiqueDto,
   ) {
-    return this.shopsService.creerBoutique(requete.user.utilisateurId, dto);
+    return this.shopsService.creerBoutique(requete.user.id, dto);
   }
 
   @Patch('me')
@@ -33,7 +33,7 @@ export class ShopsController {
     @Body() dto: MiseAJourBoutiqueDto,
   ) {
     return this.shopsService.mettreAJourMaBoutique(
-      requete.user.utilisateurId,
+      requete.user.id,
       dto,
     );
   }
