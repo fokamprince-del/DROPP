@@ -92,9 +92,7 @@ export class PublicationsService {
     ]);
 
     return {
-      donnees: publications.map((publication) =>
-        this.presenter(publication),
-      ),
+      donnees: publications.map((publication) => this.presenter(publication)),
       pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
@@ -171,9 +169,13 @@ export class PublicationsService {
     await this.obtenirPublicationVendeur(publicationId, boutique.id);
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax || dto.taille > tailleMax * 1024 * 1024) {
-      throw new BadRequestException('Fichier trop volumineux ou non pris en charge.');
+      throw new BadRequestException(
+        'Fichier trop volumineux ou non pris en charge.',
+      );
     }
-    const typeMedia = dto.typeMime.startsWith('video/') ? TypeMedia.VIDEO : TypeMedia.IMAGE;
+    const typeMedia = dto.typeMime.startsWith('video/')
+      ? TypeMedia.VIDEO
+      : TypeMedia.IMAGE;
     const signature = await this.stockage.genererSignatureUpload(
       `boutiques/${boutique.id}/publications/${publicationId}/${typeMedia.toLowerCase()}s`,
       dto.typeMime,
@@ -188,14 +190,23 @@ export class PublicationsService {
     dto: ConfirmerMediaPublicationDto,
   ) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
-    const publication = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    const publication = await this.obtenirPublicationVendeur(
+      publicationId,
+      boutique.id,
+    );
     const prefixe = `boutiques/${boutique.id}/publications/${publicationId}/`;
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
-    if (!dto.cleStockage.startsWith(prefixe) || !tailleMax || dto.taille > tailleMax * 1024 * 1024) {
+    if (
+      !dto.cleStockage.startsWith(prefixe) ||
+      !tailleMax ||
+      dto.taille > tailleMax * 1024 * 1024
+    ) {
       throw new BadRequestException('Média invalide pour cette publication.');
     }
 
-    const typeMedia = dto.typeMime.startsWith('video/') ? TypeMedia.VIDEO : TypeMedia.IMAGE;
+    const typeMedia = dto.typeMime.startsWith('video/')
+      ? TypeMedia.VIDEO
+      : TypeMedia.IMAGE;
     const statutTraitement =
       typeMedia === TypeMedia.IMAGE
         ? StatutTraitementMedia.PRET
@@ -232,7 +243,9 @@ export class PublicationsService {
   }
 
   async moderer(publicationId: string, statut: StatutPublication) {
-    if (![StatutPublication.PUBLIEE, StatutPublication.REJETEE].includes(statut)) {
+    if (
+      ![StatutPublication.PUBLIEE, StatutPublication.REJETEE].includes(statut)
+    ) {
       throw new BadRequestException('Statut de modération invalide.');
     }
 
@@ -240,7 +253,11 @@ export class PublicationsService {
       where: { id: publicationId },
       select: {
         type: true,
-        medias: { select: { media: { select: { typeMedia: true, statutTraitement: true } } } },
+        medias: {
+          select: {
+            media: { select: { typeMedia: true, statutTraitement: true } },
+          },
+        },
       },
     });
     if (!publication) throw new NotFoundException('Publication introuvable.');
@@ -268,9 +285,16 @@ export class PublicationsService {
     return boutique;
   }
 
-  private async obtenirPublicationVendeur(publicationId: string, boutiqueId: string) {
+  private async obtenirPublicationVendeur(
+    publicationId: string,
+    boutiqueId: string,
+  ) {
     const publication = await this.prisma.publication.findFirst({
-      where: { id: publicationId, boutiqueId, statut: { not: StatutPublication.SUPPRIMEE } },
+      where: {
+        id: publicationId,
+        boutiqueId,
+        statut: { not: StatutPublication.SUPPRIMEE },
+      },
       select: { id: true },
     });
     if (!publication) throw new NotFoundException('Publication introuvable.');
@@ -279,19 +303,40 @@ export class PublicationsService {
 
   private verifierMediasPublication(
     type: TypePublication,
-    medias: Array<{ media: { typeMedia: TypeMedia; statutTraitement: StatutTraitementMedia } }>,
+    medias: Array<{
+      media: { typeMedia: TypeMedia; statutTraitement: StatutTraitementMedia };
+    }>,
   ): void {
-    if (medias.length === 0 || medias.some(({ media }) => media.statutTraitement !== StatutTraitementMedia.PRET)) {
-      throw new BadRequestException('Tous les médias doivent être prêts avant publication.');
+    if (
+      medias.length === 0 ||
+      medias.some(
+        ({ media }) => media.statutTraitement !== StatutTraitementMedia.PRET,
+      )
+    ) {
+      throw new BadRequestException(
+        'Tous les médias doivent être prêts avant publication.',
+      );
     }
-    if (type === 'IMAGE' && (medias.length !== 1 || medias[0].media.typeMedia !== TypeMedia.IMAGE)) {
-      throw new BadRequestException('Une publication image requiert une image unique.');
+    if (
+      type === 'IMAGE' &&
+      (medias.length !== 1 || medias[0].media.typeMedia !== TypeMedia.IMAGE)
+    ) {
+      throw new BadRequestException(
+        'Une publication image requiert une image unique.',
+      );
     }
-    if (type === 'VIDEO' && (medias.length !== 1 || medias[0].media.typeMedia !== TypeMedia.VIDEO)) {
-      throw new BadRequestException('Une publication vidéo requiert une vidéo unique.');
+    if (
+      type === 'VIDEO' &&
+      (medias.length !== 1 || medias[0].media.typeMedia !== TypeMedia.VIDEO)
+    ) {
+      throw new BadRequestException(
+        'Une publication vidéo requiert une vidéo unique.',
+      );
     }
     if (type === 'CARROUSEL' && (medias.length < 2 || medias.length > 10)) {
-      throw new BadRequestException('Un carrousel requiert entre 2 et 10 médias.');
+      throw new BadRequestException(
+        'Un carrousel requiert entre 2 et 10 médias.',
+      );
     }
   }
 

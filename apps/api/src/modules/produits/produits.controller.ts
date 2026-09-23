@@ -16,9 +16,6 @@ import {
 
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { Public } from '../auth/decorators/public.decorator.js';
-import { RequiertTelephoneVerifie } from '../auth/decorators/require-telephone-verifie.decorator.js';
-import { ProfilVendeurGuard } from '../auth/guards/vendeur.guard.js';
-import { RequiertProfilVendeur } from '../auth/decorators/profil-vendeur.decorator.js';
 import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
 
 import { AjusterStockDto } from './dto/ajuster-stock.dto.js';
@@ -73,12 +70,14 @@ export class ProduitsController {
     @Query('boutiqueId') boutiqueId?: string,
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+    @CurrentUser() u?: UtilisateurConnecte,
   ) {
     return this.cataloguePublic.executer({
       categorieId,
       boutiqueId,
       page,
       limite: Math.min(limite, 100),
+      utilisateurId: u?.id,
     });
   }
 

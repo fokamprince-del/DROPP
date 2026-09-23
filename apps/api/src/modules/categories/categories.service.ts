@@ -58,7 +58,10 @@ export class CategoriesService {
 
   async changerStatut(id: string, statut: StatutCategorie) {
     try {
-      return await this.prisma.categorie.update({ where: { id }, data: { statut } });
+      return await this.prisma.categorie.update({
+        where: { id },
+        data: { statut },
+      });
     } catch (error: unknown) {
       if (this.estIntrouvable(error)) {
         throw new NotFoundException('Catégorie introuvable.');
@@ -97,6 +100,11 @@ export class CategoriesService {
   }
 
   private estIntrouvable(error: unknown): boolean {
-    return typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025';
+    return (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 'P2025'
+    );
   }
 }

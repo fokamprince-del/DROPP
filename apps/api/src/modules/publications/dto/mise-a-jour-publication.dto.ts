@@ -6,9 +6,7 @@ import { VisibiliteContenu } from '../../../generated/prisma/client.js';
 export class MiseAJourPublicationDto {
   @IsOptional()
   @IsString()
-  @Transform(({ value }) =>
-    typeof value === 'string' ? value.trim() : value,
-  )
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @MaxLength(5000)
   contenu?: string;
 

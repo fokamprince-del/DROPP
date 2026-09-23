@@ -11,18 +11,14 @@ import {
 export class MiseAJourProfilDto {
   @IsOptional()
   @IsString()
-  @Transform(({ value }) =>
-    typeof value === 'string' ? value.trim() : value,
-  )
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @MinLength(1)
   @MaxLength(100)
   nom?: string;
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) =>
-    typeof value === 'string' ? value.trim() : value,
-  )
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @MinLength(1)
   @MaxLength(100)
   prenom?: string;
@@ -30,9 +26,7 @@ export class MiseAJourProfilDto {
   @IsOptional()
   @IsString()
   @Transform(({ value }) =>
-    typeof value === 'string'
-      ? value.replace(/[\s().-]/g, '')
-      : value,
+    typeof value === 'string' ? value.replace(/[\s().-]/g, '') : value,
   )
   @Matches(/^\+237[26]\d{8}$/, {
     message: 'Le numéro de téléphone doit être au format +237XXXXXXXXX.',

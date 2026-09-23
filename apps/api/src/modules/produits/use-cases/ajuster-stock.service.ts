@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { AjusterStockDto } from '../dto/ajuster-stock.dto.js';
 
@@ -17,9 +22,12 @@ export class AjusterStockService {
       select: { boutiqueId: true },
     });
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (produit.boutiqueId !== boutiqueId) throw new ForbiddenException('Accès refusé.');
+    if (produit.boutiqueId !== boutiqueId)
+      throw new ForbiddenException('Accès refusé.');
 
-    const resultat = await this.prisma.$queryRaw<{ stock_disponible: number }[]>`
+    const resultat = await this.prisma.$queryRaw<
+      { stock_disponible: number }[]
+    >`
       UPDATE variantes_produits
       SET stock_disponible = stock_disponible + ${dto.delta}
       WHERE id = ${varianteId}::uuid

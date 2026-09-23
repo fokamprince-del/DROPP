@@ -13,6 +13,7 @@ model Publication {
   likes            Aime[]
   commentaires     Commentaire[]
   favoris          FavoriPublication[]
+  partages         Partage[]
   signalements     Signalement[]
 
   @@index([boutiqueId])

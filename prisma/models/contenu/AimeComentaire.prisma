@@ -1,0 +1,13 @@
+model AimeCommentaire {
+  id            String   @id @default(uuid()) @db.Uuid
+  utilisateurId String   @map("utilisateur_id") @db.Uuid
+  commentaireId String   @map("commentaire_id") @db.Uuid
+  dateCreation  DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  commentaire Commentaire @relation(fields: [commentaireId], references: [id], onDelete: Cascade)
+
+  @@unique([utilisateurId, commentaireId])
+  @@index([commentaireId])
+  @@map("aimes_commentaires")
+}

@@ -4,10 +4,16 @@ model Commentaire {
   publicationId String            @map("publication_id") @db.Uuid
   contenu       String
   statut        StatutCommentaire @default(VISIBLE)
-  dateCreation  DateTime          @default(now()) @map("date_creation") @db.Timestamptz(3)
-  utilisateur   Utilisateur       @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
-  publication   Publication       @relation(fields: [publicationId], references: [id], onDelete: Cascade)
-  signalements  Signalement[]
+  parentId      String?           @map("parent_id") @db.Uuid // null = commentaire racine
+  estCreateur   Boolean           @default(false) @map("est_createur")
+
+  dateCreation     DateTime          @default(now()) @map("date_creation") @db.Timestamptz(3)
+  utilisateur      Utilisateur       @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  publication      Publication       @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  parent           Commentaire?      @relation("ReponsesCommentaire", fields: [parentId], references: [id])
+  reponses         Commentaire[]     @relation("ReponsesCommentaire")
+  likesCommentaire AimeCommentaire[]
+  signalements     Signalement[]
 
   @@index([utilisateurId])
   @@index([publicationId])

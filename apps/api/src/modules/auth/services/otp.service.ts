@@ -8,7 +8,10 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { createHmac, randomInt, timingSafeEqual } from 'node:crypto';
 
-import type { CanalVerification, TypeCodeVerification } from '../../../generated/prisma/enums.js';
+import type {
+  CanalVerification,
+  TypeCodeVerification,
+} from '../../../generated/prisma/enums.js';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 
 const OTP_DIGITS = 6;
@@ -80,9 +83,14 @@ export class OtpService {
       data: { dateUtilisation: maintenant },
     });
 
-    const code = String(randomInt(0, 10 ** OTP_DIGITS)).padStart(OTP_DIGITS, '0');
+    const code = String(randomInt(0, 10 ** OTP_DIGITS)).padStart(
+      OTP_DIGITS,
+      '0',
+    );
     const expiresAt = new Date(maintenant.getTime() + TTL_MINUTES * 60_000);
-    const cooldownFin = new Date(maintenant.getTime() + COOLDOWN_SECONDES * 1_000);
+    const cooldownFin = new Date(
+      maintenant.getTime() + COOLDOWN_SECONDES * 1_000,
+    );
 
     await this.prisma.codeVerification.create({
       data: {

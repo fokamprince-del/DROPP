@@ -63,10 +63,7 @@ export class UsersService {
     return utilisateur;
   }
 
-  async mettreAJourProfil(
-    utilisateurId: string,
-    dto: MiseAJourProfilDto,
-  ) {
+  async mettreAJourProfil(utilisateurId: string, dto: MiseAJourProfilDto) {
     try {
       const utilisateur = await this.prisma.utilisateur.update({
         where: { id: utilisateurId },
@@ -82,9 +79,7 @@ export class UsersService {
         'code' in error &&
         error.code === 'P2002'
       ) {
-        throw new ConflictException(
-          'Ce numéro de téléphone est déjà utilisé.',
-        );
+        throw new ConflictException('Ce numéro de téléphone est déjà utilisé.');
       }
 
       if (

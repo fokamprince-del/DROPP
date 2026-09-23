@@ -66,10 +66,7 @@ export class ShopsService {
     });
   }
 
-  async mettreAJourMaBoutique(
-    vendeurId: string,
-    dto: MiseAJourBoutiqueDto,
-  ) {
+  async mettreAJourMaBoutique(vendeurId: string, dto: MiseAJourBoutiqueDto) {
     try {
       return await this.prisma.boutique.update({
         where: { id: vendeurId },

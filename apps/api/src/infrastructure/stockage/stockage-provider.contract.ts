@@ -24,7 +24,10 @@ export interface StockageProvider {
    * Retourne l'URL publique d'un fichier stocké.
    * Pour Cloudflare Images : inclut les transformations si précisées.
    */
-  urlPublique(cleStockage: string, options?: { largeur?: number; hauteur?: number }): string;
+  urlPublique(
+    cleStockage: string,
+    options?: { largeur?: number; hauteur?: number },
+  ): string;
 
   /**
    * Supprime un fichier du stockage.

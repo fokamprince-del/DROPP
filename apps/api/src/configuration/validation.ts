@@ -59,4 +59,7 @@ export const validationSchema = Joi.object({
   // Pepper OTP : HMAC-SHA256 du code + destination.
   // Générer : openssl rand -base64 48
   AUTH_OTP_PEPPER: Joi.string().min(32).required(),
+
+  // app sheme de l'application
+  APP_DEEP_LINK_SCHEME: Joi.string().default('dropp'),
 });

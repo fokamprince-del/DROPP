@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { CreerAdresseDto } from './dto/creer-adresse.dto.js';
@@ -18,10 +15,7 @@ export class ClientsService {
         dateCreation: true,
         statutClient: true,
         adresses: {
-          orderBy: [
-            { estPrincipale: 'desc' },
-            { dateCreation: 'desc' },
-          ],
+          orderBy: [{ estPrincipale: 'desc' }, { dateCreation: 'desc' }],
         },
       },
     });
@@ -33,10 +27,7 @@ export class ClientsService {
     return client;
   }
 
-  async creerAdresse(
-    utilisateurId: string,
-    dto: CreerAdresseDto,
-  ) {
+  async creerAdresse(utilisateurId: string, dto: CreerAdresseDto) {
     await this.verifierClient(utilisateurId);
 
     return this.prisma.$transaction(async (tx) => {

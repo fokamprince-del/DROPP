@@ -1,4 +1,4 @@
-import { SetMetadata } from "@nestjs/common";
+import { SetMetadata } from '@nestjs/common';
 
 export const CLE_PROFIL_VENDEUR = 'profil_vendeur_requis';
 

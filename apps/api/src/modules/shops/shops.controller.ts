@@ -32,9 +32,6 @@ export class ShopsController {
     @Req() requete: RequeteAuthentifiee,
     @Body() dto: MiseAJourBoutiqueDto,
   ) {
-    return this.shopsService.mettreAJourMaBoutique(
-      requete.user.id,
-      dto,
-    );
+    return this.shopsService.mettreAJourMaBoutique(requete.user.id, dto);
   }
 }

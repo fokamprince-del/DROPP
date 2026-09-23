@@ -34,7 +34,10 @@ export class PublicationsController {
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
   ) {
-    return this.publicationsService.listerPubliques(page, Math.min(limite, 100));
+    return this.publicationsService.listerPubliques(
+      page,
+      Math.min(limite, 100),
+    );
   }
 
   @Public()

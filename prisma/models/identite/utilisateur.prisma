@@ -35,6 +35,8 @@ model Utilisateur {
   preferencesNotification PreferenceNotification[]
   appareils               Appareil[]
   avis                    Avis[]
+  partages                Partage[]
+  aimesCommentaires       AimeCommentaire[]
   dossiersModeration      DossierModeration[]       @relation("AdministrateurModeration")
   journauxSecurite        JournalSecurite[]         @relation("AdministrateurSecurite")
 
