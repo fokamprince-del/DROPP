@@ -8,6 +8,7 @@ import { LoggerHttpMiddleware } from './infrastructure/http/logger-http.middelwa
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard.js';
 import { TelephoneVerifieGuard } from './modules/auth/guards/telephone-verifier.guard.js';
+import { ProduitsModule } from './modules/produits/produits.module.js';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TelephoneVerifieGuard } from './modules/auth/guards/telephone-verifier.
       },
     ]),
     AuthentificationModule,
+    ProduitsModule,
   ],
   providers: [
       { provide: APP_GUARD, useClass: ThrottlerGuard },

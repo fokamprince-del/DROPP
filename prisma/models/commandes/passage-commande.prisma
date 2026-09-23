@@ -10,6 +10,7 @@ model PassageCommande {
   panier        Panier                @relation(fields: [panierId], references: [id])
   commande      Commande?
   paiements     Paiement[]
+  reservations  ReservationStock[]
 
   @@index([utilisateurId])
   @@index([panierId])

@@ -1,0 +1,15 @@
+model ReservationStock {
+  id                String   @id @default(uuid()) @db.Uuid
+  varianteProduitId String   @map("variante_produit_id") @db.Uuid
+  quantite          Int
+  expireA           DateTime @map("expire_a") @db.Timestamptz(3)
+  passageCommandeId String?  @map("passage_commande_id") @db.Uuid
+  dateCreation      DateTime @default(now()) @map("date_creation") @db.Timestamptz(3)
+
+  varianteProduit VarianteProduit  @relation(fields: [varianteProduitId], references: [id], onDelete: Cascade)
+  passageCommande PassageCommande? @relation(fields: [passageCommandeId], references: [id], onDelete: SetNull)
+
+  @@index([varianteProduitId])
+  @@index([expireA])
+  @@map("reservations_stock")
+}
