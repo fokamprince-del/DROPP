@@ -209,7 +209,7 @@ export class PublicationsService {
       });
       return tx.mediaPublication.create({
         data: {
-          publicationId,
+          publication: { connect: { id: publicationId } },
           ordre: (dernierMedia?.ordre ?? -1) + 1,
           media: {
             create: {
@@ -232,9 +232,15 @@ export class PublicationsService {
   }
 
   async moderer(publicationId: string, statut: StatutPublication) {
-    if (![StatutPublication.PUBLIEE, StatutPublication.REJETEE].includes(statut)) {
+    if (
+      statut !== StatutPublication.PUBLIEE &&
+      statut !== StatutPublication.REJETEE
+    ) {
       throw new BadRequestException('Statut de modération invalide.');
     }
+    const statutModere = statut as
+      | typeof StatutPublication.PUBLIEE
+      | typeof StatutPublication.REJETEE;
 
     const publication = await this.prisma.publication.findUnique({
       where: { id: publicationId },
@@ -244,13 +250,13 @@ export class PublicationsService {
       },
     });
     if (!publication) throw new NotFoundException('Publication introuvable.');
-    if (statut === StatutPublication.PUBLIEE) {
+    if (statutModere === StatutPublication.PUBLIEE) {
       this.verifierMediasPublication(publication.type, publication.medias);
     }
 
     const resultat = await this.prisma.publication.update({
       where: { id: publicationId },
-      data: { statut },
+      data: { statut: statutModere },
       select: publicationSelection,
     });
     return this.presenter(resultat);

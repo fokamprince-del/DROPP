@@ -108,7 +108,7 @@ export class StoriesService {
     const story = await this.prisma.story.create({
       data: {
         id: storyId,
-        boutiqueId: boutique.id,
+        boutique: { connect: { id: boutique.id } },
         visibilite: dto.visibilite,
         statut: StatutPublication.PROCESSING,
         dateExpiration: dto.dateExpiration,
