@@ -10,8 +10,8 @@ import { UtilisateurConnecte } from '../types/utilisateur-connecte.js';
  * async maRoute(@CurrentUser() utilisateur: UtilisateurConnecte) { ... }
  */
 export const CurrentUser = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext): UtilisateurConnecte => {
+  (_data: unknown, ctx: ExecutionContext): UtilisateurConnecte | undefined => {
     const request = ctx.switchToHttp().getRequest<Request>();
-    return request.user as UtilisateurConnecte;
+    return request.user as UtilisateurConnecte | undefined;
   },
 );

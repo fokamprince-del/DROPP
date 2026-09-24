@@ -95,9 +95,13 @@ export class StoriesService {
     }
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax || dto.taille > tailleMax * 1024 * 1024) {
-      throw new BadRequestException('Fichier trop volumineux ou non pris en charge.');
+      throw new BadRequestException(
+        'Fichier trop volumineux ou non pris en charge.',
+      );
     }
-    const typeMedia = dto.typeMime.startsWith('video/') ? TypeMedia.VIDEO : TypeMedia.IMAGE;
+    const typeMedia = dto.typeMime.startsWith('video/')
+      ? TypeMedia.VIDEO
+      : TypeMedia.IMAGE;
     const storyId = randomUUID();
     const signature = await this.stockage.genererSignatureUpload(
       `boutiques/${boutique.id}/stories/${storyId}/${typeMedia.toLowerCase()}s`,
@@ -137,11 +141,17 @@ export class StoriesService {
     const storyExistante = await this.obtenirStoryVendeur(storyId, boutique.id);
     const prefixe = `boutiques/${boutique.id}/stories/${storyId}/`;
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
-    if (!dto.cleStockage.startsWith(prefixe) || !tailleMax || dto.taille > tailleMax * 1024 * 1024) {
+    if (
+      !dto.cleStockage.startsWith(prefixe) ||
+      !tailleMax ||
+      dto.taille > tailleMax * 1024 * 1024
+    ) {
       throw new BadRequestException('Média invalide pour cette story.');
     }
 
-    const typeMedia = dto.typeMime.startsWith('video/') ? TypeMedia.VIDEO : TypeMedia.IMAGE;
+    const typeMedia = dto.typeMime.startsWith('video/')
+      ? TypeMedia.VIDEO
+      : TypeMedia.IMAGE;
     const statutTraitement =
       typeMedia === TypeMedia.IMAGE
         ? StatutTraitementMedia.PRET
@@ -198,7 +208,11 @@ export class StoriesService {
 
   private async obtenirStoryVendeur(storyId: string, boutiqueId: string) {
     const story = await this.prisma.story.findFirst({
-      where: { id: storyId, boutiqueId, statut: { not: StatutPublication.SUPPRIMEE } },
+      where: {
+        id: storyId,
+        boutiqueId,
+        statut: { not: StatutPublication.SUPPRIMEE },
+      },
       select: { id: true, mediaId: true },
     });
     if (!story) throw new NotFoundException('Story introuvable.');

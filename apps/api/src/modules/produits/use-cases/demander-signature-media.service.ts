@@ -34,7 +34,8 @@ export class DemanderSignatureMediaService {
       select: { boutiqueId: true },
     });
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (produit.boutiqueId !== boutiqueId) throw new ForbiddenException('Accès refusé.');
+    if (produit.boutiqueId !== boutiqueId)
+      throw new ForbiddenException('Accès refusé.');
 
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime] ?? 10;
     const tailleMo = dto.taille / (1024 * 1024);

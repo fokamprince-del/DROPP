@@ -47,7 +47,10 @@ export class ConnexionService {
 
     // Réponse neutre : on hache quand même pour éviter les timing attacks
     if (!utilisateur || !utilisateur.motDePasseHash) {
-      await this.motDePasseService.verifier(dto.motDePasse, '$argon2id$v=19$m=65536,t=3,p=4$factice');
+      await this.motDePasseService.verifier(
+        dto.motDePasse,
+        '$argon2id$v=19$m=65536,t=3,p=4$factice',
+      );
       throw new UnauthorizedException('Identifiant ou mot de passe incorrect.');
     }
 
@@ -74,7 +77,10 @@ export class ConnexionService {
 
     // Mise à jour de la date de dernière connexion (best-effort)
     void this.prisma.utilisateur
-      .update({ where: { id: utilisateur.id }, data: { derniereConnexion: new Date() } })
+      .update({
+        where: { id: utilisateur.id },
+        data: { derniereConnexion: new Date() },
+      })
       .catch(() => undefined);
 
     return this.jetonService.ouvrirSession({

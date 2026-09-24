@@ -5,6 +5,7 @@ export default () => ({
     port: Number(process.env.PORT ?? 3000),
     trustProxy: Number(process.env.TRUST_PROXY ?? 0),
     corsOrigins: liste(process.env.CORS_ORIGINS),
+    deepLinkScheme: process.env.APP_DEEP_LINK_SCHEME ?? 'dropp',
   },
 
   jwt: {
@@ -12,9 +13,7 @@ export default () => ({
   },
 
   auth: {
-    accessTokenTtlSeconds: dureeEnSecondes(
-      process.env.JWT_ACCESS_TTL ?? '15m',
-    ),
+    accessTokenTtlSeconds: dureeEnSecondes(process.env.JWT_ACCESS_TTL ?? '15m'),
     refreshTokenTtlSeconds: dureeEnSecondes(
       process.env.REFRESH_TOKEN_TTL ?? '30d',
     ),

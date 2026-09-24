@@ -14,6 +14,7 @@
     "api:dev": "pnpm --filter api start:dev",
     "api:build": "pnpm --filter api build",
     "api:start": "pnpm --filter api start:prod",
+    "api:format": "pnpm --filter api format",
     "api:lint": "pnpm --filter api lint",
     "api:test": "pnpm --filter api test",
     "api:test:watch": "pnpm --filter api test:watch",

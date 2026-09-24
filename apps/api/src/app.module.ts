@@ -17,6 +17,7 @@ import { CategoriesModule } from './modules/categories/categories.module.js';
 import { PublicationsModule } from './modules/publications/publications.module.js';
 import { StoriesModule } from './modules/stories/stories.module.js';
 import { LikesModule } from './modules/likes/likes.module.js';
+import { InteractionsModule } from './modules/interactions/interactions.module.js';
 
 @Module({
   imports: [
@@ -44,12 +45,12 @@ import { LikesModule } from './modules/likes/likes.module.js';
     CategoriesModule,
     PublicationsModule,
     StoriesModule,
-    LikesModule,
+    InteractionsModule,
   ],
   providers: [
-      { provide: APP_GUARD, useClass: ThrottlerGuard },
-      { provide: APP_GUARD, useClass: JwtAuthGuard },
-      { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
   ],
 })
 export class AppModule {

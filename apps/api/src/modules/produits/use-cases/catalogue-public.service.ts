@@ -23,6 +23,7 @@ export class CataloguePublicService {
     boutiqueId?: string;
     page: number;
     limite: number;
+    utilisateurId?: string;
   }) {
     const { categorieId, boutiqueId, page, limite } = params;
 
@@ -60,6 +61,17 @@ export class CataloguePublicService {
       this.prisma.produit.count({ where }),
     ]);
 
+    let favorisSet: Set<string> = new Set();
+    if (params.utilisateurId) {
+      const ids = produits.map((p) => p.id);
+
+      const favoris = await this.prisma.favoriProduit.findMany({
+        where: { utilisateurId: params.utilisateurId, produitId: { in: ids } },
+        select: { produitId: true },
+      });
+      favorisSet = new Set(favoris.map((f) => f.produitId));
+    }
+
     return {
       donnees: produits.map((p) => ({
         id: p.id,
@@ -69,8 +81,11 @@ export class CataloguePublicService {
         categorieId: p.categorieId,
         dateCreation: p.dateCreation,
         imagePrincipale: p.medias[0]?.media
-          ? this.stockage.urlPublique(p.medias[0].media.cleStockage, { largeur: 400 })
+          ? this.stockage.urlPublique(p.medias[0].media.cleStockage, {
+              largeur: 400,
+            })
           : null,
+        enFavori: favorisSet.has(p.id),
       })),
       pagination: {
         total,

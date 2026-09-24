@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 
-import type { SignatureUpload, StockageProvider } from './stockage-provider.contract.js';
+import type {
+  SignatureUpload,
+  StockageProvider,
+} from './stockage-provider.contract.js';
 
 @Injectable()
 export class StockageProviderStub implements StockageProvider {
@@ -26,7 +29,10 @@ export class StockageProviderStub implements StockageProvider {
     };
   }
 
-  urlPublique(cleStockage: string, options?: { largeur?: number; hauteur?: number }): string {
+  urlPublique(
+    cleStockage: string,
+    options?: { largeur?: number; hauteur?: number },
+  ): string {
     const params = options
       ? `?w=${options.largeur ?? ''}&h=${options.hauteur ?? ''}`
       : '';

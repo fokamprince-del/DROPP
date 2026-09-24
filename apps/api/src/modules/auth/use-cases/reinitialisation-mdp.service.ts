@@ -1,7 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { OtpService } from '../services/otp.service.js';
 import { MotDePasseService } from '../services/mot-de-passe.service.js';
@@ -58,7 +55,9 @@ export class ReinitialisationMdpService {
       codeSoumis: dto.code,
     });
 
-    const nouveauHash = await this.motDePasseService.hacher(dto.nouveauMotDePasse);
+    const nouveauHash = await this.motDePasseService.hacher(
+      dto.nouveauMotDePasse,
+    );
 
     // Changement MDP + révocation de toutes les sessions dans la même transaction
     await this.prisma.$transaction([

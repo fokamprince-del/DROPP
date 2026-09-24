@@ -40,11 +40,13 @@ export class RoleAdminGuard implements CanActivate {
 
     // Relecture en base : un rôle retiré prend effet immédiatement
     const rolesTrouves = await this.prisma.utilisateurRole.findMany({
-      where: rolesRequis.length === 0 ?
-        { utilisateurId: utilisateur.id }:{
-            utilisateurId: utilisateur.id,
-            role: { nom: { in: rolesRequis } },
-        },
+      where:
+        rolesRequis.length === 0
+          ? { utilisateurId: utilisateur.id }
+          : {
+              utilisateurId: utilisateur.id,
+              role: { nom: { in: rolesRequis } },
+            },
       select: { role: { select: { nom: true } } },
     });
 
@@ -54,6 +56,4 @@ export class RoleAdminGuard implements CanActivate {
 
     return true;
   }
-
-  
 }

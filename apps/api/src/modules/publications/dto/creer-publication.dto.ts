@@ -12,9 +12,7 @@ export class CreerPublicationDto {
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) =>
-    typeof value === 'string' ? value.trim() : value,
-  )
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @MaxLength(5000)
   contenu?: string;
 

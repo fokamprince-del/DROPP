@@ -1,5 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { isValidPhoneNumber, parsePhoneNumberWithError } from 'libphonenumber-js';
+import {
+  isValidPhoneNumber,
+  parsePhoneNumberWithError,
+} from 'libphonenumber-js';
 
 const REGION_DEFAUT = 'CM' as const;
 

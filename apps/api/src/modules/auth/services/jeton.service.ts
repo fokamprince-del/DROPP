@@ -13,7 +13,7 @@ export interface PayloadJwt {
 }
 
 export interface JetonsEmis {
-  accessToken: string;  
+  accessToken: string;
   refreshToken: string;
   expiresIn: number;
 }
@@ -41,8 +41,14 @@ export class JetonService {
     adresseIp?: string;
     appareilId?: string;
   }): Promise<JetonsEmis> {
-    const { utilisateurId, statutCompte, telephoneVerifie, methodeAuth, adresseIp, appareilId } =
-      params;
+    const {
+      utilisateurId,
+      statutCompte,
+      telephoneVerifie,
+      methodeAuth,
+      adresseIp,
+      appareilId,
+    } = params;
 
     // Révoquer la session la plus ancienne si le plafond est atteint
     const sessions = await this.prisma.session.findMany({
@@ -78,8 +84,14 @@ export class JetonService {
       },
     });
 
-    const accessTtl = this.config.getOrThrow<number>('auth.accessTokenTtlSeconds');
-    const payload: PayloadJwt = { sub: utilisateurId, statutCompte, tel: telephoneVerifie };
+    const accessTtl = this.config.getOrThrow<number>(
+      'auth.accessTokenTtlSeconds',
+    );
+    const payload: PayloadJwt = {
+      sub: utilisateurId,
+      statutCompte,
+      tel: telephoneVerifie,
+    };
 
     return {
       accessToken: this.jwt.sign(payload),
@@ -145,7 +157,9 @@ export class JetonService {
       }),
     ]);
 
-    const accessTtl = this.config.getOrThrow<number>('auth.accessTokenTtlSeconds');
+    const accessTtl = this.config.getOrThrow<number>(
+      'auth.accessTokenTtlSeconds',
+    );
     const payload: PayloadJwt = {
       sub: session.utilisateurId,
       statutCompte,
@@ -159,7 +173,10 @@ export class JetonService {
     };
   }
 
-  async revoquerSession(sessionId: string, utilisateurId: string): Promise<void> {
+  async revoquerSession(
+    sessionId: string,
+    utilisateurId: string,
+  ): Promise<void> {
     await this.prisma.session.updateMany({
       where: { id: sessionId, utilisateurId, dateRevocation: null },
       data: { dateRevocation: new Date() },

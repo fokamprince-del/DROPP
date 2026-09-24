@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { PublicationAutoService } from '../services/publication-auto.service.js';
 import type { ConfirmerMediaDto } from '../dto/confirmer-media.dto.js';
@@ -16,7 +20,8 @@ export class ConfirmerMediaService {
       select: { boutiqueId: true },
     });
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (produit.boutiqueId !== boutiqueId) throw new ForbiddenException('Accès refusé.');
+    if (produit.boutiqueId !== boutiqueId)
+      throw new ForbiddenException('Accès refusé.');
 
     const typeMedia = dto.typeMime.startsWith('video/') ? 'VIDEO' : 'IMAGE';
     // Images : PRET immédiatement (Cloudflare Images transforme à la volée).

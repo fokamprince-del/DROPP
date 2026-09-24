@@ -34,10 +34,7 @@ export class InscriptionService {
     //    (à la connexion et à la réinitialisation, réponse neutre)
     const existant = await this.prisma.utilisateur.findFirst({
       where: {
-        OR: [
-          { telephone },
-          ...(email ? [{ email }] : []),
-        ],
+        OR: [{ telephone }, ...(email ? [{ email }] : [])],
       },
       select: { telephone: true, email: true },
     });

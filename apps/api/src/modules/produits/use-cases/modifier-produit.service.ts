@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { ModifierProduitDto } from '../dto/modifier-produit.dto.js';
 
@@ -6,7 +11,11 @@ import type { ModifierProduitDto } from '../dto/modifier-produit.dto.js';
 export class ModifierProduitService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async executer(produitId: string, boutiqueId: string, dto: ModifierProduitDto) {
+  async executer(
+    produitId: string,
+    boutiqueId: string,
+    dto: ModifierProduitDto,
+  ) {
     await this.verifierAppartenance(produitId, boutiqueId);
 
     if (dto.categorieId) {
@@ -47,6 +56,7 @@ export class ModifierProduitService {
       select: { boutiqueId: true },
     });
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (produit.boutiqueId !== boutiqueId) throw new ForbiddenException('Accès refusé.');
+    if (produit.boutiqueId !== boutiqueId)
+      throw new ForbiddenException('Accès refusé.');
   }
 }

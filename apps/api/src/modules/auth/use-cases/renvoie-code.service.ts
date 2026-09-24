@@ -73,8 +73,7 @@ export class RenvoiCodeService {
       destination: canalDestination,
       canal,
       code,
-      type:
-        type === 'INSCRIPTION' ? 'inscription' : 'reinitialisation',
+      type: type === 'INSCRIPTION' ? 'inscription' : 'reinitialisation',
     });
   }
 }

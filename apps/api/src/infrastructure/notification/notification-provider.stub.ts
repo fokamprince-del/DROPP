@@ -9,7 +9,11 @@ export class NotificationProviderStub implements NotificationProvider {
     this.logger.debug(`[SMS STUB] → ${numero} : "${message}"`);
   }
 
-  async envoyerEmail(destinataire: string, sujet: string, corps: string): Promise<void> {
+  async envoyerEmail(
+    destinataire: string,
+    sujet: string,
+    corps: string,
+  ): Promise<void> {
     this.logger.debug(`[EMAIL STUB] → ${destinataire} | ${sujet} : "${corps}"`);
   }
 }

@@ -39,10 +39,7 @@ export class CategoriesController {
 
   @Patch(':id')
   @Admin('ADMIN')
-  mettreAJour(
-    @Param('id') id: string,
-    @Body() dto: MiseAJourCategorieDto,
-  ) {
+  mettreAJour(@Param('id') id: string, @Body() dto: MiseAJourCategorieDto) {
     return this.categoriesService.mettreAJour(id, dto);
   }
 

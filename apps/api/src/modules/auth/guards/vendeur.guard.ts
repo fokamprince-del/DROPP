@@ -11,7 +11,6 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 import { CLE_PROFIL_VENDEUR } from '../decorators/profil-vendeur.decorator.js';
 import { UtilisateurConnecte } from '../types/utilisateur-connecte.js';
 
-
 @Injectable()
 export class ProfilVendeurGuard implements CanActivate {
   constructor(

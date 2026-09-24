@@ -22,10 +22,7 @@ export class VerificationTelephoneService {
    * Vérifie le code OTP, passe le compte en ACTIF, ouvre la première session.
    * Réponse neutre si l'identifiant est inconnu (anti-énumération).
    */
-  async executer(
-    dto: VerifierOtpDto,
-    adresseIp?: string,
-  ): Promise<JetonsEmis> {
+  async executer(dto: VerifierOtpDto, adresseIp?: string): Promise<JetonsEmis> {
     // La destination est le téléphone (normalisé) ou l'email selon ce qui
     // a été utilisé à l'inscription.
     const utilisateur = await this.prisma.utilisateur.findFirst({
@@ -44,7 +41,11 @@ export class VerificationTelephoneService {
       // On vérifie quand même le code pour consommer une tentative
       // et ne pas révéler l'inexistence du compte par un temps de réponse différent.
       await this.otpService
-        .verifier({ destination: dto.destination, type: 'INSCRIPTION', codeSoumis: dto.code })
+        .verifier({
+          destination: dto.destination,
+          type: 'INSCRIPTION',
+          codeSoumis: dto.code,
+        })
         .catch(() => undefined);
       throw new NotFoundException('Code invalide ou expiré.');
     }

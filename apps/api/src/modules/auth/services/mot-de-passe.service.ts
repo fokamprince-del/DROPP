@@ -64,7 +64,8 @@ export class MotDePasseService {
     }
     const result = this.zxcvbn.check(mdpBrut);
     if (result.score < SCORE_MIN) {
-      const conseil = result.feedback?.suggestions?.[0] ?? 'Essayez une phrase de passe.';
+      const conseil =
+        result.feedback?.suggestions?.[0] ?? 'Essayez une phrase de passe.';
       throw new BadRequestException(`Mot de passe trop faible. ${conseil}`);
     }
   }

@@ -18,13 +18,18 @@ export class SupprimerMediaService {
     private readonly stockage: StockageProvider,
   ) {}
 
-  async executer(produitId: string, mediaId: string, boutiqueId: string): Promise<void> {
+  async executer(
+    produitId: string,
+    mediaId: string,
+    boutiqueId: string,
+  ): Promise<void> {
     const produit = await this.prisma.produit.findUnique({
       where: { id: produitId },
       select: { boutiqueId: true },
     });
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (produit.boutiqueId !== boutiqueId) throw new ForbiddenException('Accès refusé.');
+    if (produit.boutiqueId !== boutiqueId)
+      throw new ForbiddenException('Accès refusé.');
 
     const mediaProduit = await this.prisma.mediaProduit.findUnique({
       where: { produitId_mediaId: { produitId, mediaId } },
@@ -39,6 +44,8 @@ export class SupprimerMediaService {
       this.prisma.media.delete({ where: { id: mediaId } }),
     ]);
 
-    await this.stockage.supprimer(mediaProduit.media.cleStockage).catch(() => undefined);
+    await this.stockage
+      .supprimer(mediaProduit.media.cleStockage)
+      .catch(() => undefined);
   }
 }

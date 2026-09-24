@@ -45,7 +45,8 @@ export class MotDePasseOublieService {
 
     // Canal préféré : email si disponible, sinon SMS
     const canal = utilisateur.email ? 'EMAIL' : 'SMS';
-    const destination = canal === 'EMAIL' ? utilisateur.email! : utilisateur.telephone!;
+    const destination =
+      canal === 'EMAIL' ? utilisateur.email! : utilisateur.telephone!;
 
     const { code } = await this.otpService.generer({
       destination,

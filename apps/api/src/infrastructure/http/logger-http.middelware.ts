@@ -1,19 +1,11 @@
-import {
-  Injectable,
-  Logger,
-  NestMiddleware,
-} from '@nestjs/common';
+import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class LoggerHttpMiddleware implements NestMiddleware {
   private readonly logger = new Logger('HTTP');
 
-  use(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): void {
+  use(req: Request, res: Response, next: NextFunction): void {
     const debut = Date.now();
 
     this.logger.log(`--> ${req.method} ${req.originalUrl}`);

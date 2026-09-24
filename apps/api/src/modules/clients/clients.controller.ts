@@ -58,9 +58,6 @@ export class ClientsController {
     @Req() requete: RequeteAuthentifiee,
     @Param('adresseId') adresseId: string,
   ): Promise<void> {
-    await this.clientsService.supprimerAdresse(
-      requete.user.id,
-      adresseId,
-    );
+    await this.clientsService.supprimerAdresse(requete.user.id, adresseId);
   }
 }

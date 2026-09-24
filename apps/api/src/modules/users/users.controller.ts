@@ -1,10 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Req,
-} from '@nestjs/common';
+import { Body, Controller, Get, Patch, Req } from '@nestjs/common';
 import type { Request } from 'express';
 
 import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
@@ -29,9 +23,6 @@ export class UsersController {
     @Req() requete: RequeteAuthentifiee,
     @Body() dto: MiseAJourProfilDto,
   ) {
-    return this.usersService.mettreAJourProfil(
-      requete.user.id,
-      dto,
-    );
+    return this.usersService.mettreAJourProfil(requete.user.id, dto);
   }
 }

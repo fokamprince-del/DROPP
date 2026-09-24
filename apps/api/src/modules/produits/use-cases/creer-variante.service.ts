@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { PublicationAutoService } from '../services/publication-auto.service.js';
 import type { CreerVarianteDto } from '../dto/creer-variante.dto.js';
@@ -50,6 +55,7 @@ export class CreerVarianteService {
       select: { boutiqueId: true },
     });
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (produit.boutiqueId !== boutiqueId) throw new ForbiddenException('Accès refusé.');
+    if (produit.boutiqueId !== boutiqueId)
+      throw new ForbiddenException('Accès refusé.');
   }
 }

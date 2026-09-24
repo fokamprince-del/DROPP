@@ -87,11 +87,6 @@ import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
       useClass: NotificationProviderStub,
     },
   ],
-  exports: [
-    RolesGuard,
-    RoleAdminGuard,
-    ProfilClientGuard,
-    ProfilVendeurGuard,
-  ],
+  exports: [RolesGuard, RoleAdminGuard, ProfilClientGuard, ProfilVendeurGuard],
 })
 export class AuthentificationModule {}

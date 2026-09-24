@@ -40,10 +40,14 @@ export class LikesService {
 
   async compter(publicationId: string) {
     await this.verifierPublicationVisible(publicationId);
-    return { total: await this.prisma.aime.count({ where: { publicationId } }) };
+    return {
+      total: await this.prisma.aime.count({ where: { publicationId } }),
+    };
   }
 
-  private async verifierPublicationVisible(publicationId: string): Promise<void> {
+  private async verifierPublicationVisible(
+    publicationId: string,
+  ): Promise<void> {
     const publication = await this.prisma.publication.findFirst({
       where: {
         id: publicationId,
