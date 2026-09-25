@@ -18,6 +18,8 @@ import { PublicationsModule } from './modules/publications/publications.module.j
 import { StoriesModule } from './modules/stories/stories.module.js';
 import { LikesModule } from './modules/likes/likes.module.js';
 import { InteractionsModule } from './modules/interactions/interactions.module.js';
+import { PanierModule } from './modules/panier/panier.module.js';
+import { CommandesModule } from './modules/commandes/commandes.module.js';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { InteractionsModule } from './modules/interactions/interactions.module.j
     PublicationsModule,
     StoriesModule,
     InteractionsModule,
+    PanierModule,
+    CommandesModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
