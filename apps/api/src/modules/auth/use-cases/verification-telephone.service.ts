@@ -1,7 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { OtpService } from '../services/otp.service.js';
@@ -18,48 +18,43 @@ export class VerificationTelephoneService {
     private readonly jetonService: JetonService,
   ) {}
 
-  /**
-   * Vérifie le code OTP, passe le compte en ACTIF, ouvre la première session.
-   * Réponse neutre si l'identifiant est inconnu (anti-énumération).
-   */
   async executer(dto: VerifierOtpDto, adresseIp?: string): Promise<JetonsEmis> {
-    // La destination est le téléphone (normalisé) ou l'email selon ce qui
-    // a été utilisé à l'inscription.
-    const utilisateur = await this.prisma.utilisateur.findFirst({
-      where: {
-        OR: [{ telephone: dto.destination }, { email: dto.destination }],
-      },
-      select: {
-        id: true,
-        statutCompte: true,
-        telephoneVerifieLe: true,
-      },
+    // 1. Décoder le token de vérification
+    const payload = this.jetonService.verifierTokenVerification(
+      dto.verificationToken,
+    );
+
+    if (payload.purpose !== 'inscription') {
+      throw new UnauthorizedException('Token de vérification invalide.');
+    }
+
+    // 2. Vérifier le compte
+    const utilisateur = await this.prisma.utilisateur.findUnique({
+      where: { id: payload.sub },
+      select: { id: true, statutCompte: true, telephoneVerifieLe: true },
     });
 
-    // Réponse identique si l'utilisateur n'existe pas : pas de fuite
     if (!utilisateur || !STATUTS_AUTORISES.has(utilisateur.statutCompte)) {
-      // On vérifie quand même le code pour consommer une tentative
-      // et ne pas révéler l'inexistence du compte par un temps de réponse différent.
+      // Consomme quand même l'OTP pour éviter les timing attacks
       await this.otpService
         .verifier({
-          destination: dto.destination,
+          destination: payload.dst,
           type: 'INSCRIPTION',
           codeSoumis: dto.code,
         })
         .catch(() => undefined);
-      throw new NotFoundException('Code invalide ou expiré.');
+      throw new ForbiddenException('Compte indisponible.');
     }
 
-    // Lance BadRequestException / GoneException si le code est mauvais
+    // 3. Vérifier l'OTP
     await this.otpService.verifier({
-      destination: dto.destination,
+      destination: payload.dst,
       type: 'INSCRIPTION',
       codeSoumis: dto.code,
     });
 
+    // 4. Passer le compte en ACTIF
     const maintenant = new Date();
-
-    // Passage en ACTIF + enregistrement de la date de vérification
     const mis_a_jour = await this.prisma.utilisateur.update({
       where: { id: utilisateur.id },
       data: {
@@ -69,7 +64,7 @@ export class VerificationTelephoneService {
       select: { statutCompte: true, telephoneVerifieLe: true },
     });
 
-    // Ouvre la première session après vérification
+    // 5. Ouvrir la session
     return this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
       statutCompte: mis_a_jour.statutCompte,

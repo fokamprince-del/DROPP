@@ -1,16 +1,9 @@
-import {
-  IsNotEmpty,
-  IsString,
-  Length,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, Length, MaxLength, MinLength } from 'class-validator';
 
 export class ReinitialisationMdpDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(254)
-  destination!: string;
+  verificationToken!: string;
 
   @IsString()
   @Length(6, 6)

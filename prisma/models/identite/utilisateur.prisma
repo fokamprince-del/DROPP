@@ -12,7 +12,6 @@ model Utilisateur {
   derniereConnexion       DateTime?                 @map("derniere_connexion") @db.Timestamptz(3)
   dateModification        DateTime                  @updatedAt @map("date_modification") @db.Timestamptz(3)
   sessions                Session[]
-  codesVerification       CodeVerification[]
   identitesExternes       IdentiteExterne[]
   updatedAt               DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
   client                  Client?

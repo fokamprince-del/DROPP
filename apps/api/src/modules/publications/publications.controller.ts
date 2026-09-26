@@ -23,6 +23,7 @@ import { DemanderSignaturePublicationDto } from './dto/demander-signature-public
 import { MiseAJourPublicationDto } from './dto/mise-a-jour-publication.dto.js';
 import { ModerationPublicationDto } from './dto/moderation-publication.dto.js';
 import { PublicationsService } from './publications.service.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 @Controller()
 export class PublicationsController {
@@ -52,6 +53,7 @@ export class PublicationsController {
     return this.publicationsService.listerMesPublications(utilisateur.id);
   }
 
+  @RequiertIdempotenceKey()
   @Vendeur()
   @Post('boutique/publications')
   creer(
@@ -91,6 +93,7 @@ export class PublicationsController {
     return this.publicationsService.demanderSignature(utilisateur.id, id, dto);
   }
 
+  @RequiertIdempotenceKey()
   @Vendeur()
   @Post('boutique/publications/:id/media')
   confirmerMedia(

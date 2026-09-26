@@ -62,4 +62,16 @@ export const validationSchema = Joi.object({
 
   // app sheme de l'application
   APP_DEEP_LINK_SCHEME: Joi.string().default('dropp'),
+
+  REDIS_HOST: Joi.string().default('localhost'),
+  REDIS_PORT: Joi.number().integer().min(1).max(65535).default(6379),
+  REDIS_PASSWORD: Joi.string().required(),
+  REDIS_MAX_MEMORY: Joi.string().default('256mb'),
+  REDIS_OTP_TTL: Joi.number().integer().min(60).max(3600).default(300),
+  REDIS_OTP_COOLDOWN: Joi.number().integer().min(30).max(300).default(60),
+  REDIS_OTP_MAX_TENTATIVES: Joi.number().integer().min(3).max(10).default(5),
+  REDIS_OTP_MAX_ENVOIS_HEURE: Joi.number().integer().min(3).max(20).default(5),
+  REDIS_IDEMPOTENCE_TTL: Joi.number().integer().min(3600).max(604800).default(86400),
+  AUTH_VERIFICATION_SECRET: Joi.string().min(32).required(),
+  AUTH_VERIFICATION_TTL: Joi.string().pattern(DUREE).default('15m'),
 });

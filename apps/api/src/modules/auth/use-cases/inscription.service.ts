@@ -9,6 +9,8 @@ import { MotDePasseService } from '../services/mot-de-passe.service.js';
 import { TelephoneService } from '../services/telephone.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import type { InscriptionDto } from '../dto/inscription.dto.js';
+import { JetonService } from '../services/jeton.service.js';
+import { CanalVerification } from '../../../generated/prisma/enums.js';
 
 @Injectable()
 export class InscriptionService {
@@ -18,6 +20,7 @@ export class InscriptionService {
     private readonly otpService: OtpService,
     private readonly telephoneService: TelephoneService,
     private readonly notificationService: NotificationService,
+    private readonly jetonService: JetonService,
   ) {}
 
   /**
@@ -25,16 +28,18 @@ export class InscriptionService {
    * Envoie ensuite l'OTP (hors transaction : un échec SMS ne doit pas
    * annuler la création du compte).
    */
-  async executer(dto: InscriptionDto): Promise<{ utilisateurId: string }> {
+  async executer(dto: InscriptionDto): Promise<{ verificationToken: string }> {
     // 1. Normalisation
     const telephone = this.telephoneService.normaliser(dto.telephone);
     const email = dto.email ? dto.email.trim().toLowerCase() : null;
 
-    // 2. Unicité — messages explicites à l'inscription uniquement
-    //    (à la connexion et à la réinitialisation, réponse neutre)
+    // 2. Unicité
     const existant = await this.prisma.utilisateur.findFirst({
       where: {
-        OR: [{ telephone }, ...(email ? [{ email }] : [])],
+        OR: [
+          { telephone },
+          ...(email ? [{ email }] : []),
+        ],
       },
       select: { telephone: true, email: true },
     });
@@ -49,7 +54,7 @@ export class InscriptionService {
     // 3. Validation et hachage du mot de passe
     const motDePasseHash = await this.motDePasseService.hacher(dto.motDePasse);
 
-    // 4. Création atomique : Utilisateur + Client dans la même transaction
+    // 4. Création atomique : Utilisateur + Client
     const utilisateur = await this.prisma.utilisateur.create({
       data: {
         prenom: dto.prenom.trim(),
@@ -57,16 +62,16 @@ export class InscriptionService {
         telephone,
         email,
         motDePasseHash,
-        // statutCompte reste EN_ATTENTE_VERIFICATION par défaut
         client: { create: {} },
       },
       select: { id: true },
     });
 
-    // 5. Génération et envoi de l'OTP (hors transaction)
-    const canal = email ? 'EMAIL' : 'SMS';
+    // 5. Canal préféré : email si disponible, sinon SMS
+    const canal: CanalVerification = email ? 'EMAIL' : 'SMS';
     const destination = canal === 'EMAIL' ? email! : telephone;
 
+    // 6. Génération et envoi de l'OTP
     const { code } = await this.otpService.generer({
       destination,
       canal,
@@ -81,6 +86,14 @@ export class InscriptionService {
       type: 'inscription',
     });
 
-    return { utilisateurId: utilisateur.id };
+    // 7. Token de vérification signé (contient destination + canal)
+    const verificationToken = this.jetonService.signerVerification({
+      sub: utilisateur.id,
+      dst: destination,
+      canalOtp: canal,
+      purpose: 'inscription',
+    });
+
+    return { verificationToken };
   }
 }
