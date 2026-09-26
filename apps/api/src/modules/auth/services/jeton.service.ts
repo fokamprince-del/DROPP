@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 
-import type { MethodeAuthentification } from '../../../generated/prisma/enums.js';
+import type { CanalVerification, MethodeAuthentification } from '../../../generated/prisma/enums.js';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 
 export interface PayloadJwt {
@@ -18,6 +18,12 @@ export interface JetonsEmis {
   expiresIn: number;
 }
 
+export interface PayloadVerification {
+  sub: string;       // utilisateurId
+  dst: string;       // destination (tel ou email)
+  canalOtp: CanalVerification;
+  purpose: 'inscription' | 'reinitialisation';
+}
 const MAX_SESSIONS = 5;
 
 @Injectable()
@@ -192,5 +198,28 @@ export class JetonService {
 
   private hacherRefresh(token: string): string {
     return createHash('sha256').update(token).digest('hex');
+  }
+
+  /**
+   * Signe un token de vérification court (15min).
+   * Secret distinct du JWT d'accès.
+   */
+  signerVerification(payload: PayloadVerification): string {
+    const secret = this.config.getOrThrow<string>('auth.verificationSecret');
+    const ttl = this.config.getOrThrow<number>('auth.verificationTtlSeconds');
+    return this.jwt.sign(payload, { secret, expiresIn: ttl });
+  }
+
+  /**
+   * Vérifie et décode un token de vérification.
+   * @throws UnauthorizedException si invalide ou expiré.
+   */
+  verifierTokenVerification(token: string): PayloadVerification {
+    const secret = this.config.getOrThrow<string>('auth.verificationSecret');
+    try {
+      return this.jwt.verify<PayloadVerification>(token, { secret });
+    } catch {
+      throw new UnauthorizedException('Token de vérification invalide ou expiré.');
+    }
   }
 }

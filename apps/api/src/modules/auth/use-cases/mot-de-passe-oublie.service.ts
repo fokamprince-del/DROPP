@@ -3,6 +3,7 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import type { MotDePasseOublieDto } from '../dto/mot-de-passe-oublie.dto.js';
+import { CanalVerification } from '../../../generated/prisma/enums.js';
 
 @Injectable()
 export class MotDePasseOublieService {
@@ -34,7 +35,7 @@ export class MotDePasseOublieService {
       },
     });
 
-    // Même si introuvable : on ne révèle rien, on sort silencieusement
+    // Réponse toujours identique : anti-énumération
     if (
       !utilisateur ||
       utilisateur.statutCompte === 'SUPPRIME' ||
@@ -43,10 +44,10 @@ export class MotDePasseOublieService {
       return;
     }
 
-    // Canal préféré : email si disponible, sinon SMS
-    const canal = utilisateur.email ? 'EMAIL' : 'SMS';
-    const destination =
-      canal === 'EMAIL' ? utilisateur.email! : utilisateur.telephone!;
+    const canal: CanalVerification = utilisateur.email ? 'EMAIL' : 'SMS';
+    const destination = canal === 'EMAIL'
+      ? utilisateur.email!
+      : utilisateur.telephone!;
 
     const { code } = await this.otpService.generer({
       destination,

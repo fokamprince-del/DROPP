@@ -19,11 +19,26 @@ export default () => ({
     ),
     passwordPepper: process.env.AUTH_PASSWORD_PEPPER!,
     otpPepper: process.env.AUTH_OTP_PEPPER!,
+    verificationSecret: process.env.AUTH_VERIFICATION_SECRET!,
+    verificationTtlSeconds: dureeEnSecondes(
+      process.env.AUTH_VERIFICATION_TTL ?? '15m',
+    ),
   },
 
   database: {
     url: process.env.DATABASE_URL,
     poolMax: Number(process.env.DATABASE_POOL_MAX ?? 10),
+  },
+
+  redis: {
+    host: process.env.REDIS_HOST ?? 'localhost',
+    port: Number(process.env.REDIS_PORT ?? 6379),
+    password: process.env.REDIS_PASSWORD!,
+    otpTtl: Number(process.env.REDIS_OTP_TTL ?? 300),
+    otpCooldown: Number(process.env.REDIS_OTP_COOLDOWN ?? 60),
+    otpMaxTentatives: Number(process.env.REDIS_OTP_MAX_TENTATIVES ?? 5),
+    otpMaxEnvoisHeure: Number(process.env.REDIS_OTP_MAX_ENVOIS_HEURE ?? 5),
+    idempotenceTtl: Number(process.env.REDIS_IDEMPOTENCE_TTL ?? 86400),
   },
 });
 

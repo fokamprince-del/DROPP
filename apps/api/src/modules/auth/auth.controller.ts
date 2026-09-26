@@ -32,6 +32,8 @@ import { ReinitialisationMdpService } from './use-cases/reinitialisation-mdp.ser
 import { SessionsService } from './use-cases/sessions.service.js';
 import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
 import { RenvoiCodeDto } from './dto/renvoi-code.dto.js';
+import { ProfilMeService } from './use-cases/profil-me.service.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 /** Throttle nommé "court" : aligné sur la config ThrottlerModule de AppModule. */
 const THROTTLE_SENSIBLE = { court: { limit: 5, ttl: 60_000 } };
@@ -49,6 +51,7 @@ export class AuthentificationController {
     private readonly motDePasseOublieService: MotDePasseOublieService,
     private readonly reinitialisationMdpService: ReinitialisationMdpService,
     private readonly sessionsService: SessionsService,
+    private readonly profilMeService: ProfilMeService,
   ) {}
 
   @Public()
@@ -70,7 +73,7 @@ export class AuthentificationController {
   @Public()
   @Throttle(THROTTLE_SENSIBLE)
   @Post('renvoyer-code')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   renvoyerCode(@Body() dto: RenvoiCodeDto) {
     return this.renvoiCodeService.executer(dto);
   }
@@ -128,8 +131,10 @@ export class AuthentificationController {
     return this.motDePasseOublieService.executer(dto);
   }
 
+  
   @Public()
   @Throttle(THROTTLE_SENSIBLE)
+  @RequiertIdempotenceKey()
   @Post('reinitialiser-mot-de-passe')
   @HttpCode(HttpStatus.OK)
   reinitialiserMotDePasse(
@@ -137,5 +142,10 @@ export class AuthentificationController {
     @Ip() ip: string,
   ) {
     return this.reinitialisationMdpService.executer(dto, ip);
+  }
+
+  @Get('me')
+  me(@CurrentUser() u: UtilisateurConnecte) {
+    return this.profilMeService.executer(u.id);
   }
 }

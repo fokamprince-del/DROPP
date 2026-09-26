@@ -41,6 +41,7 @@ import { SupprimerMediaService } from './use-cases/supprimer-media.service.js';
 import { SupprimerProduitService } from './use-cases/supprimer-produit.service.js';
 import { SupprimerVarianteService } from './use-cases/supprimer-variante.service.js';
 import { Vendeur } from '../auth/decorators/profils.decorator.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 @Controller()
 export class ProduitsController {
@@ -89,6 +90,7 @@ export class ProduitsController {
 
   // ── Produits vendeur ──────────────────────────────────────────────────────
 
+  @RequiertIdempotenceKey()
   @Vendeur()
   @Post('boutique/produits')
   @HttpCode(HttpStatus.CREATED)
@@ -140,7 +142,7 @@ export class ProduitsController {
   }
 
   // ── Variantes ─────────────────────────────────────────────────────────────
-
+  @RequiertIdempotenceKey()
   @Vendeur()
   @Post('boutique/produits/:id/variantes')
   @HttpCode(HttpStatus.CREATED)
@@ -204,6 +206,7 @@ export class ProduitsController {
     return this.demanderSignature.executer(boutique, dto);
   }
 
+  @RequiertIdempotenceKey()
   @Vendeur()
   @Post('boutique/medias/confirmer')
   @HttpCode(HttpStatus.CREATED)

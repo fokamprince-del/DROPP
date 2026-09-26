@@ -7,6 +7,10 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 import { MotDePasseService } from '../services/mot-de-passe.service.js';
 import { JetonService, type JetonsEmis } from '../services/jeton.service.js';
 import type { ConnexionDto } from '../dto/connexion.dto.js';
+import { OtpService } from '../services/otp.service.js';
+import { NotificationService } from '../services/notification.service.js';
+import type { PayloadVerification } from '../services/jeton.service.js';
+import type { CanalVerification } from '../../../generated/prisma/enums.js';
 
 /**
  * Statuts autorisant la connexion.
@@ -20,14 +24,18 @@ export class ConnexionService {
     private readonly prisma: PrismaService,
     private readonly motDePasseService: MotDePasseService,
     private readonly jetonService: JetonService,
+    private readonly otpService: OtpService,             
+  private readonly notificationService: NotificationService,
   ) {}
 
   /**
    * Connexion par email OU téléphone + mot de passe.
    * Réponse neutre si identifiant inconnu (anti-énumération).
    */
-  async executer(dto: ConnexionDto, adresseIp?: string): Promise<JetonsEmis> {
-    // Détection automatique : email si contient @, sinon téléphone
+  async executer(
+    dto: ConnexionDto,
+    adresseIp?: string,
+  ): Promise<JetonsEmis | { verificationRequise: true; verificationToken: string }> {
     const estEmail = dto.identifiant.includes('@');
     const identifiantNormalise = estEmail
       ? dto.identifiant.trim().toLowerCase()
@@ -42,15 +50,15 @@ export class ConnexionService {
         motDePasseHash: true,
         statutCompte: true,
         telephoneVerifieLe: true,
+        email: true,
+        telephone: true,
       },
     });
 
-    // Réponse neutre : on hache quand même pour éviter les timing attacks
     if (!utilisateur || !utilisateur.motDePasseHash) {
-      await this.motDePasseService.verifier(
-        dto.motDePasse,
-        '$argon2id$v=19$m=65536,t=3,p=4$factice',
-      );
+      await this.motDePasseService
+        .verifier(dto.motDePasse, '$argon2id$v=19$m=65536,t=3,p=4$factice$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        .catch(() => undefined);
       throw new UnauthorizedException('Identifiant ou mot de passe incorrect.');
     }
 
@@ -63,11 +71,42 @@ export class ConnexionService {
       throw new UnauthorizedException('Identifiant ou mot de passe incorrect.');
     }
 
+    // Compte non vérifié : renvoyer un token de vérification
+    if (utilisateur.statutCompte === 'EN_ATTENTE_VERIFICATION') {
+      const canal: CanalVerification = utilisateur.email ? 'EMAIL' : 'SMS';
+      const destination = canal === 'EMAIL'
+        ? utilisateur.email!
+        : utilisateur.telephone!;
+
+      const { code } = await this.otpService.generer({
+        destination,
+        canal,
+        type: 'INSCRIPTION',
+        utilisateurId: utilisateur.id,
+      });
+
+      this.notificationService.envoyerOtp({
+        destination,
+        canal,
+        code,
+        type: 'inscription',
+      });
+
+      const verificationToken = this.jetonService.signerVerification({
+        sub: utilisateur.id,
+        dst: destination,
+        canalOtp: canal,
+        purpose: 'inscription',
+      });
+
+      return { verificationRequise: true, verificationToken };
+    }
+
     if (!STATUTS_CONNEXION.has(utilisateur.statutCompte)) {
       throw new ForbiddenException('Compte indisponible.');
     }
 
-    // Re-hachage transparent si les paramètres ont évolué
+    // Re-hachage transparent
     if (nouveauHash) {
       await this.prisma.utilisateur.update({
         where: { id: utilisateur.id },
@@ -75,12 +114,8 @@ export class ConnexionService {
       });
     }
 
-    // Mise à jour de la date de dernière connexion (best-effort)
-    void this.prisma.utilisateur
-      .update({
-        where: { id: utilisateur.id },
-        data: { derniereConnexion: new Date() },
-      })
+    this.prisma.utilisateur
+      .update({ where: { id: utilisateur.id }, data: { derniereConnexion: new Date() } })
       .catch(() => undefined);
 
     return this.jetonService.ouvrirSession({

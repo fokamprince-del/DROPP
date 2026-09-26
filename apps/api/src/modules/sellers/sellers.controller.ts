@@ -15,6 +15,7 @@ import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js'
 import { MiseAJourVendeurDto } from './dto/mise-a-jour-vendeur.dto.js';
 import { SellersService } from './sellers.service.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 type RequeteAuthentifiee = Request & { user: UtilisateurConnecte };
 
@@ -22,7 +23,7 @@ type RequeteAuthentifiee = Request & { user: UtilisateurConnecte };
 @Vendeur()
 export class SellersController {
   constructor(private readonly sellersService: SellersService) {}
-
+  @RequiertIdempotenceKey()
   @Post('devenir')
   @HttpCode(HttpStatus.NO_CONTENT)
   devenirVendeur(@CurrentUser() u: UtilisateurConnecte) {

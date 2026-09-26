@@ -3,11 +3,13 @@ import { Client } from '../auth/decorators/profils.decorator.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
 import { CommandeService } from './commande.service.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 @Controller('commandes')
 export class CommandeController {
   constructor(private readonly commandes: CommandeService) {}
 
+  @RequiertIdempotenceKey()
   @Client()
   @Post()
   passer(@CurrentUser() utilisateur: UtilisateurConnecte) { return this.commandes.passer(utilisateur.id); }

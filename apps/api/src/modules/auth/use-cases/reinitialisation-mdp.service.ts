@@ -22,25 +22,25 @@ export class ReinitialisationMdpService {
     dto: ReinitialisationMdpDto,
     adresseIp?: string,
   ): Promise<JetonsEmis> {
-    const estEmail = dto.destination.includes('@');
-    const destination = estEmail
-      ? dto.destination.trim().toLowerCase()
-      : dto.destination.trim();
+    // 1. Décoder le token de vérification
+    const payload = this.jetonService.verifierTokenVerification(
+      dto.verificationToken,
+    );
 
-    const utilisateur = await this.prisma.utilisateur.findFirst({
-      where: estEmail ? { email: destination } : { telephone: destination },
-      select: {
-        id: true,
-        statutCompte: true,
-        telephoneVerifieLe: true,
-      },
+    if (payload.purpose !== 'reinitialisation') {
+      throw new BadRequestException('Token invalide.');
+    }
+
+    // 2. Vérifier le compte
+    const utilisateur = await this.prisma.utilisateur.findUnique({
+      where: { id: payload.sub },
+      select: { id: true, statutCompte: true, telephoneVerifieLe: true },
     });
 
     if (!utilisateur) {
-      // Anti-énumération : on vérifie quand même l'OTP
       await this.otpService
         .verifier({
-          destination,
+          destination: payload.dst,
           type: 'REINITIALISATION_MOT_DE_PASSE',
           codeSoumis: dto.code,
         })
@@ -48,18 +48,16 @@ export class ReinitialisationMdpService {
       throw new BadRequestException('Code invalide ou expiré.');
     }
 
-    // Vérification OTP — lève BadRequestException / GoneException si invalide
+    // 3. Vérifier l'OTP
     await this.otpService.verifier({
-      destination,
+      destination: payload.dst,
       type: 'REINITIALISATION_MOT_DE_PASSE',
       codeSoumis: dto.code,
     });
 
-    const nouveauHash = await this.motDePasseService.hacher(
-      dto.nouveauMotDePasse,
-    );
+    // 4. Changer le MDP + révoquer toutes les sessions
+    const nouveauHash = await this.motDePasseService.hacher(dto.nouveauMotDePasse);
 
-    // Changement MDP + révocation de toutes les sessions dans la même transaction
     await this.prisma.$transaction([
       this.prisma.utilisateur.update({
         where: { id: utilisateur.id },
@@ -71,12 +69,12 @@ export class ReinitialisationMdpService {
       }),
     ]);
 
-    // Nouvelle session propre
+    // 5. Nouvelle session propre
     return this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
       statutCompte: utilisateur.statutCompte,
       telephoneVerifie: utilisateur.telephoneVerifieLe !== null,
-      methodeAuth: estEmail ? 'EMAIL_MDP' : 'TELEPHONE_MDP',
+      methodeAuth: payload.dst.includes('@') ? 'EMAIL_MDP' : 'TELEPHONE_MDP',
       adresseIp,
     });
   }

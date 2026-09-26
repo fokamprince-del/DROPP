@@ -16,10 +16,12 @@ import { ShopsModule } from './modules/shops/shops.module.js';
 import { CategoriesModule } from './modules/categories/categories.module.js';
 import { PublicationsModule } from './modules/publications/publications.module.js';
 import { StoriesModule } from './modules/stories/stories.module.js';
-import { LikesModule } from './modules/likes/likes.module.js';
 import { InteractionsModule } from './modules/interactions/interactions.module.js';
 import { PanierModule } from './modules/panier/panier.module.js';
 import { CommandesModule } from './modules/commandes/commandes.module.js';
+import { RedisModule } from './infrastructure/redis/redis.module.js';
+import { IdempotenceModule } from './infrastructure/idempotence/idempotence.module.js';
+import { IdempotenceInterceptor } from './infrastructure/idempotence/idempotence.interceptor.js';
 
 @Module({
   imports: [
@@ -30,7 +32,6 @@ import { CommandesModule } from './modules/commandes/commandes.module.js';
       load: [configuration],
       validationSchema,
     }),
-
     ThrottlerModule.forRoot([
       {
         name: 'court',
@@ -38,6 +39,8 @@ import { CommandesModule } from './modules/commandes/commandes.module.js';
         limit: 20,
       },
     ]),
+    RedisModule,
+    IdempotenceModule,
     AuthentificationModule,
     ProduitsModule,
     UsersModule,
@@ -55,6 +58,7 @@ import { CommandesModule } from './modules/commandes/commandes.module.js';
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
+    { provide: APP_GUARD, useClass: IdempotenceInterceptor}
   ],
 })
 export class AppModule {

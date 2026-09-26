@@ -33,6 +33,7 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { NOTIFICATION_PROVIDER } from '../../infrastructure/notification/notification-provider.contract.js';
 import { NotificationProviderStub } from '../../infrastructure/notification/notification-provider.stub.js';
 import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
+import { ProfilMeService } from './use-cases/profil-me.service.js';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
     SessionsService,
     RenvoiCodeService,
     VerificationTelephoneService,
+    ProfilMeService,
 
     // Stratégie Passport
     JwtStrategy,

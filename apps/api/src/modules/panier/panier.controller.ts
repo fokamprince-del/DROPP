@@ -5,6 +5,7 @@ import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js'
 import { AjouterArticlePanierDto } from './dto/ajouter-article-panier.dto.js';
 import { ModifierArticlePanierDto } from './dto/modifier-article-panier.dto.js';
 import { PanierService } from './panier.service.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 @Controller('panier')
 export class PanierController {
@@ -13,7 +14,8 @@ export class PanierController {
   @Client()
   @Get()
   obtenir(@CurrentUser() utilisateur: UtilisateurConnecte) { return this.panier.obtenir(utilisateur.id); }
-
+  
+  @RequiertIdempotenceKey()
   @Client()
   @Post('articles')
   ajouter(@CurrentUser() utilisateur: UtilisateurConnecte, @Body() dto: AjouterArticlePanierDto) { return this.panier.ajouter(utilisateur.id, dto); }
