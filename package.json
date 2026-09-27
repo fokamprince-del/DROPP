@@ -35,10 +35,16 @@
     "contrats:build": "pnpm --filter @dropp/contrats build",
     "contrats:typecheck": "pnpm --filter @dropp/contrats typecheck",
 
-    "prisma:generate": "prisma generate",
-    "prisma:validate": "prisma validate",
-    "prisma:format": "prisma format",
-    "prisma:studio": "prisma studio",
+    "prisma:dev": "pnpm --filter @dropp/database dev",
+    "prisma:typecheck": "pnpm --filter @dropp/database typecheck",
+    "prisma:build": "pnpm --filter @dropp/database build",
+    "prisma:generate": "pnpm --filter @dropp/database generate",
+    "prisma:validate": "pnpm --filter @dropp/database validate",
+    "prisma:format": "pnpm --filter @dropp/database format",
+    "prisma:studio": "pnpm --filter @dropp/database studio",
+    "prisma:migrate:status": "pnpm --filter @dropp/database migrate:status",
+    "prisma:migrate:dev": "pnpm --filter @dropp/database migrate:dev",
+    "prisma:migrate:reset": "pnpm --filter @dropp/database migrate:reset",
 
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose stop postgres",
@@ -57,9 +63,6 @@
     "infra:down": "docker compose down",
     "infra:logs": "docker compose logs -f",
     "infra:status": "docker compose ps",
-    "prisma:migrate:status": "prisma migrate status",
-    "prisma:migrate:dev": "prisma migrate dev",
-    "prisma:migrate:reset": "prisma migrate reset",
 
     "format": "pnpm --filter api --filter worker format ",
     "format:check": "pnpm --filter api exec prettier --check \"src/**/*.ts\" \"test/**/*.ts\""

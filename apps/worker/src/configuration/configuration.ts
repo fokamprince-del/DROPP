@@ -8,4 +8,8 @@ export default () => ({
     port: process.env.REDIS_PORT ?? '6379',
     password: process.env.REDIS_PASSWORD!,
   },
+  database: {
+    url: process.env.DATABASE_URL!,
+    poolMax: process.env.DATABASE_POOL_MAX ?? 5
+  }
 });

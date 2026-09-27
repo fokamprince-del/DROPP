@@ -4,7 +4,7 @@ import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 import {
   TypePublication,
   VisibiliteContenu,
-} from '../../../generated/prisma/client.js';
+} from '@dropp/database';
 
 export class CreerPublicationDto {
   @IsEnum(TypePublication)

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { StatutPublication } from '../../generated/prisma/client.js';
+import { StatutPublication } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 
 @Injectable()

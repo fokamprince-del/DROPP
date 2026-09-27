@@ -9,8 +9,7 @@ import { JetonService, type JetonsEmis } from '../services/jeton.service.js';
 import type { ConnexionDto } from '../dto/connexion.dto.js';
 import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
-import type { PayloadVerification } from '../services/jeton.service.js';
-import type { CanalVerification } from '../../../generated/prisma/enums.js';
+import type { CanalVerification } from '@dropp/database';
 
 /**
  * Statuts autorisant la connexion.

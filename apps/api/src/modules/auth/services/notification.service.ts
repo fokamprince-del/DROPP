@@ -9,7 +9,7 @@ import {
   type JobNotificationSms,
 } from '@dropp/contrats';
 
-import type { CanalVerification } from '../../../generated/prisma/enums.js';
+import type { CanalVerification } from '@dropp/database';
 
 @Injectable()
 export class NotificationService {

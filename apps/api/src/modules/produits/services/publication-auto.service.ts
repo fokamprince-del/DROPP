@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '../../../generated/prisma/client.js';
+import { Prisma } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 
 type Decimal = Prisma.Decimal;

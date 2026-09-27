@@ -10,7 +10,7 @@ import { TelephoneService } from '../services/telephone.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import type { InscriptionDto } from '../dto/inscription.dto.js';
 import { JetonService } from '../services/jeton.service.js';
-import { CanalVerification } from '../../../generated/prisma/enums.js';
+import { CanalVerification } from '@dropp/database';
 
 @Injectable()
 export class InscriptionService {

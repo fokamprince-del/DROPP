@@ -3,7 +3,7 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import type { MotDePasseOublieDto } from '../dto/mot-de-passe-oublie.dto.js';
-import { CanalVerification } from '../../../generated/prisma/enums.js';
+import { CanalVerification } from '@dropp/database';
 
 @Injectable()
 export class MotDePasseOublieService {

@@ -13,7 +13,7 @@ import { Public } from '../auth/decorators/public.decorator.js';
 import { CreerCategorieDto } from './dto/creer-categorie.dto.js';
 import { MiseAJourCategorieDto } from './dto/mise-a-jour-categorie.dto.js';
 import { CategoriesService } from './categories.service.js';
-import { StatutCategorie } from '../../generated/prisma/client.js';
+import { StatutCategorie } from '@dropp/database';
 
 @Controller('categories')
 export class CategoriesController {

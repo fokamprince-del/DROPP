@@ -1,6 +1,6 @@
 import { IsEnum } from 'class-validator';
 
-import { StatutPublication } from '../../../generated/prisma/client.js';
+import { StatutPublication } from '@dropp/database';
 
 export class ModerationPublicationDto {
   @IsEnum(StatutPublication)

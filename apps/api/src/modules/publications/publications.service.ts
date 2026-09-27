@@ -12,7 +12,7 @@ import {
   type Prisma,
   type TypePublication,
   type VisibiliteContenu,
-} from '../../generated/prisma/client.js';
+} from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
   STOCKAGE_PROVIDER,

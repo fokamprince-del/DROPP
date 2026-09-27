@@ -4,7 +4,8 @@ import configuration from './configuration/configuration.js';
 import { validationSchema } from './configuration/validation.js';
 import { BullModule } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATION } from '@dropp/contrats';
-import { NotificationModule } from './notification/notification.module.js';
+import { NotificationModule } from './modules/notification/notification.module.js';
+import { PrismaModule } from './infrastructure/database/database/prisma.module.js';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { NotificationModule } from './notification/notification.module.js';
       }),
     }),
     BullModule.registerQueue({ name: QUEUE_NOTIFICATION }),
+    PrismaModule,
     NotificationModule,
   ],
 })

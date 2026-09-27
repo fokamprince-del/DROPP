@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@dropp/contrats": "workspace:*",
+    "@dropp/database": "workspace:*",
     "@nestjs/bullmq": "^12.0.0",
     "@nestjs/common": "^12.0.1",
     "@nestjs/config": "^12.0.0",
