@@ -21,6 +21,20 @@
     "api:test:e2e": "pnpm --filter api test:e2e",
     "api:typecheck": "pnpm --filter api exec tsc --noEmit",
 
+    "worker:dev": "pnpm --filter worker start:dev",
+    "worker:build": "pnpm --filter worker build",
+    "worker:start": "pnpm --filter worker start:prod",
+    "worker:format": "pnpm --filter worker format",
+    "worker:lint": "pnpm --filter worker lint",
+    "worker:test": "pnpm --filter worker test",
+    "worker:test:watch": "pnpm --filter worker test:watch",
+    "worker:test:e2e": "pnpm --filter worker test:e2e",
+    "worker:typecheck": "pnpm --filter worker exec tsc --noEmit",
+
+    "contrats:dev": "pnpm --filter @dropp/contrats dev",
+    "contrats:build": "pnpm --filter @dropp/contrats build",
+    "contrats:typecheck": "pnpm --filter @dropp/contrats typecheck",
+
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
@@ -47,7 +61,7 @@
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:reset": "prisma migrate reset",
 
-    "format": "pnpm --filter api format",
+    "format": "pnpm --filter api --filter worker format ",
     "format:check": "pnpm --filter api exec prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "devDependencies": {

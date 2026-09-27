@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import type { SmsProvider } from './sms-provider.contract.js';
+import type { SmsProvider } from './sms.contract.js';
 
 @Injectable()
 export class SmsProviderStub implements SmsProvider {

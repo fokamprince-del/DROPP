@@ -71,37 +71,37 @@ export class IdempotenceInterceptor implements NestInterceptor {
     const cache = await this.idempotenceService.lire(key);
 
     if (cache) {
-        if ((cache as unknown as string) === 'PENDING') {
+      if ((cache as unknown as string) === 'PENDING') {
         throw new ConflictException(
-            'Une requête identique est déjà en cours de traitement.',
+          'Une requête identique est déjà en cours de traitement.',
         );
-        }
-        response.status(cache.statusCode);
-        return from([cache.body]);
+      }
+      response.status(cache.statusCode);
+      return from([cache.body]);
     }
 
     // Vérifier PENDING séparément
     const brut = await this.idempotenceService.lireBrut(key);
     if (brut === 'PENDING') {
-        throw new ConflictException(
+      throw new ConflictException(
         'Une requête identique est déjà en cours de traitement.',
-        );
+      );
     }
 
     // 2. Marquer comme en cours
     const acquis = await this.idempotenceService.marquerEnCours(key);
     if (!acquis) {
-        throw new ConflictException(
+      throw new ConflictException(
         'Une requête identique est déjà en cours de traitement.',
-        );
+      );
     }
 
     // 3. Exécuter et stocker
     return next.handle().pipe(
-        tap(async (body) => {
+      tap(async (body) => {
         const statusCode = response.statusCode;
         await this.idempotenceService.stocker(key, { statusCode, body });
-        }),
+      }),
     );
   }
 }

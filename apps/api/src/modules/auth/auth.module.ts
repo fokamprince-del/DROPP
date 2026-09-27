@@ -4,7 +4,6 @@ import { JwtModule, type JwtModuleOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
-import { SmsModule } from '../../infrastructure/sms/sms.module.js';
 
 import { AuthentificationController } from './auth.controller.js';
 import { RoleAdminGuard } from './guards/admin.guard.js';
@@ -28,17 +27,14 @@ import { RefreshTokenService } from './use-cases/refresh-token.service.js';
 import { VerificationTelephoneService } from './use-cases/verification-telephone.service.js';
 
 import { JwtStrategy } from './strategies/jwt.strategy.js';
-
-// NotificationProvider : stub en dev, vrai fournisseur plus tard
-import { NOTIFICATION_PROVIDER } from '../../infrastructure/notification/notification-provider.contract.js';
-import { NotificationProviderStub } from '../../infrastructure/notification/notification-provider.stub.js';
 import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
 import { ProfilMeService } from './use-cases/profil-me.service.js';
+import { QueueModule } from '../../infrastructure/queue/queue.module.js';
 
 @Module({
   imports: [
     PrismaModule,
-    SmsModule,
+    QueueModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -81,13 +77,6 @@ import { ProfilMeService } from './use-cases/profil-me.service.js';
     RoleAdminGuard,
     ProfilClientGuard,
     ProfilVendeurGuard,
-
-    // NotificationProvider provisoire (stub SMS)
-    // À remplacer par un vrai fournisseur ou un BullMQ producer
-    {
-      provide: NOTIFICATION_PROVIDER,
-      useClass: NotificationProviderStub,
-    },
   ],
   exports: [RolesGuard, RoleAdminGuard, ProfilClientGuard, ProfilVendeurGuard],
 })

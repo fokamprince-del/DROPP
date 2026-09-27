@@ -1,6 +1,6 @@
 import { Global, Module, OnApplicationShutdown } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
-import type {Redis} from 'ioredis';
+import type { Redis } from 'ioredis';
 
 import { REDIS_CLIENT, RedisProvider } from './redis.provider.js';
 
