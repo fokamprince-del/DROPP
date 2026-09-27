@@ -1,0 +1,10 @@
+model PreferenceNotification {
+  id            String           @id @default(uuid()) @db.Uuid
+  utilisateurId String           @map("utilisateur_id") @db.Uuid
+  type          TypeNotification
+  active        Boolean          @default(true)
+  utilisateur   Utilisateur      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@unique([utilisateurId, type])
+  @@map("preferences_notifications")
+}

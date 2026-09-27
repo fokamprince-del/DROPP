@@ -1,0 +1,13 @@
+model Conversation {
+  id                   String                    @id @default(uuid()) @db.Uuid
+  type                 TypeConversation
+  statut               StatutConversation        @default(ACTIVE)
+  dateCreation         DateTime                  @default(now()) @map("date_creation") @db.Timestamptz(3)
+  dateDerniereActivite DateTime                  @default(now()) @map("date_derniere_activite") @db.Timestamptz(3)
+  participants         ParticipantConversation[]
+  messages             Message[]
+
+  @@index([statut])
+  @@index([dateDerniereActivite])
+  @@map("conversations")
+}

@@ -1,0 +1,14 @@
+// Enums du domaine finances
+
+enum TypeCompteComptable {
+  ACTIF
+  PASSIF
+  CHARGE
+  PRODUIT
+}
+
+enum StatutJournalComptable {
+  BROUILLON
+  VALIDE
+  ANNULE
+}

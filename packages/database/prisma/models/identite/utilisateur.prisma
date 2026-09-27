@@ -1,0 +1,43 @@
+model Utilisateur {
+  id                      String                    @id @default(uuid()) @db.Uuid
+  prenom                  String
+  nom                     String
+  email                   String?                   @unique
+  emailVerifieLe          DateTime?                 @map("email_verifie_le") @db.Timestamptz(3)
+  telephone               String?                   @unique
+  telephoneVerifieLe      DateTime?                 @map("telephone_verifie_le") @db.Timestamptz(3)
+  motDePasseHash          String?                   @map("mot_de_passe_hash")
+  statutCompte            StatutCompte              @default(EN_ATTENTE_VERIFICATION) @map("statut_compte")
+  dateInscription         DateTime                  @default(now()) @map("date_inscription") @db.Timestamptz(3)
+  derniereConnexion       DateTime?                 @map("derniere_connexion") @db.Timestamptz(3)
+  dateModification        DateTime                  @updatedAt @map("date_modification") @db.Timestamptz(3)
+  sessions                Session[]
+  identitesExternes       IdentiteExterne[]
+  updatedAt               DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  client                  Client?
+  vendeur                 Vendeur?
+  roles                   UtilisateurRole[]
+  likes                   Aime[]
+  commentaires            Commentaire[]
+  favorisPublications     FavoriPublication[]
+  favorisProduits         FavoriProduit[]
+  abonnements             Abonnement[]
+  participants            ParticipantConversation[]
+  messagesEnvoyes         Message[]                 @relation("ExpediteurMessage")
+  revuesKyc               RevueKyc[]                @relation("AdministrateurRevueKyc")
+  paniers                 Panier[]
+  passagesCommande        PassageCommande[]
+  commandes               Commande[]
+  signalements            Signalement[]             @relation("EmetteurSignalement")
+  litiges                 Litige[]
+  notifications           Notification[]
+  preferencesNotification PreferenceNotification[]
+  appareils               Appareil[]
+  avis                    Avis[]
+  partages                Partage[]
+  aimesCommentaires       AimeCommentaire[]
+  dossiersModeration      DossierModeration[]       @relation("AdministrateurModeration")
+  journauxSecurite        JournalSecurite[]         @relation("AdministrateurSecurite")
+
+  @@map("utilisateurs")
+}

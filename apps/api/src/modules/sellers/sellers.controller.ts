@@ -1,0 +1,45 @@
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common';
+import type { Request } from 'express';
+
+import { Vendeur } from '../auth/decorators/profils.decorator.js';
+import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
+import { MiseAJourVendeurDto } from './dto/mise-a-jour-vendeur.dto.js';
+import { SellersService } from './sellers.service.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
+
+type RequeteAuthentifiee = Request & { user: UtilisateurConnecte };
+
+@Controller('sellers')
+@Vendeur()
+export class SellersController {
+  constructor(private readonly sellersService: SellersService) {}
+  @RequiertIdempotenceKey()
+  @Post('devenir')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  devenirVendeur(@CurrentUser() u: UtilisateurConnecte) {
+    return this.sellersService.devenirVendeur(u.id);
+  }
+
+  @Get('me')
+  obtenirProfil(@Req() requete: RequeteAuthentifiee) {
+    return this.sellersService.obtenirProfil(requete.user.id);
+  }
+
+  @Patch('me')
+  mettreAJourProfil(
+    @Req() requete: RequeteAuthentifiee,
+    @Body() dto: MiseAJourVendeurDto,
+  ) {
+    return this.sellersService.mettreAJourProfil(requete.user.id, dto);
+  }
+}

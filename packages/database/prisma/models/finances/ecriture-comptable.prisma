@@ -1,0 +1,17 @@
+model EcritureComptable {
+  id          String           @id @default(uuid()) @db.Uuid
+  journalId   String           @map("journal_id") @db.Uuid
+  compteId    String           @map("compte_id") @db.Uuid
+  paiementId  String?          @map("paiement_id") @db.Uuid
+  debit       Decimal          @default(0) @db.Decimal(12, 2)
+  credit      Decimal          @default(0) @db.Decimal(12, 2)
+  description String?
+  journal     JournalComptable @relation(fields: [journalId], references: [id])
+  compte      CompteComptable  @relation(fields: [compteId], references: [id])
+  paiement    Paiement?        @relation(fields: [paiementId], references: [id])
+
+  @@index([journalId])
+  @@index([compteId])
+  @@index([paiementId])
+  @@map("ecritures_comptables")
+}
