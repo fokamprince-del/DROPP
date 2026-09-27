@@ -39,9 +39,10 @@ export class RenvoiCodeService {
     const { code } = await this.otpService.generer({
       destination: payload.dst,
       canal: payload.canalOtp,
-      type: payload.purpose === 'inscription'
-        ? 'INSCRIPTION'
-        : 'REINITIALISATION_MOT_DE_PASSE',
+      type:
+        payload.purpose === 'inscription'
+          ? 'INSCRIPTION'
+          : 'REINITIALISATION_MOT_DE_PASSE',
       utilisateurId: utilisateur.id,
     });
 
@@ -49,7 +50,8 @@ export class RenvoiCodeService {
       destination: payload.dst,
       canal: payload.canalOtp,
       code,
-      type: payload.purpose === 'inscription' ? 'inscription' : 'reinitialisation',
+      type:
+        payload.purpose === 'inscription' ? 'inscription' : 'reinitialisation',
     });
 
     // 4. Nouveau token de vérification (réinitialise le TTL de 15min)

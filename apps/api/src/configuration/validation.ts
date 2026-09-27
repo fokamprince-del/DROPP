@@ -71,7 +71,11 @@ export const validationSchema = Joi.object({
   REDIS_OTP_COOLDOWN: Joi.number().integer().min(30).max(300).default(60),
   REDIS_OTP_MAX_TENTATIVES: Joi.number().integer().min(3).max(10).default(5),
   REDIS_OTP_MAX_ENVOIS_HEURE: Joi.number().integer().min(3).max(20).default(5),
-  REDIS_IDEMPOTENCE_TTL: Joi.number().integer().min(3600).max(604800).default(86400),
+  REDIS_IDEMPOTENCE_TTL: Joi.number()
+    .integer()
+    .min(3600)
+    .max(604800)
+    .default(86400),
   AUTH_VERIFICATION_SECRET: Joi.string().min(32).required(),
   AUTH_VERIFICATION_TTL: Joi.string().pattern(DUREE).default('15m'),
 });

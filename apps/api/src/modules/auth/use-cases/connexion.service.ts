@@ -24,8 +24,8 @@ export class ConnexionService {
     private readonly prisma: PrismaService,
     private readonly motDePasseService: MotDePasseService,
     private readonly jetonService: JetonService,
-    private readonly otpService: OtpService,             
-  private readonly notificationService: NotificationService,
+    private readonly otpService: OtpService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   /**
@@ -35,7 +35,9 @@ export class ConnexionService {
   async executer(
     dto: ConnexionDto,
     adresseIp?: string,
-  ): Promise<JetonsEmis | { verificationRequise: true; verificationToken: string }> {
+  ): Promise<
+    JetonsEmis | { verificationRequise: true; verificationToken: string }
+  > {
     const estEmail = dto.identifiant.includes('@');
     const identifiantNormalise = estEmail
       ? dto.identifiant.trim().toLowerCase()
@@ -57,7 +59,10 @@ export class ConnexionService {
 
     if (!utilisateur || !utilisateur.motDePasseHash) {
       await this.motDePasseService
-        .verifier(dto.motDePasse, '$argon2id$v=19$m=65536,t=3,p=4$factice$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        .verifier(
+          dto.motDePasse,
+          '$argon2id$v=19$m=65536,t=3,p=4$factice$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        )
         .catch(() => undefined);
       throw new UnauthorizedException('Identifiant ou mot de passe incorrect.');
     }
@@ -74,9 +79,8 @@ export class ConnexionService {
     // Compte non vérifié : renvoyer un token de vérification
     if (utilisateur.statutCompte === 'EN_ATTENTE_VERIFICATION') {
       const canal: CanalVerification = utilisateur.email ? 'EMAIL' : 'SMS';
-      const destination = canal === 'EMAIL'
-        ? utilisateur.email!
-        : utilisateur.telephone!;
+      const destination =
+        canal === 'EMAIL' ? utilisateur.email! : utilisateur.telephone!;
 
       const { code } = await this.otpService.generer({
         destination,
@@ -115,7 +119,10 @@ export class ConnexionService {
     }
 
     this.prisma.utilisateur
-      .update({ where: { id: utilisateur.id }, data: { derniereConnexion: new Date() } })
+      .update({
+        where: { id: utilisateur.id },
+        data: { derniereConnexion: new Date() },
+      })
       .catch(() => undefined);
 
     return this.jetonService.ouvrirSession({

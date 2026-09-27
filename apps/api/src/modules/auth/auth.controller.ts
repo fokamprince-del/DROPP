@@ -131,7 +131,6 @@ export class AuthentificationController {
     return this.motDePasseOublieService.executer(dto);
   }
 
-  
   @Public()
   @Throttle(THROTTLE_SENSIBLE)
   @RequiertIdempotenceKey()

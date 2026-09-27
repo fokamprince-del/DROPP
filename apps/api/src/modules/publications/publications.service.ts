@@ -250,8 +250,7 @@ export class PublicationsService {
       throw new BadRequestException('Statut de modération invalide.');
     }
     const statutModere = statut as
-      | typeof StatutPublication.PUBLIEE
-      | typeof StatutPublication.REJETEE;
+      typeof StatutPublication.PUBLIEE | typeof StatutPublication.REJETEE;
 
     const publication = await this.prisma.publication.findUnique({
       where: { id: publicationId },

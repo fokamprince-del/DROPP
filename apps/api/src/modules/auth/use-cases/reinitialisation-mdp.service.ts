@@ -56,7 +56,9 @@ export class ReinitialisationMdpService {
     });
 
     // 4. Changer le MDP + révoquer toutes les sessions
-    const nouveauHash = await this.motDePasseService.hacher(dto.nouveauMotDePasse);
+    const nouveauHash = await this.motDePasseService.hacher(
+      dto.nouveauMotDePasse,
+    );
 
     await this.prisma.$transaction([
       this.prisma.utilisateur.update({

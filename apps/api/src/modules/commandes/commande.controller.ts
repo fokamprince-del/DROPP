@@ -12,13 +12,22 @@ export class CommandeController {
   @RequiertIdempotenceKey()
   @Client()
   @Post()
-  passer(@CurrentUser() utilisateur: UtilisateurConnecte) { return this.commandes.passer(utilisateur.id); }
+  passer(@CurrentUser() utilisateur: UtilisateurConnecte) {
+    return this.commandes.passer(utilisateur.id);
+  }
 
   @Client()
   @Get()
-  lister(@CurrentUser() utilisateur: UtilisateurConnecte) { return this.commandes.lister(utilisateur.id); }
+  lister(@CurrentUser() utilisateur: UtilisateurConnecte) {
+    return this.commandes.lister(utilisateur.id);
+  }
 
   @Client()
   @Get(':id')
-  obtenir(@CurrentUser() utilisateur: UtilisateurConnecte, @Param('id', ParseUUIDPipe) id: string) { return this.commandes.obtenir(utilisateur.id, id); }
+  obtenir(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.commandes.obtenir(utilisateur.id, id);
+  }
 }

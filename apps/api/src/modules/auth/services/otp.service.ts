@@ -11,7 +11,10 @@ import { createHmac, randomInt, timingSafeEqual } from 'node:crypto';
 import type { Redis } from 'ioredis';
 
 import { REDIS_CLIENT } from '../../../infrastructure/redis/redis.provider.js';
-import type { CanalVerification, TypeCodeVerification } from '../../../generated/prisma/enums.js';
+import type {
+  CanalVerification,
+  TypeCodeVerification,
+} from '../../../generated/prisma/enums.js';
 
 const OTP_DIGITS = 6;
 
@@ -78,7 +81,10 @@ export class OtpService {
     }
 
     // 3. Générer le code et le stocker
-    const code = String(randomInt(0, 10 ** OTP_DIGITS)).padStart(OTP_DIGITS, '0');
+    const code = String(randomInt(0, 10 ** OTP_DIGITS)).padStart(
+      OTP_DIGITS,
+      '0',
+    );
     const payload: OtpPayload = {
       codeHash: this.hacher(code, destination),
       tentatives: 0,

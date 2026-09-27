@@ -1,0 +1,58 @@
+import { Inject, Logger } from '@nestjs/common';
+import { Processor, WorkerHost } from '@nestjs/bullmq';
+import type { Job } from 'bullmq';
+
+import {
+  JOB_NOTIFICATION,
+  QUEUE_NOTIFICATION,
+  type JobNotificationEmail,
+  type JobNotificationSms,
+} from '@dropp/contrats';
+
+import {
+  SMS_PROVIDER,
+  type SmsProvider,
+} from './providers/sms/sms.contract.js';
+import {
+  EMAIL_PROVIDER,
+  type EmailProvider,
+} from './providers/email/email.contract.js';
+
+@Processor(QUEUE_NOTIFICATION)
+export class NotificationWorker extends WorkerHost {
+  private readonly logger = new Logger(NotificationWorker.name);
+
+  constructor(
+    @Inject(SMS_PROVIDER) private readonly sms: SmsProvider,
+    @Inject(EMAIL_PROVIDER) private readonly email: EmailProvider,
+  ) {
+    super();
+  }
+
+  async process(job: Job): Promise<void> {
+    switch (job.name) {
+      case JOB_NOTIFICATION.SMS:
+        await this.traiterSms(job as Job<JobNotificationSms>);
+        break;
+      case JOB_NOTIFICATION.EMAIL:
+        await this.traiterEmail(job as Job<JobNotificationEmail>);
+        break;
+      default:
+        this.logger.warn(`Job inconnu : ${job.name}`);
+    }
+  }
+
+  private async traiterSms(job: Job<JobNotificationSms>): Promise<void> {
+    this.logger.log(`SMS → ${job.data.numero}`);
+    await this.sms.envoyer(job.data.numero, job.data.message);
+  }
+
+  private async traiterEmail(job: Job<JobNotificationEmail>): Promise<void> {
+    this.logger.log(`Email → ${job.data.destinataire}`);
+    await this.email.envoyer(
+      job.data.destinataire,
+      job.data.sujet,
+      job.data.corps,
+    );
+  }
+}

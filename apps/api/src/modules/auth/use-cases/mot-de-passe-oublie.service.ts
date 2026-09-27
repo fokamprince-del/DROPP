@@ -45,9 +45,8 @@ export class MotDePasseOublieService {
     }
 
     const canal: CanalVerification = utilisateur.email ? 'EMAIL' : 'SMS';
-    const destination = canal === 'EMAIL'
-      ? utilisateur.email!
-      : utilisateur.telephone!;
+    const destination =
+      canal === 'EMAIL' ? utilisateur.email! : utilisateur.telephone!;
 
     const { code } = await this.otpService.generer({
       destination,

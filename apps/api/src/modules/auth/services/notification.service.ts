@@ -1,25 +1,25 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bullmq';
+import type { Queue } from 'bullmq';
+
+import {
+  JOB_NOTIFICATION,
+  QUEUE_NOTIFICATION,
+  type JobNotificationEmail,
+  type JobNotificationSms,
+} from '@dropp/contrats';
 
 import type { CanalVerification } from '../../../generated/prisma/enums.js';
-import {
-  NOTIFICATION_PROVIDER,
-  type NotificationProvider,
-} from '../../../infrastructure/notification/notification-provider.contract.js';
 
 @Injectable()
 export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
   constructor(
-    @Inject(NOTIFICATION_PROVIDER)
-    private readonly provider: NotificationProvider,
+    @InjectQueue(QUEUE_NOTIFICATION)
+    private readonly queue: Queue,
   ) {}
 
-  /**
-   * Envoie un OTP sur le canal disponible.
-   * Les erreurs sont loguées mais ne propagent pas :
-   * un OTP non reçu peut être renvoyé.
-   */
   async envoyerOtp(params: {
     destination: string;
     canal: CanalVerification;
@@ -37,17 +37,20 @@ export class NotificationService {
 
     try {
       if (canal === 'EMAIL') {
-        await this.provider.envoyerEmail(
-          destination,
-          'Votre code DROPP',
-          messages[type],
-        );
+        await this.queue.add(JOB_NOTIFICATION.EMAIL, {
+          destinataire: destination,
+          sujet: 'Votre code DROPP',
+          corps: messages[type],
+        } satisfies JobNotificationEmail);
       } else {
-        await this.provider.envoyerSms(destination, messages[type]);
+        await this.queue.add(JOB_NOTIFICATION.SMS, {
+          numero: destination,
+          message: messages[type],
+        } satisfies JobNotificationSms);
       }
     } catch (erreur) {
       this.logger.error(
-        `Échec envoi OTP [${canal}] → ${destination} : ${String(erreur)}`,
+        `Échec ajout job [${canal}] → ${destination} : ${String(erreur)}`,
       );
     }
   }

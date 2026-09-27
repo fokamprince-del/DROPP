@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SMS_PROVIDER } from './sms-provider.contract.js';
-import { SmsProviderStub } from './sms-provider.stub.js';
+import { SMS_PROVIDER } from './sms.contract.js';
+import { SmsProviderStub } from './sms.stub.js';
 
 @Module({
   providers: [{ provide: SMS_PROVIDER, useClass: SmsProviderStub }],

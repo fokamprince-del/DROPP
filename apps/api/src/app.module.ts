@@ -22,6 +22,7 @@ import { CommandesModule } from './modules/commandes/commandes.module.js';
 import { RedisModule } from './infrastructure/redis/redis.module.js';
 import { IdempotenceModule } from './infrastructure/idempotence/idempotence.module.js';
 import { IdempotenceInterceptor } from './infrastructure/idempotence/idempotence.interceptor.js';
+import { QueueModule } from './infrastructure/queue/queue.module.js';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { IdempotenceInterceptor } from './infrastructure/idempotence/idempotence
     ]),
     RedisModule,
     IdempotenceModule,
+    QueueModule,
     AuthentificationModule,
     ProduitsModule,
     UsersModule,
@@ -58,7 +60,7 @@ import { IdempotenceInterceptor } from './infrastructure/idempotence/idempotence
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
-    { provide: APP_GUARD, useClass: IdempotenceInterceptor}
+    { provide: APP_GUARD, useClass: IdempotenceInterceptor },
   ],
 })
 export class AppModule {

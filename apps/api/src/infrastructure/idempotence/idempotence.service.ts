@@ -24,7 +24,7 @@ export class IdempotenceService {
     return `dropp:idempotence:${key}`;
   }
 
-  async lireBrut(key:string): Promise<string | null> {
+  async lireBrut(key: string): Promise<string | null> {
     return await this.redis.get(this.cle(key));
   }
   /**
@@ -47,7 +47,7 @@ export class IdempotenceService {
       this.cle(key),
       'PENDING',
       'EX',
-      30,   // 30 secondes max pour traiter la requête
+      30, // 30 secondes max pour traiter la requête
       'NX', // Only if Not exists
     );
     return resultat === 'OK';
@@ -71,6 +71,4 @@ export class IdempotenceService {
   estEnCours(brut: string): boolean {
     return brut === 'PENDING';
   }
-
-
 }

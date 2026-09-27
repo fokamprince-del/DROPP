@@ -3,7 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 
-import type { CanalVerification, MethodeAuthentification } from '../../../generated/prisma/enums.js';
+import type {
+  CanalVerification,
+  MethodeAuthentification,
+} from '../../../generated/prisma/enums.js';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 
 export interface PayloadJwt {
@@ -19,8 +22,8 @@ export interface JetonsEmis {
 }
 
 export interface PayloadVerification {
-  sub: string;       // utilisateurId
-  dst: string;       // destination (tel ou email)
+  sub: string; // utilisateurId
+  dst: string; // destination (tel ou email)
   canalOtp: CanalVerification;
   purpose: 'inscription' | 'reinitialisation';
 }
@@ -219,7 +222,9 @@ export class JetonService {
     try {
       return this.jwt.verify<PayloadVerification>(token, { secret });
     } catch {
-      throw new UnauthorizedException('Token de vérification invalide ou expiré.');
+      throw new UnauthorizedException(
+        'Token de vérification invalide ou expiré.',
+      );
     }
   }
 }
