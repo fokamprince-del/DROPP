@@ -1,10 +1,11 @@
-import { Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
   IsIn,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Max,
   Min,
@@ -29,9 +30,15 @@ export class CreerStoryDto {
   @Max(500 * 1024 * 1024)
   taille!: number;
 
-  @Type(() => Date)
+  /** Par défaut : 24 h. Au plus 24 h après la création. */
+  @IsOptional()
+  @Transform(({ value }: { value: unknown }) =>
+    value === undefined || value === null || value === ''
+      ? undefined
+      : new Date(value as string),
+  )
   @IsDate()
-  dateExpiration!: Date;
+  dateExpiration?: Date;
 
   @IsEnum(VisibiliteContenu)
   visibilite: VisibiliteContenu = VisibiliteContenu.PUBLIC;

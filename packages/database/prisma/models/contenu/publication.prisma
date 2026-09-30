@@ -5,6 +5,7 @@ model Publication {
   type             TypePublication
   visibilite       VisibiliteContenu    @default(PUBLIC)
   statut           StatutPublication    @default(PROCESSING)
+  nombreVues       Int                  @default(0) @map("nombre_vues")
   dateCreation     DateTime             @default(now()) @map("date_creation") @db.Timestamptz(3)
   dateModification DateTime             @updatedAt @map("date_modification") @db.Timestamptz(3)
   boutique         Boutique             @relation(fields: [boutiqueId], references: [id])

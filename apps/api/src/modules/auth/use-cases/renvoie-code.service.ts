@@ -31,6 +31,18 @@ export class RenvoiCodeService {
       utilisateur.statutCompte === 'SUPPRIME' ||
       utilisateur.statutCompte === 'SUSPENDU_DEF'
     ) {
+      // Mot de passe oublié sur un compte inconnu : même réponse qu'un envoi
+      // réel, sinon le renvoi révélerait quels identifiants existent.
+      if (payload.purpose === 'reinitialisation') {
+        return {
+          verificationToken: this.jetonService.signerVerification({
+            sub: payload.sub,
+            dst: payload.dst,
+            canalOtp: payload.canalOtp,
+            purpose: payload.purpose,
+          }),
+        };
+      }
       throw new UnauthorizedException('Compte indisponible.');
     }
 

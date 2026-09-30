@@ -5,15 +5,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { NotificateurService } from '../../notifications/notificateur.service.js';
 import type { CommenterDto } from '../dto/commenter.dto.js';
+import { extraireMentions } from '../../users/pseudo.js';
 import { verifierPublicationVisible } from '../utils/publications.js';
-
-/** Regex pour extraire les mentions @username du contenu. */
-const MENTION_REGEX = /@([a-zA-Z0-9_]{2,30})/g;
 
 @Injectable()
 export class CommentaireService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificateur: NotificateurService,
+  ) {}
 
   async commenter(
     utilisateurId: string,
@@ -24,11 +26,30 @@ export class CommentaireService {
       this.prisma,
       publicationId,
     );
+    const bloque = await this.prisma.blocage.count({
+      where: {
+        OR: [
+          { bloqueurId: publication.boutiqueId, bloqueId: utilisateurId },
+          { bloqueurId: utilisateurId, bloqueId: publication.boutiqueId },
+        ],
+      },
+    });
+    if (bloque > 0) {
+      throw new ForbiddenException('Vous ne pouvez pas commenter cette publication.');
+    }
+
     // Vérification du parent si c'est une réponse
+    let auteurParentId: string | null = null;
     if (dto.parentId) {
       const parent = await this.prisma.commentaire.findUnique({
         where: { id: dto.parentId },
-        select: { id: true, publicationId: true, parentId: true, statut: true },
+        select: {
+          id: true,
+          publicationId: true,
+          parentId: true,
+          statut: true,
+          utilisateurId: true,
+        },
       });
 
       if (
@@ -43,13 +64,20 @@ export class CommentaireService {
       if (parent.parentId !== null) {
         throw new BadRequestException('Impossible de répondre à une réponse.');
       }
+      auteurParentId = parent.utilisateurId;
     }
 
     // Badge créateur : l'utilisateur est-il le propriétaire de la boutique ?
     const estCreateur = utilisateurId === publication.boutiqueId;
 
-    // Extraction des mentions
-    const mentions = [...dto.contenu.matchAll(MENTION_REGEX)].map((m) => m[1]);
+    // Mentions : seuls les @pseudos existants (comptes actifs) sont retenus.
+    const pseudos = extraireMentions(dto.contenu);
+    const mentions = pseudos.length
+      ? await this.prisma.utilisateur.findMany({
+          where: { pseudo: { in: pseudos }, statutCompte: 'ACTIF' },
+          select: { id: true, pseudo: true },
+        })
+      : [];
 
     const commentaire = await this.prisma.commentaire.create({
       data: {
@@ -66,12 +94,68 @@ export class CommentaireService {
         estCreateur: true,
         dateCreation: true,
         utilisateur: {
-          select: { id: true, prenom: true, nom: true },
+          select: { id: true, prenom: true, nom: true, pseudo: true },
         },
       },
     });
 
+    void this.notifierCommentaire(
+      utilisateurId,
+      publicationId,
+      publication.boutiqueId,
+      auteurParentId,
+      commentaire.id,
+      dto.contenu,
+      mentions.map((m) => m.id),
+    );
+
     return { ...commentaire, mentions };
+  }
+
+  /** Vendeur : nouveau commentaire. Auteur du parent : réponse. Jamais soi-même. */
+  private async notifierCommentaire(
+    auteurId: string,
+    publicationId: string,
+    vendeurId: string,
+    auteurParentId: string | null,
+    commentaireId: string,
+    contenu: string,
+    mentionnes: string[],
+  ) {
+    const nom = await this.notificateur.nomAffiche(auteurId);
+    const extrait = contenu.length > 80 ? `${contenu.slice(0, 80)}…` : contenu;
+    const donnees = { publicationId, commentaireId };
+
+    if (auteurParentId && auteurParentId !== auteurId) {
+      await this.notificateur.notifier({
+        utilisateurId: auteurParentId,
+        type: 'SOCIAL',
+        titre: 'Nouvelle réponse',
+        contenu: `${nom} a répondu : ${extrait}`,
+        donnees,
+      });
+    }
+    // Mentionnés (hors auteur et personnes déjà notifiées ci-dessus/ci-dessous)
+    for (const id of mentionnes) {
+      if (id === auteurId || id === auteurParentId || id === vendeurId) continue;
+      await this.notificateur.notifier({
+        utilisateurId: id,
+        type: 'SOCIAL',
+        titre: 'Vous avez été mentionné',
+        contenu: `${nom} vous a mentionné : ${extrait}`,
+        donnees,
+      });
+    }
+
+    if (vendeurId !== auteurId && vendeurId !== auteurParentId) {
+      await this.notificateur.notifier({
+        utilisateurId: vendeurId,
+        type: 'SOCIAL',
+        titre: 'Nouveau commentaire',
+        contenu: `${nom} a commenté : ${extrait}`,
+        donnees,
+      });
+    }
   }
 
   /**

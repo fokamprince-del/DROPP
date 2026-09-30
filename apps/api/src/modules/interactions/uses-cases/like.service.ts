@@ -4,14 +4,21 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { NotificateurService } from '../../notifications/notificateur.service.js';
 import { verifierPublicationVisible } from '../utils/publications.js';
 
 @Injectable()
 export class LikeService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificateur: NotificateurService,
+  ) {}
 
   async likerPublication(utilisateurId: string, publicationId: string) {
-    await verifierPublicationVisible(this.prisma, publicationId);
+    const publication = await verifierPublicationVisible(
+      this.prisma,
+      publicationId,
+    );
 
     try {
       await this.prisma.aime.create({
@@ -25,6 +32,21 @@ export class LikeService {
     }
 
     const total = await this.prisma.aime.count({ where: { publicationId } });
+
+    if (publication.boutiqueId !== utilisateurId) {
+      void this.notificateur.nomAffiche(utilisateurId).then((nom) =>
+        this.notificateur.notifier({
+          utilisateurId: publication.boutiqueId,
+          type: 'SOCIAL',
+          titre: 'Nouveau j’aime',
+          contenu: `${nom} a aimé votre publication.`,
+          donnees: { publicationId },
+          // Like / unlike / like en boucle = une seule notification.
+          cleDedoublonnage: `like:${publicationId}:${utilisateurId}`,
+        }),
+      );
+    }
+
     return { publicationId, likes: total };
   }
 

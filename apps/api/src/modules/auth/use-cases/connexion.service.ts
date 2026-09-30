@@ -9,7 +9,7 @@ import { JetonService, type JetonsEmis } from '../services/jeton.service.js';
 import type { ConnexionDto } from '../dto/connexion.dto.js';
 import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
-import type { CanalVerification } from '@dropp/database';
+import { TelephoneService } from '../services/telephone.service.js';
 
 /**
  * Statuts autorisant la connexion.
@@ -25,6 +25,7 @@ export class ConnexionService {
     private readonly jetonService: JetonService,
     private readonly otpService: OtpService,
     private readonly notificationService: NotificationService,
+    private readonly telephoneService: TelephoneService,
   ) {}
 
   /**
@@ -38,9 +39,10 @@ export class ConnexionService {
     JetonsEmis | { verificationRequise: true; verificationToken: string }
   > {
     const estEmail = dto.identifiant.includes('@');
+    // « 650 00 00 01 » doit retrouver « +237650000001 » (format E.164 en base).
     const identifiantNormalise = estEmail
       ? dto.identifiant.trim().toLowerCase()
-      : dto.identifiant.trim();
+      : this.telephoneService.normaliserOuBrut(dto.identifiant);
 
     const utilisateur = await this.prisma.utilisateur.findFirst({
       where: estEmail
@@ -77,9 +79,9 @@ export class ConnexionService {
 
     // Compte non vérifié : renvoyer un token de vérification
     if (utilisateur.statutCompte === 'EN_ATTENTE_VERIFICATION') {
-      const canal: CanalVerification = utilisateur.email ? 'EMAIL' : 'SMS';
-      const destination =
-        canal === 'EMAIL' ? utilisateur.email! : utilisateur.telephone!;
+      // Activation = vérification du téléphone : toujours par SMS.
+      const canal = 'SMS' as const;
+      const destination = utilisateur.telephone!;
 
       const { code } = await this.otpService.generer({
         destination,
@@ -88,7 +90,7 @@ export class ConnexionService {
         utilisateurId: utilisateur.id,
       });
 
-      this.notificationService.envoyerOtp({
+      await this.notificationService.envoyerOtp({
         destination,
         canal,
         code,

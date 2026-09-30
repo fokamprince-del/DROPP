@@ -1,7 +1,9 @@
 model Media {
   id                String                @id @default(uuid()) @db.Uuid
   typeMedia         TypeMedia             @map("type_media")
-  cleStockage       String                @map("cle_stockage")
+  /// Unique : un fichier ne peut être rattaché qu'à un seul média
+  /// (sinon supprimer l'un effacerait le fichier de l'autre).
+  cleStockage       String                @unique @map("cle_stockage")
   typeMime          String                @map("type_mime")
   taille            BigInt
   largeur           Int?

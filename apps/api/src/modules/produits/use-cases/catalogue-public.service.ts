@@ -21,16 +21,26 @@ export class CataloguePublicService {
   async executer(params: {
     categorieId?: string;
     boutiqueId?: string;
+    /** Recherche texte sur le nom et la description. */
+    q?: string;
     page: number;
     limite: number;
     utilisateurId?: string;
   }) {
-    const { categorieId, boutiqueId, page, limite } = params;
+    const { categorieId, boutiqueId, q, page, limite } = params;
 
-    const where = {
+    const where: Prisma.ProduitWhereInput = {
       statut: 'PUBLIE' as const,
+      // Produits d'une boutique suspendue : invisibles.
+      boutique: { statut: 'ACTIVE' },
       ...(categorieId && { categorieId }),
       ...(boutiqueId && { boutiqueId }),
+      ...(q && {
+        OR: [
+          { nom: { contains: q, mode: 'insensitive' as const } },
+          { description: { contains: q, mode: 'insensitive' as const } },
+        ],
+      }),
     };
 
     const [produits, total] = await this.prisma.$transaction([

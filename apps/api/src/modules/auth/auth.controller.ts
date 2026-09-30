@@ -33,6 +33,20 @@ import { SessionsService } from './use-cases/sessions.service.js';
 import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
 import { RenvoiCodeDto } from './dto/renvoi-code.dto.js';
 import { ProfilMeService } from './use-cases/profil-me.service.js';
+import { ChangementTelephoneService } from './use-cases/changement-telephone.service.js';
+import { SuppressionCompteService } from './use-cases/suppression-compte.service.js';
+import { VerificationEmailService } from './use-cases/verification-email.service.js';
+import { ChangementMotDePasseService } from './use-cases/changement-mot-de-passe.service.js';
+import {
+  ChangerEmailDto,
+  ChangerMotDePasseDto,
+  VerifierEmailDto,
+} from './dto/email.dto.js';
+import {
+  ConfirmerChangementTelephoneDto,
+  DemanderChangementTelephoneDto,
+  SupprimerCompteDto,
+} from './dto/changement-telephone.dto.js';
 import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
 
 /** Throttle nommé "court" : aligné sur la config ThrottlerModule de AppModule. */
@@ -52,6 +66,10 @@ export class AuthentificationController {
     private readonly reinitialisationMdpService: ReinitialisationMdpService,
     private readonly sessionsService: SessionsService,
     private readonly profilMeService: ProfilMeService,
+    private readonly changementTelephoneService: ChangementTelephoneService,
+    private readonly suppressionCompteService: SuppressionCompteService,
+    private readonly verificationEmailService: VerificationEmailService,
+    private readonly changementMotDePasseService: ChangementMotDePasseService,
   ) {}
 
   @Public()
@@ -123,12 +141,55 @@ export class AuthentificationController {
     return this.deconnexionService.executer(sessionId, utilisateur.id);
   }
 
+  /** Renvoie un verificationToken à joindre au code dans /reinitialiser-mot-de-passe. */
   @Public()
   @Throttle(THROTTLE_SENSIBLE)
   @Post('mot-de-passe-oublie')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   motDePasseOublie(@Body() dto: MotDePasseOublieDto) {
     return this.motDePasseOublieService.executer(dto);
+  }
+
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('mot-de-passe/changer')
+  @HttpCode(HttpStatus.OK)
+  changerMotDePasse(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Body() dto: ChangerMotDePasseDto,
+    @Ip() ip: string,
+  ) {
+    return this.changementMotDePasseService.executer(u.id, dto, ip);
+  }
+
+  // ── Email ─────────────────────────────────────────────────────────────────
+
+  /** (Re)envoie le code de confirmation à l'adresse actuelle. */
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('email/envoyer-code')
+  @HttpCode(HttpStatus.OK)
+  envoyerCodeEmail(@CurrentUser() u: UtilisateurConnecte) {
+    return this.verificationEmailService.envoyerCode(u.id);
+  }
+
+  /** Nouvelle adresse : enregistrée seulement après /email/verifier. */
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('email/changer')
+  @HttpCode(HttpStatus.OK)
+  changerEmail(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Body() dto: ChangerEmailDto,
+  ) {
+    return this.verificationEmailService.changer(u.id, dto);
+  }
+
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('email/verifier')
+  @HttpCode(HttpStatus.OK)
+  verifierEmail(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Body() dto: VerifierEmailDto,
+  ) {
+    return this.verificationEmailService.verifier(u.id, dto);
   }
 
   @Public()
@@ -146,5 +207,42 @@ export class AuthentificationController {
   @Get('me')
   me(@CurrentUser() u: UtilisateurConnecte) {
     return this.profilMeService.executer(u.id);
+  }
+
+  // ── Changement de numéro ──────────────────────────────────────────────────
+
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('telephone/changer')
+  @HttpCode(HttpStatus.OK)
+  demanderChangementTelephone(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Body() dto: DemanderChangementTelephoneDto,
+  ) {
+    return this.changementTelephoneService.demander(u.id, dto);
+  }
+
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('telephone/confirmer')
+  @HttpCode(HttpStatus.OK)
+  confirmerChangementTelephone(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Body() dto: ConfirmerChangementTelephoneDto,
+    @Ip() ip: string,
+  ) {
+    return this.changementTelephoneService.confirmer(u.id, dto, ip);
+  }
+
+  // ── Suppression de compte ─────────────────────────────────────────────────
+
+  /** POST plutôt que DELETE : certains clients HTTP n'envoient pas de body sur DELETE. */
+  @Throttle(THROTTLE_SENSIBLE)
+  @Post('compte/supprimer')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  supprimerCompte(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Body() dto: SupprimerCompteDto,
+    @Ip() ip: string,
+  ) {
+    return this.suppressionCompteService.executer(u.id, dto, ip);
   }
 }
