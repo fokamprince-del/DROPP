@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { validationSchema } from './configuration/validation.js';
 import configuration from './configuration/configuration.js';
 import { ConfigModule } from '@nestjs/config';
@@ -60,7 +60,7 @@ import { QueueModule } from './infrastructure/queue/queue.module.js';
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
-    { provide: APP_GUARD, useClass: IdempotenceInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor },
   ],
 })
 export class AppModule {
