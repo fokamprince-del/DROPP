@@ -78,4 +78,43 @@ export const validationSchema = Joi.object({
     .default(86400),
   AUTH_VERIFICATION_SECRET: Joi.string().min(32).required(),
   AUTH_VERIFICATION_TTL: Joi.string().pattern(DUREE).default('15m'),
+
+  // Délai de paiement d'une commande avant annulation auto (stock libéré).
+  COMMANDE_DELAI_PAIEMENT_MINUTES: Joi.number()
+    .integer()
+    .min(5)
+    .max(1440)
+    .default(30),
+
+  // Stockage : "stub" en dev, "r2" = Cloudflare R2 (clés R2_* obligatoires).
+  STOCKAGE_DRIVER: Joi.string().valid('stub', 'r2').default('stub'),
+  R2_ACCOUNT_ID: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  R2_ACCESS_KEY_ID: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  R2_SECRET_ACCESS_KEY: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  R2_BUCKET: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  // Bucket SANS accès public pour la messagerie (lu par URL signée).
+  R2_BUCKET_PRIVE: Joi.string().allow('').default(''),
+  R2_ENDPOINT: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().uri({ scheme: ['https'] }).required(),
+  }),
+  R2_PUBLIC_URL: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().uri({ scheme: ['https'] }).required(),
+  }),
+  R2_UPLOAD_URL_TTL: Joi.number().integer().min(60).max(3600).default(600),
+  // true uniquement avec un domaine perso + Transformations activées (pas r2.dev).
+  R2_TRANSFORMATIONS_IMAGES: Joi.boolean().default(false),
 });

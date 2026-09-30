@@ -1,0 +1,12 @@
+/// « Qui a vu ma story » : une ligne par spectateur et par story.
+model VueStory {
+  storyId       String      @map("story_id") @db.Uuid
+  utilisateurId String      @map("utilisateur_id") @db.Uuid
+  dateVue       DateTime    @default(now()) @map("date_vue") @db.Timestamptz(3)
+  story         Story       @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, utilisateurId])
+  @@index([utilisateurId])
+  @@map("vues_stories")
+}

@@ -57,7 +57,13 @@ export class IdempotenceInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    return from(this.traiter(idempotencyKey, response, next)).pipe(
+    // La clé est cloisonnée par utilisateur et par route : sinon deux clients
+    // envoyant la même Idempotency-Key recevraient la réponse l'un de l'autre.
+    // Les guards s'exécutent avant les interceptors : request.user est déjà posé.
+    const utilisateur = request.user as { id?: string } | undefined;
+    const cle = `${utilisateur?.id ?? 'anonyme'}:${request.method}:${request.baseUrl}${request.path}:${idempotencyKey}`;
+
+    return from(this.traiter(cle, response, next)).pipe(
       switchMap((result) => result),
     );
   }

@@ -6,7 +6,9 @@ import {
   JOB_NOTIFICATION,
   QUEUE_NOTIFICATION,
   type JobNotificationEmail,
+  type JobNotificationPush,
   type JobNotificationSms,
+  type ResultatNotificationPush,
 } from '@dropp/contrats';
 
 import {
@@ -17,6 +19,10 @@ import {
   EMAIL_PROVIDER,
   type EmailProvider,
 } from './providers/email/email.contract.js';
+import {
+  PUSH_PROVIDER,
+  type PushProvider,
+} from './providers/push/push.contract.js';
 
 @Processor(QUEUE_NOTIFICATION)
 export class NotificationWorker extends WorkerHost {
@@ -25,11 +31,12 @@ export class NotificationWorker extends WorkerHost {
   constructor(
     @Inject(SMS_PROVIDER) private readonly sms: SmsProvider,
     @Inject(EMAIL_PROVIDER) private readonly email: EmailProvider,
+    @Inject(PUSH_PROVIDER) private readonly push: PushProvider,
   ) {
     super();
   }
 
-  async process(job: Job): Promise<void> {
+  async process(job: Job): Promise<ResultatNotificationPush | void> {
     switch (job.name) {
       case JOB_NOTIFICATION.SMS:
         await this.traiterSms(job as Job<JobNotificationSms>);
@@ -37,6 +44,9 @@ export class NotificationWorker extends WorkerHost {
       case JOB_NOTIFICATION.EMAIL:
         await this.traiterEmail(job as Job<JobNotificationEmail>);
         break;
+      case JOB_NOTIFICATION.PUSH:
+        // La valeur de retour est lue par l'API (QueueEvents) pour purger les jetons morts.
+        return this.traiterPush(job as Job<JobNotificationPush>);
       default:
         this.logger.warn(`Job inconnu : ${job.name}`);
     }
@@ -53,6 +63,15 @@ export class NotificationWorker extends WorkerHost {
       job.data.destinataire,
       job.data.sujet,
       job.data.corps,
+      job.data.html,
     );
+  }
+
+  private async traiterPush(
+    job: Job<JobNotificationPush>,
+  ): Promise<ResultatNotificationPush> {
+    if (job.data.tokens.length === 0) return { tokensInvalides: [] };
+    this.logger.log(`Push → ${job.data.tokens.length} appareil(s)`);
+    return this.push.envoyer(job.data);
   }
 }

@@ -1,0 +1,13 @@
+/// Un utilisateur en bloque un autre : plus de messages ni de nouvelle conversation
+/// dans les deux sens.
+model Blocage {
+  bloqueurId   String      @map("bloqueur_id") @db.Uuid
+  bloqueId     String      @map("bloque_id") @db.Uuid
+  dateCreation DateTime    @default(now()) @map("date_creation") @db.Timestamptz(3)
+  bloqueur     Utilisateur @relation("BlocageEmis", fields: [bloqueurId], references: [id], onDelete: Cascade)
+  bloque       Utilisateur @relation("BlocageRecu", fields: [bloqueId], references: [id], onDelete: Cascade)
+
+  @@id([bloqueurId, bloqueId])
+  @@index([bloqueId])
+  @@map("blocages")
+}

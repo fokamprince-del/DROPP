@@ -17,6 +17,7 @@ import {
   STOCKAGE_PROVIDER,
   type StockageProvider,
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
+import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
 import type { ConfirmerStoryDto } from './dto/confirmer-story.dto.js';
 import type { CreerStoryDto } from './dto/creer-story.dto.js';
 
@@ -27,6 +28,8 @@ const TAILLE_MAX_PAR_TYPE: Record<string, number> = {
   'video/mp4': 500,
   'video/quicktime': 500,
 };
+
+const DUREE_MAX_STORY_MS = 24 * 3_600_000;
 
 const storySelection = {
   id: true,
@@ -78,6 +81,101 @@ export class StoriesService {
     return stories.map((story) => this.presenter(story));
   }
 
+  /**
+   * Stories actives des boutiques suivies (y compris visibilité ABONNES),
+   * regroupées par boutique, avec l'état « déjà vue » pour chaque story.
+   * Les boutiques avec des stories non vues passent en premier.
+   */
+  async listerAbonnements(utilisateurId: string) {
+    const stories = await this.prisma.story.findMany({
+      where: {
+        statut: StatutPublication.PUBLIEE,
+        dateExpiration: { gt: new Date() },
+        boutique: {
+          statut: 'ACTIVE',
+          vendeur: {
+            abonnements: { some: { utilisateurId, statut: 'ACTIF' } },
+          },
+        },
+      },
+      select: {
+        ...storySelection,
+        vues: { where: { utilisateurId }, select: { dateVue: true } },
+      },
+      orderBy: { dateCreation: 'asc' },
+    });
+
+    const parBoutique = new Map<
+      string,
+      {
+        boutique: { id: string; nom: string };
+        toutesVues: boolean;
+        stories: (ReturnType<StoriesService['presenter']> & { vue: boolean })[];
+      }
+    >();
+    for (const { vues, ...story } of stories) {
+      const groupe = parBoutique.get(story.boutique.id) ?? {
+        boutique: story.boutique,
+        toutesVues: true,
+        stories: [],
+      };
+      const vue = vues.length > 0;
+      groupe.toutesVues &&= vue;
+      groupe.stories.push({ ...this.presenter(story), vue });
+      parBoutique.set(story.boutique.id, groupe);
+    }
+    return [...parBoutique.values()].sort(
+      (a, b) => Number(a.toutesVues) - Number(b.toutesVues),
+    );
+  }
+
+  /** Enregistre une vue (idempotent). Le propriétaire ne compte pas. */
+  async marquerVue(utilisateurId: string, storyId: string) {
+    const story = await this.prisma.story.findFirst({
+      where: {
+        id: storyId,
+        statut: StatutPublication.PUBLIEE,
+        dateExpiration: { gt: new Date() },
+      },
+      select: { boutiqueId: true },
+    });
+    if (!story) throw new NotFoundException('Story introuvable.');
+    if (story.boutiqueId !== utilisateurId) {
+      await this.prisma.vueStory.upsert({
+        where: { storyId_utilisateurId: { storyId, utilisateurId } },
+        create: { storyId, utilisateurId },
+        update: {},
+      });
+    }
+    return { storyId, vue: true };
+  }
+
+  /** « Qui a vu ma story » — réservé à la boutique propriétaire. */
+  async listerVues(utilisateurId: string, storyId: string) {
+    const boutique = await this.obtenirBoutiqueActive(utilisateurId);
+    await this.obtenirStoryVendeur(storyId, boutique.id);
+    const vues = await this.prisma.vueStory.findMany({
+      where: { storyId },
+      orderBy: { dateVue: 'desc' },
+      select: {
+        dateVue: true,
+        utilisateur: {
+          select: { id: true, prenom: true, nom: true, pseudo: true, photoProfilCle: true },
+        },
+      },
+    });
+    return {
+      total: vues.length,
+      spectateurs: vues.map(({ dateVue, utilisateur: { photoProfilCle, ...u } }) => ({
+        ...u,
+        photoProfilUrl: photoProfilCle
+          ? this.stockage.urlPublique(photoProfilCle, { largeur: 100, hauteur: 100 })
+          : null,
+        dateVue,
+      })),
+    };
+  }
+
   async listerMesStories(utilisateurId: string) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
     const stories = await this.prisma.story.findMany({
@@ -90,8 +188,14 @@ export class StoriesService {
 
   async creer(utilisateurId: string, dto: CreerStoryDto) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
-    if (dto.dateExpiration <= new Date()) {
+    const maintenant = Date.now();
+    const dateExpiration =
+      dto.dateExpiration ?? new Date(maintenant + DUREE_MAX_STORY_MS);
+    if (dateExpiration.getTime() <= maintenant) {
       throw new BadRequestException('La date d’expiration doit être future.');
+    }
+    if (dateExpiration.getTime() > maintenant + DUREE_MAX_STORY_MS) {
+      throw new BadRequestException('Une story dure au maximum 24 heures.');
     }
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax || dto.taille > tailleMax * 1024 * 1024) {
@@ -115,7 +219,7 @@ export class StoriesService {
         boutique: { connect: { id: boutique.id } },
         visibilite: dto.visibilite,
         statut: StatutPublication.PROCESSING,
-        dateExpiration: dto.dateExpiration,
+        dateExpiration,
         media: {
           create: {
             typeMedia,
@@ -139,23 +243,22 @@ export class StoriesService {
   ) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
     const storyExistante = await this.obtenirStoryVendeur(storyId, boutique.id);
-    const prefixe = `boutiques/${boutique.id}/stories/${storyId}/`;
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
-    if (
-      !dto.cleStockage.startsWith(prefixe) ||
-      !tailleMax ||
-      dto.taille > tailleMax * 1024 * 1024
-    ) {
-      throw new BadRequestException('Média invalide pour cette story.');
+    if (!tailleMax) {
+      throw new BadRequestException('Type de fichier non pris en charge.');
     }
+    const reel = await verifierUpload(this.stockage, {
+      cleStockage: dto.cleStockage,
+      prefixe: `boutiques/${boutique.id}/stories/${storyId}/`,
+      tailleMaxMo: tailleMax,
+      typesMime: [dto.typeMime],
+    });
 
     const typeMedia = dto.typeMime.startsWith('video/')
       ? TypeMedia.VIDEO
       : TypeMedia.IMAGE;
-    const statutTraitement =
-      typeMedia === TypeMedia.IMAGE
-        ? StatutTraitementMedia.PRET
-        : StatutTraitementMedia.PROCESSING;
+    // Pas de transcodage : la story est publiée dès que le fichier est là.
+    const statutTraitement = StatutTraitementMedia.PRET;
 
     const story = await this.prisma.$transaction(async (tx) => {
       await tx.media.update({
@@ -164,7 +267,7 @@ export class StoriesService {
           typeMedia,
           cleStockage: dto.cleStockage,
           typeMime: dto.typeMime,
-          taille: dto.taille,
+          taille: reel.taille,
           largeur: dto.largeur,
           hauteur: dto.hauteur,
           duree: dto.duree,
@@ -173,12 +276,7 @@ export class StoriesService {
       });
       return tx.story.update({
         where: { id: storyId },
-        data: {
-          statut:
-            statutTraitement === StatutTraitementMedia.PRET
-              ? StatutPublication.PUBLIEE
-              : StatutPublication.PROCESSING,
-        },
+        data: { statut: StatutPublication.PUBLIEE },
         select: storySelection,
       });
     });

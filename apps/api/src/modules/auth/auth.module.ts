@@ -30,11 +30,17 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { RenvoiCodeService } from './use-cases/renvoie-code.service.js';
 import { ProfilMeService } from './use-cases/profil-me.service.js';
 import { QueueModule } from '../../infrastructure/queue/queue.module.js';
+import { StockageModule } from '../../infrastructure/stockage/stockage.module.js';
+import { ChangementTelephoneService } from './use-cases/changement-telephone.service.js';
+import { SuppressionCompteService } from './use-cases/suppression-compte.service.js';
+import { VerificationEmailService } from './use-cases/verification-email.service.js';
+import { ChangementMotDePasseService } from './use-cases/changement-mot-de-passe.service.js';
 
 @Module({
   imports: [
     PrismaModule,
     QueueModule,
+    StockageModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -70,6 +76,10 @@ import { QueueModule } from '../../infrastructure/queue/queue.module.js';
     RenvoiCodeService,
     VerificationTelephoneService,
     ProfilMeService,
+    ChangementTelephoneService,
+    SuppressionCompteService,
+    VerificationEmailService,
+    ChangementMotDePasseService,
 
     // Stratégie Passport
     JwtStrategy,

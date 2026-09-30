@@ -14,11 +14,16 @@ import {
   type VisibiliteContenu,
 } from '../../generated/prisma/client.js';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
+import { REDIS_CLIENT } from '../../infrastructure/redis/redis.provider.js';
+import type { Redis } from 'ioredis';
 import {
   STOCKAGE_PROVIDER,
   type StockageProvider,
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
+import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
 import type { ConfirmerMediaPublicationDto } from './dto/confirmer-media-publication.dto.js';
+
+const MAX_MEDIAS_PAR_PUBLICATION = 10;
 import type { CreerPublicationDto } from './dto/creer-publication.dto.js';
 import type { DemanderSignaturePublicationDto } from './dto/demander-signature-publication.dto.js';
 import type { MiseAJourPublicationDto } from './dto/mise-a-jour-publication.dto.js';
@@ -37,6 +42,7 @@ const publicationSelection = {
   type: true,
   visibilite: true,
   statut: true,
+  nombreVues: true,
   dateCreation: true,
   dateModification: true,
   boutique: { select: { id: true, nom: true } },
@@ -66,20 +72,53 @@ type PublicationAvecRelations = Prisma.PublicationGetPayload<{
   select: typeof publicationSelection;
 }>;
 
+const TTL_VUE_S = 24 * 3600;
+
 @Injectable()
 export class PublicationsService {
   constructor(
     private readonly prisma: PrismaService,
+    @Inject(REDIS_CLIENT) private readonly redis: Redis,
     @Inject(STOCKAGE_PROVIDER)
     private readonly stockage: StockageProvider,
   ) {}
 
-  async listerPubliques(page: number, limite: number) {
+  async listerPubliques(page: number, limite: number, boutiqueId?: string) {
     const where = {
       statut: StatutPublication.PUBLIEE,
       visibilite: 'PUBLIC' as const,
       boutique: { statut: 'ACTIVE' as const },
+      ...(boutiqueId && { boutiqueId }),
     };
+    return this.listerAvecFiltre(where, page, limite);
+  }
+
+  /**
+   * Fil « Abonnements » : publications des boutiques suivies,
+   * y compris celles réservées aux abonnés (visibilité ABONNES).
+   */
+  async listerFilAbonnements(
+    utilisateurId: string,
+    page: number,
+    limite: number,
+  ) {
+    const where = {
+      statut: StatutPublication.PUBLIEE,
+      boutique: {
+        statut: 'ACTIVE' as const,
+        vendeur: {
+          abonnements: { some: { utilisateurId, statut: 'ACTIF' as const } },
+        },
+      },
+    };
+    return this.listerAvecFiltre(where, page, limite);
+  }
+
+  private async listerAvecFiltre(
+    where: Prisma.PublicationWhereInput,
+    page: number,
+    limite: number,
+  ) {
     const [publications, total] = await this.prisma.$transaction([
       this.prisma.publication.findMany({
         where,
@@ -95,6 +134,27 @@ export class PublicationsService {
       donnees: publications.map((publication) => this.presenter(publication)),
       pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
+  }
+
+  /**
+   * Compte une vue : au plus une par spectateur (utilisateur ou IP) et par 24 h,
+   * pour que rafraîchir le fil ne gonfle pas le compteur.
+   */
+  async marquerVue(publicationId: string, spectateur: string) {
+    const nouvelle = await this.redis.set(
+      `dropp:vue:publication:${publicationId}:${spectateur}`,
+      '1',
+      'EX',
+      TTL_VUE_S,
+      'NX',
+    );
+    if (nouvelle === 'OK') {
+      await this.prisma.publication.updateMany({
+        where: { id: publicationId, statut: StatutPublication.PUBLIEE },
+        data: { nombreVues: { increment: 1 } },
+      });
+    }
+    return { publicationId };
   }
 
   async obtenirPublique(id: string) {
@@ -194,23 +254,30 @@ export class PublicationsService {
       publicationId,
       boutique.id,
     );
-    const prefixe = `boutiques/${boutique.id}/publications/${publicationId}/`;
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
-    if (
-      !dto.cleStockage.startsWith(prefixe) ||
-      !tailleMax ||
-      dto.taille > tailleMax * 1024 * 1024
-    ) {
-      throw new BadRequestException('Média invalide pour cette publication.');
+    if (!tailleMax) {
+      throw new BadRequestException('Type de fichier non pris en charge.');
     }
+    const nombreMedias = await this.prisma.mediaPublication.count({
+      where: { publicationId },
+    });
+    if (nombreMedias >= MAX_MEDIAS_PAR_PUBLICATION) {
+      throw new BadRequestException(
+        `Maximum ${MAX_MEDIAS_PAR_PUBLICATION} médias par publication.`,
+      );
+    }
+    const reel = await verifierUpload(this.stockage, {
+      cleStockage: dto.cleStockage,
+      prefixe: `boutiques/${boutique.id}/publications/${publicationId}/`,
+      tailleMaxMo: tailleMax,
+      typesMime: [dto.typeMime],
+    });
 
     const typeMedia = dto.typeMime.startsWith('video/')
       ? TypeMedia.VIDEO
       : TypeMedia.IMAGE;
-    const statutTraitement =
-      typeMedia === TypeMedia.IMAGE
-        ? StatutTraitementMedia.PRET
-        : StatutTraitementMedia.PROCESSING;
+    // Pas de transcodage : vidéos MP4/MOV lues directement depuis R2.
+    const statutTraitement = StatutTraitementMedia.PRET;
 
     const media = await this.prisma.$transaction(async (tx) => {
       const dernierMedia = await tx.mediaPublication.findFirst({
@@ -227,7 +294,7 @@ export class PublicationsService {
               typeMedia,
               cleStockage: dto.cleStockage,
               typeMime: dto.typeMime,
-              taille: dto.taille,
+              taille: reel.taille,
               largeur: dto.largeur,
               hauteur: dto.hauteur,
               duree: dto.duree,

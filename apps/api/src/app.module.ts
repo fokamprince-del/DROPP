@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { validationSchema } from './configuration/validation.js';
 import configuration from './configuration/configuration.js';
 import { ConfigModule } from '@nestjs/config';
@@ -23,6 +23,12 @@ import { RedisModule } from './infrastructure/redis/redis.module.js';
 import { IdempotenceModule } from './infrastructure/idempotence/idempotence.module.js';
 import { IdempotenceInterceptor } from './infrastructure/idempotence/idempotence.interceptor.js';
 import { QueueModule } from './infrastructure/queue/queue.module.js';
+import { RealtimeModule } from './infrastructure/realtime/realtime.module.js';
+import { MaintenanceModule } from './infrastructure/maintenance/maintenance.module.js';
+import { NotificationsModule } from './modules/notifications/notifications.module.js';
+import { MessagerieModule } from './modules/messagerie/messagerie.module.js';
+import { SignalementsModule } from './modules/signalements/signalements.module.js';
+import { AvisModule } from './modules/avis/avis.module.js';
 
 @Module({
   imports: [
@@ -33,16 +39,23 @@ import { QueueModule } from './infrastructure/queue/queue.module.js';
       load: [configuration],
       validationSchema,
     }),
-    ThrottlerModule.forRoot([
-      {
-        name: 'court',
-        ttl: 60_000,
-        limit: 20,
-      },
-    ]),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: 'court',
+          ttl: 60_000,
+          limit: 20,
+        },
+      ],
+      // Tests automatisés (NODE_ENV=test) : rafales de requêtes depuis une IP.
+      skipIf: () => process.env.NODE_ENV === 'test',
+    }),
     RedisModule,
     IdempotenceModule,
     QueueModule,
+    RealtimeModule,
+    MaintenanceModule,
+    NotificationsModule,
     AuthentificationModule,
     ProduitsModule,
     UsersModule,
@@ -55,12 +68,15 @@ import { QueueModule } from './infrastructure/queue/queue.module.js';
     InteractionsModule,
     PanierModule,
     CommandesModule,
+    MessagerieModule,
+    SignalementsModule,
+    AvisModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: TelephoneVerifieGuard },
-    { provide: APP_GUARD, useClass: IdempotenceInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor },
   ],
 })
 export class AppModule {

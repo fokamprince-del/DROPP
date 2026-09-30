@@ -2,12 +2,18 @@ import { Transform } from 'class-transformer';
 import {
   IsOptional,
   IsString,
-  IsUrl,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
+import { FORMAT_PSEUDO, normaliserPseudo } from '../pseudo.js';
+
+/**
+ * Le téléphone n'est volontairement pas modifiable ici : un changement de
+ * numéro passe par POST /auth/telephone/changer puis /auth/telephone/confirmer.
+ * La photo passe par POST /users/me/photo/signature puis PUT /users/me/photo.
+ */
 export class MiseAJourProfilDto {
   @IsOptional()
   @IsString()
@@ -23,18 +29,15 @@ export class MiseAJourProfilDto {
   @MaxLength(100)
   prenom?: string;
 
+  /** @pseudo public, utilisé pour les mentions. Converti en minuscules. */
   @IsOptional()
   @IsString()
   @Transform(({ value }) =>
-    typeof value === 'string' ? value.replace(/[\s().-]/g, '') : value,
+    typeof value === 'string' ? normaliserPseudo(value) : value,
   )
-  @Matches(/^\+237[26]\d{8}$/, {
-    message: 'Le numéro de téléphone doit être au format +237XXXXXXXXX.',
+  @Matches(FORMAT_PSEUDO, {
+    message:
+      'Le pseudo doit contenir 3 à 30 caractères : lettres, chiffres, « _ » ou « . ».',
   })
-  telephone?: string;
-
-  @IsOptional()
-  @IsUrl({ require_protocol: true })
-  @MaxLength(2048)
-  photoProfilUrl?: string | null;
+  pseudo?: string;
 }

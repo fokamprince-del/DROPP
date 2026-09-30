@@ -40,6 +40,28 @@ export default () => ({
     otpMaxEnvoisHeure: Number(process.env.REDIS_OTP_MAX_ENVOIS_HEURE ?? 5),
     idempotenceTtl: Number(process.env.REDIS_IDEMPOTENCE_TTL ?? 86400),
   },
+
+  commande: {
+    // Délai pour payer avant annulation automatique et libération du stock.
+    delaiPaiementMinutes: Number(
+      process.env.COMMANDE_DELAI_PAIEMENT_MINUTES ?? 30,
+    ),
+  },
+
+  stockage: {
+    driver: process.env.STOCKAGE_DRIVER ?? 'stub',
+    r2: {
+      accountId: process.env.R2_ACCOUNT_ID,
+      accessKeyId: process.env.R2_ACCESS_KEY_ID,
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+      bucket: process.env.R2_BUCKET,
+      bucketPrive: process.env.R2_BUCKET_PRIVE || undefined,
+      endpoint: process.env.R2_ENDPOINT,
+      publicUrl: process.env.R2_PUBLIC_URL,
+      uploadUrlTtl: Number(process.env.R2_UPLOAD_URL_TTL ?? 600),
+      transformationsImages: process.env.R2_TRANSFORMATIONS_IMAGES === 'true',
+    },
+  },
 });
 
 const SECONDES_PAR_UNITE = { s: 1, m: 60, h: 3_600, d: 86_400 } as const;

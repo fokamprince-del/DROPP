@@ -67,8 +67,11 @@ export class ProduitsController {
   @Public()
   @Get('produits')
   catalogue(
-    @Query('categorieId') categorieId?: string,
-    @Query('boutiqueId') boutiqueId?: string,
+    @Query('categorieId', new ParseUUIDPipe({ optional: true }))
+    categorieId?: string,
+    @Query('boutiqueId', new ParseUUIDPipe({ optional: true }))
+    boutiqueId?: string,
+    @Query('q') q?: string,
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
     @CurrentUser() u?: UtilisateurConnecte,
@@ -76,8 +79,9 @@ export class ProduitsController {
     return this.cataloguePublic.executer({
       categorieId,
       boutiqueId,
-      page,
-      limite: Math.min(limite, 100),
+      q: q?.trim().slice(0, 100) || undefined,
+      page: Math.max(page, 1),
+      limite: Math.min(Math.max(limite, 1), 100),
       utilisateurId: u?.id,
     });
   }

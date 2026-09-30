@@ -1,27 +1,50 @@
 import {
   ConflictException,
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
+import {
+  TAILLE_MAX_IMAGE_MO,
+  TYPES_MIME_IMAGE,
+  type SignatureImageDto,
+} from '../../infrastructure/stockage/image.dto.js';
+import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
+import {
+  STOCKAGE_PROVIDER,
+  type StockageProvider,
+} from '../../infrastructure/stockage/stockage-provider.contract.js';
 import { EnregistrerBoutiqueDto } from './dto/enregistrer-boutique.dto.js';
 import { MiseAJourBoutiqueDto } from './dto/mise-a-jour-boutique.dto.js';
+
+export type TypeImageBoutique = 'logo' | 'banniere';
 
 const boutiqueSelection = {
   id: true,
   nom: true,
   description: true,
   biographie: true,
+  logoCle: true,
+  banniereCle: true,
   statut: true,
   dateCreation: true,
   dateModification: true,
 } as const;
 
+type BoutiqueBrute = {
+  logoCle: string | null;
+  banniereCle: string | null;
+} & Record<string, unknown>;
+
 @Injectable()
 export class ShopsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(STOCKAGE_PROVIDER) private readonly stockage: StockageProvider,
+  ) {}
 
   async obtenirMaBoutique(vendeurId: string) {
     const boutique = await this.prisma.boutique.findUnique({
@@ -33,7 +56,99 @@ export class ShopsService {
       throw new NotFoundException('Boutique introuvable.');
     }
 
-    return boutique;
+    return this.presenter(boutique);
+  }
+
+  /** Recherche de boutiques actives par nom (les plus suivies d'abord). */
+  async rechercher(q: string | undefined, page: number, limite: number) {
+    const where = {
+      statut: 'ACTIVE' as const,
+      vendeur: { statutVendeur: 'ACTIF' as const },
+      ...(q && { nom: { contains: q, mode: 'insensitive' as const } }),
+    };
+    const [boutiques, total] = await this.prisma.$transaction([
+      this.prisma.boutique.findMany({
+        where,
+        orderBy: [
+          { vendeur: { abonnements: { _count: 'desc' } } },
+          { dateCreation: 'desc' },
+        ],
+        skip: (page - 1) * limite,
+        take: limite,
+        select: {
+          id: true,
+          nom: true,
+          description: true,
+          logoCle: true,
+          banniereCle: true,
+          vendeur: {
+            select: {
+              _count: {
+                select: { abonnements: { where: { statut: 'ACTIF' } } },
+              },
+            },
+          },
+        },
+      }),
+      this.prisma.boutique.count({ where }),
+    ]);
+    return {
+      donnees: boutiques.map(({ vendeur, ...b }) => ({
+        ...this.presenter(b),
+        abonnes: vendeur._count.abonnements,
+      })),
+      total,
+      page,
+      limite,
+    };
+  }
+
+  /** Page publique d'une boutique (profil + compteurs + état d'abonnement). */
+  async obtenirPublique(boutiqueId: string, utilisateurId?: string) {
+    const boutique = await this.prisma.boutique.findFirst({
+      where: { id: boutiqueId, statut: 'ACTIVE' },
+      select: {
+        id: true,
+        nom: true,
+        description: true,
+        biographie: true,
+        logoCle: true,
+        banniereCle: true,
+        dateCreation: true,
+        vendeur: { select: { statutVendeur: true } },
+      },
+    });
+    if (!boutique || boutique.vendeur.statutVendeur !== 'ACTIF') {
+      throw new NotFoundException('Boutique introuvable.');
+    }
+
+    const [abonnes, produits, publications, abonnement] = await Promise.all([
+      this.prisma.abonnement.count({
+        where: { vendeurId: boutiqueId, statut: 'ACTIF' },
+      }),
+      this.prisma.produit.count({
+        where: { boutiqueId, statut: 'PUBLIE' },
+      }),
+      this.prisma.publication.count({
+        where: { boutiqueId, statut: 'PUBLIEE' },
+      }),
+      utilisateurId
+        ? this.prisma.abonnement.findUnique({
+            where: {
+              utilisateurId_vendeurId: { utilisateurId, vendeurId: boutiqueId },
+            },
+            select: { statut: true },
+          })
+        : null,
+    ]);
+
+    const { vendeur: _vendeur, ...infos } = boutique;
+    return {
+      ...this.presenter(infos),
+      statistiques: { abonnes, produits, publications },
+      estAbonne: abonnement?.statut === 'ACTIF',
+      estMaBoutique: utilisateurId === boutiqueId,
+    };
   }
 
   async creerBoutique(vendeurId: string, dto: EnregistrerBoutiqueDto) {
@@ -60,19 +175,21 @@ export class ShopsService {
       throw new ConflictException('Ce vendeur possède déjà une boutique.');
     }
 
-    return this.prisma.boutique.create({
+    const boutique = await this.prisma.boutique.create({
       data: { id: vendeurId, ...dto },
       select: boutiqueSelection,
     });
+    return this.presenter(boutique);
   }
 
   async mettreAJourMaBoutique(vendeurId: string, dto: MiseAJourBoutiqueDto) {
     try {
-      return await this.prisma.boutique.update({
+      const boutique = await this.prisma.boutique.update({
         where: { id: vendeurId },
         data: dto,
         select: boutiqueSelection,
       });
+      return this.presenter(boutique);
     } catch (error: unknown) {
       if (
         typeof error === 'object' &&
@@ -85,5 +202,80 @@ export class ShopsService {
 
       throw error;
     }
+  }
+
+  // ── Logo / bannière ───────────────────────────────────────────────────────
+
+  async signatureImage(
+    vendeurId: string,
+    type: TypeImageBoutique,
+    dto: SignatureImageDto,
+  ) {
+    await this.obtenirMaBoutique(vendeurId);
+    return this.stockage.genererSignatureUpload(
+      this.repertoire(vendeurId, type),
+      dto.typeMime,
+      TAILLE_MAX_IMAGE_MO,
+    );
+  }
+
+  async confirmerImage(
+    vendeurId: string,
+    type: TypeImageBoutique,
+    cleStockage: string,
+  ) {
+    await verifierUpload(this.stockage, {
+      cleStockage,
+      prefixe: this.repertoire(vendeurId, type),
+      tailleMaxMo: TAILLE_MAX_IMAGE_MO,
+      typesMime: TYPES_MIME_IMAGE,
+    });
+    return this.remplacerImage(vendeurId, type, cleStockage);
+  }
+
+  supprimerImage(vendeurId: string, type: TypeImageBoutique) {
+    return this.remplacerImage(vendeurId, type, null);
+  }
+
+  private async remplacerImage(
+    vendeurId: string,
+    type: TypeImageBoutique,
+    cle: string | null,
+  ) {
+    const avant = await this.prisma.boutique.findUnique({
+      where: { id: vendeurId },
+      select: { logoCle: true, banniereCle: true },
+    });
+    if (!avant) throw new NotFoundException('Boutique introuvable.');
+
+    const champ = type === 'logo' ? 'logoCle' : 'banniereCle';
+    const boutique = await this.prisma.boutique.update({
+      where: { id: vendeurId },
+      data: { [champ]: cle },
+      select: boutiqueSelection,
+    });
+
+    const ancienne = avant[champ];
+    if (ancienne && ancienne !== cle) {
+      await this.stockage.supprimer(ancienne).catch(() => undefined);
+    }
+    return this.presenter(boutique);
+  }
+
+  private repertoire(vendeurId: string, type: TypeImageBoutique) {
+    return `boutiques/${vendeurId}/${type}`;
+  }
+
+  private presenter<T extends BoutiqueBrute>(boutique: T) {
+    const { logoCle, banniereCle, ...reste } = boutique;
+    return {
+      ...reste,
+      logoUrl: logoCle
+        ? this.stockage.urlPublique(logoCle, { largeur: 400, hauteur: 400 })
+        : null,
+      banniereUrl: banniereCle
+        ? this.stockage.urlPublique(banniereCle, { largeur: 1500 })
+        : null,
+    };
   }
 }

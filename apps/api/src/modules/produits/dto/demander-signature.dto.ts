@@ -28,6 +28,6 @@ export class DemanderSignatureDto {
   /** Taille du fichier en octets (envoyée par l'app avant l'upload). */
   @IsInt()
   @Min(1)
-  @Max(100 * 1024 * 1024) // 100 Mo max
+  @Max(500 * 1024 * 1024) // 500 Mo max (vidéos)
   taille!: number;
 }

@@ -24,7 +24,9 @@ export const RedisProvider = {
         return delai;
       },
       // enableOfflineQueue à true (défaut) : les commandes attendent la connexion
-      // lazyConnect à false : connexion immédiate au démarrage
+      // lazyConnect : la connexion est ouverte explicitement ci-dessous
+      // (sans lui, ioredis se connecte seul et connect() échoue en double).
+      lazyConnect: true,
       connectTimeout: 5000,
     });
 

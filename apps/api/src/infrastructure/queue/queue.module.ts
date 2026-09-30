@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { ConfigService } from '@nestjs/config';
-import { QUEUE_NOTIFICATION } from '@dropp/contrats';
+import { QUEUE_COMMANDE, QUEUE_NOTIFICATION } from '@dropp/contrats';
 
 @Module({
   imports: [
@@ -21,7 +21,10 @@ import { QUEUE_NOTIFICATION } from '@dropp/contrats';
         },
       }),
     }),
-    BullModule.registerQueue({ name: QUEUE_NOTIFICATION }),
+    BullModule.registerQueue(
+      { name: QUEUE_NOTIFICATION },
+      { name: QUEUE_COMMANDE },
+    ),
   ],
   exports: [BullModule],
 })

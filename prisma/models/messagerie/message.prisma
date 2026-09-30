@@ -9,8 +9,10 @@ model Message {
   conversation   Conversation         @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   expediteur     Utilisateur          @relation("ExpediteurMessage", fields: [expediteurId], references: [id])
   piecesJointes  PieceJointeMessage[]
+  signalements   Signalement[]
 
   @@index([conversationId])
+  @@index([conversationId, dateCreation(sort: Desc)])
   @@index([expediteurId])
   @@index([dateCreation])
   @@map("messages")
