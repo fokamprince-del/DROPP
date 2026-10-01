@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Ip,
   Param,
   ParseIntPipe,
   ParseUUIDPipe,
@@ -34,10 +35,41 @@ export class PublicationsController {
   listerPubliques(
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+    @Query('boutiqueId', new ParseUUIDPipe({ optional: true }))
+    boutiqueId?: string,
   ) {
     return this.publicationsService.listerPubliques(
-      page,
-      Math.min(limite, 100),
+      Math.max(page, 1),
+      Math.min(Math.max(limite, 1), 100),
+      boutiqueId,
+    );
+  }
+
+  /** À appeler quand la publication est réellement affichée à l'écran. */
+  @Public()
+  @Post('publications/:id/vue')
+  @HttpCode(HttpStatus.OK)
+  marquerVue(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Ip() ip: string,
+    @CurrentUser() utilisateur?: UtilisateurConnecte,
+  ) {
+    return this.publicationsService.marquerVue(
+      id,
+      utilisateur ? `u:${utilisateur.id}` : `ip:${ip}`,
+    );
+  }
+
+  @Get('publications/fil/abonnements')
+  filAbonnements(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+  ) {
+    return this.publicationsService.listerFilAbonnements(
+      utilisateur.id,
+      Math.max(page, 1),
+      Math.min(Math.max(limite, 1), 100),
     );
   }
 

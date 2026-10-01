@@ -4,7 +4,9 @@ model Signalement {
   publicationId String?             @map("publication_id") @db.Uuid
   commentaireId String?             @map("commentaire_id") @db.Uuid
   produitId     String?             @map("produit_id") @db.Uuid
-  motif         String
+  boutiqueId    String?             @map("boutique_id") @db.Uuid
+  messageId     String?             @map("message_id") @db.Uuid
+  motif        String
   description   String?
   statut        StatutSignalement   @default(OUVERT)
   priorite      PrioriteSignalement @default(NORMALE)
@@ -13,8 +15,12 @@ model Signalement {
   publication   Publication?        @relation(fields: [publicationId], references: [id])
   commentaire   Commentaire?        @relation(fields: [commentaireId], references: [id])
   produit       Produit?            @relation(fields: [produitId], references: [id])
+  boutique      Boutique?           @relation(fields: [boutiqueId], references: [id])
+  message       Message?            @relation(fields: [messageId], references: [id], onDelete: SetNull)
 
   @@index([utilisateurId])
+  @@index([boutiqueId])
+  @@index([messageId])
   @@index([publicationId])
   @@index([commentaireId])
   @@index([produitId])

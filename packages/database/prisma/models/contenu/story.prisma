@@ -9,6 +9,7 @@ model Story {
   dateExpiration DateTime          @map("date_expiration") @db.Timestamptz(3)
   boutique       Boutique          @relation(fields: [boutiqueId], references: [id])
   media          Media             @relation(fields: [mediaId], references: [id])
+  vues           VueStory[]
 
   @@index([boutiqueId])
   @@index([dateExpiration])

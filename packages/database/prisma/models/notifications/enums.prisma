@@ -4,6 +4,7 @@ enum TypeNotification {
   COMMANDE
   PAIEMENT
   MESSAGE
+  SOCIAL
   PROMOTION
   SYSTEME
   SECURITE

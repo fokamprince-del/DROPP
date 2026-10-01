@@ -7,6 +7,7 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 import { OtpService } from '../services/otp.service.js';
 import { JetonService, type JetonsEmis } from '../services/jeton.service.js';
 import type { VerifierOtpDto } from '../dto/verifier-otp.dto.js';
+import { VerificationEmailService } from './verification-email.service.js';
 
 const STATUTS_AUTORISES = new Set(['EN_ATTENTE_VERIFICATION', 'ACTIF']);
 
@@ -16,6 +17,7 @@ export class VerificationTelephoneService {
     private readonly prisma: PrismaService,
     private readonly otpService: OtpService,
     private readonly jetonService: JetonService,
+    private readonly verificationEmail: VerificationEmailService,
   ) {}
 
   async executer(dto: VerifierOtpDto, adresseIp?: string): Promise<JetonsEmis> {
@@ -27,11 +29,24 @@ export class VerificationTelephoneService {
     if (payload.purpose !== 'inscription') {
       throw new UnauthorizedException('Token de vérification invalide.');
     }
+    // Ce code vérifie le TÉLÉPHONE : un code envoyé par email ne peut pas
+    // le valider (anciens tokens émis avant le passage à l'activation SMS).
+    if (payload.canalOtp !== 'SMS') {
+      throw new UnauthorizedException(
+        'Code expiré. Demandez un nouveau code par SMS.',
+      );
+    }
 
     // 2. Vérifier le compte
     const utilisateur = await this.prisma.utilisateur.findUnique({
       where: { id: payload.sub },
-      select: { id: true, statutCompte: true, telephoneVerifieLe: true },
+      select: {
+        id: true,
+        statutCompte: true,
+        telephoneVerifieLe: true,
+        email: true,
+        emailVerifieLe: true,
+      },
     });
 
     if (!utilisateur || !STATUTS_AUTORISES.has(utilisateur.statutCompte)) {
@@ -64,7 +79,15 @@ export class VerificationTelephoneService {
       select: { statutCompte: true, telephoneVerifieLe: true },
     });
 
-    // 5. Ouvrir la session
+    // 5. Email fourni à l'inscription : envoi du code de confirmation
+    //    (non bloquant — l'app propose ensuite l'écran « Confirmez votre email »).
+    if (utilisateur.email && !utilisateur.emailVerifieLe) {
+      void this.verificationEmail
+        .envoyerCode(utilisateur.id)
+        .catch(() => undefined);
+    }
+
+    // 6. Ouvrir la session
     return this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
       statutCompte: mis_a_jour.statutCompte,

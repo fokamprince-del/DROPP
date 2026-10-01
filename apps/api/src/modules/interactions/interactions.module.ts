@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
+import { StockageModule } from '../../infrastructure/stockage/stockage.module.js';
 import { InteractionsController } from './interactions.controller.js';
 
 import { CommentaireService } from './uses-cases/commentaire.service.js';
@@ -12,7 +13,7 @@ import { AbonnementService } from './uses-cases/abonnement.service.js';
 import { EtatsUtilisateurService } from './uses-cases/etats.service.js';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, StockageModule],
   controllers: [InteractionsController],
   providers: [
     AbonnementService,

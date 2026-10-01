@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { OtpService } from '../services/otp.service.js';
 import { MotDePasseService } from '../services/mot-de-passe.service.js';
@@ -10,7 +6,6 @@ import { TelephoneService } from '../services/telephone.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import type { InscriptionDto } from '../dto/inscription.dto.js';
 import { JetonService } from '../services/jeton.service.js';
-import { CanalVerification } from '@dropp/database';
 
 @Injectable()
 export class InscriptionService {
@@ -64,9 +59,11 @@ export class InscriptionService {
       select: { id: true },
     });
 
-    // 5. Canal préféré : email si disponible, sinon SMS
-    const canal: CanalVerification = email ? 'EMAIL' : 'SMS';
-    const destination = canal === 'EMAIL' ? email! : telephone;
+    // 5. Activation par SMS : c'est le TÉLÉPHONE que ce code vérifie (un compte
+    //    ACTIF exige telephone_verifie_le). L'email, s'il est fourni, est
+    //    confirmé séparément après l'activation (EmailVerificationService).
+    const canal = 'SMS' as const;
+    const destination = telephone;
 
     // 6. Génération et envoi de l'OTP
     const { code } = await this.otpService.generer({

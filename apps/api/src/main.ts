@@ -4,6 +4,8 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 
 import { AppModule } from './app.module.js';
+import { RedisIoAdapter } from './infrastructure/realtime/redis-io.adapter.js';
+import { PrismaExceptionFilter } from './infrastructure/http/prisma-exception.filter.js';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap(): Promise<void> {
@@ -16,6 +18,7 @@ async function bootstrap(): Promise<void> {
       forbidNonWhitelisted: true,
     }),
   );
+  app.useGlobalFilters(new PrismaExceptionFilter());
   const config = app.get(ConfigService);
 
   const trustProxy = config.getOrThrow<number>('app.trustProxy');
@@ -27,6 +30,11 @@ async function bootstrap(): Promise<void> {
   if (origins.length > 0) {
     app.enableCors({ origin: origins, maxAge: 600 });
   }
+
+  // Socket.IO multi-instances via Redis pub/sub.
+  const adaptateurIo = new RedisIoAdapter(app);
+  adaptateurIo.connecterRedis();
+  app.useWebSocketAdapter(adaptateurIo);
 
   app.enableShutdownHooks();
 

@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { Client } from '../auth/decorators/profils.decorator.js';
+import { Client, Vendeur } from '../auth/decorators/profils.decorator.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { Public } from '../auth/decorators/public.decorator.js';
 import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
@@ -122,7 +122,7 @@ export class InteractionsController {
     @CurrentUser() u: UtilisateurConnecte,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    return this.likeservice.likerPublication(u.id, id);
+    return this.likeservice.likerCommentaire(u.id, id);
   }
 
   @Client()
@@ -155,6 +155,33 @@ export class InteractionsController {
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.abonnementservice.nePlusSuivre(u.id, id);
+  }
+
+  @Get('moi/abonnements')
+  mesAbonnements(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+  ) {
+    return this.abonnementservice.listerMesAbonnements(
+      u.id,
+      Math.max(page, 1),
+      Math.min(Math.max(limite, 1), 50),
+    );
+  }
+
+  @Vendeur()
+  @Get('boutique/abonnes')
+  mesAbonnes(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+  ) {
+    return this.abonnementservice.listerMesAbonnes(
+      u.id,
+      Math.max(page, 1),
+      Math.min(Math.max(limite, 1), 50),
+    );
   }
 
   // ── Favoris publications ──────────────────────────────────────────────────

@@ -37,7 +37,11 @@ export class ReinitialisationMdpService {
       select: { id: true, statutCompte: true, telephoneVerifieLe: true },
     });
 
-    if (!utilisateur) {
+    if (
+      !utilisateur ||
+      utilisateur.statutCompte === 'SUPPRIME' ||
+      utilisateur.statutCompte === 'SUSPENDU_DEF'
+    ) {
       await this.otpService
         .verifier({
           destination: payload.dst,
@@ -60,22 +64,38 @@ export class ReinitialisationMdpService {
       dto.nouveauMotDePasse,
     );
 
+    // Code reçu par SMS = possession du téléphone prouvée : un compte encore
+    // en attente de vérification est activé au passage.
+    const viaSms = payload.canalOtp === 'SMS';
+    const activer =
+      viaSms && utilisateur.statutCompte === 'EN_ATTENTE_VERIFICATION';
+    const telephoneVerifieLe =
+      utilisateur.telephoneVerifieLe ?? (viaSms ? new Date() : null);
+    const statutCompte = activer ? 'ACTIF' : utilisateur.statutCompte;
+
     await this.prisma.$transaction([
       this.prisma.utilisateur.update({
         where: { id: utilisateur.id },
-        data: { motDePasseHash: nouveauHash },
+        data: { motDePasseHash: nouveauHash, telephoneVerifieLe, statutCompte },
       }),
       this.prisma.session.updateMany({
         where: { utilisateurId: utilisateur.id, dateRevocation: null },
         data: { dateRevocation: new Date() },
+      }),
+      this.prisma.journalSecurite.create({
+        data: {
+          utilisateurId: utilisateur.id,
+          evenement: 'REINITIALISATION_MDP_EFFECTUEE',
+          adresseIp,
+        },
       }),
     ]);
 
     // 5. Nouvelle session propre
     return this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
-      statutCompte: utilisateur.statutCompte,
-      telephoneVerifie: utilisateur.telephoneVerifieLe !== null,
+      statutCompte,
+      telephoneVerifie: telephoneVerifieLe !== null,
       methodeAuth: payload.dst.includes('@') ? 'EMAIL_MDP' : 'TELEPHONE_MDP',
       adresseIp,
     });

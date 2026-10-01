@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { Client } from '../auth/decorators/profils.decorator.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
@@ -29,5 +37,15 @@ export class CommandeController {
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.commandes.obtenir(utilisateur.id, id);
+  }
+
+  @Client()
+  @Post(':id/annuler')
+  @HttpCode(HttpStatus.OK)
+  annuler(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.commandes.annuler(utilisateur.id, id);
   }
 }

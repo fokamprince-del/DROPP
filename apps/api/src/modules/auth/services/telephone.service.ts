@@ -20,6 +20,19 @@ export class TelephoneService {
     return parsePhoneNumberWithError(brut, REGION_DEFAUT).format('E.164');
   }
 
+  /**
+   * Pour les recherches (connexion, mot de passe oublié) : E.164 si le numéro
+   * est valide, sinon la saisie brute — sans lever, pour garder une réponse
+   * identique à « compte inconnu » (anti-énumération).
+   */
+  normaliserOuBrut(numero: string): string {
+    try {
+      return this.normaliser(numero);
+    } catch {
+      return numero.trim();
+    }
+  }
+
   estValide(numero: string): boolean {
     try {
       this.normaliser(numero);
