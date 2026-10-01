@@ -45,6 +45,19 @@ cd DROPP
 pnpm install
 ```
 
+`pnpm install` lance ensuite automatiquement `pnpm generer`, qui produit les fichiers générés non versionnés dans git :
+
+- le client Prisma (`apps/api/src/generated/prisma`) ;
+- les contrats partagés compilés (`packages/contrats/dist`).
+
+Sans eux, la compilation échoue avec des centaines d'erreurs `Cannot find module '../../generated/prisma/client.js'`. Après chaque `git pull` qui modifie le schéma Prisma ou `packages/contrats`, relancez :
+
+```bash
+pnpm generer
+```
+
+Aucun fichier `.env` n'est nécessaire pour cette étape.
+
 Si pnpm demande l'autorisation d'exécuter certains scripts de dépendances, n'autorisez que les paquets nécessaires et connus.
 
 Ne désactivez pas globalement les protections de pnpm.
@@ -121,10 +134,16 @@ Prisma est utilisé comme couche d'accès à PostgreSQL.
 
 Le projet utilise actuellement **Prisma 7.10.0**.
 
-Après l'installation ou après une modification du schéma Prisma :
+Après une modification du schéma Prisma (le client est déjà généré par `pnpm install`) :
 
 ```bash
 pnpm prisma:generate
+```
+
+Après un `git pull` qui apporte de nouvelles migrations, appliquez-les à votre base locale :
+
+```bash
+pnpm prisma:migrate:dev
 ```
 
 Vérifier le schéma :

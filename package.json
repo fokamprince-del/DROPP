@@ -11,6 +11,9 @@
     "test": "turbo test",
     "typecheck": "turbo typecheck",
 
+    "postinstall": "pnpm run generer",
+    "generer": "prisma generate && pnpm --filter @dropp/contrats build",
+
     "api:dev": "pnpm --filter api start:dev",
     "api:build": "pnpm --filter api build",
     "api:start": "pnpm --filter api start:prod",

@@ -1,5 +1,10 @@
 import 'dotenv/config';
-import { defineConfig, env } from 'prisma/config';
+import { defineConfig } from 'prisma/config';
+
+// DATABASE_URL n'est requise que pour les commandes qui parlent à la base
+// (migrate, studio…). `prisma generate` doit marcher sans .env, sur un clone
+// neuf ou en CI : on ne déclare la datasource que si l'URL est définie.
+const url = process.env.DATABASE_URL;
 
 export default defineConfig({
   schema: 'prisma',
@@ -8,7 +13,5 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
 
-  datasource: {
-    url: env('DATABASE_URL'),
-  },
+  ...(url && { datasource: { url } }),
 });
