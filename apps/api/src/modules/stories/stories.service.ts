@@ -11,7 +11,7 @@ import {
   StatutTraitementMedia,
   TypeMedia,
   type Prisma,
-} from '../../generated/prisma/client.js';
+} from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
   STOCKAGE_PROVIDER,

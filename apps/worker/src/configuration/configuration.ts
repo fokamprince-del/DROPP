@@ -19,4 +19,8 @@ export default () => ({
     // Les retours à la ligne de la clé sont échappés dans le .env.
     privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   },
+  database: {
+    url: process.env.DATABASE_URL!,
+    poolMax: process.env.DATABASE_POOL_MAX ?? 5
+  }
 });

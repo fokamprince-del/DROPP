@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { Prisma } from '../../../generated/prisma/client.js';
+import type { Prisma } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import {
   STOCKAGE_PROVIDER,

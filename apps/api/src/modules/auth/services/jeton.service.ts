@@ -6,7 +6,7 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import type {
   CanalVerification,
   MethodeAuthentification,
-} from '../../../generated/prisma/enums.js';
+} from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 
 export interface PayloadJwt {

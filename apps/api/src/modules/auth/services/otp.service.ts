@@ -14,7 +14,7 @@ import { REDIS_CLIENT } from '../../../infrastructure/redis/redis.provider.js';
 import type {
   CanalVerification,
   TypeCodeVerification,
-} from '../../../generated/prisma/enums.js';
+} from '@dropp/database';
 
 const OTP_DIGITS = 6;
 

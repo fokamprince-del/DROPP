@@ -9,7 +9,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-import { TypeAdresse } from '../../../generated/prisma/client.js';
+import { TypeAdresse } from '@dropp/database';
 
 export class MiseAJourAdresseDto {
   @IsOptional()

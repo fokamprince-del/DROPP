@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-import type { TypeNotification } from '../../../generated/prisma/enums.js';
+import type { TypeNotification } from '@dropp/database';
 import { TYPES_CONFIGURABLES } from '../notifications.service.js';
 
 export class PreferenceDto {

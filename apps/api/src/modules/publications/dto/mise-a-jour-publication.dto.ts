@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
-import { VisibiliteContenu } from '../../../generated/prisma/client.js';
+import { VisibiliteContenu } from '@dropp/database';
 
 export class MiseAJourPublicationDto {
   @IsOptional()

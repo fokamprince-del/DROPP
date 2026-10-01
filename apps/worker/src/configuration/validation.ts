@@ -1,6 +1,7 @@
 import Joi from 'joi';
 
 export const validationSchema = Joi.object({
+  APP_NAME: Joi.string().default('DROPP WORKERS'),
   NODE_ENV: Joi.string()
     .valid('development', 'test', 'production')
     .default('development'),
@@ -29,4 +30,7 @@ export const validationSchema = Joi.object({
     is: Joi.string().min(1),
     then: Joi.string().min(100).required(),
   }),
+
+  DATABASE_URL: Joi.string().required(),
+  DATABASE_POOL_MAX: Joi.number().default(5)
 });

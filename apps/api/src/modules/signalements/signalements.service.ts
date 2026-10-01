@@ -5,11 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import type { Prisma } from '../../generated/prisma/client.js';
+import type { Prisma } from '@dropp/database';
 import {
   PrioriteSignalement,
   StatutSignalement,
-} from '../../generated/prisma/enums.js';
+} from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
   MOTIFS,

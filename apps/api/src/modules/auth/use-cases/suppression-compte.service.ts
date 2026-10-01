@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import type { StatutCommande } from '../../../generated/prisma/enums.js';
+import type { StatutCommande } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import {
   STOCKAGE_PROVIDER,

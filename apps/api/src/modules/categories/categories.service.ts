@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { StatutCategorie } from '../../generated/prisma/client.js';
+import { StatutCategorie } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { CreerCategorieDto } from './dto/creer-categorie.dto.js';
 import { MiseAJourCategorieDto } from './dto/mise-a-jour-categorie.dto.js';

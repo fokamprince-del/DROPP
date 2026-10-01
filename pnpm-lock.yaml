@@ -187,6 +187,9 @@ importers:
       '@dropp/contrats':
         specifier: workspace:*
         version: link:../../packages/contrats
+      '@dropp/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@nestjs/bullmq':
         specifier: ^12.0.0
         version: 12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@12.0.1)(bullmq@6.3.9(ioredis@6.0.0(supports-color@8.1.1))(pg@8.23.0))
@@ -335,6 +338,9 @@ importers:
       '@dropp/contrats':
         specifier: workspace:*
         version: link:../../packages/contrats
+      '@dropp/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@nestjs/bullmq':
         specifier: ^12.0.0
         version: 12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@12.0.1)(bullmq@6.3.9(ioredis@6.0.0(supports-color@8.1.1))(pg@8.23.0))
@@ -350,6 +356,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^12.0.1
         version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@12.0.1)(supports-color@8.1.1)
+      '@prisma/adapter-pg':
+        specifier: ^7.10.0
+        version: 7.10.0
       bullmq:
         specifier: ^6.3.9
         version: 6.3.9(ioredis@6.0.0(supports-color@8.1.1))(pg@8.23.0)
@@ -362,6 +371,9 @@ importers:
       joi:
         specifier: ^18.2.9
         version: 18.2.9
+      pg:
+        specifier: ^8.23.0
+        version: 8.23.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -387,6 +399,9 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.13.4
+      '@types/pg':
+        specifier: ^8.23.1
+        version: 8.23.1
       '@types/supertest':
         specifier: ^7.0.0
         version: 7.2.1
@@ -423,6 +438,31 @@ importers:
       '@types/node':
         specifier: ^26.6.2
         version: 26.6.2
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
+  packages/database:
+    dependencies:
+      '@prisma/adapter-pg':
+        specifier: ^7.10.0
+        version: 7.10.0
+      '@prisma/client':
+        specifier: ^7.10.0
+        version: 7.10.0(prisma@7.10.0(@types/react@19.3.0)(magicast@0.5.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@7.0.2))(typescript@7.0.2)
+      pg:
+        specifier: ^8.23.0
+        version: 8.23.0
+    devDependencies:
+      '@types/node':
+        specifier: ^26.6.3
+        version: 26.6.3
+      dotenv:
+        specifier: ^18.0.4
+        version: 18.0.4
+      prisma:
+        specifier: 7.10.0
+        version: 7.10.0(@types/react@19.3.0)(magicast@0.5.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@7.0.2)
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
@@ -1964,6 +2004,9 @@ packages:
   '@types/node@26.6.2':
     resolution: {integrity: sha512-X1P21scMv4zGKLYqjdGjaKa7COa0RKVYYZZN/NfvLQ1JegxFhdhpZG/Lyn8AXx6CDUavKAd11v6BvfpkDByK8g==}
 
+  '@types/node@26.6.3':
+    resolution: {integrity: sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg==}
+
   '@types/passport-jwt@4.0.1':
     resolution: {integrity: sha512-Y0Ykz6nWP4jpxgEUYq8NoVZeCQPo1ZndJLfapI249g1jHChvRfZRO/LS3tqu26YgAS/laI1qx98sYGz0IalRXQ==}
 
@@ -2737,6 +2780,11 @@ packages:
 
   dotenv@18.0.3:
     resolution: {integrity: sha512-/8CJTyL817qPnfbQrJgOEcrU3fDrJkRIoXBE566wHuvIXKOCHUZhPqGPbCPi9SogjdGnreF0TlvnTgK6J/8zpA==}
+    engines: {node: '>=12'}
+    hasBin: true
+
+  dotenv@18.0.4:
+    resolution: {integrity: sha512-jGt9uI5BIxpVO15kvy+iEFqNAwxYClKWnkptLjSNPnFLC003Imd0ofr3aEVsbpHdSBdSsbcApNIlz4nbyGMwdA==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -5613,6 +5661,13 @@ snapshots:
       prisma: 7.10.0(@types/react@19.3.0)(magicast@0.5.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
       typescript: 6.0.3
 
+  '@prisma/client@7.10.0(prisma@7.10.0(@types/react@19.3.0)(magicast@0.5.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@7.0.2))(typescript@7.0.2)':
+    dependencies:
+      '@prisma/client-runtime-utils': 7.10.0
+    optionalDependencies:
+      prisma: 7.10.0(@types/react@19.3.0)(magicast@0.5.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@7.0.2)
+      typescript: 7.0.2
+
   '@prisma/config@7.10.0(magicast@0.5.5)':
     dependencies:
       c12: 3.3.4(magicast@0.5.5)
@@ -5642,6 +5697,26 @@ snapshots:
       remeda: 2.33.4
       std-env: 3.10.0
       valibot: 1.4.2(typescript@6.0.3)
+      zeptomatch: 2.1.0
+    transitivePeerDependencies:
+      - typescript
+
+  '@prisma/dev@0.24.17(typescript@7.0.2)':
+    dependencies:
+      '@electric-sql/pglite': 0.4.3
+      '@electric-sql/pglite-socket': 0.1.3(@electric-sql/pglite@0.4.3)
+      '@electric-sql/pglite-tools': 0.3.3(@electric-sql/pglite@0.4.3)
+      '@prisma/get-platform': 7.2.0
+      '@prisma/query-plan-executor': 7.2.0
+      '@prisma/streams-local': 0.1.11
+      find-my-way: 9.7.0
+      foreground-child: 3.3.1
+      get-port-please: 3.2.0
+      pathe: 2.0.3
+      proper-lockfile: 4.1.2
+      remeda: 2.33.4
+      std-env: 3.10.0
+      valibot: 1.4.2(typescript@7.0.2)
       zeptomatch: 2.1.0
     transitivePeerDependencies:
       - typescript
@@ -5996,6 +6071,10 @@ snapshots:
       undici-types: 7.18.2
 
   '@types/node@26.6.2':
+    dependencies:
+      undici-types: 8.9.0
+
+  '@types/node@26.6.3':
     dependencies:
       undici-types: 8.9.0
 
@@ -6791,6 +6870,8 @@ snapshots:
 
   dotenv@18.0.3: {}
 
+  dotenv@18.0.4: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -7462,7 +7543,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 26.6.2
+      '@types/node': 26.6.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
     optional: true
@@ -8016,6 +8097,23 @@ snapshots:
       postgres: 3.4.7
     optionalDependencies:
       typescript: 6.0.3
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+      - magicast
+      - react
+      - react-dom
+
+  prisma@7.10.0(@types/react@19.3.0)(magicast@0.5.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@7.0.2):
+    dependencies:
+      '@prisma/config': 7.10.0(magicast@0.5.5)
+      '@prisma/dev': 0.24.17(typescript@7.0.2)
+      '@prisma/engines': 7.10.0
+      '@prisma/studio-core': 0.33.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      mysql2: 3.15.3
+      postgres: 3.4.7
+    optionalDependencies:
+      typescript: 7.0.2
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -8632,6 +8730,10 @@ snapshots:
   valibot@1.4.2(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
+
+  valibot@1.4.2(typescript@7.0.2):
+    optionalDependencies:
+      typescript: 7.0.2
 
   validator@13.15.35: {}
 
