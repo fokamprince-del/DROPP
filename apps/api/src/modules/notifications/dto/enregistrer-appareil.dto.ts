@@ -6,7 +6,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-import { PlateformeAppareil } from '../../../generated/prisma/enums.js';
+import { PlateformeAppareil } from '@dropp/database';
 
 export class EnregistrerAppareilDto {
   @IsString()

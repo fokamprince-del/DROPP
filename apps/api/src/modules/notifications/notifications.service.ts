@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { TypeNotification } from '../../generated/prisma/enums.js';
+import { TypeNotification } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { EVENEMENT } from '../../infrastructure/realtime/evenements.js';
 import { RealtimeService } from '../../infrastructure/realtime/realtime.service.js';

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import type { Response } from 'express';
 
-import { Prisma } from '../../generated/prisma/client.js';
+import { Prisma } from '@dropp/database';
 
 const CORRESPONDANCES: Record<string, { statut: HttpStatus; message: string }> = {
   P2002: { statut: HttpStatus.CONFLICT, message: 'Cette ressource existe déjà.' },

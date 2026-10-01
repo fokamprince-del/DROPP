@@ -10,7 +10,7 @@ import {
   StatutConversation,
   StatutMessage,
   TypeConversation,
-} from '../../generated/prisma/enums.js';
+} from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
   STOCKAGE_PROVIDER,

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 
-import type { CanalVerification } from '../../../generated/prisma/enums.js';
+import type { CanalVerification } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { MotDePasseOublieDto } from '../dto/mot-de-passe-oublie.dto.js';
 import { JetonService } from '../services/jeton.service.js';
