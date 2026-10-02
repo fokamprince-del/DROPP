@@ -29,6 +29,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { MessagerieModule } from './modules/messagerie/messagerie.module.js';
 import { SignalementsModule } from './modules/signalements/signalements.module.js';
 import { AvisModule } from './modules/avis/avis.module.js';
+import { KycModule } from './modules/kyc/kyc.module.js';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { AvisModule } from './modules/avis/avis.module.js';
     MessagerieModule,
     SignalementsModule,
     AvisModule,
+    KycModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

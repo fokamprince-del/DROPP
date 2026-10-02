@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './configuration/configuration.js';
 import { validationSchema } from './configuration/validation.js';
 import { BullModule } from '@nestjs/bullmq';
-import { QUEUE_NOTIFICATION } from '@dropp/contrats';
+import { QUEUE_KYC, QUEUE_NOTIFICATION } from '@dropp/contrats';
 import { NotificationModule } from './modules/notification/notification.module.js';
 import { PrismaModule } from './infrastructure/database/database/prisma.module.js';
 
@@ -35,7 +35,10 @@ import { PrismaModule } from './infrastructure/database/database/prisma.module.j
         },
       }),
     }),
-    BullModule.registerQueue({ name: QUEUE_NOTIFICATION }),
+    BullModule.registerQueue(
+      { name: QUEUE_NOTIFICATION },
+      { name: QUEUE_KYC }
+    ),
     PrismaModule,
     NotificationModule,
   ],

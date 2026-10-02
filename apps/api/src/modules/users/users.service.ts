@@ -29,6 +29,7 @@ const profilSelection = {
   email: true,
   telephone: true,
   photoProfilCle: true,
+  sexe: true,
   dateInscription: true,
   statutCompte: true,
   derniereConnexion: true,

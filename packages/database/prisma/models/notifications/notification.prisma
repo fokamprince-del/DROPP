@@ -6,7 +6,7 @@ model Notification {
   contenu       String
   /// Données de navigation pour l'app (ex: { "publicationId": "..." }).
   donnees       Json?
-  estLu        Boolean          @default(false) @map("est_lu")
+  estLu         Boolean          @default(false) @map("est_lu")
   dateCreation  DateTime         @default(now()) @map("date_creation") @db.Timestamptz(3)
   dateLecture   DateTime?        @map("date_lecture") @db.Timestamptz(3)
   utilisateur   Utilisateur      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)

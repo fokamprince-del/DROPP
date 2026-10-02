@@ -8,7 +8,7 @@ const TYPES_MIME_AUTORISES = [
   'video/quicktime',
 ] as const;
 
-export class DemanderSignaturePublicationDto {
+export class  DemanderSignaturePublicationDto {
   @IsString()
   @IsNotEmpty()
   @IsIn(TYPES_MIME_AUTORISES)

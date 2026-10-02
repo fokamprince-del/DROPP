@@ -12,7 +12,7 @@
     "typecheck": "turbo typecheck",
 
     "postinstall": "pnpm run generer",
-    "generer": "pnpm --filter @dropp/database generate && pnpm --filter @dropp/database build && pnpm --filter @dropp/contrats build",
+    "generer": "pnpm --filter @dropp/database generate && pnpm --filter @dropp/contrats build",
 
     "api:dev": "pnpm --filter api start:dev",
     "api:build": "pnpm --filter api build",

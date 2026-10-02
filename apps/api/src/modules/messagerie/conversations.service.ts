@@ -196,7 +196,7 @@ export class ConversationsService {
     return { nonLus };
   }
 
-  chargerConversation(conversationId: string): Promise<ConversationBrute | null> {
+  async chargerConversation(conversationId: string) {
     return this.prisma.conversation.findUnique({
       where: { id: conversationId },
       select: conversationSelection,

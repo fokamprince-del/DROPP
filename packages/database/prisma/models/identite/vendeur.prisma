@@ -1,14 +1,18 @@
 model Vendeur {
-  id                      String         @id @db.Uuid
-  dateDebut               DateTime       @default(now()) @map("date_debut") @db.Timestamptz(3)
-  statutVendeur           StatutVendeur  @default(EN_ATTENTE_VALIDATION) @map("statut_vendeur")
-  commissionPersonnalisee Decimal?       @map("commission_personnalisee") @db.Decimal(12, 2)
-  biographie              String?
-  utilisateur             Utilisateur    @relation(fields: [id], references: [id], onDelete: Cascade)
-  boutique                Boutique?
-  abonnements             Abonnement[]
-  dossiersKyc             DossierKyc[]
-  sousCommandes           SousCommande[]
+  id                      String        @id @db.Uuid
+  dateDebut               DateTime      @default(now()) @map("date_debut") @db.Timestamptz(3)
+  statutVendeur           StatutVendeur @default(EN_ATTENTE_VALIDATION) @map("statut_vendeur")
+  commissionPersonnalisee Decimal?      @map("commission_personnalisee") @db.Decimal(12, 2)
+
+  // Mobile Money — séparé du téléphone personnel de l'utilisateur
+  numeroMobileMoney    String?               @map("numero_mobile_money")
+  operateurMobileMoney OperateurMobileMoney? @map("operateur_mobile_money")
+
+  utilisateur   Utilisateur    @relation(fields: [id], references: [id], onDelete: Cascade)
+  boutique      Boutique?
+  abonnements   Abonnement[]
+  dossiersKyc   DossierKyc[]
+  sousCommandes SousCommande[]
 
   @@index([statutVendeur])
   @@map("vendeurs")
