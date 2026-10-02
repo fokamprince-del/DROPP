@@ -9,6 +9,22 @@ import { PrixService } from '../services/prix.service.js';
 
 type Decimal = Prisma.Decimal;
 
+/** Tris proposés dans l'onglet Marché. */
+export const TRIS_CATALOGUE = {
+  recents: 'recents',
+  prix_croissant: 'prix_croissant',
+  prix_decroissant: 'prix_decroissant',
+  populaires: 'populaires',
+} as const;
+export type TriCatalogue = keyof typeof TRIS_CATALOGUE;
+
+const ORDRE: Record<TriCatalogue, Prisma.ProduitOrderByWithRelationInput[]> = {
+  recents: [{ dateCreation: 'desc' }],
+  prix_croissant: [{ prixBase: 'asc' }, { dateCreation: 'desc' }],
+  prix_decroissant: [{ prixBase: 'desc' }, { dateCreation: 'desc' }],
+  populaires: [{ favoris: { _count: 'desc' } }, { dateCreation: 'desc' }],
+};
+
 @Injectable()
 export class CataloguePublicService {
   constructor(
@@ -23,17 +39,44 @@ export class CataloguePublicService {
     boutiqueId?: string;
     /** Recherche texte sur le nom et la description. */
     q?: string;
+    /** Fourchette de prix en FCFA (prix de base ou d'au moins une variante). */
+    prixMin?: number;
+    prixMax?: number;
+    tri?: TriCatalogue;
+    /** Seulement les produits ayant au moins une variante en stock. */
+    enStock?: boolean;
     page: number;
     limite: number;
     utilisateurId?: string;
   }) {
-    const { categorieId, boutiqueId, q, page, limite } = params;
+    const { categorieId, boutiqueId, q, page, limite, prixMin, prixMax, enStock } = params;
+
+    // Une catégorie parente inclut ses sous-catégories (Mode → Robes, Chaussures…).
+    const categories = categorieId ? await this.avecSousCategories(categorieId) : null;
+    const fourchette =
+      prixMin !== undefined || prixMax !== undefined
+        ? { ...(prixMin !== undefined && { gte: prixMin }), ...(prixMax !== undefined && { lte: prixMax }) }
+        : null;
 
     const where: Prisma.ProduitWhereInput = {
       statut: 'PUBLIE' as const,
       // Produits d'une boutique suspendue : invisibles.
       boutique: { statut: 'ACTIVE' },
-      ...(categorieId && { categorieId }),
+      ...(categories && { categorieId: { in: categories } }),
+      ...(enStock && { variantes: { some: { stockDisponible: { gt: 0 } } } }),
+      AND: [
+        ...(fourchette
+          ? [
+              {
+                // Prix effectif d'une variante = son prix, sinon le prix de base.
+                OR: [
+                  { variantes: { some: { prix: fourchette } } },
+                  { prixBase: fourchette, variantes: { some: { prix: null } } },
+                ],
+              },
+            ]
+          : []),
+      ],
       ...(boutiqueId && { boutiqueId }),
       ...(q && {
         OR: [
@@ -64,7 +107,7 @@ export class CataloguePublicService {
             select: { prix: true, stockDisponible: true },
           },
         },
-        orderBy: { dateCreation: 'desc' },
+        orderBy: ORDRE[params.tri ?? 'recents'],
         skip: (page - 1) * limite,
         take: limite,
       }),
@@ -104,5 +147,20 @@ export class CataloguePublicService {
         pages: Math.ceil(total / limite),
       },
     };
+  }
+
+  /** La catégorie et toutes ses descendantes actives (3 niveaux max). */
+  private async avecSousCategories(categorieId: string): Promise<string[]> {
+    const ids = [categorieId];
+    let niveau = [categorieId];
+    for (let p = 0; p < 3 && niveau.length; p++) {
+      const enfants = await this.prisma.categorie.findMany({
+        where: { parentId: { in: niveau }, statut: 'ACTIVE' },
+        select: { id: true },
+      });
+      niveau = enfants.map((e) => e.id);
+      ids.push(...niveau);
+    }
+    return ids;
   }
 }

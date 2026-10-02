@@ -1,5 +1,14 @@
 import { Transform } from 'class-transformer';
-import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  ArrayMaxSize,
+  ArrayUnique,
+  IsArray,
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 
 import {
   TypePublication,
@@ -19,4 +28,12 @@ export class CreerPublicationDto {
   @IsOptional()
   @IsEnum(VisibiliteContenu)
   visibilite?: VisibiliteContenu;
+
+  /** Produits de la boutique présentés dans la publication (5 max, dans l'ordre). */
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(5)
+  @ArrayUnique()
+  @IsUUID('all', { each: true })
+  produitIds?: string[];
 }
