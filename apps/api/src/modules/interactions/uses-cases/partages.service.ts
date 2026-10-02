@@ -20,7 +20,7 @@ export class PartagerPublicationService {
     publicationId: string,
     dto: PartagerDto,
   ) {
-    await verifierPublicationVisible(this.prisma, publicationId);
+    await verifierPublicationVisible(this.prisma, publicationId, utilisateurId);
 
     // Enregistrement du partage (comptabilisation)
     await this.prisma.partage.upsert({

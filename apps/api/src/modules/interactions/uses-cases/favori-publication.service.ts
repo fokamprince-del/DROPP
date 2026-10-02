@@ -11,7 +11,7 @@ export class FavoriPublicationService {
   constructor(private readonly prisma: PrismaService) {}
 
   async ajouter(utilisateurId: string, publicationId: string) {
-    await verifierPublicationVisible(this.prisma, publicationId);
+    await verifierPublicationVisible(this.prisma, publicationId, utilisateurId);
     try {
       await this.prisma.favoriPublication.create({
         data: { utilisateurId, publicationId },

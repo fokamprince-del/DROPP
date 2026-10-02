@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { verifierPublicationVisible } from '../utils/publications.js';
 
 const LIMITE_PAR_PAGE = 20;
 const LIMITE_REPONSES = 3; // Réponses affichées par défaut sous chaque commentaire
@@ -9,14 +10,9 @@ export class ListerCommentairesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async executer(publicationId: string, page: number, utilisateurId?: string) {
-    const publication = await this.prisma.publication.findUnique({
-      where: { id: publicationId },
-      select: { id: true, statut: true },
-    });
-
-    if (!publication || publication.statut !== 'PUBLIEE') {
-      throw new NotFoundException('Publication introuvable.');
-    }
+    // Même règle que la publication : pas de commentaires d'une publication
+    // réservée aux abonnés pour un non-abonné (ou un visiteur anonyme).
+    await verifierPublicationVisible(this.prisma, publicationId, utilisateurId);
 
     const commentaires = await this.prisma.commentaire.findMany({
       where: {
@@ -98,6 +94,13 @@ export class ListerCommentairesService {
     page: number,
     utilisateurId?: string,
   ) {
+    const parent = await this.prisma.commentaire.findUnique({
+      where: { id: commentaireId },
+      select: { publicationId: true },
+    });
+    if (!parent) throw new NotFoundException('Commentaire introuvable.');
+    await verifierPublicationVisible(this.prisma, parent.publicationId, utilisateurId);
+
     const reponses = await this.prisma.commentaire.findMany({
       where: { parentId: commentaireId, statut: 'VISIBLE' },
       select: {

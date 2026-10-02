@@ -37,11 +37,13 @@ export class PublicationsController {
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
     @Query('boutiqueId', new ParseUUIDPipe({ optional: true }))
     boutiqueId?: string,
+    @CurrentUser() utilisateur?: UtilisateurConnecte,
   ) {
     return this.publicationsService.listerPubliques(
       Math.max(page, 1),
       Math.min(Math.max(limite, 1), 100),
       boutiqueId,
+      utilisateur?.id,
     );
   }
 
@@ -75,8 +77,11 @@ export class PublicationsController {
 
   @Public()
   @Get('publications/:id')
-  obtenirPublique(@Param('id', ParseUUIDPipe) id: string) {
-    return this.publicationsService.obtenirPublique(id);
+  obtenirPublique(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() utilisateur?: UtilisateurConnecte,
+  ) {
+    return this.publicationsService.obtenirPublique(id, utilisateur?.id);
   }
 
   @Vendeur()

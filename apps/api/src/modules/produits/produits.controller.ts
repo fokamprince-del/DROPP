@@ -6,6 +6,8 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseBoolPipe,
+  ParseEnumPipe,
   ParseIntPipe,
   ParseUUIDPipe,
   Patch,
@@ -19,6 +21,10 @@ import { Public } from '../auth/decorators/public.decorator.js';
 import type { UtilisateurConnecte } from '../auth/types/utilisateur-connecte.js';
 
 import { AjusterStockDto } from './dto/ajuster-stock.dto.js';
+import {
+  TRIS_CATALOGUE,
+  type TriCatalogue,
+} from './use-cases/catalogue-public.service.js';
 import { ConfirmerMediaDto } from './dto/confirmer-media.dto.js';
 import { CreerProduitDto } from './dto/creer-produit.dto.js';
 import { CreerVarianteDto } from './dto/creer-variante.dto.js';
@@ -74,11 +80,20 @@ export class ProduitsController {
     @Query('q') q?: string,
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+    @Query('prixMin', new ParseIntPipe({ optional: true })) prixMin?: number,
+    @Query('prixMax', new ParseIntPipe({ optional: true })) prixMax?: number,
+    @Query('tri', new ParseEnumPipe(TRIS_CATALOGUE, { optional: true }))
+    tri?: TriCatalogue,
+    @Query('enStock', new ParseBoolPipe({ optional: true })) enStock?: boolean,
     @CurrentUser() u?: UtilisateurConnecte,
   ) {
     return this.cataloguePublic.executer({
       categorieId,
       boutiqueId,
+      prixMin: prixMin !== undefined ? Math.max(prixMin, 0) : undefined,
+      prixMax: prixMax !== undefined ? Math.max(prixMax, 0) : undefined,
+      tri,
+      enStock,
       q: q?.trim().slice(0, 100) || undefined,
       page: Math.max(page, 1),
       limite: Math.min(Math.max(limite, 1), 100),
