@@ -88,6 +88,6 @@ import { ChangementMotDePasseService } from './use-cases/changement-mot-de-passe
     ProfilClientGuard,
     ProfilVendeurGuard,
   ],
-  exports: [RolesGuard, RoleAdminGuard, ProfilClientGuard, ProfilVendeurGuard],
+  exports: [RolesGuard, RoleAdminGuard, ProfilClientGuard, ProfilVendeurGuard, NotificationService],
 })
 export class AuthentificationModule {}

@@ -54,6 +54,7 @@ export class InscriptionService {
         telephone,
         email,
         motDePasseHash,
+        sexe: dto.sexe,
         client: { create: {} },
       },
       select: { id: true },

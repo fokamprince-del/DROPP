@@ -2,6 +2,7 @@ model Utilisateur {
   id                      String                    @id @default(uuid()) @db.Uuid
   prenom                  String
   nom                     String
+  sexe                    Sexe?
   /// Identifiant public unique (@pseudo), en minuscules — utilisé pour les mentions.
   pseudo                  String?                   @unique
   email                   String?                   @unique
@@ -41,6 +42,7 @@ model Utilisateur {
   aimesCommentaires       AimeCommentaire[]
   dossiersModeration      DossierModeration[]       @relation("AdministrateurModeration")
   journauxSecurite        JournalSecurite[]         @relation("AdministrateurSecurite")
+  journauxAudit           JournalAudit[]            @relation("AdministrateurAudit")
   blocagesEmis            Blocage[]                 @relation("BlocageEmis")
   blocagesRecus           Blocage[]                 @relation("BlocageRecu")
   vuesStories             VueStory[]

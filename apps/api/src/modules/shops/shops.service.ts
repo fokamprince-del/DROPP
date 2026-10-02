@@ -81,6 +81,8 @@ export class ShopsService {
           description: true,
           logoCle: true,
           banniereCle: true,
+          quartier: true,
+          ville: true,
           vendeur: {
             select: {
               _count: {
@@ -112,6 +114,8 @@ export class ShopsService {
         nom: true,
         description: true,
         biographie: true,
+        quartier: true,
+        ville: true,
         logoCle: true,
         banniereCle: true,
         dateCreation: true,

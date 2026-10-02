@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import {
+  IsIn,
   IsOptional,
   IsString,
   Matches,
@@ -8,6 +9,7 @@ import {
 } from 'class-validator';
 
 import { FORMAT_PSEUDO, normaliserPseudo } from '../pseudo.js';
+import { Sexe } from '@dropp/database';
 
 /**
  * Le téléphone n'est volontairement pas modifiable ici : un changement de
@@ -40,4 +42,14 @@ export class MiseAJourProfilDto {
       'Le pseudo doit contenir 3 à 30 caractères : lettres, chiffres, « _ » ou « . ».',
   })
   pseudo?: string;
+
+  /** @sexe */
+  @IsOptional()
+  @IsString()
+  @IsIn(Object.values(Sexe), {
+    message: `Le sexe doit être l'une des valeurs suivantes : ${Object.values(Sexe).join(
+      ', ',
+    )}.`,
+  })
+  sexe?: string;
 }

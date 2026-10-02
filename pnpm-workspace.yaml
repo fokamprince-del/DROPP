@@ -10,4 +10,5 @@ allowBuilds:
   msgpackr-extract: true
   prisma: false
   protobufjs: true
+  tesseract.js: true
   unrs-resolver: false

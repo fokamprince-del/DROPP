@@ -49,7 +49,9 @@ export class SellersService {
     }
 
     await this.prisma.vendeur.create({
-      data: { id: utilisateurId },
+      data: { 
+        id: utilisateurId, 
+       },
     });
   }
 
