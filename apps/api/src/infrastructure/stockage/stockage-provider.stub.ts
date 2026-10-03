@@ -55,4 +55,10 @@ export class StockageProviderStub implements StockageProvider {
     this.logger.debug(`[STOCKAGE STUB] Métadonnées — clé: ${cleStockage}`);
     return { taille: 1, typeMime: null };
   }
+
+  /** récupère le contenu d'un fichier. */
+  async getFile(cleStockage: string): Promise<Buffer| null> {
+    this.logger.debug(`[STOCKAGE STUB] Récupération du fichier — clé: ${cleStockage}`);
+    return Buffer.from('stub-content');
+  }
 }

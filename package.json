@@ -54,7 +54,8 @@
     "db:restart": "docker compose restart postgres",
     "db:logs": "docker compose logs -f postgres",
     "db:status": "docker compose ps postgres",
-
+    "db:seed:admin": "pnpm --filter api seed:admin",
+    
     "redis:up": "docker compose up -d redis",
     "redis:down": "docker compose stop redis",
     "redis:restart": "docker compose restart redis",

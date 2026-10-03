@@ -63,4 +63,8 @@ export class StockageSuivi implements StockageProvider {
   metadonnees(cleStockage: string): Promise<MetadonneesFichier | null> {
     return this.interne.metadonnees(cleStockage);
   }
+
+  getFile(cleStockage: string): Promise<Buffer| null> {
+    return this.interne.getFile(cleStockage);
+  }
 }

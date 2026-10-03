@@ -171,4 +171,26 @@ export class StockageProviderR2 implements StockageProvider {
       throw erreur;
     }
   }
+
+  async getFile(cleStockage: string): Promise<Buffer| null> {
+    try{
+      const reponse = await this.client.send( 
+        new GetObjectCommand({ Bucket: this.bucketPour(cleStockage), Key: cleStockage }),
+      );
+
+      if(!reponse.Body)
+        return null;
+
+      const chunks = await reponse.Body.transformToByteArray();
+      return Buffer.from(chunks);
+    }catch(erreur){
+      if (
+        erreur instanceof S3ServiceException &&
+        (erreur.$metadata.httpStatusCode === 404 || erreur.name === 'NotFound')
+      ) {
+        return null;
+      }
+      throw erreur;
+    }
+  }
 }

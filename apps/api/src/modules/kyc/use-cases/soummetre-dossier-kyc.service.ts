@@ -13,6 +13,7 @@ import {
 } from '@dropp/contrats';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { TypeDocumentKyc } from '@dropp/database';
+import { KycStockageService } from '../services/kyc-stockage.service.js';
 
 const DOCUMENTS_REQUIS: TypeDocumentKyc[] = [
   'CNI_RECTO',
@@ -24,6 +25,7 @@ const DOCUMENTS_REQUIS: TypeDocumentKyc[] = [
 export class SoumettreDoissierService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly stockage: KycStockageService,
     @InjectQueue(QUEUE_KYC) private readonly kycQueue: Queue,
   ) {}
 
@@ -95,17 +97,21 @@ export class SoumettreDoissierService {
       data: { statut: 'EN_COURS_VERIFICATION' },
     });
 
-    // Déclencher la vérification faciale via BullMQ
-    const selfie = dossier.documents.find((d) => d.typeDocument === 'PHOTO_FACIALE');
-    const cniRecto = dossier.documents.find((d) => d.typeDocument === 'CNI_RECTO');
+    // // Déclencher la vérification faciale via BullMQ
+    // const selfie = dossier.documents.find((d) => d.typeDocument === 'PHOTO_FACIALE');
+    // const cniRecto = dossier.documents.find((d) => d.typeDocument === 'CNI_RECTO');
+    const [selfie, cniRecto] = await Promise.all([
+      this.stockage.urlConsultation(dossier.documents.find((d) => d.typeDocument === 'PHOTO_FACIALE')!.cleStockage),
+      this.stockage.urlConsultation(dossier.documents.find((d) => d.typeDocument === 'CNI_RECTO')!.cleStockage),
+    ]);
 
     await this.kycQueue.add(
       JOB_KYC.VERIFIER_VISAGE,
       {
         dossierKycId: dossier.id,
         vendeurId: utilisateurId,
-        cleStockageSelfie: selfie!.cleStockage,
-        cleStockageCniRecto: cniRecto!.cleStockage,
+        urlSelfie: selfie,
+        urlCniRecto: cniRecto,
       } satisfies JobVerifierVisageKyc,
     );
 

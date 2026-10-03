@@ -53,6 +53,13 @@ export class KycStockageService {
     });
   }
 
+  /**
+   * recupere le contenu d'un document KYC.
+   */
+  async getFile(cleStockage: string): Promise<Buffer| null> {
+    return await this.stockage.getFile(cleStockage);
+  }
+
   private  getPrefixe(utilisateurId: string, type: TypeDocumentKycUpload){
     return `kyc/${utilisateurId}/${type}`;
   }

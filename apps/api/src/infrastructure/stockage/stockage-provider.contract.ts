@@ -58,10 +58,13 @@ export interface StockageProvider {
    * supprimé par le nettoyage des uploads abandonnés.
    */
   marquerUtilise?(cleStockage: string): Promise<void>;
+
+  /** Récupère le contenu d'un fichier stocké. */
+  getFile(cleStockage: string): Promise<Buffer| null>;
 }
 
 /** Préfixes stockés dans le bucket privé (jamais d'URL publique). */
-export const PREFIXES_PRIVES = ['conversations/'] as const;
+export const PREFIXES_PRIVES = ['conversations/', 'kyc/'] as const;
 
 export const estCleePrivee = (cleStockage: string) =>
   PREFIXES_PRIVES.some((p) => cleStockage.startsWith(p));

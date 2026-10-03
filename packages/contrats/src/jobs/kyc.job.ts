@@ -8,8 +8,8 @@ export const JOB_KYC = {
 export type JobVerifierVisageKyc = {
   dossierKycId: string;
   vendeurId: string;
-  cleStockageSelfie: string;
-  cleStockageCniRecto: string;
+  urlSelfie: string;
+  urlCniRecto: string;
 };
 
 export type JobExtraireOcrKyc = {
