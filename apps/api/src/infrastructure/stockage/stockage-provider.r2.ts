@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
@@ -124,6 +125,20 @@ export class StockageProviderR2 implements StockageProvider {
     }
 
     return `${this.urlPubliqueBase}/${chemin}`;
+  }
+
+  /** Copie (éventuellement d'un bucket à l'autre) puis supprime l'original. */
+  async deplacer(source: string, destination: string): Promise<void> {
+    if (source === destination) return;
+    const chemin = source.split('/').map(encodeURIComponent).join('/');
+    await this.client.send(
+      new CopyObjectCommand({
+        Bucket: this.bucketPour(destination),
+        Key: destination,
+        CopySource: `${this.bucketPour(source)}/${chemin}`,
+      }),
+    );
+    await this.supprimer(source);
   }
 
   async supprimer(cleStockage: string): Promise<void> {

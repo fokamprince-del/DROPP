@@ -18,6 +18,7 @@ import {
   type StockageProvider,
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
 import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
+import { racineContenu, urlLecture } from '../../infrastructure/stockage/lecture.js';
 import type { ConfirmerStoryDto } from './dto/confirmer-story.dto.js';
 import type { CreerStoryDto } from './dto/creer-story.dto.js';
 
@@ -78,7 +79,7 @@ export class StoriesService {
       skip: (page - 1) * limite,
       take: limite,
     });
-    return stories.map((story) => this.presenter(story));
+    return Promise.all(stories.map((story) => this.presenter(story)));
   }
 
   /**
@@ -110,7 +111,7 @@ export class StoriesService {
       {
         boutique: { id: string; nom: string };
         toutesVues: boolean;
-        stories: (ReturnType<StoriesService['presenter']> & { vue: boolean })[];
+        stories: (Awaited<ReturnType<StoriesService['presenter']>> & { vue: boolean })[];
       }
     >();
     for (const { vues, ...story } of stories) {
@@ -121,7 +122,7 @@ export class StoriesService {
       };
       const vue = vues.length > 0;
       groupe.toutesVues &&= vue;
-      groupe.stories.push({ ...this.presenter(story), vue });
+      groupe.stories.push({ ...(await this.presenter(story)), vue });
       parBoutique.set(story.boutique.id, groupe);
     }
     return [...parBoutique.values()].sort(
@@ -136,6 +137,18 @@ export class StoriesService {
         id: storyId,
         statut: StatutPublication.PUBLIEE,
         dateExpiration: { gt: new Date() },
+        // Story réservée aux abonnés : seuls eux (et la boutique) peuvent la voir.
+        OR: [
+          { visibilite: 'PUBLIC' },
+          { boutiqueId: utilisateurId },
+          {
+            boutique: {
+              vendeur: {
+                abonnements: { some: { utilisateurId, statut: 'ACTIF' } },
+              },
+            },
+          },
+        ],
       },
       select: { boutiqueId: true },
     });
@@ -183,7 +196,7 @@ export class StoriesService {
       select: storySelection,
       orderBy: { dateCreation: 'desc' },
     });
-    return stories.map((story) => this.presenter(story));
+    return Promise.all(stories.map((story) => this.presenter(story)));
   }
 
   async creer(utilisateurId: string, dto: CreerStoryDto) {
@@ -208,7 +221,7 @@ export class StoriesService {
       : TypeMedia.IMAGE;
     const storyId = randomUUID();
     const signature = await this.stockage.genererSignatureUpload(
-      `boutiques/${boutique.id}/stories/${storyId}/${typeMedia.toLowerCase()}s`,
+      `${this.dossierStory(boutique.id, storyId, dto.visibilite)}/${typeMedia.toLowerCase()}s`,
       dto.typeMime,
       tailleMax,
     );
@@ -233,7 +246,7 @@ export class StoriesService {
       select: storySelection,
     });
 
-    return { story: this.presenter(story), signature, typeMedia };
+    return { story: await this.presenter(story), signature, typeMedia };
   }
 
   async confirmer(
@@ -249,7 +262,7 @@ export class StoriesService {
     }
     const reel = await verifierUpload(this.stockage, {
       cleStockage: dto.cleStockage,
-      prefixe: `boutiques/${boutique.id}/stories/${storyId}/`,
+      prefixe: this.dossierStory(boutique.id, storyId, storyExistante.visibilite),
       tailleMaxMo: tailleMax,
       typesMime: [dto.typeMime],
     });
@@ -311,14 +324,24 @@ export class StoriesService {
         boutiqueId,
         statut: { not: StatutPublication.SUPPRIMEE },
       },
-      select: { id: true, mediaId: true },
+      select: { id: true, mediaId: true, visibilite: true },
     });
     if (!story) throw new NotFoundException('Story introuvable.');
     return story;
   }
 
-  private presenter(story: StoryAvecRelations) {
+  /** Dossier des médias : sous abonnes/ (bucket privé) si réservée aux abonnés. */
+  private dossierStory(
+    boutiqueId: string,
+    storyId: string,
+    visibilite: 'PUBLIC' | 'ABONNES',
+  ) {
+    return racineContenu(visibilite, `boutiques/${boutiqueId}/stories/${storyId}`);
+  }
+
+  private async presenter(story: StoryAvecRelations) {
     const { media, ...valeurs } = story;
+    const url = await urlLecture(this.stockage, media.cleStockage);
     return {
       ...valeurs,
       media: {
@@ -329,7 +352,7 @@ export class StoriesService {
         largeur: media.largeur,
         hauteur: media.hauteur,
         duree: media.duree,
-        url: this.stockage.urlPublique(media.cleStockage),
+        url,
       },
     };
   }

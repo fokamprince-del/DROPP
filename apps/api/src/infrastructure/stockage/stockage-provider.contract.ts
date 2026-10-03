@@ -61,10 +61,27 @@ export interface StockageProvider {
 
   /** Récupère le contenu d'un fichier stocké. */
   getFile(cleStockage: string): Promise<Buffer| null>;
+
+  /**
+   * Déplace un fichier vers une nouvelle clé (copie puis suppression).
+   * Sert quand un contenu change de visibilité : public ⇄ réservé aux abonnés.
+   */
+  deplacer(source: string, destination: string): Promise<void>;
+
+  /**
+   * Déplace un fichier vers une nouvelle clé (copie puis suppression).
+   * Sert quand un contenu change de visibilité : public ⇄ réservé aux abonnés.
+   */
+  deplacer(source: string, destination: string): Promise<void>;
 }
 
-/** Préfixes stockés dans le bucket privé (jamais d'URL publique). */
-export const PREFIXES_PRIVES = ['conversations/', 'kyc/'] as const;
+/**
+ * Préfixes stockés dans le bucket privé (jamais d'URL publique, lus par URL signée) :
+ * - conversations/ : pièces jointes de messagerie ;
+ * - abonnes/       : médias des publications et stories réservées aux abonnés.
+ */
+export const PREFIX_ABONNES = 'abonnes/';
+export const PREFIXES_PRIVES = ['conversations/', PREFIX_ABONNES, 'kyc/'] as const;
 
 export const estCleePrivee = (cleStockage: string) =>
   PREFIXES_PRIVES.some((p) => cleStockage.startsWith(p));

@@ -55,6 +55,10 @@ export class StockageSuivi implements StockageProvider {
     return this.interne.urlSignee(cleStockage, dureeSecondes);
   }
 
+  deplacer(source: string, destination: string): Promise<void> {
+    return this.interne.deplacer(source, destination);
+  }
+
   async supprimer(cleStockage: string): Promise<void> {
     await this.interne.supprimer(cleStockage);
     await this.redis.zrem(CLE_UPLOADS_EN_ATTENTE, cleStockage).catch(() => 0);

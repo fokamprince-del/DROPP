@@ -10,6 +10,7 @@ import {
   StatutConversation,
   StatutMessage,
   TypeConversation,
+  type Prisma,
 } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
@@ -42,9 +43,9 @@ const conversationSelection = {
   },
 } as const;
 
-type ConversationBrute = Awaited<
-  ReturnType<ConversationsService['chargerConversation']>
->;
+type ConversationBrute = Prisma.ConversationGetPayload<{
+  select: typeof conversationSelection;
+}>;
 
 @Injectable()
 export class ConversationsService {

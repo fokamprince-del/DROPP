@@ -13,16 +13,43 @@ import { MiseAJourCategorieDto } from './dto/mise-a-jour-categorie.dto.js';
 export class CategoriesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  listerPubliques() {
-    return this.prisma.categorie.findMany({
+  /**
+   * Arbre des catégories pour les filtres de l'onglet Marché, avec le nombre
+   * de produits publiés. Le total d'une catégorie parente inclut ses sous-catégories.
+   */
+  async listerPubliques() {
+    const compte = {
+      _count: {
+        select: {
+          produits: {
+            where: { statut: 'PUBLIE' as const, boutique: { statut: 'ACTIVE' as const } },
+          },
+        },
+      },
+    };
+    const parents = await this.prisma.categorie.findMany({
       where: { statut: StatutCategorie.ACTIVE, parentId: null },
       include: {
+        ...compte,
         enfants: {
           where: { statut: StatutCategorie.ACTIVE },
           orderBy: { nom: 'asc' },
+          include: compte,
         },
       },
       orderBy: { nom: 'asc' },
+    });
+
+    return parents.map(({ _count, enfants, ...parent }) => {
+      const sous = enfants.map(({ _count: c, ...e }) => ({
+        ...e,
+        nombreProduits: c.produits,
+      }));
+      return {
+        ...parent,
+        nombreProduits: _count.produits + sous.reduce((s, e) => s + e.nombreProduits, 0),
+        enfants: sous,
+      };
     });
   }
 

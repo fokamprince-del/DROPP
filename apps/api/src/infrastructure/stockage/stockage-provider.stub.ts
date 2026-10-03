@@ -42,6 +42,10 @@ export class StockageProviderStub implements StockageProvider {
     return `http://localhost:9000/stub-bucket/${cleStockage}${params}`;
   }
 
+  async deplacer(source: string, destination: string): Promise<void> {
+    this.logger.debug(`[STOCKAGE STUB] Déplacement — ${source} → ${destination}`);
+  }
+
   async supprimer(cleStockage: string): Promise<void> {
     this.logger.debug(`[STOCKAGE STUB] Suppression — clé: ${cleStockage}`);
   }
