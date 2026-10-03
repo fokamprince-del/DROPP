@@ -31,25 +31,25 @@ export const validationSchema = Joi.object({
     then: Joi.string().min(100).required(),
   }),
 
-  STOCKAGE_DRIVER: Joi.string().valid('stub', 'r2').default('stub'),
-  R2_ACCESS_KEY_ID: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-    is: 'r2',
-    then: Joi.string().required(),
-  }),
-  R2_SECRET_ACCESS_KEY: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-    is: 'r2',
-    then: Joi.string().required(),
-  }),
-  R2_BUCKET: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-    is: 'r2',
-    then: Joi.string().required(),
-  }),
-  // Bucket SANS accès public pour la messagerie (lu par URL signée).
-  R2_BUCKET_PRIVE: Joi.string().allow('').default(''),
-  R2_ENDPOINT: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-    is: 'r2',
-    then: Joi.string().uri({ scheme: ['https'] }).required(),
-  }),
+  // STOCKAGE_DRIVER: Joi.string().valid('stub', 'r2').default('stub'),
+  // R2_ACCESS_KEY_ID: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+  //   is: 'r2',
+  //   then: Joi.string().required(),
+  // }),
+  // R2_SECRET_ACCESS_KEY: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+  //   is: 'r2',
+  //   then: Joi.string().required(),
+  // }),
+  // R2_BUCKET: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+  //   is: 'r2',
+  //   then: Joi.string().required(),
+  // }),
+  // // Bucket SANS accès public pour la messagerie (lu par URL signée).
+  // R2_BUCKET_PRIVE: Joi.string().allow('').default(''),
+  // R2_ENDPOINT: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+  //   is: 'r2',
+  //   then: Joi.string().uri({ scheme: ['https'] }).required(),
+  // }),
 
   DATABASE_URL: Joi.string().required(),
   DATABASE_POOL_MAX: Joi.number().default(5)
