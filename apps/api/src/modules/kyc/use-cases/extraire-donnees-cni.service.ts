@@ -52,11 +52,12 @@ export class ExtraireDonneesCniService {
       );
     }
 
-    // En production : télécharger l'image depuis R2 avec URL signée
-    // Pour l'instant : stub retourne des données simulées
-    const donnees = await this.ocr.extraireDonneesCni(
-      Buffer.from('stub-image'),
-    );
+    const imageBuffer = await this.kycStockage.getFile(documentCniRecto.cleStockage);
+    if (!imageBuffer) {
+      throw new NotFoundException('Image CNI non trouvée.');
+    }
+
+    const donnees = await this.ocr.extraireDonneesCni(imageBuffer);
 
     return {
       donnees,

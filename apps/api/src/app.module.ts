@@ -30,6 +30,7 @@ import { MessagerieModule } from './modules/messagerie/messagerie.module.js';
 import { SignalementsModule } from './modules/signalements/signalements.module.js';
 import { AvisModule } from './modules/avis/avis.module.js';
 import { KycModule } from './modules/kyc/kyc.module.js';
+import { AdminModule } from './modules/admin/admin.module.js';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { KycModule } from './modules/kyc/kyc.module.js';
     SignalementsModule,
     AvisModule,
     KycModule,
+    AdminModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
