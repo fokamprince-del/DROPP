@@ -5,6 +5,7 @@ import { validationSchema } from './configuration/validation.js';
 import { BullModule } from '@nestjs/bullmq';
 import { QUEUE_KYC, QUEUE_NOTIFICATION } from '@dropp/contrats';
 import { NotificationModule } from './modules/notification/notification.module.js';
+import { KycModule } from './modules/kyc/kyc.module.js';
 import { PrismaModule } from './infrastructure/database/database/prisma.module.js';
 
 @Module({
@@ -21,8 +22,10 @@ import { PrismaModule } from './infrastructure/database/database/prisma.module.j
       useFactory: (config: ConfigService) => ({
         connection: {
           host: config.getOrThrow<string>('redis.host'),
-          port: config.getOrThrow<string>('redis.port'),
+          port: Number(config.getOrThrow<string>('redis.port')),
           password: config.getOrThrow<string>('redis.password'),
+          // Exigé par BullMQ pour les workers (commandes bloquantes).
+          maxRetriesPerRequest: null,
         },
         defaultJobOptions: {
           attempts: 3,
@@ -41,6 +44,7 @@ import { PrismaModule } from './infrastructure/database/database/prisma.module.j
     ),
     PrismaModule,
     NotificationModule,
+    KycModule,
   ],
 })
 export class AppModule {}

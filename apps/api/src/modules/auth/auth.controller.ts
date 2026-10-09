@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Ip,
   Param,
+  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
@@ -112,13 +113,14 @@ export class AuthentificationController {
     return this.refreshTokenService.executer(dto.refreshToken);
   }
 
+  /** Ferme la session de cet appareil (celle qui a émis le jeton d'accès). */
   @Post('deconnexion')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deconnecter(
-    @CurrentUser() utilisateur: UtilisateurConnecte,
-    @Body('sessionId') sessionId: string,
-  ) {
-    return this.deconnexionService.executer(sessionId, utilisateur.id);
+  deconnecter(@CurrentUser() utilisateur: UtilisateurConnecte) {
+    return this.deconnexionService.executer(
+      utilisateur.sessionId,
+      utilisateur.id,
+    );
   }
 
   @Post('deconnecter-partout')
@@ -129,14 +131,14 @@ export class AuthentificationController {
 
   @Get('sessions')
   listerSessions(@CurrentUser() utilisateur: UtilisateurConnecte) {
-    return this.sessionsService.lister(utilisateur.id);
+    return this.sessionsService.lister(utilisateur.id, utilisateur.sessionId);
   }
 
   @Delete('sessions/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   revoquerSession(
     @CurrentUser() utilisateur: UtilisateurConnecte,
-    @Param('id') sessionId: string,
+    @Param('id', ParseUUIDPipe) sessionId: string,
   ) {
     return this.deconnexionService.executer(sessionId, utilisateur.id);
   }

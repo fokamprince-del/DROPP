@@ -6,8 +6,8 @@ import {
   type StockageProvider,
 } from '../../../infrastructure/stockage/stockage-provider.contract.js';
 import { PrixService } from '../services/prix.service.js';
+import { BOUTIQUE_VISIBLE } from '../../shops/boutique-visible.js';
 
-type Decimal = Prisma.Decimal;
 
 /** Tris proposés dans l'onglet Marché. */
 export const TRIS_CATALOGUE = {
@@ -61,22 +61,20 @@ export class CataloguePublicService {
     const where: Prisma.ProduitWhereInput = {
       statut: 'PUBLIE' as const,
       // Produits d'une boutique suspendue : invisibles.
-      boutique: { statut: 'ACTIVE' },
+      boutique: BOUTIQUE_VISIBLE,
       ...(categories && { categorieId: { in: categories } }),
       ...(enStock && { variantes: { some: { stockDisponible: { gt: 0 } } } }),
-      AND: [
-        ...(fourchette
-          ? [
-              {
-                // Prix effectif d'une variante = son prix, sinon le prix de base.
-                OR: [
-                  { variantes: { some: { prix: fourchette } } },
-                  { prixBase: fourchette, variantes: { some: { prix: null } } },
-                ],
-              },
-            ]
-          : []),
-      ],
+      AND: fourchette
+        ? [
+            {
+              // Prix effectif d'une variante = son prix, sinon le prix de base.
+              OR: [
+                { variantes: { some: { prix: fourchette } } },
+                { prixBase: fourchette, variantes: { some: { prix: null } } },
+              ],
+            },
+          ]
+        : [],
       ...(boutiqueId && { boutiqueId }),
       ...(q && {
         OR: [

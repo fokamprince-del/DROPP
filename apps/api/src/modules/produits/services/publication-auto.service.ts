@@ -5,32 +5,32 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 type Decimal = Prisma.Decimal;
 
 type ProduitPourValidation = {
-  statut: string;
-  nom: string;
   description: string | null;
-  categorieId: string;
   prixBase: Decimal;
   variantes: Array<{ prix: Decimal | null; stockDisponible: number }>;
   medias: Array<{ media: { statutTraitement: string } }>;
 };
+
+/** Statuts gérés automatiquement ; ARCHIVE et REJETE ne sont jamais touchés. */
+const STATUTS_AUTOMATIQUES = new Set(['BROUILLON', 'PROCESSING', 'PUBLIE']);
 
 @Injectable()
 export class PublicationAutoService {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
-   * Publie automatiquement le produit si toutes les conditions sont remplies.
-   * Appelé après chaque ajout de variante ou confirmation de média.
-   * Sans effet si le produit est déjà PUBLIE ou ARCHIVE.
+   * Met le statut du produit en cohérence avec son contenu, après chaque
+   * modification (produit, variante, média) :
+   * - brouillon complet → PUBLIE ;
+   * - publié devenu incomplet (plus de média, prix nul…) → BROUILLON.
+   * Sans effet sur un produit ARCHIVE (choix du vendeur) ou REJETE (modération).
    */
   async tenter(produitId: string): Promise<void> {
     const produit = await this.prisma.produit.findUnique({
       where: { id: produitId },
       select: {
         statut: true,
-        nom: true,
         description: true,
-        categorieId: true,
         prixBase: true,
         variantes: {
           select: { prix: true, stockDisponible: true },
@@ -42,19 +42,13 @@ export class PublicationAutoService {
         },
       },
     });
+    if (!produit || !STATUTS_AUTOMATIQUES.has(produit.statut)) return;
 
-    if (
-      !produit ||
-      produit.statut === 'PUBLIE' ||
-      produit.statut === 'ARCHIVE'
-    ) {
-      return;
-    }
-
-    if (this.conditionsRemplies(produit)) {
-      await this.prisma.produit.update({
-        where: { id: produitId },
-        data: { statut: 'PUBLIE' },
+    const cible = this.conditionsRemplies(produit) ? 'PUBLIE' : 'BROUILLON';
+    if (cible !== produit.statut) {
+      await this.prisma.produit.updateMany({
+        where: { id: produitId, statut: produit.statut },
+        data: { statut: cible },
       });
     }
   }
@@ -64,10 +58,8 @@ export class PublicationAutoService {
       typeof produit.description === 'string' &&
       produit.description.trim().length >= 10;
 
-    const aVarianteValide = produit.variantes.some(
-      (v) =>
-        (v.prix ?? produit.prixBase).gt(new Prisma.Decimal(0)) &&
-        v.stockDisponible >= 0,
+    const aVarianteValide = produit.variantes.some((v) =>
+      (v.prix ?? produit.prixBase).gt(new Prisma.Decimal(0)),
     );
 
     const aMediaPret = produit.medias.some(

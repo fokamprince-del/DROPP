@@ -8,7 +8,6 @@ import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
 import { AuthentificationController } from './auth.controller.js';
 import { RoleAdminGuard } from './guards/admin.guard.js';
 import { ProfilClientGuard } from './guards/client.guard.js';
-import { RolesGuard } from './guards/roles.guard.js';
 import { ProfilVendeurGuard } from './guards/vendeur.guard.js';
 
 import { JetonService } from './services/jeton.service.js';
@@ -17,6 +16,7 @@ import { NotificationService } from './services/notification.service.js';
 import { OtpService } from './services/otp.service.js';
 import { SessionsService } from './use-cases/sessions.service.js';
 import { TelephoneService } from './services/telephone.service.js';
+import { VerrouillageService } from './services/verrouillage.service.js';
 
 import { ConnexionService } from './use-cases/connexion.service.js';
 import { DeconnexionService } from './use-cases/deconnexion.service.js';
@@ -64,6 +64,7 @@ import { ChangementMotDePasseService } from './use-cases/changement-mot-de-passe
     NotificationService,
     OtpService,
     TelephoneService,
+    VerrouillageService,
 
     // Cas d'usage
     ConnexionService,
@@ -83,11 +84,16 @@ import { ChangementMotDePasseService } from './use-cases/changement-mot-de-passe
 
     // Stratégie Passport
     JwtStrategy,
-    RolesGuard,
     RoleAdminGuard,
     ProfilClientGuard,
     ProfilVendeurGuard,
   ],
-  exports: [RolesGuard, RoleAdminGuard, ProfilClientGuard, ProfilVendeurGuard, NotificationService],
+  exports: [
+    RoleAdminGuard,
+    ProfilClientGuard,
+    ProfilVendeurGuard,
+    NotificationService,
+    SuppressionCompteService,
+  ],
 })
 export class AuthentificationModule {}

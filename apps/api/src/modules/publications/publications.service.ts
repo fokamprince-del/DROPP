@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Inject,
   Injectable,
@@ -21,6 +22,7 @@ import {
   type StockageProvider,
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
 import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
+import { TAILLE_MAX_MEDIA_MO } from '../../infrastructure/stockage/media.js';
 import {
   cleSelonVisibilite,
   racineContenu,
@@ -36,14 +38,9 @@ const MAX_MEDIAS_PAR_PUBLICATION = 10;
 import type { CreerPublicationDto } from './dto/creer-publication.dto.js';
 import type { DemanderSignaturePublicationDto } from './dto/demander-signature-publication.dto.js';
 import type { MiseAJourPublicationDto } from './dto/mise-a-jour-publication.dto.js';
+import { BOUTIQUE_VISIBLE } from '../shops/boutique-visible.js';
 
-const TAILLE_MAX_PAR_TYPE: Record<string, number> = {
-  'image/jpeg': 10,
-  'image/png': 10,
-  'image/webp': 10,
-  'video/mp4': 500,
-  'video/quicktime': 500,
-};
+const TAILLE_MAX_PAR_TYPE: Record<string, number> = TAILLE_MAX_MEDIA_MO;
 
 const publicationSelection = {
   id: true,
@@ -126,7 +123,7 @@ export class PublicationsService {
       : {
           statut: StatutPublication.PUBLIEE,
           visibilite: 'PUBLIC' as const,
-          boutique: { statut: 'ACTIVE' as const },
+          boutique: BOUTIQUE_VISIBLE,
         };
     return this.listerAvecFiltre(where, page, limite);
   }
@@ -143,8 +140,9 @@ export class PublicationsService {
     const where = {
       statut: StatutPublication.PUBLIEE,
       boutique: {
-        statut: 'ACTIVE' as const,
+        ...BOUTIQUE_VISIBLE,
         vendeur: {
+          ...BOUTIQUE_VISIBLE.vendeur,
           abonnements: { some: { utilisateurId, statut: 'ACTIF' as const } },
         },
       },
@@ -207,7 +205,7 @@ export class PublicationsService {
   async listerMesPublications(utilisateurId: string) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
     const publications = await this.prisma.publication.findMany({
-      where: { boutiqueId: boutique.id },
+      where: { boutiqueId: boutique.id, statut: { not: StatutPublication.SUPPRIMEE } },
       select: publicationSelection,
       orderBy: { dateCreation: 'desc' },
     });
@@ -252,7 +250,6 @@ export class PublicationsService {
       where: { id: publicationId },
       data: {
         ...champs,
-        statut: StatutPublication.PROCESSING,
         ...(produitIds && {
           produits: {
             deleteMany: {},
@@ -281,6 +278,7 @@ export class PublicationsService {
   ) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
     const pub = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    this.verifierBrouillon(pub.statut);
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax || dto.taille > tailleMax * 1024 * 1024) {
       throw new BadRequestException(
@@ -308,6 +306,7 @@ export class PublicationsService {
       publicationId,
       boutique.id,
     );
+    this.verifierBrouillon(publication.statut);
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax) {
       throw new BadRequestException('Type de fichier non pris en charge.');
@@ -363,20 +362,12 @@ export class PublicationsService {
     return { publicationId: publication.id, ...media.media };
   }
 
-  async moderer(publicationId: string, statut: StatutPublication) {
-    if (
-      statut !== StatutPublication.PUBLIEE &&
-      statut !== StatutPublication.REJETEE
-    ) {
-      throw new BadRequestException('Statut de modération invalide.');
-    }
-    const statutModere = statut as
-      typeof StatutPublication.PUBLIEE | typeof StatutPublication.REJETEE;
-
+  async moderer(publicationId: string, statutModere: 'PUBLIEE' | 'REJETEE') {
     const publication = await this.prisma.publication.findUnique({
       where: { id: publicationId },
       select: {
         type: true,
+        statut: true,
         medias: {
           select: {
             media: { select: { typeMedia: true, statutTraitement: true } },
@@ -384,7 +375,9 @@ export class PublicationsService {
         },
       },
     });
-    if (!publication) throw new NotFoundException('Publication introuvable.');
+    if (!publication || publication.statut === StatutPublication.SUPPRIMEE) {
+      throw new NotFoundException('Publication introuvable.');
+    }
     if (statutModere === StatutPublication.PUBLIEE) {
       this.verifierMediasPublication(publication.type, publication.medias);
     }
@@ -395,6 +388,85 @@ export class PublicationsService {
       select: publicationSelection,
     });
     return this.presenter(resultat);
+  }
+
+  /**
+   * Mise en ligne par le vendeur, une fois les médias ajoutés (brouillon →
+   * PUBLIEE). La modération intervient ensuite, sur signalement.
+   */
+  async publier(utilisateurId: string, publicationId: string) {
+    const boutique = await this.obtenirBoutiqueActive(utilisateurId);
+    const actuelle = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    if (actuelle.statut === StatutPublication.PUBLIEE) {
+      throw new ConflictException('Cette publication est déjà en ligne.');
+    }
+    if (actuelle.statut === StatutPublication.REJETEE) {
+      throw new ForbiddenException(
+        'Cette publication a été retirée par la modération.',
+      );
+    }
+    const { type, medias } = await this.prisma.publication.findUniqueOrThrow({
+      where: { id: publicationId },
+      select: {
+        type: true,
+        medias: {
+          select: {
+            media: { select: { typeMedia: true, statutTraitement: true } },
+          },
+        },
+      },
+    });
+    this.verifierMediasPublication(type, medias);
+
+    const { count } = await this.prisma.publication.updateMany({
+      where: { id: publicationId, statut: StatutPublication.PROCESSING },
+      data: { statut: StatutPublication.PUBLIEE },
+    });
+    if (count === 0) throw new ConflictException('Publication déjà traitée.');
+    return this.presenter(
+      await this.prisma.publication.findUniqueOrThrow({
+        where: { id: publicationId },
+        select: publicationSelection,
+      }),
+    );
+  }
+
+  /** Retire un média d'une publication encore en brouillon. */
+  async retirerMedia(utilisateurId: string, publicationId: string, mediaId: string) {
+    const boutique = await this.obtenirBoutiqueActive(utilisateurId);
+    const publication = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    this.verifierBrouillon(publication.statut);
+
+    const lien = await this.prisma.mediaPublication.findUnique({
+      where: { publicationId_mediaId: { publicationId, mediaId } },
+      select: { media: { select: { cleStockage: true } } },
+    });
+    if (!lien) throw new NotFoundException('Média introuvable.');
+
+    await this.prisma.$transaction([
+      this.prisma.mediaPublication.delete({
+        where: { publicationId_mediaId: { publicationId, mediaId } },
+      }),
+      this.prisma.media.delete({ where: { id: mediaId } }),
+    ]);
+    await this.stockage.supprimer(lien.media.cleStockage).catch(() => undefined);
+  }
+
+  /** File de modération (admin) : par statut, les plus récentes d'abord. */
+  async listerPourModeration(
+    statut: StatutPublication | undefined,
+    page: number,
+    limite: number,
+  ) {
+    return this.listerAvecFiltre(statut ? { statut } : {}, page, limite);
+  }
+
+  private verifierBrouillon(statut: StatutPublication) {
+    if (statut !== StatutPublication.PROCESSING) {
+      throw new ConflictException(
+        'Les médias ne sont modifiables que tant que la publication n’est pas en ligne.',
+      );
+    }
   }
 
   private async obtenirBoutiqueActive(utilisateurId: string) {
@@ -419,7 +491,7 @@ export class PublicationsService {
         boutiqueId,
         statut: { not: StatutPublication.SUPPRIMEE },
       },
-      select: { id: true, visibilite: true },
+      select: { id: true, visibilite: true, statut: true },
     });
     if (!publication) throw new NotFoundException('Publication introuvable.');
     return publication;

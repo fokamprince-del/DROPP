@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/database/prisma.service.js';
-import type { StatutVendeur } from '@dropp/database';
+import type { StatutKyc, StatutVendeur } from '@dropp/database';
 
 @Injectable()
 export class ListerVendeursService {
@@ -8,7 +8,7 @@ export class ListerVendeursService {
 
   async executer(params: {
     statut?: StatutVendeur;
-    statutKyc?: string;
+    statutKyc?: StatutKyc;
     page: number;
     limite: number;
   }) {
@@ -18,7 +18,7 @@ export class ListerVendeursService {
       ...(statut && { statutVendeur: statut }),
       ...(statutKyc && {
         dossiersKyc: {
-          some: { statut: statutKyc as any },
+          some: { statut: statutKyc },
         },
       }),
     };
@@ -49,7 +49,7 @@ export class ListerVendeursService {
 
     return {
       donnees: vendeurs,
-      pagination: { total, page, pages: Math.ceil(total / limite) },
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 }

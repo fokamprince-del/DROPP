@@ -1,34 +1,40 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import helmet from 'helmet';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module.js';
+import { configurerApplication, PREFIXE_API } from './app.setup.js';
 import { RedisIoAdapter } from './infrastructure/realtime/redis-io.adapter.js';
-import { PrismaExceptionFilter } from './infrastructure/http/prisma-exception.filter.js';
-import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
-  app.useGlobalFilters(new PrismaExceptionFilter());
   const config = app.get(ConfigService);
 
-  const trustProxy = config.getOrThrow<number>('app.trustProxy');
-  if (trustProxy > 0) app.set('trust proxy', trustProxy);
+  configurerApplication(app);
 
-  app.use(helmet());
-
-  const origins = config.getOrThrow<string[]>('app.corsOrigins');
-  if (origins.length > 0) {
-    app.enableCors({ origin: origins, maxAge: 600 });
+  // Documentation OpenAPI (génération du client Dart) : hors production.
+  if (config.getOrThrow<string>('app.environment') !== 'production') {
+    const document = SwaggerModule.createDocument(
+      app,
+      new DocumentBuilder()
+        .setTitle('DROPP API')
+        .setVersion(PREFIXE_API)
+        .addBearerAuth()
+        .addSecurityRequirements('bearer')
+        .addGlobalParameters({
+          name: 'Idempotency-Key',
+          in: 'header',
+          required: false,
+          description:
+            'UUID v4 unique par action (obligatoire sur certaines routes POST).',
+          schema: { type: 'string' },
+        })
+        .build(),
+    );
+    SwaggerModule.setup('docs', app, document, {
+      jsonDocumentUrl: 'docs/openapi.json',
+    });
   }
 
   // Socket.IO multi-instances via Redis pub/sub.

@@ -99,6 +99,7 @@ export class MessagerieController {
     return this.messages.envoyer(u.id, id, dto);
   }
 
+  @Throttle({ court: { ttl: 60_000, limit: 30 } })
   @Post('conversations/:id/pieces-jointes/signature')
   signature(
     @CurrentUser() u: UtilisateurConnecte,

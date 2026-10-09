@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   ParseEnumPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 
 import { Admin } from '../auth/decorators/profils.decorator.js';
@@ -26,27 +27,30 @@ export class CategoriesController {
   }
 
   @Get('admin')
-  @Admin('ADMIN')
+  @Admin('SUPER_ADMIN', 'MODERATEUR')
   listerAdministration() {
     return this.categoriesService.listerAdministration();
   }
 
   @Post()
-  @Admin('ADMIN')
+  @Admin('SUPER_ADMIN', 'MODERATEUR')
   creer(@Body() dto: CreerCategorieDto) {
     return this.categoriesService.creer(dto);
   }
 
   @Patch(':id')
-  @Admin('ADMIN')
-  mettreAJour(@Param('id') id: string, @Body() dto: MiseAJourCategorieDto) {
+  @Admin('SUPER_ADMIN', 'MODERATEUR')
+  mettreAJour(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: MiseAJourCategorieDto,
+  ) {
     return this.categoriesService.mettreAJour(id, dto);
   }
 
   @Patch(':id/statut/:statut')
-  @Admin('ADMIN')
+  @Admin('SUPER_ADMIN', 'MODERATEUR')
   changerStatut(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Param('statut', new ParseEnumPipe(StatutCategorie))
     statut: StatutCategorie,
   ) {

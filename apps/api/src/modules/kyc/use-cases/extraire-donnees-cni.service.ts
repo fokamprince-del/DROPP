@@ -1,11 +1,9 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
-import { OcrService } from '../services/ocr.service.js';
+import { DossierKycService } from '../services/dossier-kyc.service.js';
 import { KycStockageService } from '../services/kyc-stockage.service.js';
+import { OcrService } from '../services/ocr.service.js';
 
 @Injectable()
 export class ExtraireDonneesCniService {
@@ -13,6 +11,7 @@ export class ExtraireDonneesCniService {
     private readonly prisma: PrismaService,
     private readonly ocr: OcrService,
     private readonly kycStockage: KycStockageService,
+    private readonly dossiers: DossierKycService,
   ) {}
 
   /**
@@ -21,49 +20,27 @@ export class ExtraireDonneesCniService {
    * Rien n'est enregistré en base à cette étape.
    */
   async executer(utilisateurId: string) {
-    const vendeur = await this.prisma.vendeur.findUnique({
-      where: { id: utilisateurId },
-      select: {
-        dossiersKyc: {
-          orderBy: { dateSoumission: 'desc' },
-          take: 1,
-          select: {
-            id: true,
-            statut: true,
-            documents: {
-              where: { typeDocument: 'CNI_RECTO' },
-              select: { cleStockage: true },
-              take: 1,
-            },
-          },
-        },
-      },
+    const dossier = await this.dossiers.modifiable(utilisateurId);
+
+    const recto = await this.prisma.documentKyc.findFirst({
+      where: { dossierKycId: dossier.id, typeDocument: 'CNI_RECTO' },
+      select: { cleStockage: true },
     });
-
-    if (!vendeur) throw new ForbiddenException('Profil vendeur introuvable.');
-
-    const dossier = vendeur.dossiersKyc[0];
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
-
-    const documentCniRecto = dossier.documents[0];
-    if (!documentCniRecto) {
+    if (!recto) {
       throw new NotFoundException(
-        'CNI recto non uploadée. Uploadez d\'abord la CNI recto.',
+        'CNI recto non uploadée. Uploadez d’abord la CNI recto.',
       );
     }
 
-    const imageBuffer = await this.kycStockage.getFile(documentCniRecto.cleStockage);
-    if (!imageBuffer) {
-      throw new NotFoundException('Image CNI non trouvée.');
-    }
+    const image = await this.kycStockage.getFile(recto.cleStockage);
+    if (!image) throw new NotFoundException('Image CNI non trouvée.');
 
-    const donnees = await this.ocr.extraireDonneesCni(imageBuffer);
-
+    const donnees = await this.ocr.extraireDonneesCni(image);
     return {
       donnees,
       avertissement:
         donnees.confidence < 70
-          ? 'La qualité de l\'image est faible. Veuillez vérifier soigneusement les informations extraites.'
+          ? 'La qualité de l’image est faible. Veuillez vérifier soigneusement les informations extraites.'
           : null,
     };
   }

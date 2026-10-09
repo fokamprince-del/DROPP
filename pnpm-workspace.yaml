@@ -2,6 +2,7 @@ packages:
   - "apps/*"
   - "packages/*"
 allowBuilds:
+  '@scarf/scarf': false
   '@firebase/util': false
   '@parcel/watcher': false
   '@prisma/engines': true
@@ -12,3 +13,12 @@ allowBuilds:
   protobufjs: true
   tesseract.js: true
   unrs-resolver: false
+# Correctifs de sécurité des dépendances transitives (pnpm audit --prod).
+overrides:
+  proxy-addr: ^2.0.8
+  multer: ^2.4.0
+  deepmerge-ts: ^8.0.0
+  mysql2: ^3.23.1
+  source-map-js: ^1.2.2
+  uuid: ^11.1.1
+  fast-uri: ^3.1.8

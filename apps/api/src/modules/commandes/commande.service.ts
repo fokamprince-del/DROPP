@@ -15,8 +15,19 @@ import {
   type JobExpirationPassage,
 } from '@dropp/contrats';
 
+import { Prisma, type StatutCommande } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { NotificateurService } from '../notifications/notificateur.service.js';
+import { BOUTIQUE_VISIBLE } from '../shops/boutique-visible.js';
+
+const ligneSelect = {
+  id: true,
+  produitId: true,
+  nomProduitSnapshot: true,
+  quantite: true,
+  prixUnitaire: true,
+  varianteSnapshot: true,
+} as const;
 
 const commandeSelect = {
   id: true,
@@ -31,17 +42,20 @@ const commandeSelect = {
       statut: true,
       sousTotal: true,
       montantTotal: true,
-      lignes: {
-        select: {
-          id: true,
-          nomProduitSnapshot: true,
-          quantite: true,
-          prixUnitaire: true,
-          varianteSnapshot: true,
-        },
-      },
+      vendeur: { select: { boutique: { select: { nom: true } } } },
+      lignes: { select: ligneSelect },
     },
   },
+} as const;
+
+/** Marge avant que le balayage ne rattrape une expiration non traitée. */
+const MARGE_BALAYAGE_MS = 5 * 60_000;
+const LOT_BALAYAGE = 100;
+
+/** Paiement et livraison : à brancher (prestataires en cours de sélection). */
+const ETAT_EN_ATTENTE = {
+  paiement: { statut: 'NON_CONFIGURE' },
+  livraison: { statut: 'A_DEFINIR' },
 } as const;
 
 @Injectable()
@@ -64,6 +78,7 @@ export class CommandeService {
 
     // Sans paiement dans le délai : annulation et stock rendu (voir expirer()).
     // jobId déterministe : le module paiement pourra retirer le job une fois payé.
+    // Si l'ajout échoue, le balayage périodique prend le relais.
     await this.queue
       .add(
         JOB_COMMANDE.EXPIRATION_PASSAGE,
@@ -87,7 +102,7 @@ export class CommandeService {
       donnees: { commandeId: commande.id },
     });
 
-    return commande;
+    return this.obtenir(utilisateurId, commande.id);
   }
 
   /** Annulation par le client, possible tant que la commande n'est pas payée. */
@@ -103,7 +118,10 @@ export class CommandeService {
       );
     }
 
-    await this.libererCommande(commande.passageCommandeId, 'ANNULE');
+    const annulee = await this.libererCommande(commande.passageCommandeId, 'ANNULE');
+    if (!annulee) {
+      throw new ConflictException('Cette commande a déjà été traitée.');
+    }
     await this.queue
       .remove(`expiration-${commande.passageCommandeId}`)
       .catch(() => undefined);
@@ -126,6 +144,26 @@ export class CommandeService {
   }
 
   /**
+   * Filet de sécurité (planifié) : expire les commandes non payées dont le
+   * délai est dépassé mais dont le job différé n'a pas tourné (Redis vidé,
+   * ajout du job en échec…). Le stock réservé est ainsi toujours rendu.
+   */
+  async expirerEnRetard(): Promise<number> {
+    const limite = new Date(Date.now() - this.delaiPaiementMs - MARGE_BALAYAGE_MS);
+    const enRetard = await this.prisma.commande.findMany({
+      where: { statut: 'EN_ATTENTE_PAIEMENT', dateCreation: { lt: limite } },
+      select: { passageCommandeId: true },
+      take: LOT_BALAYAGE,
+    });
+    for (const { passageCommandeId } of enRetard) {
+      await this.expirer(passageCommandeId).catch((e: unknown) =>
+        this.logger.error(`Expiration ${passageCommandeId} : ${String(e)}`),
+      );
+    }
+    return enRetard.length;
+  }
+
+  /**
    * Annule une commande non payée et rend le stock réservé, de façon atomique.
    * Retourne null si la commande n'est plus EN_ATTENTE_PAIEMENT (payée, déjà annulée…).
    */
@@ -140,7 +178,7 @@ export class CommandeService {
       });
       if (!commande) return null;
 
-      // Garde atomique : un seul appelant (job ou client) passe ici.
+      // Garde atomique : un seul appelant (job, balayage ou client) passe ici.
       const { count } = await tx.commande.updateMany({
         where: { id: commande.id, statut: 'EN_ATTENTE_PAIEMENT' },
         data: { statut: 'ANNULEE' },
@@ -182,7 +220,6 @@ export class CommandeService {
             select: {
               id: true,
               quantite: true,
-              prixUnitaire: true,
               varianteProduit: {
                 select: {
                   id: true,
@@ -190,7 +227,6 @@ export class CommandeService {
                   sku: true,
                   attributs: true,
                   prix: true,
-                  stockDisponible: true,
                   produit: {
                     select: {
                       id: true,
@@ -198,9 +234,6 @@ export class CommandeService {
                       prixBase: true,
                       boutiqueId: true,
                       statut: true,
-                      boutique: {
-                        select: { vendeur: { select: { id: true } } },
-                      },
                     },
                   },
                 },
@@ -212,20 +245,51 @@ export class CommandeService {
       if (!panier || panier.articles.length === 0)
         throw new BadRequestException('Le panier est vide.');
 
-      const prixCourants = new Map(
-        panier.articles.map((article) => [
-          article.id,
-          Number(
-            article.varianteProduit.prix ??
-              article.varianteProduit.produit.prixBase,
-          ),
+      // Produits encore en vente, dans une boutique visible.
+      const produitIds = [
+        ...new Set(panier.articles.map((a) => a.varianteProduit.produit.id)),
+      ];
+      const enVente = await tx.produit.count({
+        where: {
+          id: { in: produitIds },
+          statut: 'PUBLIE',
+          boutique: BOUTIQUE_VISIBLE,
+        },
+      });
+      if (enVente !== produitIds.length) {
+        throw new BadRequestException(
+          'Un produit du panier n’est plus disponible. Retirez-le pour continuer.',
+        );
+      }
+
+      // Prix courants (et non ceux enregistrés à l'ajout au panier), en Decimal.
+      const prixCourant = new Map(
+        panier.articles.map((a) => [
+          a.id,
+          a.varianteProduit.prix ?? a.varianteProduit.produit.prixBase,
         ]),
       );
-      const total = panier.articles.reduce(
-        (somme, article) =>
-          somme + (prixCourants.get(article.id) ?? 0) * article.quantite,
-        0,
-      );
+      const montant = (articles: typeof panier.articles) =>
+        articles.reduce(
+          (somme, a) => somme.add(prixCourant.get(a.id)!.mul(a.quantite)),
+          new Prisma.Decimal(0),
+        );
+
+      const groupes = new Map<string, typeof panier.articles>();
+      for (const article of panier.articles) {
+        const vendeurId = article.varianteProduit.produit.boutiqueId;
+        if (vendeurId === utilisateurId)
+          throw new BadRequestException(
+            'Vous ne pouvez pas commander dans votre propre boutique.',
+          );
+        groupes.set(vendeurId, [...(groupes.get(vendeurId) ?? []), article]);
+      }
+
+      const total = montant(panier.articles);
+      if (total.lte(0)) {
+        throw new BadRequestException('Montant de commande invalide.');
+      }
+
       const passage = await tx.passageCommande.create({
         data: {
           utilisateurId,
@@ -234,22 +298,6 @@ export class CommandeService {
           devise: 'XAF',
         },
       });
-      const groupes = new Map<string, typeof panier.articles>();
-      for (const article of panier.articles) {
-        if (article.varianteProduit.produit.statut !== 'PUBLIE')
-          throw new BadRequestException(
-            'Un produit du panier n’est plus disponible.',
-          );
-        const vendeurId = article.varianteProduit.produit.boutique.vendeur.id;
-        if (vendeurId === utilisateurId)
-          throw new BadRequestException(
-            'Vous ne pouvez pas commander dans votre propre boutique.',
-          );
-        const groupe = groupes.get(vendeurId) ?? [];
-        groupe.push(article);
-        groupes.set(vendeurId, groupe);
-      }
-
       const commande = await tx.commande.create({
         data: {
           passageCommandeId: passage.id,
@@ -258,12 +306,9 @@ export class CommandeService {
           devise: 'XAF',
         },
       });
+
       for (const [vendeurId, articles] of groupes) {
-        const sousTotal = articles.reduce(
-          (somme, article) =>
-            somme + (prixCourants.get(article.id) ?? 0) * article.quantite,
-          0,
-        );
+        const sousTotal = montant(articles);
         const sousCommande = await tx.sousCommande.create({
           data: {
             commandeId: commande.id,
@@ -274,20 +319,21 @@ export class CommandeService {
           },
         });
         for (const article of articles) {
+          const { varianteProduit: variante } = article;
           const reserve = await tx.varianteProduit.updateMany({
             where: {
-              id: article.varianteProduit.id,
+              id: variante.id,
               stockDisponible: { gte: article.quantite },
             },
             data: { stockDisponible: { decrement: article.quantite } },
           });
           if (reserve.count !== 1)
             throw new BadRequestException(
-              `Stock insuffisant pour ${article.varianteProduit.nom}.`,
+              `Stock insuffisant pour ${variante.produit.nom} (${variante.nom}).`,
             );
           await tx.reservationStock.create({
             data: {
-              varianteProduitId: article.varianteProduit.id,
+              varianteProduitId: variante.id,
               quantite: article.quantite,
               expireA: new Date(Date.now() + this.delaiPaiementMs),
               passageCommandeId: passage.id,
@@ -296,22 +342,22 @@ export class CommandeService {
           await tx.ligneSousCommande.create({
             data: {
               articleCommandeId: sousCommande.id,
-              produitId: article.varianteProduit.produit.id,
-              varianteProduitId: article.varianteProduit.id,
+              produitId: variante.produit.id,
+              varianteProduitId: variante.id,
               produitSnapshot: {
-                id: article.varianteProduit.produit.id,
-                nom: article.varianteProduit.produit.nom,
-                prixBase: Number(article.varianteProduit.produit.prixBase),
+                id: variante.produit.id,
+                nom: variante.produit.nom,
+                prixBase: variante.produit.prixBase.toString(),
               },
               varianteSnapshot: {
-                id: article.varianteProduit.id,
-                nom: article.varianteProduit.nom,
-                sku: article.varianteProduit.sku,
-                attributs: article.varianteProduit.attributs,
+                id: variante.id,
+                nom: variante.nom,
+                sku: variante.sku,
+                attributs: variante.attributs as Prisma.InputJsonValue,
               },
-              nomProduitSnapshot: article.varianteProduit.produit.nom,
+              nomProduitSnapshot: variante.produit.nom,
               quantite: article.quantite,
-              prixUnitaire: prixCourants.get(article.id) ?? 0,
+              prixUnitaire: prixCourant.get(article.id)!,
             },
           });
         }
@@ -321,25 +367,26 @@ export class CommandeService {
         where: { id: panier.id },
         data: { statut: 'CONVERTI' },
       });
-      return {
-        ...commande,
-        montantTotal: total,
-        paiement: { statut: 'NON_CONFIGURE' },
-        livraison: { statut: 'A_DEFINIR' },
-      };
+      return { id: commande.id, passageCommandeId: passage.id };
     });
   }
 
-  async lister(utilisateurId: string) {
-    const commandes = await this.prisma.commande.findMany({
-      where: { utilisateurId },
-      orderBy: { dateCreation: 'desc' },
-      select: commandeSelect,
-    });
-    return commandes.map((commande) => ({
-      ...commande,
-      montantTotal: Number(commande.montantTotal),
-    }));
+  async lister(utilisateurId: string, page: number, limite: number) {
+    const where = { utilisateurId };
+    const [commandes, total] = await this.prisma.$transaction([
+      this.prisma.commande.findMany({
+        where,
+        orderBy: { dateCreation: 'desc' },
+        skip: (page - 1) * limite,
+        take: limite,
+        select: commandeSelect,
+      }),
+      this.prisma.commande.count({ where }),
+    ]);
+    return {
+      donnees: commandes.map((c) => this.presenter(c)),
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
+    };
   }
 
   async obtenir(utilisateurId: string, id: string) {
@@ -348,11 +395,85 @@ export class CommandeService {
       select: commandeSelect,
     });
     if (!commande) throw new NotFoundException('Commande introuvable.');
+    return { ...this.presenter(commande), ...ETAT_EN_ATTENTE };
+  }
+
+  // ── Côté vendeur (lecture seule tant que paiement et livraison manquent) ──
+
+  async listerVentes(
+    vendeurId: string,
+    page: number,
+    limite: number,
+    statut?: StatutCommande,
+  ) {
+    const where = { vendeurId, ...(statut && { statut }) };
+    const [ventes, total] = await this.prisma.$transaction([
+      this.prisma.sousCommande.findMany({
+        where,
+        orderBy: { dateCreation: 'desc' },
+        skip: (page - 1) * limite,
+        take: limite,
+        select: this.venteSelect,
+      }),
+      this.prisma.sousCommande.count({ where }),
+    ]);
     return {
-      ...commande,
-      montantTotal: Number(commande.montantTotal),
-      paiement: { statut: 'NON_CONFIGURE' },
-      livraison: { statut: 'A_DEFINIR' },
+      donnees: ventes.map((v) => this.presenterVente(v)),
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
+    };
+  }
+
+  async obtenirVente(vendeurId: string, sousCommandeId: string) {
+    const vente = await this.prisma.sousCommande.findFirst({
+      where: { id: sousCommandeId, vendeurId },
+      select: this.venteSelect,
+    });
+    if (!vente) throw new NotFoundException('Commande introuvable.');
+    return { ...this.presenterVente(vente), ...ETAT_EN_ATTENTE };
+  }
+
+  private readonly venteSelect = {
+    id: true,
+    commandeId: true,
+    statut: true,
+    sousTotal: true,
+    montantTotal: true,
+    devise: true,
+    dateCreation: true,
+    commande: {
+      select: {
+        utilisateur: { select: { id: true, prenom: true, nom: true, pseudo: true } },
+      },
+    },
+    lignes: { select: ligneSelect },
+  } satisfies Prisma.SousCommandeSelect;
+
+  private presenterVente(
+    v: Prisma.SousCommandeGetPayload<{ select: CommandeService['venteSelect'] }>,
+  ) {
+    const { commande, ...vente } = v;
+    return {
+      ...vente,
+      sousTotal: Number(vente.sousTotal),
+      montantTotal: Number(vente.montantTotal),
+      client: commande.utilisateur,
+      lignes: vente.lignes.map((l) => ({ ...l, prixUnitaire: Number(l.prixUnitaire) })),
+    };
+  }
+
+  private presenter(
+    c: Prisma.CommandeGetPayload<{ select: typeof commandeSelect }>,
+  ) {
+    return {
+      ...c,
+      montantTotal: Number(c.montantTotal),
+      sousCommandes: c.sousCommandes.map(({ vendeur, ...sc }) => ({
+        ...sc,
+        boutiqueNom: vendeur.boutique?.nom ?? null,
+        sousTotal: Number(sc.sousTotal),
+        montantTotal: Number(sc.montantTotal),
+        lignes: sc.lignes.map((l) => ({ ...l, prixUnitaire: Number(l.prixUnitaire) })),
+      })),
     };
   }
 }

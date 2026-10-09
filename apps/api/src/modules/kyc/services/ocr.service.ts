@@ -1,5 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { createWorker } from 'tesseract.js';
+import {
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+  type OnModuleDestroy,
+} from '@nestjs/common';
+import { createWorker, type Worker } from 'tesseract.js';
 
 export interface DonneesCniExtraites {
   nomLegal?: string;
@@ -12,38 +17,58 @@ export interface DonneesCniExtraites {
   confidence: number; // 0 à 100
 }
 
+/** Au-delà, l'OCR est refusé (503) : protège le CPU de l'API. */
+const MAX_EN_ATTENTE = 5;
+
+/**
+ * OCR des CNI avec Tesseract.js (français).
+ * Un seul worker, créé à la première utilisation et réutilisé : les
+ * reconnaissances sont exécutées l'une après l'autre, avec une file bornée,
+ * pour qu'un afflux de demandes ne sature pas le processus de l'API.
+ */
 @Injectable()
-export class OcrService {
+export class OcrService implements OnModuleDestroy {
   private readonly logger = new Logger(OcrService.name);
+  private worker?: Promise<Worker>;
+  private file: Promise<unknown> = Promise.resolve();
+  private enAttente = 0;
 
-  /**
-   * Extrait les données textuelles d'une image de CNI.
-   * Utilise Tesseract.js en mode français.
-   * Résultat à valider obligatoirement par l'utilisateur.
-   */
-  async extraireDonneesCni(
-    imageBuffer: Buffer,
-  ): Promise<DonneesCniExtraites> {
-    const worker = await createWorker('fra', 1, {
-      logger: () => undefined, // Silencer les logs Tesseract
-    });
-
-    try {
-      const { data } = await worker.recognize(imageBuffer);
-      const texte = data.text;
-      const confidence = data.confidence;
-
-      this.logger.debug(
-        `OCR terminé. Confiance: ${confidence}%. Texte extrait: ${texte.slice(0, 100)}...`,
+  async extraireDonneesCni(imageBuffer: Buffer): Promise<DonneesCniExtraites> {
+    if (this.enAttente >= MAX_EN_ATTENTE) {
+      throw new ServiceUnavailableException(
+        'Lecture automatique momentanément indisponible. Saisissez vos informations ou réessayez dans un instant.',
       );
-
-      return {
-        ...this.parserTexteCni(texte),
-        confidence,
-      };
-    } finally {
-      await worker.terminate();
     }
+    this.enAttente++;
+    const tache = this.file.then(() => this.reconnaitre(imageBuffer));
+    this.file = tache.catch(() => undefined);
+    try {
+      return await tache;
+    } finally {
+      this.enAttente--;
+    }
+  }
+
+  async onModuleDestroy(): Promise<void> {
+    const worker = await this.worker?.catch(() => undefined);
+    await worker?.terminate();
+  }
+
+  private async reconnaitre(imageBuffer: Buffer): Promise<DonneesCniExtraites> {
+    const worker = await this.obtenirWorker();
+    const { data } = await worker.recognize(imageBuffer);
+    this.logger.debug(`OCR terminé. Confiance : ${data.confidence}%.`);
+    return { ...this.parserTexteCni(data.text), confidence: data.confidence };
+  }
+
+  private obtenirWorker(): Promise<Worker> {
+    this.worker ??= createWorker('fra', 1, {
+      logger: () => undefined, // Silencer les logs Tesseract
+    }).catch((erreur: unknown) => {
+      this.worker = undefined; // nouvel essai à la prochaine demande
+      throw erreur;
+    });
+    return this.worker;
   }
 
   /**
@@ -65,7 +90,7 @@ export class OcrService {
       }
 
       // Dates : format DD/MM/YYYY ou DD-MM-YYYY
-      const dateMatch = ligne.match(/(\d{2}[\/\-]\d{2}[\/\-]\d{4})/g);
+      const dateMatch = ligne.match(/(\d{2}[/-]\d{2}[/-]\d{4})/g);
       if (dateMatch?.length) {
         if (!resultat.dateNaissance) {
           resultat.dateNaissance = dateMatch[0];

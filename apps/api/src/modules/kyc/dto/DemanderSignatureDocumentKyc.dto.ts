@@ -1,25 +1,21 @@
-import { TypeDocumentKyc } from "@dropp/database";
-import { IsString, IsNotEmpty, IsIn, IsInt, Min, Max } from "class-validator";
+import { TypeDocumentKyc } from '@dropp/database';
+import { IsIn, IsInt, Max, Min } from 'class-validator';
 
-export const TYPES_MIME_KYC_AUTORISES = [
-    'image/jpeg', 
-    'image/png', 
-    'image/webp'
-] ;
+export const TYPES_MIME_KYC_AUTORISES = ['image/jpeg', 'image/png', 'image/webp'];
 
-export const MAX_TAILLE_DOCUMENT_KYC = 10 * 1024 * 1024; // 10 Mo
+export const MAX_TAILLE_DOCUMENT_KYC_MO = 10;
+export const MAX_TAILLE_DOCUMENT_KYC = MAX_TAILLE_DOCUMENT_KYC_MO * 1024 * 1024;
 
 export class DemanderSignatureDocumentKycDto {
-    @IsString()
-    @IsNotEmpty()
-    @IsIn(TYPES_MIME_KYC_AUTORISES)
-    typeMime!: string;
+  @IsIn(TYPES_MIME_KYC_AUTORISES)
+  typeMime!: string;
 
-    @IsInt()
-    @Min(1)
-    @Max(MAX_TAILLE_DOCUMENT_KYC)
-    taille!: number;
+  /** Taille en octets (10 Mo max). */
+  @IsInt()
+  @Min(1)
+  @Max(MAX_TAILLE_DOCUMENT_KYC)
+  taille!: number;
 
-    @IsIn(Object.values(TypeDocumentKyc))
-    typeDocument!: TypeDocumentKyc;
+  @IsIn(Object.values(TypeDocumentKyc))
+  typeDocument!: TypeDocumentKyc;
 }

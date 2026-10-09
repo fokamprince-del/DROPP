@@ -43,13 +43,11 @@ export class MiseAJourProfilDto {
   })
   pseudo?: string;
 
-  /** @sexe */
   @IsOptional()
-  @IsString()
   @IsIn(Object.values(Sexe), {
     message: `Le sexe doit être l'une des valeurs suivantes : ${Object.values(Sexe).join(
       ', ',
     )}.`,
   })
-  sexe?: string;
+  sexe?: Sexe;
 }

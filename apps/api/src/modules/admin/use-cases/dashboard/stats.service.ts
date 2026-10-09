@@ -34,8 +34,8 @@ export class StatsService {
       this.prisma.utilisateur.count({ where: { statutCompte: 'ACTIF' } }),
       this.prisma.vendeur.count(),
       this.prisma.vendeur.count({ where: { statutVendeur: 'ACTIF' } }),
-      this.prisma.dossierKyc.count({
-        where: { statut: 'EN_ATTENTE_REVUE_ADMIN' },
+      this.prisma.vendeur.count({
+        where: { statutVendeur: 'EN_ATTENTE_VALIDATION' },
       }),
       this.prisma.produit.count(),
       this.prisma.produit.count({ where: { statut: 'PUBLIE' } }),
@@ -43,7 +43,9 @@ export class StatsService {
       this.prisma.commande.count({
         where: { dateCreation: { gte: debutMois } },
       }),
-      this.prisma.signalement.count({ where: { statut: 'OUVERT' } }),
+      this.prisma.signalement.count({
+        where: { statut: { in: ['OUVERT', 'EN_COURS'] } },
+      }),
       this.prisma.dossierKyc.count({
         where: { statut: 'EN_ATTENTE_REVUE_ADMIN' },
       }),

@@ -13,6 +13,8 @@ const CORRESPONDANCES: Record<string, { statut: HttpStatus; message: string }> =
   P2002: { statut: HttpStatus.CONFLICT, message: 'Cette ressource existe déjà.' },
   P2025: { statut: HttpStatus.NOT_FOUND, message: 'Ressource introuvable.' },
   P2003: { statut: HttpStatus.BAD_REQUEST, message: 'Référence invalide.' },
+  P2004: { statut: HttpStatus.BAD_REQUEST, message: 'Opération refusée : données incohérentes.' },
+  P2023: { statut: HttpStatus.BAD_REQUEST, message: 'Identifiant invalide.' },
 };
 
 /**

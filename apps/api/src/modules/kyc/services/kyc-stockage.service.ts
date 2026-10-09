@@ -1,66 +1,70 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   STOCKAGE_PROVIDER,
   type StockageProvider,
   type SignatureUpload,
 } from '../../../infrastructure/stockage/stockage-provider.contract.js';
 import { verifierUpload } from '../../../infrastructure/stockage/verifier-upload.js';
-import { MAX_TAILLE_DOCUMENT_KYC } from '../dto/DemanderSignatureDocumentKyc.dto.js';
+import {
+  MAX_TAILLE_DOCUMENT_KYC_MO,
+  TYPES_MIME_KYC_AUTORISES,
+} from '../dto/DemanderSignatureDocumentKyc.dto.js';
 
 export type TypeDocumentKycUpload = 'cni-recto' | 'cni-verso' | 'selfie';
 
+/** Lien de consultation d'une pièce d'identité par un administrateur. */
+const DUREE_CONSULTATION_S = 5 * 60;
+
+/**
+ * Pièces d'identité : préfixe kyc/ → bucket privé, jamais d'URL publique.
+ * Lecture uniquement par URL signée de courte durée.
+ */
 @Injectable()
 export class KycStockageService {
-  private readonly logger = new Logger(KycStockageService.name);
-
   constructor(
     @Inject(STOCKAGE_PROVIDER)
     private readonly stockage: StockageProvider,
   ) {}
 
-  /**
-   * Génère une URL signée pour upload d'un document KYC.
-   * TTL court : 5 minutes (données sensibles).
-   * Bucket séparé des médias produits.
-   */
-  async genererSignature(
+  genererSignature(
     vendeurId: string,
     type: TypeDocumentKycUpload,
     typeMime: string,
   ): Promise<SignatureUpload> {
-    return this.stockage.genererSignatureUpload( this.getPrefixe(vendeurId, type), typeMime, MAX_TAILLE_DOCUMENT_KYC);
+    return this.stockage.genererSignatureUpload(
+      this.prefixe(vendeurId, type),
+      typeMime,
+      MAX_TAILLE_DOCUMENT_KYC_MO,
+    );
   }
 
-  /**
-   * Génère une URL de consultation temporaire (5 minutes).
-   * Chaque accès admin est audité.
-   */
-  urlConsultation(cleStockage: string): string {
-    // En production : URL signée avec TTL 5min via R2
-    // Pour l'instant le stub retourne une URL publique
-    return this.stockage.urlPublique(cleStockage);
+  /** URL signée (5 min par défaut) : consultation admin, vérification faciale. */
+  urlConsultation(cleStockage: string, dureeSecondes = DUREE_CONSULTATION_S) {
+    return this.stockage.urlSignee(cleStockage, dureeSecondes);
   }
 
-  /**
-   * verifier l'upload d'un document KYC.
-   */
-  async verifierUpload(cleStockage: string, typeMime: string, vendeurId: string, type: TypeDocumentKycUpload) {
-    return await verifierUpload(this.stockage,{
-      cleStockage, 
-      typesMime: [typeMime], 
-      prefixe: this.getPrefixe(vendeurId, type), 
-      tailleMaxMo: MAX_TAILLE_DOCUMENT_KYC
+  verifierUpload(
+    cleStockage: string,
+    vendeurId: string,
+    type: TypeDocumentKycUpload,
+  ) {
+    return verifierUpload(this.stockage, {
+      cleStockage,
+      typesMime: TYPES_MIME_KYC_AUTORISES,
+      prefixe: this.prefixe(vendeurId, type),
+      tailleMaxMo: MAX_TAILLE_DOCUMENT_KYC_MO,
     });
   }
 
-  /**
-   * recupere le contenu d'un document KYC.
-   */
-  async getFile(cleStockage: string): Promise<Buffer| null> {
-    return await this.stockage.getFile(cleStockage);
+  getFile(cleStockage: string): Promise<Buffer | null> {
+    return this.stockage.getFile(cleStockage);
   }
 
-  private  getPrefixe(utilisateurId: string, type: TypeDocumentKycUpload){
-    return `kyc/${utilisateurId}/${type}`;
+  supprimer(cleStockage: string): Promise<void> {
+    return this.stockage.supprimer(cleStockage);
+  }
+
+  private prefixe(vendeurId: string, type: TypeDocumentKycUpload) {
+    return `kyc/${vendeurId}/${type}`;
   }
 }

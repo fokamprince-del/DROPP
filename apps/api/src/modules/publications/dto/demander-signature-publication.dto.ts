@@ -1,21 +1,16 @@
-import { IsIn, IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { IsIn, IsInt, Max, Min } from 'class-validator';
 
-const TYPES_MIME_AUTORISES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'video/mp4',
-  'video/quicktime',
-] as const;
+import {
+  TAILLE_MAX_MEDIA_OCTETS,
+  TYPES_MIME_MEDIA,
+} from '../../../infrastructure/stockage/media.js';
 
-export class  DemanderSignaturePublicationDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsIn(TYPES_MIME_AUTORISES)
+export class DemanderSignaturePublicationDto {
+  @IsIn(TYPES_MIME_MEDIA)
   typeMime!: string;
 
   @IsInt()
   @Min(1)
-  @Max(500 * 1024 * 1024)
+  @Max(TAILLE_MAX_MEDIA_OCTETS)
   taille!: number;
 }

@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Req,
@@ -42,7 +43,7 @@ export class ClientsController {
   @Patch('me/adresses/:adresseId')
   mettreAJourAdresse(
     @Req() requete: RequeteAuthentifiee,
-    @Param('adresseId') adresseId: string,
+    @Param('adresseId', ParseUUIDPipe) adresseId: string,
     @Body() dto: MiseAJourAdresseDto,
   ) {
     return this.clientsService.mettreAJourAdresse(
@@ -56,7 +57,7 @@ export class ClientsController {
   @HttpCode(204)
   async supprimerAdresse(
     @Req() requete: RequeteAuthentifiee,
-    @Param('adresseId') adresseId: string,
+    @Param('adresseId', ParseUUIDPipe) adresseId: string,
   ): Promise<void> {
     await this.clientsService.supprimerAdresse(requete.user.id, adresseId);
   }

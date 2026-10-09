@@ -1,35 +1,49 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { DonneesCniDto } from '../dto/donnees-cni.dto.js';
+import { DossierKycService } from '../services/dossier-kyc.service.js';
+
+/** Âge minimum pour vendre sur la plateforme. */
+const AGE_MINIMUM = 18;
 
 @Injectable()
 export class ConfirmerDonneesCniService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly dossiers: DossierKycService,
+  ) {}
 
-  /**
-   * Enregistre les données CNI validées par l'utilisateur.
-   */
+  /** Enregistre les données CNI validées par l'utilisateur. */
   async executer(utilisateurId: string, dto: DonneesCniDto) {
-    const dossier = await this.getDossierModifiable(utilisateurId);
+    const dossier = await this.dossiers.modifiable(utilisateurId);
 
-    // Vérifier que la CNI n'est pas expirée
-    if (dto.dateExpiration < new Date()) {
-      throw new BadRequestException('Votre carte d\'identité est expirée.');
+    const maintenant = new Date();
+    if (dto.dateExpiration < maintenant) {
+      throw new BadRequestException('Votre carte d’identité est expirée.');
+    }
+    if (dto.dateEtablissement >= dto.dateExpiration) {
+      throw new BadRequestException('Dates de la carte d’identité incohérentes.');
+    }
+    if (dto.dateNaissance >= dto.dateEtablissement) {
+      throw new BadRequestException('Date de naissance incohérente.');
+    }
+    const majorite = new Date(dto.dateNaissance);
+    majorite.setFullYear(majorite.getFullYear() + AGE_MINIMUM);
+    if (majorite > maintenant) {
+      throw new BadRequestException(
+        `Vous devez avoir au moins ${AGE_MINIMUM} ans pour vendre sur DROPP.`,
+      );
     }
 
     return this.prisma.dossierKyc.update({
       where: { id: dossier.id },
       data: {
-        nomLegal: dto.nomLegal.trim(),
-        prenomLegal: dto.prenomLegal.trim(),
-        numeroCni: dto.numeroCni.trim(),
+        nomLegal: dto.nomLegal,
+        prenomLegal: dto.prenomLegal,
+        numeroCni: dto.numeroCni,
         dateNaissance: dto.dateNaissance,
-        lieuNaissance: dto.lieuNaissance.trim(),
+        lieuNaissance: dto.lieuNaissance,
         dateEtablissement: dto.dateEtablissement,
         dateExpiration: dto.dateExpiration,
       },
@@ -44,29 +58,5 @@ export class ConfirmerDonneesCniService {
         dateExpiration: true,
       },
     });
-  }
-
-  private async getDossierModifiable(utilisateurId: string) {
-    const vendeur = await this.prisma.vendeur.findUnique({
-      where: { id: utilisateurId },
-      select: {
-        dossiersKyc: {
-          orderBy: { dateSoumission: 'desc' },
-          take: 1,
-          select: { id: true, statut: true },
-        },
-      },
-    });
-
-    if (!vendeur) throw new ForbiddenException('Profil vendeur introuvable.');
-
-    const dossier = vendeur.dossiersKyc[0];
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
-
-    if (!['EN_ATTENTE', 'REJETE'].includes(dossier.statut)) {
-      throw new BadRequestException('Le dossier ne peut plus être modifié.');
-    }
-
-    return dossier;
   }
 }

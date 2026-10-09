@@ -54,7 +54,7 @@ export class ListerUtilisateursService {
         ...u,
         roles: u.roles.map((r) => r.role.nom),
       })),
-      pagination: { total, page, pages: Math.ceil(total / limite) },
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 }

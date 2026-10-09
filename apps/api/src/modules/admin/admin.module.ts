@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../infrastructure/database/prisma.module.js';
+import { AuthentificationModule } from '../auth/auth.module.js';
 import { AdminController } from './admin.controller.js';
 
 import { ListerUtilisateursService } from './use-cases/utilisateurs/lister-utilisateurs.service.js';
@@ -16,7 +17,7 @@ import { StatsService } from './use-cases/dashboard/stats.service.js';
 import { ListerAuditService } from './use-cases/audit/lister-audit.service.js';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AuthentificationModule],
   controllers: [AdminController],
   providers: [
     ListerUtilisateursService,

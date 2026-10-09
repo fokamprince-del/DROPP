@@ -51,6 +51,34 @@ export const validationSchema = Joi.object({
   //   then: Joi.string().uri({ scheme: ['https'] }).required(),
   // }),
 
+  // SMS : "stub" en dev (codes dans les logs), "twilio" obligatoire en production.
+  SMS_DRIVER: Joi.string()
+    .valid('stub', 'twilio')
+    .default('stub')
+    .when('NODE_ENV', { is: 'production', then: Joi.valid('twilio') }),
+  TWILIO_ACCOUNT_SID: Joi.string().allow('').when('SMS_DRIVER', {
+    is: 'twilio',
+    then: Joi.string().pattern(/^AC/).required(),
+  }),
+  TWILIO_AUTH_TOKEN: Joi.string().allow('').when('SMS_DRIVER', {
+    is: 'twilio',
+    then: Joi.string().required(),
+  }),
+  TWILIO_EXPEDITEUR: Joi.string().allow('').when('SMS_DRIVER', {
+    is: 'twilio',
+    then: Joi.string().required(),
+  }),
+
+  // Face++ (vérification faciale KYC). Vide = simulation en dev, obligatoire en production.
+  FACEPP_API_KEY: Joi.string().allow('').default('').when('NODE_ENV', {
+    is: 'production',
+    then: Joi.string().required(),
+  }),
+  FACEPP_API_SECRET: Joi.string().allow('').default('').when('NODE_ENV', {
+    is: 'production',
+    then: Joi.string().required(),
+  }),
+
   DATABASE_URL: Joi.string().required(),
   DATABASE_POOL_MAX: Joi.number().default(5)
 });

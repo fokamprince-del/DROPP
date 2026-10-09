@@ -35,6 +35,8 @@ export class ListerSignalementsService {
           publication: { select: { id: true } },
           commentaire: { select: { id: true } },
           produit: { select: { id: true, nom: true } },
+          boutique: { select: { id: true, nom: true } },
+          messageId: true,
         },
         orderBy: [
           { priorite: 'desc' },
@@ -48,7 +50,7 @@ export class ListerSignalementsService {
 
     return {
       donnees: signalements,
-      pagination: { total, page, pages: Math.ceil(total / limite) },
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 }

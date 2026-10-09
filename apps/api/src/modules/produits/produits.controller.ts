@@ -13,7 +13,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
@@ -158,6 +157,30 @@ export class ProduitsController {
   ) {
     const boutique = await this.boutiqueResolver.resoudre(u.id);
     return this.supprimerProduit.executer(id, boutique);
+  }
+
+  /** Retire le produit de la vente (réversible). */
+  @Vendeur()
+  @Post('boutique/produits/:id/archiver')
+  @HttpCode(HttpStatus.OK)
+  async archiver(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const boutique = await this.boutiqueResolver.resoudre(u.id);
+    return this.modifierProduit.archiver(id, boutique);
+  }
+
+  /** Remet en vente un produit archivé (republié s'il est complet). */
+  @Vendeur()
+  @Post('boutique/produits/:id/restaurer')
+  @HttpCode(HttpStatus.OK)
+  async restaurer(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const boutique = await this.boutiqueResolver.resoudre(u.id);
+    return this.modifierProduit.restaurer(id, boutique);
   }
 
   // ── Variantes ─────────────────────────────────────────────────────────────

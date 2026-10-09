@@ -18,17 +18,13 @@ import {
   type StockageProvider,
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
 import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
+import { TAILLE_MAX_MEDIA_MO } from '../../infrastructure/stockage/media.js';
 import { racineContenu, urlLecture } from '../../infrastructure/stockage/lecture.js';
 import type { ConfirmerStoryDto } from './dto/confirmer-story.dto.js';
 import type { CreerStoryDto } from './dto/creer-story.dto.js';
+import { BOUTIQUE_VISIBLE } from '../shops/boutique-visible.js';
 
-const TAILLE_MAX_PAR_TYPE: Record<string, number> = {
-  'image/jpeg': 10,
-  'image/png': 10,
-  'image/webp': 10,
-  'video/mp4': 500,
-  'video/quicktime': 500,
-};
+const TAILLE_MAX_PAR_TYPE: Record<string, number> = TAILLE_MAX_MEDIA_MO;
 
 const DUREE_MAX_STORY_MS = 24 * 3_600_000;
 
@@ -72,7 +68,7 @@ export class StoriesService {
         statut: StatutPublication.PUBLIEE,
         visibilite: 'PUBLIC',
         dateExpiration: { gt: new Date() },
-        boutique: { statut: 'ACTIVE' },
+        boutique: BOUTIQUE_VISIBLE,
       },
       select: storySelection,
       orderBy: { dateCreation: 'desc' },
@@ -93,8 +89,9 @@ export class StoriesService {
         statut: StatutPublication.PUBLIEE,
         dateExpiration: { gt: new Date() },
         boutique: {
-          statut: 'ACTIVE',
+          ...BOUTIQUE_VISIBLE,
           vendeur: {
+            ...BOUTIQUE_VISIBLE.vendeur,
             abonnements: { some: { utilisateurId, statut: 'ACTIF' } },
           },
         },

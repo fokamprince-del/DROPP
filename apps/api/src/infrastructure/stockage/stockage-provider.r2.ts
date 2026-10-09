@@ -39,8 +39,11 @@ export class StockageProviderR2 implements StockageProvider {
     this.bucket = config.getOrThrow<string>('stockage.r2.bucket');
     this.bucketPrive = config.get<string>('stockage.r2.bucketPrive') || this.bucket;
     if (this.bucketPrive === this.bucket) {
+      if (config.get<string>('app.environment') === 'production') {
+        throw new Error('R2_BUCKET_PRIVE doit être un bucket distinct en production.');
+      }
       this.logger.warn(
-        'R2_BUCKET_PRIVE non défini : les pièces jointes de messagerie sont dans le bucket public.',
+        'R2_BUCKET_PRIVE non défini : fichiers privés (KYC, messagerie) dans le bucket public. Développement uniquement.',
       );
     }
     this.urlPubliqueBase = config

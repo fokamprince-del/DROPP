@@ -4,30 +4,24 @@ import {
   IsEnum,
   IsIn,
   IsInt,
-  IsNotEmpty,
   IsOptional,
-  IsString,
   Max,
   Min,
 } from 'class-validator';
 
 import { VisibiliteContenu } from '@dropp/database';
+import {
+  TAILLE_MAX_MEDIA_OCTETS,
+  TYPES_MIME_MEDIA,
+} from '../../../infrastructure/stockage/media.js';
 
 export class CreerStoryDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsIn([
-    'image/jpeg',
-    'image/png',
-    'image/webp',
-    'video/mp4',
-    'video/quicktime',
-  ])
+  @IsIn(TYPES_MIME_MEDIA)
   typeMime!: string;
 
   @IsInt()
   @Min(1)
-  @Max(500 * 1024 * 1024)
+  @Max(TAILLE_MAX_MEDIA_OCTETS)
   taille!: number;
 
   /** Par défaut : 24 h. Au plus 24 h après la création. */

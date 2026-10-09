@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export class AjusterStockDto {
   /**
@@ -14,5 +14,6 @@ export class AjusterStockDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(255)
   raison!: string;
 }

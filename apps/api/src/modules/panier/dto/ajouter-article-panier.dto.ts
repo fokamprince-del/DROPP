@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsUUID, Min } from 'class-validator';
+import { IsInt, IsUUID, Max, Min } from 'class-validator';
 
 export class AjouterArticlePanierDto {
   @IsUUID()
@@ -7,6 +7,7 @@ export class AjouterArticlePanierDto {
 
   @IsInt()
   @Min(1)
+  @Max(1_000)
   @Type(() => Number)
   quantite!: number;
 }

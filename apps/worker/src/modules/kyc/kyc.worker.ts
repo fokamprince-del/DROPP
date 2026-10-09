@@ -1,8 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
-import { PrismaClient, StatutKyc } from '@dropp/database';
-import { PrismaPg } from '@prisma/adapter-pg';
+import { StatutKyc } from '@dropp/database';
 import type { Job, Queue } from 'bullmq';
 
 import {
@@ -15,6 +14,7 @@ import {
   type JobNotificationEmail,
 } from '@dropp/contrats';
 
+import { PrismaService } from '../../infrastructure/database/database/prisma.service.js';
 import { FaceMatchService } from './services/face-match.service.js';
 
 const SEUIL_FACE_MATCH = 0.75;
@@ -22,19 +22,14 @@ const SEUIL_FACE_MATCH = 0.75;
 @Processor(QUEUE_KYC)
 export class KycWorker extends WorkerHost {
   private readonly logger = new Logger(KycWorker.name);
-  private readonly prisma: PrismaClient;
 
   constructor(
     private readonly faceMatch: FaceMatchService,
+    private readonly prisma: PrismaService,
     @InjectQueue(QUEUE_NOTIFICATION)
     private readonly notificationQueue: Queue,
   ) {
     super();
-    this.prisma = new PrismaClient({
-      adapter: new PrismaPg({
-        connectionString: process.env.DATABASE_URL!,
-      }),
-    });
   }
 
   async process(job: Job): Promise<void> {
@@ -90,7 +85,7 @@ export class KycWorker extends WorkerHost {
         },
       });
 
-      if (resultat.score >= SEUIL_FACE_MATCH) {
+      if (resultat.correspondance && resultat.score >= SEUIL_FACE_MATCH) {
         await this.prisma.dossierKyc.update({
           where: { id: dossierKycId },
           data: {
@@ -100,7 +95,7 @@ export class KycWorker extends WorkerHost {
         });
 
         await this.notifierVendeur(
-          vendeur!.utilisateur,
+          vendeur?.utilisateur,
           'Votre vérification faciale a réussi. Votre dossier est en cours de révision par notre équipe. Vous serez notifié dès qu\'une décision est prise.',
         );
 
@@ -118,7 +113,7 @@ export class KycWorker extends WorkerHost {
         });
 
         await this.notifierVendeur(
-          vendeur!.utilisateur,
+          vendeur?.utilisateur,
           `La vérification faciale n'a pas abouti (score: ${Math.round(resultat.score * 100)}%). Veuillez reprendre votre selfie dans de meilleures conditions et resoumettre votre dossier.`,
         );
 
@@ -141,9 +136,10 @@ export class KycWorker extends WorkerHost {
   }
 
   private async notifierVendeur(
-    utilisateur: { telephone: string | null; email: string | null },
+    utilisateur: { telephone: string | null; email: string | null } | undefined,
     message: string,
   ): Promise<void> {
+    if (!utilisateur) return;
     if (utilisateur.email) {
       await this.notificationQueue.add(JOB_NOTIFICATION.EMAIL, {
         destinataire: utilisateur.email,

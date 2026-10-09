@@ -1,18 +1,16 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
-import { KycStockageService } from '../services/kyc-stockage.service.js';
+import { Injectable, Logger } from '@nestjs/common';
+
 import type { TypeDocumentKyc } from '@dropp/database';
-import { DemanderSignatureDocumentKycDto, MAX_TAILLE_DOCUMENT_KYC, TYPES_MIME_KYC_AUTORISES } from '../dto/DemanderSignatureDocumentKyc.dto.js';
-import { ConfirmerUploadDocumentKycDto } from '../dto/confirmer-upload-document-kyc.dto.js';
+import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import type { ConfirmerUploadDocumentKycDto } from '../dto/confirmer-upload-document-kyc.dto.js';
+import type { DemanderSignatureDocumentKycDto } from '../dto/DemanderSignatureDocumentKyc.dto.js';
+import { DossierKycService } from '../services/dossier-kyc.service.js';
+import {
+  KycStockageService,
+  type TypeDocumentKycUpload,
+} from '../services/kyc-stockage.service.js';
 
-
-
-const TYPE_DOCUMENT_VERS_UPLOAD: Record<TypeDocumentKyc, 'cni-recto' | 'cni-verso' | 'selfie'> = {
+const TYPE_DOCUMENT_VERS_UPLOAD: Record<TypeDocumentKyc, TypeDocumentKycUpload> = {
   CNI_RECTO: 'cni-recto',
   CNI_VERSO: 'cni-verso',
   PHOTO_FACIALE: 'selfie',
@@ -20,88 +18,56 @@ const TYPE_DOCUMENT_VERS_UPLOAD: Record<TypeDocumentKyc, 'cni-recto' | 'cni-vers
 
 @Injectable()
 export class UploadDocumentService {
+  private readonly logger = new Logger(UploadDocumentService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly kycStockage: KycStockageService,
+    private readonly dossiers: DossierKycService,
   ) {}
 
-  /**
-   * Génère une URL signée pour uploader un document KYC.
-   */
+  /** 1. URL signée pour uploader une pièce (PUT direct vers le stockage privé). */
   async demanderSignature(
     utilisateurId: string,
     dto: DemanderSignatureDocumentKycDto,
   ) {
-    const { typeMime, typeDocument, taille } = dto;
-
-    if (!TYPES_MIME_KYC_AUTORISES.includes(typeMime)) {
-      throw new BadRequestException(
-        `Type de fichier non autorisé. Formats acceptés : ${TYPES_MIME_KYC_AUTORISES.join(', ')}`,
-      );
-    }
-    if(taille < 1 || taille > MAX_TAILLE_DOCUMENT_KYC) {
-      throw new BadRequestException(
-        `Taille de fichier non autorisée. Taille maximale : 10 Mo`,
-      );
-    }
-
-    const dossier = await this.getDossierActif(utilisateurId);
-
-    if (!['EN_ATTENTE', 'REJETE'].includes(dossier.statut)) {
-      throw new BadRequestException(
-        'Le dossier KYC ne peut plus être modifié.',
-      );
-    }
-
-    const typeUpload = TYPE_DOCUMENT_VERS_UPLOAD[typeDocument];
+    await this.dossiers.modifiable(utilisateurId);
     const signature = await this.kycStockage.genererSignature(
       utilisateurId,
-      typeUpload,
-      typeMime,
+      TYPE_DOCUMENT_VERS_UPLOAD[dto.typeDocument],
+      dto.typeMime,
     );
-
-    return { ...signature, typeDocument };
+    return { ...signature, typeDocument: dto.typeDocument };
   }
 
-  /**
-   * Confirme l'upload d'un document après que le client a uploadé sur R2.
-   */
-  async confirmerUpload(
-    utilisateurId: string,
-    dto: ConfirmerUploadDocumentKycDto
-  ) {
-    const { cleStockage, typeMime, taille, typeDocument } = dto;
+  /** 2. Confirmation après l'upload : remplace la pièce précédente du même type. */
+  async confirmerUpload(utilisateurId: string, dto: ConfirmerUploadDocumentKycDto) {
+    const { cleStockage, typeMime, typeDocument } = dto;
+    const dossier = await this.dossiers.modifiable(utilisateurId);
 
-    if (!TYPES_MIME_KYC_AUTORISES.includes(typeMime)) {
-      throw new BadRequestException(
-        `Type de fichier non autorisé. Formats acceptés : ${TYPES_MIME_KYC_AUTORISES.join(', ')}`,
-      );
-    }
-    if(taille < 1 || taille > MAX_TAILLE_DOCUMENT_KYC) {
-      throw new BadRequestException(
-        `Taille de fichier non autorisée. Taille maximale : 10 Mo`,
-      );
-    }
-    
-    const dossier = await this.getDossierActif(utilisateurId);
+    const reel = await this.kycStockage.verifierUpload(
+      cleStockage,
+      utilisateurId,
+      TYPE_DOCUMENT_VERS_UPLOAD[typeDocument],
+    );
 
-    const reel = await this.kycStockage.verifierUpload(cleStockage, typeMime, utilisateurId, TYPE_DOCUMENT_VERS_UPLOAD[typeDocument]);
-    
-    return this.prisma.$transaction(async (tx) => {
-      // Supprimer l'ancien document du même type s'il existe
+    const anciens = await this.prisma.documentKyc.findMany({
+      where: { dossierKycId: dossier.id, typeDocument },
+      select: { cleStockage: true },
+    });
+
+    const document = await this.prisma.$transaction(async (tx) => {
       await tx.documentKyc.deleteMany({
         where: { dossierKycId: dossier.id, typeDocument },
       });
-
-      // Créer le nouveau document
       return tx.documentKyc.create({
         data: {
           dossierKycId: dossier.id,
           typeDocument,
           cleStockage,
           nomOriginal: `${typeDocument.toLowerCase()}.${typeMime.split('/')[1]}`,
-          typeMime,
-          taille,
+          typeMime: reel.typeMime ?? typeMime,
+          taille: reel.taille,
           statut: 'SOUMIS',
         },
         select: {
@@ -112,25 +78,14 @@ export class UploadDocumentService {
         },
       });
     });
-  }
 
-  private async getDossierActif(utilisateurId: string) {
-    const vendeur = await this.prisma.vendeur.findUnique({
-      where: { id: utilisateurId },
-      select: {
-        dossiersKyc: {
-          orderBy: { dateSoumission: 'desc' },
-          take: 1,
-          select: { id: true, statut: true },
-        },
-      },
-    });
-
-    if (!vendeur) throw new ForbiddenException('Profil vendeur introuvable.');
-
-    const dossier = vendeur.dossiersKyc[0];
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
-
-    return dossier;
+    // Pièce d'identité remplacée : l'ancien fichier ne doit pas rester stocké.
+    for (const ancien of anciens) {
+      if (ancien.cleStockage === cleStockage) continue;
+      await this.kycStockage
+        .supprimer(ancien.cleStockage)
+        .catch((e: unknown) => this.logger.warn(`KYC ${ancien.cleStockage} : ${String(e)}`));
+    }
+    return document;
   }
 }

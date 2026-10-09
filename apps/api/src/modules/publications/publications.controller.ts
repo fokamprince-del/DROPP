@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Ip,
   Param,
+  ParseEnumPipe,
   ParseIntPipe,
   ParseUUIDPipe,
   Patch,
@@ -14,6 +15,7 @@ import {
   Query,
 } from '@nestjs/common';
 
+import { StatutPublication } from '@dropp/database';
 import { Admin, Vendeur } from '../auth/decorators/profils.decorator.js';
 import { Public } from '../auth/decorators/public.decorator.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
@@ -141,7 +143,47 @@ export class PublicationsController {
     return this.publicationsService.confirmerMedia(utilisateur.id, id, dto);
   }
 
-  @Admin('ADMIN')
+  /** Brouillon → en ligne (médias complets exigés selon le type). */
+  @RequiertIdempotenceKey()
+  @Vendeur()
+  @Post('boutique/publications/:id/publier')
+  @HttpCode(HttpStatus.OK)
+  publier(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.publicationsService.publier(utilisateur.id, id);
+  }
+
+  @Vendeur()
+  @Delete('boutique/publications/:id/media/:mediaId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async retirerMedia(
+    @CurrentUser() utilisateur: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('mediaId', ParseUUIDPipe) mediaId: string,
+  ): Promise<void> {
+    await this.publicationsService.retirerMedia(utilisateur.id, id, mediaId);
+  }
+
+  // ── Modération ────────────────────────────────────────────────────────────
+
+  @Admin('SUPER_ADMIN', 'MODERATEUR')
+  @Get('admin/publications')
+  listerPourModeration(
+    @Query('statut', new ParseEnumPipe(StatutPublication, { optional: true }))
+    statut?: StatutPublication,
+    @Query('page', new ParseIntPipe({ optional: true })) page = 1,
+    @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
+  ) {
+    return this.publicationsService.listerPourModeration(
+      statut,
+      Math.max(page, 1),
+      Math.min(Math.max(limite, 1), 100),
+    );
+  }
+
+  @Admin('SUPER_ADMIN', 'MODERATEUR')
   @Patch('admin/publications/:id/statut')
   moderer(
     @Param('id', ParseUUIDPipe) id: string,

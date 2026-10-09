@@ -1,9 +1,8 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+
+import type { StatutKyc } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { DossierKycService } from '../services/dossier-kyc.service.js';
 import { KycStockageService } from '../services/kyc-stockage.service.js';
 
 @Injectable()
@@ -11,31 +10,37 @@ export class ConsulterDossierService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly kycStockage: KycStockageService,
+    private readonly dossiers: DossierKycService,
   ) {}
 
-  /** Vue vendeur : son propre dossier sans URLs signées. */
+  /** Vue vendeur : son dossier (créé si besoin), sans les fichiers. */
   async pourVendeur(utilisateurId: string) {
-    const dossier = await this.prisma.dossierKyc.findFirst({
-      where: { vendeurId: utilisateurId },
-      orderBy: { dateSoumission: 'desc' },
+    const { id } = await this.dossiers.courant(utilisateurId);
+    return this.prisma.dossierKyc.findUniqueOrThrow({
+      where: { id },
       select: {
         id: true,
         statut: true,
         motifRejet: true,
-        scoreFaceMatch: true,
         dateSoumission: true,
+        dateValidation: true,
+        dateRejet: true,
+        consentementLe: true,
+        nomLegal: true,
+        prenomLegal: true,
+        numeroCni: true,
+        dateNaissance: true,
+        lieuNaissance: true,
+        dateEtablissement: true,
+        dateExpiration: true,
         documents: {
-          select: { id: true, typeDocument: true, statut: true },
+          select: { id: true, typeDocument: true, statut: true, dateCreation: true },
         },
       },
     });
-
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
-
-    return dossier;
   }
 
-  /** Vue admin : dossier complet avec URLs signées pour consulter les documents. */
+  /** Vue admin : dossier complet avec URLs signées (5 min) pour consulter les pièces. */
   async pourAdmin(dossierKycId: string, adminId: string) {
     const dossier = await this.prisma.dossierKyc.findUnique({
       where: { id: dossierKycId },
@@ -51,12 +56,14 @@ export class ConsulterDossierService {
         dateExpiration: true,
         scoreFaceMatch: true,
         motifRejet: true,
+        consentementLe: true,
         dateSoumission: true,
         dateValidation: true,
         dateRejet: true,
         vendeur: {
           select: {
             id: true,
+            statutVendeur: true,
             utilisateur: {
               select: { prenom: true, nom: true, telephone: true, email: true },
             },
@@ -98,7 +105,7 @@ export class ConsulterDossierService {
 
     if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
 
-    // Audit : log de la consultation
+    // Audit : chaque consultation de pièces d'identité est tracée.
     await this.prisma.journalAudit.create({
       data: {
         administrateurId: adminId,
@@ -108,23 +115,22 @@ export class ConsulterDossierService {
       },
     });
 
-    // Enrichir avec URLs signées pour les documents (TTL 5 min)
-    return {
-      ...dossier,
-      documents: dossier.documents.map((doc) => ({
+    const documents = await Promise.all(
+      dossier.documents.map(async ({ cleStockage, ...doc }) => ({
         ...doc,
-        urlConsultation: this.kycStockage.urlConsultation(doc.cleStockage),
+        urlConsultation: await this.kycStockage.urlConsultation(cleStockage),
       })),
-    };
+    );
+    return { ...dossier, documents };
   }
 
-  /** Liste des dossiers pour l'admin avec filtres. */
+  /** Liste des dossiers pour l'admin (les plus anciens d'abord). */
   async listerPourAdmin(params: {
-    statut?: string;
+    statut?: StatutKyc;
     page: number;
     limite: number;
   }) {
-    const where = params.statut ? { statut: params.statut as any } : {};
+    const where = params.statut ? { statut: params.statut } : {};
 
     const [dossiers, total] = await this.prisma.$transaction([
       this.prisma.dossierKyc.findMany({
@@ -155,6 +161,7 @@ export class ConsulterDossierService {
       pagination: {
         total,
         page: params.page,
+        limite: params.limite,
         pages: Math.ceil(total / params.limite),
       },
     };

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
@@ -50,7 +51,9 @@ export class VerificationTelephoneService {
     });
 
     if (!utilisateur || !STATUTS_AUTORISES.has(utilisateur.statutCompte)) {
-      // Consomme quand même l'OTP pour éviter les timing attacks
+      // Consomme quand même l'OTP pour éviter les timing attacks. Compte
+      // inconnu (token d'une inscription sur un numéro déjà pris) : même
+      // réponse qu'un mauvais code, pour ne pas révéler le compte existant.
       await this.otpService
         .verifier({
           destination: payload.dst,
@@ -58,6 +61,7 @@ export class VerificationTelephoneService {
           codeSoumis: dto.code,
         })
         .catch(() => undefined);
+      if (!utilisateur) throw new BadRequestException('Code invalide ou expiré.');
       throw new ForbiddenException('Compte indisponible.');
     }
 

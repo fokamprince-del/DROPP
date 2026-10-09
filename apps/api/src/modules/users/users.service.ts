@@ -98,7 +98,12 @@ export class UsersService {
     try {
       const utilisateur = await this.prisma.utilisateur.update({
         where: { id: utilisateurId },
-        data: { nom: dto.nom, prenom: dto.prenom, pseudo: dto.pseudo },
+        data: {
+          nom: dto.nom,
+          prenom: dto.prenom,
+          pseudo: dto.pseudo,
+          sexe: dto.sexe,
+        },
         select: profilSelection,
       });
       return this.presenter(utilisateur);

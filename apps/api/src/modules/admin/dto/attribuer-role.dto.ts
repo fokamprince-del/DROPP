@@ -1,6 +1,8 @@
-import { IsEnum } from 'class-validator';
+import { IsIn } from 'class-validator';
+
+import { ROLES_ADMIN, type RoleAdmin } from '../../auth/roles.js';
 
 export class AttribuerRoleDto {
-  @IsEnum(['SUPER_ADMIN', 'MODERATEUR', 'GESTIONNAIRE_FINANCIER'])
-  role!: string;
+  @IsIn(ROLES_ADMIN)
+  role!: RoleAdmin;
 }

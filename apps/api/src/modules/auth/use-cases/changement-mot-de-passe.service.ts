@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { RevocationService } from '../../../infrastructure/revocation/revocation.service.js';
 import type { ChangerMotDePasseDto } from '../dto/email.dto.js';
 import { JetonService, type JetonsEmis } from '../services/jeton.service.js';
 import { MotDePasseService } from '../services/mot-de-passe.service.js';
@@ -21,6 +22,7 @@ export class ChangementMotDePasseService {
     private readonly prisma: PrismaService,
     private readonly motDePasse: MotDePasseService,
     private readonly jetons: JetonService,
+    private readonly revocation: RevocationService,
   ) {}
 
   async executer(
@@ -70,6 +72,9 @@ export class ChangementMotDePasseService {
         data: { utilisateurId, evenement: 'MOT_DE_PASSE_CHANGE', adresseIp },
       }),
     ]);
+
+    // Jetons d'accès encore valides : invalidés immédiatement.
+    await this.revocation.revoquerUtilisateur(utilisateurId);
 
     return this.jetons.ouvrirSession({
       utilisateurId,

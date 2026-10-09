@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import type { Queue } from 'bullmq';
 import {
@@ -11,8 +6,10 @@ import {
   QUEUE_KYC,
   type JobVerifierVisageKyc,
 } from '@dropp/contrats';
-import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+
 import type { TypeDocumentKyc } from '@dropp/database';
+import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { DossierKycService, STATUTS_MODIFIABLES } from '../services/dossier-kyc.service.js';
 import { KycStockageService } from '../services/kyc-stockage.service.js';
 
 const DOCUMENTS_REQUIS: TypeDocumentKyc[] = [
@@ -21,99 +18,104 @@ const DOCUMENTS_REQUIS: TypeDocumentKyc[] = [
   'PHOTO_FACIALE',
 ];
 
+/**
+ * Durée des liens transmis au prestataire de vérification faciale : couvre
+ * l'attente dans la file et les nouvelles tentatives du job.
+ */
+const DUREE_LIEN_VERIFICATION_S = 60 * 60;
+
 @Injectable()
 export class SoumettreDoissierService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly stockage: KycStockageService,
+    private readonly dossiers: DossierKycService,
     @InjectQueue(QUEUE_KYC) private readonly kycQueue: Queue,
   ) {}
 
-  /**
-   * Vérifie la complétude du dossier et déclenche la vérification faciale.
-   */
+  /** Vérifie la complétude du dossier et déclenche la vérification faciale. */
   async executer(utilisateurId: string) {
-    const vendeur = await this.prisma.vendeur.findUnique({
-      where: { id: utilisateurId },
+    const { id } = await this.dossiers.modifiable(utilisateurId);
+    const dossier = await this.prisma.dossierKyc.findUniqueOrThrow({
+      where: { id },
       select: {
-        dossiersKyc: {
-          orderBy: { dateSoumission: 'desc' },
-          take: 1,
-          select: {
-            id: true,
-            statut: true,
-            nomLegal: true,
-            prenomLegal: true,
-            numeroCni: true,
-            dateNaissance: true,
-            lieuNaissance: true,
-            dateEtablissement: true,
-            dateExpiration: true,
-            documents: {
-              select: { typeDocument: true, cleStockage: true },
-            },
-          },
-        },
+        id: true,
+        nomLegal: true,
+        prenomLegal: true,
+        numeroCni: true,
+        dateNaissance: true,
+        lieuNaissance: true,
+        dateEtablissement: true,
+        dateExpiration: true,
+        documents: { select: { typeDocument: true, cleStockage: true } },
       },
     });
 
-    if (!vendeur) throw new ForbiddenException('Profil vendeur introuvable.');
-
-    const dossier = vendeur.dossiersKyc[0];
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
-
-    if (!['EN_ATTENTE', 'REJETE'].includes(dossier.statut)) {
-      throw new BadRequestException('Ce dossier a déjà été soumis.');
-    }
-
-    // Vérifier que tous les documents sont présents
-    const typesPresents = dossier.documents.map((d) => d.typeDocument);
-    const manquants = DOCUMENTS_REQUIS.filter(
-      (t) => !typesPresents.includes(t),
-    );
-
+    const cle = (type: TypeDocumentKyc) =>
+      dossier.documents.find((d) => d.typeDocument === type)?.cleStockage;
+    const manquants = DOCUMENTS_REQUIS.filter((t) => !cle(t));
     if (manquants.length > 0) {
       throw new BadRequestException(
         `Documents manquants : ${manquants.join(', ')}`,
       );
     }
 
-    // Vérifier que les données CNI sont renseignées
     if (
       !dossier.nomLegal ||
       !dossier.prenomLegal ||
       !dossier.numeroCni ||
       !dossier.dateNaissance ||
+      !dossier.lieuNaissance ||
+      !dossier.dateEtablissement ||
       !dossier.dateExpiration
     ) {
       throw new BadRequestException(
-        'Les données de la carte d\'identité sont incomplètes.',
+        'Les données de la carte d’identité sont incomplètes.',
       );
     }
+    if (dossier.dateExpiration < new Date()) {
+      throw new BadRequestException('Votre carte d’identité est expirée.');
+    }
 
-    // Passer en cours de vérification
-    await this.prisma.dossierKyc.update({
-      where: { id: dossier.id },
-      data: { statut: 'EN_COURS_VERIFICATION' },
+    // Passage conditionnel : une double soumission ne lance qu'une vérification.
+    const { count } = await this.prisma.dossierKyc.updateMany({
+      where: { id: dossier.id, statut: { in: STATUTS_MODIFIABLES } },
+      data: {
+        statut: 'EN_COURS_VERIFICATION',
+        consentementLe: new Date(),
+        motifRejet: null,
+        dateRejet: null,
+        dateSoumission: new Date(),
+      },
     });
+    if (count === 0) {
+      throw new ConflictException('Ce dossier a déjà été soumis.');
+    }
 
-    // // Déclencher la vérification faciale via BullMQ
-    // const selfie = dossier.documents.find((d) => d.typeDocument === 'PHOTO_FACIALE');
-    // const cniRecto = dossier.documents.find((d) => d.typeDocument === 'CNI_RECTO');
-    const [selfie, cniRecto] = await Promise.all([
-      this.stockage.urlConsultation(dossier.documents.find((d) => d.typeDocument === 'PHOTO_FACIALE')!.cleStockage),
-      this.stockage.urlConsultation(dossier.documents.find((d) => d.typeDocument === 'CNI_RECTO')!.cleStockage),
+    const [urlSelfie, urlCniRecto] = await Promise.all([
+      this.stockage.urlConsultation(cle('PHOTO_FACIALE')!, DUREE_LIEN_VERIFICATION_S),
+      this.stockage.urlConsultation(cle('CNI_RECTO')!, DUREE_LIEN_VERIFICATION_S),
     ]);
 
-    await this.kycQueue.add(
-      JOB_KYC.VERIFIER_VISAGE,
-      {
-        dossierKycId: dossier.id,
-        vendeurId: utilisateurId,
-        urlSelfie: selfie,
-        urlCniRecto: cniRecto,
-      } satisfies JobVerifierVisageKyc,
-    );
+    try {
+      await this.kycQueue.add(
+        JOB_KYC.VERIFIER_VISAGE,
+        {
+          dossierKycId: dossier.id,
+          vendeurId: utilisateurId,
+          urlSelfie,
+          urlCniRecto,
+        } satisfies JobVerifierVisageKyc,
+        { jobId: `kyc-visage-${dossier.id}-${Date.now()}` },
+      );
+    } catch (erreur) {
+      // File indisponible : le dossier redevient modifiable pour réessayer.
+      await this.prisma.dossierKyc.update({
+        where: { id: dossier.id },
+        data: { statut: 'EN_ATTENTE' },
+      });
+      throw erreur;
+    }
 
     return {
       statut: 'EN_COURS_VERIFICATION',

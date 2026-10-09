@@ -6,6 +6,7 @@ import {
 
 import { StatutCategorie } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
+import { BOUTIQUE_VISIBLE } from '../shops/boutique-visible.js';
 import { CreerCategorieDto } from './dto/creer-categorie.dto.js';
 import { MiseAJourCategorieDto } from './dto/mise-a-jour-categorie.dto.js';
 
@@ -22,7 +23,7 @@ export class CategoriesService {
       _count: {
         select: {
           produits: {
-            where: { statut: 'PUBLIE' as const, boutique: { statut: 'ACTIVE' as const } },
+            where: { statut: 'PUBLIE' as const, boutique: BOUTIQUE_VISIBLE },
           },
         },
       },

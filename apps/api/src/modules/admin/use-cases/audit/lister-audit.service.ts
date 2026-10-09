@@ -44,7 +44,7 @@ export class ListerAuditService {
 
     return {
       donnees: logs,
-      pagination: { total, page, pages: Math.ceil(total / limite) },
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 }

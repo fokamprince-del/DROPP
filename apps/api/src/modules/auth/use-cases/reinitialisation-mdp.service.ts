@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { RevocationService } from '../../../infrastructure/revocation/revocation.service.js';
 import { OtpService } from '../services/otp.service.js';
 import { MotDePasseService } from '../services/mot-de-passe.service.js';
 import { JetonService, type JetonsEmis } from '../services/jeton.service.js';
@@ -12,6 +13,7 @@ export class ReinitialisationMdpService {
     private readonly otpService: OtpService,
     private readonly motDePasseService: MotDePasseService,
     private readonly jetonService: JetonService,
+    private readonly revocation: RevocationService,
   ) {}
 
   /**
@@ -90,6 +92,9 @@ export class ReinitialisationMdpService {
         },
       }),
     ]);
+
+    // Jetons d'accès encore valides : invalidés immédiatement.
+    await this.revocation.revoquerUtilisateur(utilisateur.id);
 
     // 5. Nouvelle session propre
     return this.jetonService.ouvrirSession({

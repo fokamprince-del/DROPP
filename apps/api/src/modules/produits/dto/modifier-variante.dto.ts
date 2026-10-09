@@ -9,6 +9,8 @@ import {
   Min,
 } from 'class-validator';
 
+import { EstAttributsVariante } from './attributs-variante.validator.js';
+
 export class ModifierVarianteDto {
   @IsOptional()
   @IsString()
@@ -17,6 +19,7 @@ export class ModifierVarianteDto {
 
   @IsOptional()
   @IsObject()
+  @EstAttributsVariante()
   attributs?: Record<string, string>;
 
   @IsOptional()

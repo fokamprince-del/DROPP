@@ -16,6 +16,12 @@ const vendeurSelection = {
   boutique: {
     select: { id: true, nom: true, statut: true },
   },
+  // Dernier dossier d'identité : l'app sait où en est la vérification.
+  dossiersKyc: {
+    orderBy: { dateSoumission: 'desc' as const },
+    take: 1,
+    select: { id: true, statut: true, motifRejet: true },
+  },
 } as const;
 
 @Injectable()
@@ -48,10 +54,9 @@ export class SellersService {
       throw new ConflictException('Vous avez déjà un profil vendeur.');
     }
 
+    // Profil vendeur + dossier KYC vide : l'app enchaîne sur l'upload des pièces.
     await this.prisma.vendeur.create({
-      data: { 
-        id: utilisateurId, 
-       },
+      data: { id: utilisateurId, dossiersKyc: { create: {} } },
     });
   }
 

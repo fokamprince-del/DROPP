@@ -20,6 +20,11 @@ import { InteractionsModule } from './modules/interactions/interactions.module.j
 import { PanierModule } from './modules/panier/panier.module.js';
 import { CommandesModule } from './modules/commandes/commandes.module.js';
 import { RedisModule } from './infrastructure/redis/redis.module.js';
+import { REDIS_CLIENT } from './infrastructure/redis/redis.provider.js';
+import { RevocationModule } from './infrastructure/revocation/revocation.module.js';
+import { SanteModule } from './infrastructure/sante/sante.module.js';
+import { ThrottlerStorageRedis } from './infrastructure/throttler/throttler-storage.redis.js';
+import type { Redis } from 'ioredis';
 import { IdempotenceModule } from './infrastructure/idempotence/idempotence.module.js';
 import { IdempotenceInterceptor } from './infrastructure/idempotence/idempotence.interceptor.js';
 import { QueueModule } from './infrastructure/queue/queue.module.js';
@@ -41,18 +46,25 @@ import { AdminModule } from './modules/admin/admin.module.js';
       load: [configuration],
       validationSchema,
     }),
-    ThrottlerModule.forRoot({
-      throttlers: [
-        {
-          name: 'court',
-          ttl: 60_000,
-          limit: 20,
-        },
-      ],
-      // Tests automatisés (NODE_ENV=test) : rafales de requêtes depuis une IP.
-      skipIf: () => process.env.NODE_ENV === 'test',
-    }),
     RedisModule,
+    ThrottlerModule.forRootAsync({
+      inject: [REDIS_CLIENT],
+      useFactory: (redis: Redis) => ({
+        throttlers: [
+          {
+            name: 'court',
+            ttl: 60_000,
+            limit: 20,
+          },
+        ],
+        // Compteurs partagés entre toutes les instances de l'API.
+        storage: new ThrottlerStorageRedis(redis),
+        // Tests automatisés (NODE_ENV=test) : rafales de requêtes depuis une IP.
+        skipIf: () => process.env.NODE_ENV === 'test',
+      }),
+    }),
+    RevocationModule,
+    SanteModule,
     IdempotenceModule,
     QueueModule,
     RealtimeModule,

@@ -1,21 +1,26 @@
-import { IsIn, IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
-import { MAX_TAILLE_DOCUMENT_KYC } from "./DemanderSignatureDocumentKyc.dto.js";
-import { TypeDocumentKyc } from "@dropp/database";
+import { TypeDocumentKyc } from '@dropp/database';
+import { IsIn, IsInt, IsNotEmpty, IsString, Max, MaxLength, Min } from 'class-validator';
+
+import {
+  MAX_TAILLE_DOCUMENT_KYC,
+  TYPES_MIME_KYC_AUTORISES,
+} from './DemanderSignatureDocumentKyc.dto.js';
 
 export class ConfirmerUploadDocumentKycDto {
-    @IsString()
-    @IsNotEmpty()
-    cleStockage!: string;
+  /** Clé renvoyée par /kyc/documents/signature. */
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(512)
+  cleStockage!: string;
 
-    @IsString()
-    @IsNotEmpty()
-    typeMime!: string;
+  @IsIn(TYPES_MIME_KYC_AUTORISES)
+  typeMime!: string;
 
-    @IsInt()
-    @Min(1)
-    @Max(MAX_TAILLE_DOCUMENT_KYC)
-    taille!: number;
+  @IsInt()
+  @Min(1)
+  @Max(MAX_TAILLE_DOCUMENT_KYC)
+  taille!: number;
 
-    @IsIn(Object.values(TypeDocumentKyc))
-    typeDocument!: TypeDocumentKyc;
+  @IsIn(Object.values(TypeDocumentKyc))
+  typeDocument!: TypeDocumentKyc;
 }

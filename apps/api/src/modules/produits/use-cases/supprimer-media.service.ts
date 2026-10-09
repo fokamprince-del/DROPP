@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { PublicationAutoService } from '../services/publication-auto.service.js';
 import {
   STOCKAGE_PROVIDER,
   type StockageProvider,
@@ -14,6 +15,7 @@ import {
 export class SupprimerMediaService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly publicationAuto: PublicationAutoService,
     @Inject(STOCKAGE_PROVIDER)
     private readonly stockage: StockageProvider,
   ) {}
@@ -47,5 +49,7 @@ export class SupprimerMediaService {
     await this.stockage
       .supprimer(mediaProduit.media.cleStockage)
       .catch(() => undefined);
+    // Dernier média retiré : le produit repasse en brouillon.
+    await this.publicationAuto.tenter(produitId);
   }
 }

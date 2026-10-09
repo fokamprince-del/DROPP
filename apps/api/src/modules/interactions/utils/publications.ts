@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { StatutPublication, type Prisma } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { BOUTIQUE_VISIBLE } from '../../shops/boutique-visible.js';
 
 /**
  * Règle de visibilité d'une publication, partagée par le fil, la page
@@ -14,7 +15,7 @@ export function filtreVisibilite(
 ): Prisma.PublicationWhereInput {
   return {
     statut: StatutPublication.PUBLIEE,
-    boutique: { statut: 'ACTIVE' },
+    boutique: BOUTIQUE_VISIBLE,
     OR: [
       { visibilite: 'PUBLIC' },
       ...(utilisateurId

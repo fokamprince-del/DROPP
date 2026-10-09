@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
@@ -31,19 +31,16 @@ export class RenvoiCodeService {
       utilisateur.statutCompte === 'SUPPRIME' ||
       utilisateur.statutCompte === 'SUSPENDU_DEF'
     ) {
-      // Mot de passe oublié sur un compte inconnu : même réponse qu'un envoi
-      // réel, sinon le renvoi révélerait quels identifiants existent.
-      if (payload.purpose === 'reinitialisation') {
-        return {
-          verificationToken: this.jetonService.signerVerification({
-            sub: payload.sub,
-            dst: payload.dst,
-            canalOtp: payload.canalOtp,
-            purpose: payload.purpose,
-          }),
-        };
-      }
-      throw new UnauthorizedException('Compte indisponible.');
+      // Compte inconnu ou fermé : même réponse qu'un envoi réel, sinon le
+      // renvoi révélerait quels identifiants existent.
+      return {
+        verificationToken: this.jetonService.signerVerification({
+          sub: payload.sub,
+          dst: payload.dst,
+          canalOtp: payload.canalOtp,
+          purpose: payload.purpose,
+        }),
+      };
     }
 
     // 3. Générer un nouveau code

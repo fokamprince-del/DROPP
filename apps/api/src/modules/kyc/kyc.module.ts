@@ -11,6 +11,7 @@ import { KycController } from './kyc.controller.js';
 
 import { KycStockageService } from './services/kyc-stockage.service.js';
 import { OcrService } from './services/ocr.service.js';
+import { DossierKycService } from './services/dossier-kyc.service.js';
 
 import { UploadDocumentService } from './use-cases/upload-document.service.js';
 import { ExtraireDonneesCniService } from './use-cases/extraire-donnees-cni.service.js';
@@ -32,6 +33,7 @@ import { DecisionAdminService } from './use-cases/decision-admin.service.js';
     // Services techniques
     KycStockageService,
     OcrService,
+    DossierKycService,
 
     // Cas d'usage
     UploadDocumentService,

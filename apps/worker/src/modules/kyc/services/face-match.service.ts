@@ -1,6 +1,5 @@
 import { BadRequestException, GatewayTimeoutException, Injectable, InternalServerErrorException, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { tryCatch } from 'bullmq';
 
 export interface ResultatFaceMatch {
   score: number;
@@ -31,26 +30,33 @@ interface FaceComparisonResult {
 }
 
 /**
- * Stub Face++ — remplacer par l'implémentation réelle quand disponible.
- * https://www.faceplusplus.com/face-comparing/
+ * Comparaison faciale Face++ (https://www.faceplusplus.com/face-comparing/).
+ * Sans clés (développement uniquement : obligatoires en production), la
+ * comparaison est simulée et le dossier part en revue manuelle.
  */
 @Injectable()
 export class FaceMatchService {
   private readonly logger = new Logger(FaceMatchService.name);
   private readonly apiUrl = 'https://api-us.faceplusplus.com/facepp/v3/compare';
-  private readonly apiKey;
-  private readonly apiSecret;
+  private readonly apiKey?: string;
+  private readonly apiSecret?: string;
 
   constructor(config: ConfigService) {
-    this.apiKey = config.getOrThrow('faceplusplus.apiKey');
-    this.apiSecret = config.getOrThrow('faceplusplus.apiSecret');
+    this.apiKey = config.get<string>('faceplusplus.apiKey');
+    this.apiSecret = config.get<string>('faceplusplus.apiSecret');
+    if (!this.apiKey || !this.apiSecret) {
+      this.logger.warn('FACEPP_API_KEY absente : vérification faciale simulée (dev).');
+    }
   }
 
   async comparer(
-  urlSelfie: string,
-  urlCniRecto: string,
-): Promise<ResultatFaceMatch> {
-  const form = new FormData();
+    urlSelfie: string,
+    urlCniRecto: string,
+  ): Promise<ResultatFaceMatch> {
+    if (!this.apiKey || !this.apiSecret) {
+      return { score: 1, correspondance: true, details: 'simulation (dev)' };
+    }
+    const form = new FormData();
 
     form.append('api_key', this.apiKey);
     form.append('api_secret', this.apiSecret);
