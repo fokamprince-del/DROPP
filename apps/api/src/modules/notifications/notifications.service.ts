@@ -58,7 +58,11 @@ export class NotificationsService {
         where: { utilisateurId, estLu: false },
       }),
     ]);
-    return { donnees, total, nonLues, page, limite };
+    return {
+      donnees,
+      nonLues,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
+    };
   }
 
   async compteur(utilisateurId: string) {

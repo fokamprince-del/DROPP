@@ -99,9 +99,7 @@ export class ShopsService {
         ...this.presenter(b),
         abonnes: vendeur._count.abonnements,
       })),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 

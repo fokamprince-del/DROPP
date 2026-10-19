@@ -114,9 +114,7 @@ export class AbonnementService {
         muet: a.statut === 'MUET',
         depuis: a.dateCreation,
       })),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 
@@ -158,9 +156,7 @@ export class AbonnementService {
           depuis: dateCreation,
         };
       }),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 

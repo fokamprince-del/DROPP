@@ -63,19 +63,26 @@ export class StoriesService {
   ) {}
 
   async listerPubliques(page: number, limite: number) {
-    const stories = await this.prisma.story.findMany({
-      where: {
-        statut: StatutPublication.PUBLIEE,
-        visibilite: 'PUBLIC',
-        dateExpiration: { gt: new Date() },
-        boutique: BOUTIQUE_VISIBLE,
-      },
-      select: storySelection,
-      orderBy: { dateCreation: 'desc' },
-      skip: (page - 1) * limite,
-      take: limite,
-    });
-    return Promise.all(stories.map((story) => this.presenter(story)));
+    const where = {
+      statut: StatutPublication.PUBLIEE,
+      visibilite: 'PUBLIC' as const,
+      dateExpiration: { gt: new Date() },
+      boutique: BOUTIQUE_VISIBLE,
+    };
+    const [stories, total] = await this.prisma.$transaction([
+      this.prisma.story.findMany({
+        where,
+        select: storySelection,
+        orderBy: { dateCreation: 'desc' },
+        skip: (page - 1) * limite,
+        take: limite,
+      }),
+      this.prisma.story.count({ where }),
+    ]);
+    return {
+      donnees: await Promise.all(stories.map((story) => this.presenter(story))),
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
+    };
   }
 
   /**

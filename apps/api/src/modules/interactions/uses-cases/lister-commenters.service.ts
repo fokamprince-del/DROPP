@@ -83,6 +83,7 @@ export class ListerCommentairesService {
       pagination: {
         total,
         page,
+        limite: LIMITE_PAR_PAGE,
         pages: Math.ceil(total / LIMITE_PAR_PAGE),
       },
     };
@@ -141,6 +142,7 @@ export class ListerCommentairesService {
       pagination: {
         total,
         page,
+        limite: LIMITE_PAR_PAGE,
         pages: Math.ceil(total / LIMITE_PAR_PAGE),
       },
     };

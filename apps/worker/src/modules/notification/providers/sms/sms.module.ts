@@ -18,7 +18,7 @@ import { SmsProviderTwilio } from './sms.twilio.js';
         if (config.get<string>('sms.driver') === 'twilio') {
           return new SmsProviderTwilio(config);
         }
-        if (config.get<string>('app.environement') === 'production') {
+        if (config.get<string>('app.environment') === 'production') {
           throw new Error('SMS_DRIVER=stub interdit en production.');
         }
         new Logger('SmsModule').warn('SMS simulés (stub) : les codes sont dans les logs.');

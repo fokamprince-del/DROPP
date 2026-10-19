@@ -162,9 +162,7 @@ export class ConversationsService {
       donnees: conversations.map((c) =>
         this.presenter(utilisateurId, c, nonLus.get(c.id) ?? 0),
       ),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 

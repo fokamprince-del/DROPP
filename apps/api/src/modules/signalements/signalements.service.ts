@@ -175,9 +175,7 @@ export class SignalementsService {
           cibleId,
         };
       }),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 

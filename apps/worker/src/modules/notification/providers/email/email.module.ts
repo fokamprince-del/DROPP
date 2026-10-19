@@ -15,7 +15,7 @@ import { EmailProviderStub } from './email.stub.js';
         if (config.get<string>('email.resendApiKey')) {
           return new EmailProviderResend(config);
         }
-        if (config.get<string>('app.environement') === 'production') {
+        if (config.get<string>('app.environment') === 'production') {
           throw new Error('RESEND_API_KEY obligatoire en production.');
         }
         new Logger('EmailModule').warn(
