@@ -90,7 +90,7 @@ class SessionNotifier extends Notifier<EtatSession> {
   /// Ferme la session de cet appareil.
   Future<void> deconnecter() async {
     try {
-      await _api.post('/auth/deconnexion');
+      await _api.post<void>('/auth/deconnexion');
     } on ApiException {
       // Hors connexion ou jeton déjà invalide : la déconnexion locale suffit.
     }

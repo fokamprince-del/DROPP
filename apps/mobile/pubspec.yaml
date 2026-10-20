@@ -1,4 +1,4 @@
-name: mobile
+name: dropp
 description: "DROPP - application mobile (client et vendeur)."
 publish_to: 'none'
 version: 1.0.0+1
