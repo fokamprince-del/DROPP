@@ -20,7 +20,7 @@ dependencies:
   uuid: ^4.5.1
 
   # Jetons
-  flutter_secure_storage: ^9.2.4
+  flutter_secure_storage: ^11.2.0
 
   # Modèles (génération de code)
   freezed_annotation: ^3.0.0
