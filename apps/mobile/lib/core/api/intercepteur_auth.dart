@@ -11,14 +11,11 @@ import '../auth/stockage_session.dart';
 /// échouent pendant un refresh attendent donc le même appel puis sont rejouées.
 class IntercepteurAuth extends Interceptor {
   IntercepteurAuth({
-    required Dio dio,
-    required Dio dioRefresh,
-    required StockageSession stockage,
-    required void Function() surSessionExpiree,
-  })  : _dio = dio,
-        _dioRefresh = dioRefresh,
-        _stockage = stockage,
-        _surSessionExpiree = surSessionExpiree;
+    required this._dio,
+    required this._dioRefresh,
+    required this._stockage,
+    required this._surSessionExpiree,
+  });
 
   /// Routes qui n'envoient jamais de jeton et dont le 401 est une vraie réponse
   /// (mauvais mot de passe, code faux…), pas un jeton expiré.
