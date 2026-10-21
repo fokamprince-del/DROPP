@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -25,11 +26,22 @@ class StockageSession {
 
   Future<Jetons?> lireJetons() async {
     if (_charge) return _cache;
-    final acces = await _stockage.read(key: _cleAcces);
-    final refresh = await _stockage.read(key: _cleRefresh);
-    _cache = acces != null && refresh != null
-        ? Jetons(accessToken: acces, refreshToken: refresh)
-        : null;
+    try {
+      final acces = await _stockage.read(key: _cleAcces);
+      final refresh = await _stockage.read(key: _cleRefresh);
+      _cache = acces != null && refresh != null
+          ? Jetons(accessToken: acces, refreshToken: refresh)
+          : null;
+    } on PlatformException {
+      // Stockage illisible (clé Keystore perdue, sauvegarde restaurée…) :
+      // on repart d'une session vide plutôt que de bloquer le démarrage.
+      _cache = null;
+      try {
+        await effacer();
+      } on PlatformException {
+        // Rien de plus à faire : la session reste vide en mémoire.
+      }
+    }
     _charge = true;
     return _cache;
   }
@@ -37,8 +49,8 @@ class StockageSession {
   Future<void> ecrireJetons(Jetons jetons) async {
     _cache = jetons;
     _charge = true;
-    await _stockage.write(key: _cleAcces, value: jetons.accessToken);
     await _stockage.write(key: _cleRefresh, value: jetons.refreshToken);
+    await _stockage.write(key: _cleAcces, value: jetons.accessToken);
   }
 
   /// Profil de `GET /auth/me`, pour démarrer hors connexion.

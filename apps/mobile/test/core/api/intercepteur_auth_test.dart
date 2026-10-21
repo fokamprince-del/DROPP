@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:dropp/core/api/api_exception.dart';
+import 'package:dropp/core/api/intercepteur_auth.dart';
+import 'package:dropp/core/api/intercepteurs.dart';
+import 'package:dropp/core/auth/jetons.dart';
+import 'package:dropp/core/auth/stockage_session.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/core/api/api_exception.dart';
-import 'package:mobile/core/api/intercepteur_auth.dart';
-import 'package:mobile/core/api/intercepteurs.dart';
-import 'package:mobile/core/auth/jetons.dart';
-import 'package:mobile/core/auth/stockage_session.dart';
 
 /// Stockage en mémoire (pas de canal natif en test).
 class _StockageMemoire extends StockageSession {
@@ -75,12 +75,12 @@ class _FauxServeur implements HttpClientAdapter {
   }
 
   ResponseBody _json(int statut, Object corps) => ResponseBody.fromString(
-        jsonEncode(corps),
-        statut,
-        headers: {
-          Headers.contentTypeHeader: [Headers.jsonContentType],
-        },
-      );
+    jsonEncode(corps),
+    statut,
+    headers: {
+      Headers.contentTypeHeader: [Headers.jsonContentType],
+    },
+  );
 
   @override
   void close({bool force = false}) {}
@@ -133,7 +133,10 @@ void main() {
   test('un POST rejoué après refresh garde la même clé d\'idempotence', () async {
     monter();
 
-    await dio.post<Map<String, dynamic>>('/commandes', data: {'adresseId': 'a1'});
+    await dio.post<Map<String, dynamic>>(
+      '/commandes',
+      data: {'adresseId': 'a1'},
+    );
 
     final cles = serveur.clesIdempotence.where((c) => c != null).toList();
     // Premier envoi puis rejeu ; le refresh passe par un dio sans intercepteur
@@ -147,11 +150,13 @@ void main() {
 
     await expectLater(
       dio.get<Map<String, dynamic>>('/panier'),
-      throwsA(isA<DioException>().having(
-        (e) => (e.error as ApiException).type,
-        'type',
-        TypeErreurApi.nonAuthentifie,
-      )),
+      throwsA(
+        isA<DioException>().having(
+          (e) => (e.error as ApiException).type,
+          'type',
+          TypeErreurApi.nonAuthentifie,
+        ),
+      ),
     );
     expect(expirations, 1);
     expect(stockage.jetons, isNull);
@@ -161,12 +166,17 @@ void main() {
     monter();
 
     await expectLater(
-      dio.post<Map<String, dynamic>>('/auth/connexion', data: {'identifiant': 'x'}),
-      throwsA(isA<DioException>().having(
-        (e) => (e.error as ApiException).message,
-        'message',
-        'Identifiant ou mot de passe incorrect.',
-      )),
+      dio.post<Map<String, dynamic>>(
+        '/auth/connexion',
+        data: {'identifiant': 'x'},
+      ),
+      throwsA(
+        isA<DioException>().having(
+          (e) => (e.error as ApiException).message,
+          'message',
+          'Identifiant ou mot de passe incorrect.',
+        ),
+      ),
     );
     expect(serveur.refreshs, 0);
     expect(stockage.jetons?.accessToken, 'acces-1');
