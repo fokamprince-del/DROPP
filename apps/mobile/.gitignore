@@ -48,4 +48,11 @@ app.*.map.json
 .widget_preview/
 
 
+# Config personnelle : jamais versionnée (sauf le dossier et les modèles)
+env/*
+!env/.gitkeep
+!env/*.example.json
+
+# Réglages d'éditeur personnels
+.vscode/
 devtools_options.yaml
