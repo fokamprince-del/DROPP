@@ -1,50 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../ui/barre_navigation.dart';
+import 'badges_navigation.dart';
+
 /// Barre d'onglets du bas. Chaque onglet garde sa propre pile de navigation.
-class NavigationPrincipale extends StatelessWidget {
+class NavigationPrincipale extends ConsumerWidget {
   const NavigationPrincipale({super.key, required this.coquille});
 
   final StatefulNavigationShell coquille;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: coquille,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: coquille.currentIndex,
-        // Toucher l'onglet actif revient à sa racine.
-        onDestinationSelected: (index) => coquille.goBranch(
+      bottomNavigationBar: BarreNavigation(
+        indexSelectionne: coquille.currentIndex,
+        // Toucher l'onglet actif revient à sa racine. 
+        surSelection: (index) => coquille.goBranch(
           index,
           initialLocation: index == coquille.currentIndex,
         ),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.search),
-            label: 'Rechercher',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_bag_outlined),
-            selectedIcon: Icon(Icons.shopping_bag),
-            label: 'Panier',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.chat_bubble_outline),
-            selectedIcon: Icon(Icons.chat_bubble),
-            label: 'Messages',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-      ),
+        nombrePanier: ref.watch(nombreArticlesPanierProvider),
+        nombreMessages: ref.watch(nombreMessagesNonLusProvider),
+      )
     );
   }
 }
