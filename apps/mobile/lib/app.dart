@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/router/app_router.dart';
+import 'core/theme/theme_dropp.dart';
 
 class DroppApp extends ConsumerWidget {
   const DroppApp({super.key});
@@ -11,8 +12,9 @@ class DroppApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'DROPP',
       debugShowCheckedModeBanner: false,
-      // Thème provisoire : remplacé par le thème de Dev B (core/ui).
-      theme: ThemeData(colorSchemeSeed: Colors.deepOrange, useMaterial3: true),
+      theme: ThemeDropp.clair,
+      darkTheme: ThemeDropp.sombre,
+      themeMode: ThemeMode.system,
       routerConfig: ref.watch(routerProvider),
     );
   }
