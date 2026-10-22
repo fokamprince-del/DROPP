@@ -28,6 +28,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get navProfil => 'Profil';
 
   @override
+  String get baselineApp => 'Le marché camerounais dans ta poche';
+
+  @override
   String navPanierArticles(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

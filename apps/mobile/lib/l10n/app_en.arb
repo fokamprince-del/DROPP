@@ -6,6 +6,7 @@
   "navPanier": "Cart",
   "navMessages": "Messages",
   "navProfil": "Profile",
+  "baselineApp": "Cameroon's marketplace in your pocket",
   "navPanierArticles": "Cart, {count, plural, =1{1 item} other{{count} items}}",
   "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
   "navMessagesNonLus": "Messages, {count, plural, =1{1 unread} other{{count} unread}}",
