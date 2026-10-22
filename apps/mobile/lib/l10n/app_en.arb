@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "nomApp": "DROPP",
+  "navAccueil": "Home",
+  "navDecouvrir": "Discover",
+  "navPanier": "Cart",
+  "navMessages": "Messages",
+  "navProfil": "Profile",
+  "navPanierArticles": "Cart, {count, plural, =1{1 item} other{{count} items}}",
+  "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
+  "navMessagesNonLus": "Messages, {count, plural, =1{1 unread} other{{count} unread}}",
+  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } }
+}
