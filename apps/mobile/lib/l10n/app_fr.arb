@@ -1,0 +1,13 @@
+{
+  "@@locale": "fr",
+  "nomApp": "DROPP",
+  "navAccueil": "Accueil",
+  "navDecouvrir": "Découvrir",
+  "navPanier": "Panier",
+  "navMessages": "Messages",
+  "navProfil": "Profil",
+  "navPanierArticles": "Panier, {count, plural, =1{1 article} other{{count} articles}}",
+  "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
+  "navMessagesNonLus": "Messages, {count, plural, =1{1 non lu} other{{count} non lus}}",
+  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } }
+}
