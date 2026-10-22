@@ -15,11 +15,11 @@ class Pagination {
   bool get aSuivante => page < pages;
 
   factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-        total: (json['total'] as num).toInt(),
-        page: (json['page'] as num).toInt(),
-        limite: (json['limite'] as num).toInt(),
-        pages: (json['pages'] as num).toInt(),
-      );
+    total: (json['total'] as num).toInt(),
+    page: (json['page'] as num).toInt(),
+    limite: (json['limite'] as num).toInt(),
+    pages: (json['pages'] as num).toInt(),
+  );
 }
 
 /// Une page de résultats : `{ donnees: [...], pagination: {...} }`.
@@ -40,12 +40,11 @@ class PageResultats<T> {
   factory PageResultats.fromJson(
     Map<String, dynamic> json,
     T Function(Map<String, dynamic>) depuisJson,
-  ) =>
-      PageResultats(
-        donnees: (json['donnees'] as List)
-            .map((e) => depuisJson(e as Map<String, dynamic>))
-            .toList(),
-        pagination: Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
-        brut: json,
-      );
+  ) => PageResultats(
+    donnees: (json['donnees'] as List)
+        .map((e) => depuisJson(e as Map<String, dynamic>))
+        .toList(),
+    pagination: Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+    brut: json,
+  );
 }

@@ -95,7 +95,10 @@ abstract final class ThemeDropp {
       inputDecorationTheme: InputDecorationThemeData(
         filled: true,
         fillColor: schema.surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         border: bordure(schema.outline),
         enabledBorder: bordure(schema.outline),
         focusedBorder: bordure(schema.primary, 2),
@@ -105,7 +108,9 @@ abstract final class ThemeDropp {
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: schema.surface,
         showDragHandle: true,
-        shape: const RoundedRectangleBorder(borderRadius: Rayons.borduresFeuille),
+        shape: const RoundedRectangleBorder(
+          borderRadius: Rayons.borduresFeuille,
+        ),
       ),
     );
   }

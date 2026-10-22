@@ -7,7 +7,7 @@ class Jetons {
   final String refreshToken;
 
   factory Jetons.fromJson(Map<String, dynamic> json) => Jetons(
-        accessToken: json['accessToken'] as String,
-        refreshToken: json['refreshToken'] as String,
-      );
+    accessToken: json['accessToken'] as String,
+    refreshToken: json['refreshToken'] as String,
+  );
 }

@@ -34,15 +34,19 @@ class _ConnexionDevPageState extends ConsumerState<ConnexionDevPage> {
       _erreur = null;
     });
     try {
-      final reponse = await ref.read(apiClientProvider).post<Map<String, dynamic>>(
-        '/auth/connexion',
-        data: {
-          'identifiant': _identifiant.text.trim(),
-          'motDePasse': _motDePasse.text,
-        },
-      );
+      final reponse = await ref
+          .read(apiClientProvider)
+          .post<Map<String, dynamic>>(
+            '/auth/connexion',
+            data: {
+              'identifiant': _identifiant.text.trim(),
+              'motDePasse': _motDePasse.text,
+            },
+          );
       if (reponse['verificationRequise'] == true) {
-        setState(() => _erreur = 'Compte non vérifié : passer par l\'inscription.');
+        setState(
+          () => _erreur = 'Compte non vérifié : passer par l\'inscription.',
+        );
         return;
       }
       // La redirection du routeur emmène ensuite vers la page demandée.
@@ -79,7 +83,10 @@ class _ConnexionDevPageState extends ConsumerState<ConnexionDevPage> {
           ),
           const SizedBox(height: 24),
           if (_erreur != null)
-            Text(_erreur!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+            Text(
+              _erreur!,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           const SizedBox(height: 8),
           FilledButton(
             onPressed: _envoi ? null : _connecter,

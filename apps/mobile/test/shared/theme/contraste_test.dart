@@ -1,4 +1,4 @@
-import 'package:dropp/core/theme/couleurs.dart';
+import 'package:dropp/shared/theme/couleurs.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -25,19 +25,40 @@ void main() {
     'kolaTexte / kolaFond': (Couleurs.kolaTexte, Couleurs.kolaFond),
     'plantainTexte / blanc': (Couleurs.plantainTexte, Couleurs.blanc),
     'plantainTexte / coton': (Couleurs.plantainTexte, Couleurs.coton),
-    'plantainTexte / plantainFond': (Couleurs.plantainTexte, Couleurs.plantainFond),
+    'plantainTexte / plantainFond': (
+      Couleurs.plantainTexte,
+      Couleurs.plantainFond,
+    ),
     'pimentTexte / coton': (Couleurs.pimentTexte, Couleurs.coton),
     'pimentTexte / pimentFond': (Couleurs.pimentTexte, Couleurs.pimentFond),
     'texteSombre / nuit': (Couleurs.texteSombre, Couleurs.nuit),
     'texteSombre / nuitCarte': (Couleurs.texteSombre, Couleurs.nuitCarte),
     'nuit / indigoClair (bouton)': (Couleurs.nuit, Couleurs.indigoClair),
     'nuit / hibiscusVif': (Couleurs.nuit, Couleurs.hibiscusVif),
-    'kolaTexteSombre / nuitCarte': (Couleurs.kolaTexteSombre, Couleurs.nuitCarte),
-    'kolaTexteSombre / kolaFondSombre': (Couleurs.kolaTexteSombre, Couleurs.kolaFondSombre),
-    'plantainTexteSombre / nuitCarte': (Couleurs.plantainTexteSombre, Couleurs.nuitCarte),
-    'plantainTexteSombre / plantainFondSombre': (Couleurs.plantainTexteSombre, Couleurs.plantainFondSombre),
-    'pimentTexteSombre / nuitCarte': (Couleurs.pimentTexteSombre, Couleurs.nuitCarte),
-    'pimentTexteSombre / pimentFondSombre': (Couleurs.pimentTexteSombre, Couleurs.pimentFondSombre),
+    'kolaTexteSombre / nuitCarte': (
+      Couleurs.kolaTexteSombre,
+      Couleurs.nuitCarte,
+    ),
+    'kolaTexteSombre / kolaFondSombre': (
+      Couleurs.kolaTexteSombre,
+      Couleurs.kolaFondSombre,
+    ),
+    'plantainTexteSombre / nuitCarte': (
+      Couleurs.plantainTexteSombre,
+      Couleurs.nuitCarte,
+    ),
+    'plantainTexteSombre / plantainFondSombre': (
+      Couleurs.plantainTexteSombre,
+      Couleurs.plantainFondSombre,
+    ),
+    'pimentTexteSombre / nuitCarte': (
+      Couleurs.pimentTexteSombre,
+      Couleurs.nuitCarte,
+    ),
+    'pimentTexteSombre / pimentFondSombre': (
+      Couleurs.pimentTexteSombre,
+      Couleurs.pimentFondSombre,
+    ),
   };
 
   for (final entree in paires.entries) {

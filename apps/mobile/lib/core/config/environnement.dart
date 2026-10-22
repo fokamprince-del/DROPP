@@ -12,7 +12,8 @@ abstract final class Environnement {
   );
 
   /// Origine du serveur (sans /v1), pour Socket.IO (namespace /temps-reel).
-  static String get origineServeur => Uri.parse(apiUrl).replace(path: '').toString();
+  static String get origineServeur =>
+      Uri.parse(apiUrl).replace(path: '').toString();
 
   /// À appeler au tout début de `main()` : échoue vite plutôt que de livrer
   /// une application mal configurée.

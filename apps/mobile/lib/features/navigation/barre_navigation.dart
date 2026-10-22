@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/contexte_l10n.dart';
+import '../../core/l10n/contexte_l10n.dart';
 
 /// Barre d'onglets de la maquette : 5 entrées, le panier (index 2) en bouton
 /// plein au centre, pastilles de compteur sur le panier et les messages.

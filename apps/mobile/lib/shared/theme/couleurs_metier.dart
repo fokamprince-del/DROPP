@@ -48,15 +48,14 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
     Color? attenteFond,
     Color? erreur,
     Color? erreurFond,
-  }) =>
-      CouleursMetier(
-        succes: succes ?? this.succes,
-        succesFond: succesFond ?? this.succesFond,
-        attente: attente ?? this.attente,
-        attenteFond: attenteFond ?? this.attenteFond,
-        erreur: erreur ?? this.erreur,
-        erreurFond: erreurFond ?? this.erreurFond,
-      );
+  }) => CouleursMetier(
+    succes: succes ?? this.succes,
+    succesFond: succesFond ?? this.succesFond,
+    attente: attente ?? this.attente,
+    attenteFond: attenteFond ?? this.attenteFond,
+    erreur: erreur ?? this.erreur,
+    erreurFond: erreurFond ?? this.erreurFond,
+  );
 
   @override
   CouleursMetier lerp(ThemeExtension<CouleursMetier>? other, double t) {

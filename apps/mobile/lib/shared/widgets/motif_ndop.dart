@@ -69,7 +69,10 @@ class _PeintreNdop extends CustomPainter {
           tailleCase,
           tailleCase,
         );
-        canvas.drawRect(case_, fond..color = fonce ? couleurFonce : couleurClair);
+        canvas.drawRect(
+          case_,
+          fond..color = fonce ? couleurFonce : couleurClair,
+        );
         if (fonce) {
           canvas.drawLine(case_.topLeft, case_.bottomRight, trait);
         }

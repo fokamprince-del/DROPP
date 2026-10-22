@@ -19,7 +19,10 @@ class PageProvisoire extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: 12,
           children: [
-            Text('$titre — à venir', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              '$titre — à venir',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             ...actions,
           ],
         ),

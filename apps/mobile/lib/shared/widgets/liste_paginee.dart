@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../api/api_exception.dart';
-import '../api/pagination.dart';
+import '../../core/api/api_exception.dart';
+import '../../core/api/pagination.dart';
 
 /// Liste à défilement infini sur une route paginée de l'API, avec « tirer pour
 /// rafraîchir », états chargement / vide / erreur et bouton Réessayer.
@@ -28,7 +28,8 @@ class ListePaginee<T> extends StatefulWidget {
   });
 
   final Future<PageResultats<T>> Function(int page) charger;
-  final Widget Function(BuildContext context, T element, int index) elementBuilder;
+  final Widget Function(BuildContext context, T element, int index)
+  elementBuilder;
   final Widget? separateur;
 
   /// Affiché au-dessus du premier élément (filtres, bannière…).
@@ -92,7 +93,8 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
     });
   }
 
-  void retirer(bool Function(T) test) => setState(() => _elements.removeWhere(test));
+  void retirer(bool Function(T) test) =>
+      setState(() => _elements.removeWhere(test));
 
   void _surDefilement() {
     if (_defilement.position.extentAfter < _seuilChargement) _chargerSuivante();
@@ -151,8 +153,9 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
               child: _erreur != null
                   ? _VueErreur(erreur: _erreur!, reessayer: recharger)
                   : _chargement || _aSuivante
-                      ? const CircularProgressIndicator()
-                      : widget.vide ?? const Text('Rien à afficher pour le moment.'),
+                  ? const CircularProgressIndicator()
+                  : widget.vide ??
+                        const Text('Rien à afficher pour le moment.'),
             ),
           ),
         ],

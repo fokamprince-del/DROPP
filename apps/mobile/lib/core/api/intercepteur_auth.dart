@@ -56,7 +56,10 @@ class IntercepteurAuth extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     final options = err.requestOptions;
     final jetonEnvoye = options.headers['Authorization'] as String?;
 

@@ -1,5 +1,5 @@
-import 'package:dropp/core/ui/logo_dropp.dart';
-import 'package:dropp/core/ui/motif_ndop.dart';
+import 'package:dropp/shared/widgets/logo_dropp.dart';
+import 'package:dropp/shared/widgets/motif_ndop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,8 +34,9 @@ void main() {
     expect(find.text('DROPP', findRichText: true), findsOneWidget);
   });
 
-  testWidgets('le logo est exposé comme DROPP aux lecteurs d’écran',
-      (tester) async {
+  testWidgets('le logo est exposé comme DROPP aux lecteurs d’écran', (
+    tester,
+  ) async {
     final poignee = tester.ensureSemantics();
     await tester.pumpWidget(
       const Directionality(
