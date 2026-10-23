@@ -10,5 +10,25 @@
   "navPanierArticles": "Panier, {count, plural, =1{1 article} other{{count} articles}}",
   "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
   "navMessagesNonLus": "Messages, {count, plural, =1{1 non lu} other{{count} non lus}}",
-  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } }
+  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } },
+
+  
+  "champPrenom": "Prénom",
+  "champNom": "Nom",
+  "champSexe": "Sexe",
+  "sexeMasculin": "Homme",
+  "sexeFeminin": "Femme",
+  "sexeAutre": "Autre",
+  "champTelephone": "Téléphone",
+  "champEmailFacultatif": "Email (facultatif)",
+  "champMotDePasse": "Mot de passe",
+  "erreurRequis": "Ce champ est obligatoire",
+  "erreurTelephoneInvalide": "Numéro de téléphone invalide",
+  "erreurEmailInvalide": "Adresse email invalide",
+  "erreurMotDePasseCourt": "8 caractères minimum",
+  "erreurCodeIncomplet": "Saisis les 6 chiffres du code",
+  "forceMotDePasse1": "Faible. Utilise 8 caractères minimum, avec lettres et chiffres.",
+  "forceMotDePasse2": "Moyen. Ajoute des chiffres ou des majuscules.",
+  "forceMotDePasse3": "Solide. Ajoute un symbole pour le rendre très solide.",
+  "forceMotDePasse4": "Très solide."
 }

@@ -51,4 +51,61 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return 'Messages, $_temp0';
   }
+
+  @override
+  String get champPrenom => 'Prénom';
+
+  @override
+  String get champNom => 'Nom';
+
+  @override
+  String get champSexe => 'Sexe';
+
+  @override
+  String get sexeMasculin => 'Homme';
+
+  @override
+  String get sexeFeminin => 'Femme';
+
+  @override
+  String get sexeAutre => 'Autre';
+
+  @override
+  String get champTelephone => 'Téléphone';
+
+  @override
+  String get champEmailFacultatif => 'Email (facultatif)';
+
+  @override
+  String get champMotDePasse => 'Mot de passe';
+
+  @override
+  String get erreurRequis => 'Ce champ est obligatoire';
+
+  @override
+  String get erreurTelephoneInvalide => 'Numéro de téléphone invalide';
+
+  @override
+  String get erreurEmailInvalide => 'Adresse email invalide';
+
+  @override
+  String get erreurMotDePasseCourt => '8 caractères minimum';
+
+  @override
+  String get erreurCodeIncomplet => 'Saisis les 6 chiffres du code';
+
+  @override
+  String get forceMotDePasse1 =>
+      'Faible. Utilise 8 caractères minimum, avec lettres et chiffres.';
+
+  @override
+  String get forceMotDePasse2 =>
+      'Moyen. Ajoute des chiffres ou des majuscules.';
+
+  @override
+  String get forceMotDePasse3 =>
+      'Solide. Ajoute un symbole pour le rendre très solide.';
+
+  @override
+  String get forceMotDePasse4 => 'Très solide.';
 }

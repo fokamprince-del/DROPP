@@ -151,6 +151,114 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Messages, {count, plural, =1{1 non lu} other{{count} non lus}}'**
   String navMessagesNonLus(int count);
+
+  /// No description provided for @champPrenom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prénom'**
+  String get champPrenom;
+
+  /// No description provided for @champNom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom'**
+  String get champNom;
+
+  /// No description provided for @champSexe.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sexe'**
+  String get champSexe;
+
+  /// No description provided for @sexeMasculin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Homme'**
+  String get sexeMasculin;
+
+  /// No description provided for @sexeFeminin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Femme'**
+  String get sexeFeminin;
+
+  /// No description provided for @sexeAutre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autre'**
+  String get sexeAutre;
+
+  /// No description provided for @champTelephone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get champTelephone;
+
+  /// No description provided for @champEmailFacultatif.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email (facultatif)'**
+  String get champEmailFacultatif;
+
+  /// No description provided for @champMotDePasse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe'**
+  String get champMotDePasse;
+
+  /// No description provided for @erreurRequis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce champ est obligatoire'**
+  String get erreurRequis;
+
+  /// No description provided for @erreurTelephoneInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro de téléphone invalide'**
+  String get erreurTelephoneInvalide;
+
+  /// No description provided for @erreurEmailInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse email invalide'**
+  String get erreurEmailInvalide;
+
+  /// No description provided for @erreurMotDePasseCourt.
+  ///
+  /// In fr, this message translates to:
+  /// **'8 caractères minimum'**
+  String get erreurMotDePasseCourt;
+
+  /// No description provided for @erreurCodeIncomplet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saisis les 6 chiffres du code'**
+  String get erreurCodeIncomplet;
+
+  /// No description provided for @forceMotDePasse1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faible. Utilise 8 caractères minimum, avec lettres et chiffres.'**
+  String get forceMotDePasse1;
+
+  /// No description provided for @forceMotDePasse2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Moyen. Ajoute des chiffres ou des majuscules.'**
+  String get forceMotDePasse2;
+
+  /// No description provided for @forceMotDePasse3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Solide. Ajoute un symbole pour le rendre très solide.'**
+  String get forceMotDePasse3;
+
+  /// No description provided for @forceMotDePasse4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Très solide.'**
+  String get forceMotDePasse4;
 }
 
 class _AppLocalizationsDelegate

@@ -10,5 +10,24 @@
   "navPanierArticles": "Cart, {count, plural, =1{1 item} other{{count} items}}",
   "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
   "navMessagesNonLus": "Messages, {count, plural, =1{1 unread} other{{count} unread}}",
-  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } }
+  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } },
+
+  "champPrenom": "First name",
+  "champNom": "Last name",
+  "champSexe": "Gender",
+  "sexeMasculin": "Male",
+  "sexeFeminin": "Female",
+  "sexeAutre": "Other",
+  "champTelephone": "Phone",
+  "champEmailFacultatif": "Email (optional)",
+  "champMotDePasse": "Password",
+  "erreurRequis": "This field is required",
+  "erreurTelephoneInvalide": "Invalid phone number",
+  "erreurEmailInvalide": "Invalid email address",
+  "erreurMotDePasseCourt": "At least 8 characters",
+  "erreurCodeIncomplet": "Enter the 6 digits of the code",
+  "forceMotDePasse1": "Weak. Use at least 8 characters, with letters and numbers.",
+  "forceMotDePasse2": "Fair. Add numbers or capital letters.",
+  "forceMotDePasse3": "Strong. Add a symbol to make it very strong.",
+  "forceMotDePasse4": "Very strong."
 }
