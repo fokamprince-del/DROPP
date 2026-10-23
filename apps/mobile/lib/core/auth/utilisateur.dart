@@ -31,16 +31,16 @@ class Utilisateur {
   String get nomComplet => '$prenom $nom'.trim();
 
   factory Utilisateur.fromJson(Map<String, dynamic> json) => Utilisateur(
-        id: json['id'] as String,
-        prenom: json['prenom'] as String? ?? '',
-        nom: json['nom'] as String? ?? '',
-        email: json['email'] as String?,
-        emailVerifie: json['emailVerifie'] as bool? ?? false,
-        telephone: json['telephone'] as String?,
-        telephoneVerifie: json['telephoneVerifie'] as bool? ?? false,
-        statutCompte: json['statutCompte'] as String,
-        estClient: json['estClient'] as bool? ?? false,
-        estVendeur: json['estVendeur'] as bool? ?? false,
-        statutVendeur: json['statutVendeur'] as String?,
-      );
+    id: json['id'] as String,
+    prenom: json['prenom'] as String? ?? '',
+    nom: json['nom'] as String? ?? '',
+    email: json['email'] as String?,
+    emailVerifie: json['emailVerifie'] as bool? ?? false,
+    telephone: json['telephone'] as String?,
+    telephoneVerifie: json['telephoneVerifie'] as bool? ?? false,
+    statutCompte: json['statutCompte'] as String,
+    estClient: json['estClient'] as bool? ?? false,
+    estVendeur: json['estVendeur'] as bool? ?? false,
+    statutVendeur: json['statutVendeur'] as String?,
+  );
 }

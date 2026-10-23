@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../api/api_client.dart';
@@ -53,6 +55,16 @@ class SessionNotifier extends Notifier<EtatSession> {
     final jetons = await _stockage.lireJetons();
     if (jetons == null) {
       state = const SessionAnonyme();
+      return;
+    }
+
+    // Profil mémorisé : on ouvre l'app tout de suite, sans attendre le réseau.
+    final profil = await _stockage.lireProfil();
+    if (profil != null) {
+      state = SessionConnectee(Utilisateur.fromJson(profil));
+      // Rafraîchi en arrière-plan : si le serveur refuse la session,
+      // rafraichirProfil() la ferme.
+      unawaited(rafraichirProfil());
       return;
     }
     await rafraichirProfil();

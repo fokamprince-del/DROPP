@@ -87,7 +87,8 @@ class ApiException implements Exception {
         // Le throttler renvoie un message technique en anglais.
         TypeErreurApi.tropDeRequetes =>
           'Trop de tentatives. Patientez une minute avant de réessayer.',
-        TypeErreurApi.serveur => 'Le serveur rencontre un problème. Réessayez plus tard.',
+        TypeErreurApi.serveur =>
+          'Le serveur rencontre un problème. Réessayez plus tard.',
         _ => details.isNotEmpty ? details.first : 'Une erreur est survenue.',
       },
     );
@@ -102,16 +103,16 @@ class ApiException implements Exception {
   }
 
   static TypeErreurApi _typePourStatut(int statut) => switch (statut) {
-        400 || 422 => TypeErreurApi.requeteInvalide,
-        401 => TypeErreurApi.nonAuthentifie,
-        403 => TypeErreurApi.interdit,
-        404 => TypeErreurApi.introuvable,
-        409 => TypeErreurApi.conflit,
-        410 => TypeErreurApi.expire,
-        429 => TypeErreurApi.tropDeRequetes,
-        >= 500 => TypeErreurApi.serveur,
-        _ => TypeErreurApi.inconnu,
-      };
+    400 || 422 => TypeErreurApi.requeteInvalide,
+    401 => TypeErreurApi.nonAuthentifie,
+    403 => TypeErreurApi.interdit,
+    404 => TypeErreurApi.introuvable,
+    409 => TypeErreurApi.conflit,
+    410 => TypeErreurApi.expire,
+    429 => TypeErreurApi.tropDeRequetes,
+    >= 500 => TypeErreurApi.serveur,
+    _ => TypeErreurApi.inconnu,
+  };
 
   @override
   String toString() => 'ApiException($statusCode, $type): $message';

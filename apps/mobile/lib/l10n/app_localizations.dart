@@ -134,6 +134,12 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get navProfil;
 
+  /// No description provided for @baselineApp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le marché camerounais dans ta poche'**
+  String get baselineApp;
+
   /// No description provided for @navPanierArticles.
   ///
   /// In fr, this message translates to:
