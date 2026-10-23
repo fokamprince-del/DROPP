@@ -42,7 +42,7 @@ export class ConnexionService {
     dto: ConnexionDto,
     adresseIp?: string,
   ): Promise<
-    JetonsEmis | { verificationRequise: true; verificationToken: string }
+   { verificationRequise: boolean; verificationToken?: string } & Partial<JetonsEmis>
   > {
     const estEmail = dto.identifiant.includes('@');
     // « 650 00 00 01 » doit retrouver « +237650000001 » (format E.164 en base).
@@ -136,13 +136,17 @@ export class ConnexionService {
       .catch(() => undefined);
     await this.journaliser(utilisateur.id, 'CONNEXION_REUSSIE', adresseIp);
 
-    return this.jetonService.ouvrirSession({
+    const jetons =await  this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
       statutCompte: utilisateur.statutCompte,
       telephoneVerifie: utilisateur.telephoneVerifieLe !== null,
       methodeAuth: estEmail ? 'EMAIL_MDP' : 'TELEPHONE_MDP',
       adresseIp,
     });
+    return {
+      verificationRequise: false,
+      ...jetons
+    }
   }
 
   private journaliser(

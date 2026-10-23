@@ -49,6 +49,9 @@ import {
   SupprimerCompteDto,
 } from './dto/changement-telephone.dto.js';
 import { RequiertIdempotenceKey } from '../../infrastructure/idempotence/idempotence.decorator.js';
+import { ChangeEmailDto, ChangeTelephoneDto, ConnexionReponseDto, JetonsDto, ProfilMeDto, SessionDto, VerificationTokenDto } from './dto/auth-reponse.dto.js';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ApiErreurs } from '../../infrastructure/http/api-erreur.decorator.js';
 
 /** Throttle nommé "court" : aligné sur la config ThrottlerModule de AppModule. */
 const THROTTLE_SENSIBLE = { court: { limit: 5, ttl: 60_000 } };
@@ -77,7 +80,9 @@ export class AuthentificationController {
   @Throttle(THROTTLE_STANDARD)
   @Post('inscription')
   @HttpCode(HttpStatus.CREATED)
-  inscrire(@Body() dto: InscriptionDto) {
+  @ApiCreatedResponse({ type: VerificationTokenDto })
+  @ApiErreurs(409) // numéro ou e-mail déjà utilisé
+  inscrire(@Body() dto: InscriptionDto): Promise<VerificationTokenDto> {
     return this.inscriptionService.executer(dto);
   }
 
@@ -85,6 +90,8 @@ export class AuthentificationController {
   @Throttle(THROTTLE_SENSIBLE)
   @Post('verifier-telephone')
   @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: JetonsDto })
+  @ApiErreurs(401, 403, 410)
   verifierTelephone(@Body() dto: VerifierOtpDto, @Ip() ip: string) {
     return this.verificationTelephoneService.executer(dto, ip);
   }
@@ -93,7 +100,8 @@ export class AuthentificationController {
   @Throttle(THROTTLE_SENSIBLE)
   @Post('renvoyer-code')
   @HttpCode(HttpStatus.OK)
-  renvoyerCode(@Body() dto: RenvoiCodeDto) {
+  @ApiErreurs(401)
+  renvoyerCode(@Body() dto: RenvoiCodeDto): Promise<VerificationTokenDto> {
     return this.renvoiCodeService.executer(dto);
   }
 
@@ -101,7 +109,8 @@ export class AuthentificationController {
   @Throttle(THROTTLE_SENSIBLE)
   @Post('connexion')
   @HttpCode(HttpStatus.OK)
-  connecter(@Body() dto: ConnexionDto, @Ip() ip: string) {
+  @ApiErreurs(401, 403)
+  connecter(@Body() dto: ConnexionDto, @Ip() ip: string): Promise<ConnexionReponseDto> {
     return this.connexionService.executer(dto, ip);
   }
 
@@ -109,7 +118,8 @@ export class AuthentificationController {
   @Throttle(THROTTLE_STANDARD)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  rafraichir(@Body() dto: RefreshTokenDto) {
+  @ApiErreurs(401)
+  rafraichir(@Body() dto: RefreshTokenDto): Promise<JetonsDto> {
     return this.refreshTokenService.executer(dto.refreshToken);
   }
 
@@ -130,7 +140,7 @@ export class AuthentificationController {
   }
 
   @Get('sessions')
-  listerSessions(@CurrentUser() utilisateur: UtilisateurConnecte) {
+  listerSessions(@CurrentUser() utilisateur: UtilisateurConnecte): Promise<SessionDto[]> {
     return this.sessionsService.lister(utilisateur.id, utilisateur.sessionId);
   }
 
@@ -148,18 +158,19 @@ export class AuthentificationController {
   @Throttle(THROTTLE_SENSIBLE)
   @Post('mot-de-passe-oublie')
   @HttpCode(HttpStatus.OK)
-  motDePasseOublie(@Body() dto: MotDePasseOublieDto) {
+  motDePasseOublie(@Body() dto: MotDePasseOublieDto): Promise<VerificationTokenDto> {
     return this.motDePasseOublieService.executer(dto);
   }
 
   @Throttle(THROTTLE_SENSIBLE)
   @Post('mot-de-passe/changer')
   @HttpCode(HttpStatus.OK)
+  @ApiErreurs(401, 410)
   changerMotDePasse(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: ChangerMotDePasseDto,
     @Ip() ip: string,
-  ) {
+  ): Promise<JetonsDto> {
     return this.changementMotDePasseService.executer(u.id, dto, ip);
   }
 
@@ -169,7 +180,7 @@ export class AuthentificationController {
   @Throttle(THROTTLE_SENSIBLE)
   @Post('email/envoyer-code')
   @HttpCode(HttpStatus.OK)
-  envoyerCodeEmail(@CurrentUser() u: UtilisateurConnecte) {
+  envoyerCodeEmail(@CurrentUser() u: UtilisateurConnecte): Promise<ChangeEmailDto> {
     return this.verificationEmailService.envoyerCode(u.id);
   }
 
@@ -180,11 +191,12 @@ export class AuthentificationController {
   changerEmail(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: ChangerEmailDto,
-  ) {
+  ): Promise<ChangeEmailDto> {
     return this.verificationEmailService.changer(u.id, dto);
   }
 
   @Throttle(THROTTLE_SENSIBLE)
+  @RequiertIdempotenceKey()
   @Post('email/verifier')
   @HttpCode(HttpStatus.OK)
   verifierEmail(
@@ -202,12 +214,12 @@ export class AuthentificationController {
   reinitialiserMotDePasse(
     @Body() dto: ReinitialisationMdpDto,
     @Ip() ip: string,
-  ) {
+  ): Promise<JetonsDto> {
     return this.reinitialisationMdpService.executer(dto, ip);
   }
 
   @Get('me')
-  me(@CurrentUser() u: UtilisateurConnecte) {
+  me(@CurrentUser() u: UtilisateurConnecte): Promise<ProfilMeDto> {
     return this.profilMeService.executer(u.id);
   }
 
@@ -219,7 +231,7 @@ export class AuthentificationController {
   demanderChangementTelephone(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: DemanderChangementTelephoneDto,
-  ) {
+  ): Promise<ChangeTelephoneDto> {
     return this.changementTelephoneService.demander(u.id, dto);
   }
 
@@ -230,7 +242,7 @@ export class AuthentificationController {
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: ConfirmerChangementTelephoneDto,
     @Ip() ip: string,
-  ) {
+  ): Promise<{telephone: string}> {
     return this.changementTelephoneService.confirmer(u.id, dto, ip);
   }
 
