@@ -2,6 +2,7 @@ import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 
 /// Pays supposé quand le numéro est saisi sans indicatif.
 const paysParDefaut = IsoCode.CM;
+const indicatifParDefaut = '+237 ';
 
 /// Renvoie le numéro au format international (`+237670000001`), ou `null`
 /// s'il est vide ou invalide. C'est ce format qui est envoyé à l'API, à

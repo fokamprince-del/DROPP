@@ -108,4 +108,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get forceMotDePasse4 => 'Très solide.';
+
+  @override
+  String get champCode => 'Code de vérification';
+
+  @override
+  String get motDePasseAfficher => 'Afficher le mot de passe';
+
+  @override
+  String get motDePasseMasquer => 'Masquer le mot de passe';
 }

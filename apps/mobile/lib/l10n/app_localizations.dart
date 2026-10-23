@@ -259,6 +259,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Très solide.'**
   String get forceMotDePasse4;
+
+  /// No description provided for @champCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de vérification'**
+  String get champCode;
+
+  /// No description provided for @motDePasseAfficher.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher le mot de passe'**
+  String get motDePasseAfficher;
+
+  /// No description provided for @motDePasseMasquer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masquer le mot de passe'**
+  String get motDePasseMasquer;
 }
 
 class _AppLocalizationsDelegate

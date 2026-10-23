@@ -30,5 +30,9 @@
   "forceMotDePasse1": "Faible. Utilise 8 caractères minimum, avec lettres et chiffres.",
   "forceMotDePasse2": "Moyen. Ajoute des chiffres ou des majuscules.",
   "forceMotDePasse3": "Solide. Ajoute un symbole pour le rendre très solide.",
-  "forceMotDePasse4": "Très solide."
+  "forceMotDePasse4": "Très solide.",
+
+  "champCode": "Code de vérification",
+  "motDePasseAfficher": "Afficher le mot de passe",
+  "motDePasseMasquer": "Masquer le mot de passe"
 }

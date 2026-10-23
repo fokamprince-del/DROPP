@@ -29,5 +29,9 @@
   "forceMotDePasse1": "Weak. Use at least 8 characters, with letters and numbers.",
   "forceMotDePasse2": "Fair. Add numbers or capital letters.",
   "forceMotDePasse3": "Strong. Add a symbol to make it very strong.",
-  "forceMotDePasse4": "Very strong."
+  "forceMotDePasse4": "Very strong.",
+
+  "champCode": "Verification code",
+  "motDePasseAfficher": "Show password",
+  "motDePasseMasquer": "Hide password"
 }
