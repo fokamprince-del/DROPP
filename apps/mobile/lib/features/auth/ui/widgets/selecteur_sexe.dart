@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/l10n/contexte_l10n.dart';
 import '../../../../../shared/theme/espacements.dart';
-import '../../../../shared/widgets/libelles_erreurs.dart';
 import '../../data/modeles_auth.dart';
 import '../../domain/validateurs.dart';
+import 'libelles_erreurs.dart';
 
 /// Aucune valeur préremplie : l'utilisateur choisit.
 class SelecteurSexe extends StatelessWidget {

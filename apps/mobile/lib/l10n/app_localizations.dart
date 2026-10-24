@@ -277,6 +277,246 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Masquer le mot de passe'**
   String get motDePasseMasquer;
+
+  /// No description provided for @champIdentifiant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone ou email'**
+  String get champIdentifiant;
+
+  /// No description provided for @champNouveauMotDePasse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau mot de passe'**
+  String get champNouveauMotDePasse;
+
+  /// No description provided for @erreurIdentifiantInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro ou email invalide'**
+  String get erreurIdentifiantInvalide;
+
+  /// No description provided for @erreurReseau.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion internet.'**
+  String get erreurReseau;
+
+  /// No description provided for @erreurDelai.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le serveur met trop de temps à répondre. Réessaie.'**
+  String get erreurDelai;
+
+  /// No description provided for @erreurTropDeTentatives.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop de tentatives. Patiente une minute avant de réessayer.'**
+  String get erreurTropDeTentatives;
+
+  /// No description provided for @erreurServeur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le serveur rencontre un problème. Réessaie plus tard.'**
+  String get erreurServeur;
+
+  /// No description provided for @erreurInterdit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte ne peut pas être utilisé pour le moment.'**
+  String get erreurInterdit;
+
+  /// No description provided for @erreurRequeteInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifie les informations saisies.'**
+  String get erreurRequeteInvalide;
+
+  /// No description provided for @erreurInconnue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur est survenue. Réessaie.'**
+  String get erreurInconnue;
+
+  /// No description provided for @erreurIdentifiantsIncorrects.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identifiants incorrects.'**
+  String get erreurIdentifiantsIncorrects;
+
+  /// No description provided for @erreurCompteExistant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un compte existe déjà avec ce numéro ou cet email.'**
+  String get erreurCompteExistant;
+
+  /// No description provided for @erreurCodeIncorrect.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code incorrect ou expiré. Vérifie-le ou demande-en un nouveau.'**
+  String get erreurCodeIncorrect;
+
+  /// No description provided for @erreurCodeExpire.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code expiré ou trop d\'essais. Demande un nouveau code.'**
+  String get erreurCodeExpire;
+
+  /// No description provided for @erreurVerificationExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérification expirée. Recommence depuis le début.'**
+  String get erreurVerificationExpiree;
+
+  /// No description provided for @erreurRequeteEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une demande identique est en cours. Patiente un instant.'**
+  String get erreurRequeteEnCours;
+
+  /// No description provided for @sessionExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta session a expiré. Reconnecte-toi.'**
+  String get sessionExpiree;
+
+  /// No description provided for @inscriptionTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Crée ton compte'**
+  String get inscriptionTitre;
+
+  /// No description provided for @inscriptionSousTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un code d\'activation te sera envoyé par SMS.'**
+  String get inscriptionSousTitre;
+
+  /// No description provided for @inscriptionBouton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir le code par SMS'**
+  String get inscriptionBouton;
+
+  /// No description provided for @inscriptionConditions.
+  ///
+  /// In fr, this message translates to:
+  /// **'En continuant, tu acceptes les conditions d\'utilisation.'**
+  String get inscriptionConditions;
+
+  /// No description provided for @jaiDejaUnCompte.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai déjà un compte'**
+  String get jaiDejaUnCompte;
+
+  /// No description provided for @connexionTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Content de te revoir'**
+  String get connexionTitre;
+
+  /// No description provided for @connexionSousTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connecte-toi avec ton numéro ou ton email.'**
+  String get connexionSousTitre;
+
+  /// No description provided for @connexionBouton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se connecter'**
+  String get connexionBouton;
+
+  /// No description provided for @creerUnCompte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer un compte'**
+  String get creerUnCompte;
+
+  /// No description provided for @motDePasseOublieLien.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié ?'**
+  String get motDePasseOublieLien;
+
+  /// No description provided for @codeTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entre le code reçu par SMS'**
+  String get codeTitre;
+
+  /// No description provided for @codeEnvoyeA.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyé au {numero}. Valable 5 minutes.'**
+  String codeEnvoyeA(String numero);
+
+  /// No description provided for @codeEnvoyeAuCompte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un code vient d\'être envoyé par SMS au numéro de ton compte. Valable 5 minutes.'**
+  String get codeEnvoyeAuCompte;
+
+  /// No description provided for @codeVerifier.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifier'**
+  String get codeVerifier;
+
+  /// No description provided for @renvoyerCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renvoyer le code'**
+  String get renvoyerCode;
+
+  /// No description provided for @renvoyerCodeDans.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renvoyer le code dans {duree}'**
+  String renvoyerCodeDans(String duree);
+
+  /// No description provided for @oubliTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié'**
+  String get oubliTitre;
+
+  /// No description provided for @oubliSousTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saisis ton numéro ou ton email. Si un compte existe, un code te sera envoyé.'**
+  String get oubliSousTitre;
+
+  /// No description provided for @oubliSecurite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Par sécurité, toutes tes sessions seront déconnectées après le changement.'**
+  String get oubliSecurite;
+
+  /// No description provided for @oubliBouton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir un code'**
+  String get oubliBouton;
+
+  /// No description provided for @reinitTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau mot de passe'**
+  String get reinitTitre;
+
+  /// No description provided for @reinitSousTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saisis le code reçu, puis choisis un nouveau mot de passe.'**
+  String get reinitSousTitre;
+
+  /// No description provided for @reinitBouton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer le mot de passe'**
+  String get reinitBouton;
 }
 
 class _AppLocalizationsDelegate

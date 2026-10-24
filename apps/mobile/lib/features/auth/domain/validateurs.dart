@@ -4,6 +4,7 @@ enum ErreurChamp {
   requis,
   telephoneInvalide,
   emailInvalide,
+  identifiantInvalide,
   motDePasseTropCourt,
   codeIncomplet,
 }
