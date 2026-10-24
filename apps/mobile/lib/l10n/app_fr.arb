@@ -10,5 +10,90 @@
   "navPanierArticles": "Panier, {count, plural, =1{1 article} other{{count} articles}}",
   "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
   "navMessagesNonLus": "Messages, {count, plural, =1{1 non lu} other{{count} non lus}}",
-  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } }
+  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } },
+
+  
+  "champPrenom": "Prénom",
+  "champNom": "Nom",
+  "champSexe": "Sexe",
+  "sexeMasculin": "Homme",
+  "sexeFeminin": "Femme",
+  "sexeAutre": "Autre",
+  "champTelephone": "Téléphone",
+  "champEmailFacultatif": "Email (facultatif)",
+  "champMotDePasse": "Mot de passe",
+  "erreurRequis": "Ce champ est obligatoire",
+  "erreurTelephoneInvalide": "Numéro de téléphone invalide",
+  "erreurEmailInvalide": "Adresse email invalide",
+  "erreurMotDePasseCourt": "8 caractères minimum",
+  "erreurCodeIncomplet": "Saisis les 6 chiffres du code",
+  "forceMotDePasse1": "Faible. Utilise 8 caractères minimum, avec lettres et chiffres.",
+  "forceMotDePasse2": "Moyen. Ajoute des chiffres ou des majuscules.",
+  "forceMotDePasse3": "Solide. Ajoute un symbole pour le rendre très solide.",
+  "forceMotDePasse4": "Très solide.",
+
+  "champCode": "Code de vérification",
+  "motDePasseAfficher": "Afficher le mot de passe",
+  "motDePasseMasquer": "Masquer le mot de passe",
+
+  "champIdentifiant": "Téléphone ou email",
+  "champNouveauMotDePasse": "Nouveau mot de passe",
+  "champCode": "Code de vérification",
+  "motDePasseAfficher": "Afficher le mot de passe",
+  "motDePasseMasquer": "Masquer le mot de passe",
+
+  "erreurIdentifiantInvalide": "Numéro ou email invalide",
+
+  "erreurReseau": "Pas de connexion internet.",
+  "erreurDelai": "Le serveur met trop de temps à répondre. Réessaie.",
+  "erreurTropDeTentatives": "Trop de tentatives. Patiente une minute avant de réessayer.",
+  "erreurServeur": "Le serveur rencontre un problème. Réessaie plus tard.",
+  "erreurInterdit": "Ce compte ne peut pas être utilisé pour le moment.",
+  "erreurRequeteInvalide": "Vérifie les informations saisies.",
+  "erreurInconnue": "Une erreur est survenue. Réessaie.",
+  "erreurIdentifiantsIncorrects": "Identifiants incorrects.",
+  "erreurCompteExistant": "Un compte existe déjà avec ce numéro ou cet email.",
+  "erreurCodeIncorrect": "Code incorrect ou expiré. Vérifie-le ou demande-en un nouveau.",
+  "erreurCodeExpire": "Code expiré ou trop d'essais. Demande un nouveau code.",
+  "erreurVerificationExpiree": "Vérification expirée. Recommence depuis le début.",
+  "erreurRequeteEnCours": "Une demande identique est en cours. Patiente un instant.",
+  "sessionExpiree": "Ta session a expiré. Reconnecte-toi.",
+
+  "inscriptionTitre": "Crée ton compte",
+  "inscriptionSousTitre": "Un code d'activation te sera envoyé par SMS.",
+  "inscriptionBouton": "Recevoir le code par SMS",
+  "inscriptionConditions": "En continuant, tu acceptes les conditions d'utilisation.",
+  "jaiDejaUnCompte": "J'ai déjà un compte",
+
+  "connexionTitre": "Content de te revoir",
+  "connexionSousTitre": "Connecte-toi avec ton numéro ou ton email.",
+  "connexionBouton": "Se connecter",
+  "creerUnCompte": "Créer un compte",
+  "motDePasseOublieLien": "Mot de passe oublié ?",
+
+  "codeTitre": "Entre le code reçu par SMS",
+  "codeEnvoyeA": "Envoyé au {numero}. Valable 5 minutes.",
+  "@codeEnvoyeA": {
+    "placeholders": {
+      "numero": { "type": "String" }
+    }
+  },
+  "codeEnvoyeAuCompte": "Un code vient d'être envoyé par SMS au numéro de ton compte. Valable 5 minutes.",
+  "codeVerifier": "Vérifier",
+  "renvoyerCode": "Renvoyer le code",
+  "renvoyerCodeDans": "Renvoyer le code dans {duree}",
+  "@renvoyerCodeDans": {
+    "placeholders": {
+      "duree": { "type": "String" }
+    }
+  },
+
+  "oubliTitre": "Mot de passe oublié",
+  "oubliSousTitre": "Saisis ton numéro ou ton email. Si un compte existe, un code te sera envoyé.",
+  "oubliSecurite": "Par sécurité, toutes tes sessions seront déconnectées après le changement.",
+  "oubliBouton": "Recevoir un code",
+
+  "reinitTitre": "Nouveau mot de passe",
+  "reinitSousTitre": "Saisis le code reçu, puis choisis un nouveau mot de passe.",
+  "reinitBouton": "Changer le mot de passe"
 }

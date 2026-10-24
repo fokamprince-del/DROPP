@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/auth/session.dart';
-import '../../core/dev/connexion_dev_page.dart';
+import '../../features/auth/ui/pages/page_connexion.dart';
+import '../../features/auth/ui/pages/page_mot_de_passe_oublie.dart';
+import '../../features/auth/ui/pages/page_reinitialisation.dart';
+import '../../features/auth/ui/pages/pages_inscription.dart';
+import '../../features/auth/ui/pages/verification_telephone.dart';
 import '../../features/demarrage/demarrage.dart';
 import '../../features/demarrage/page_demarrage.dart';
 import '../../features/navigation/navigation_principale.dart';
 import '../../shared/widgets/page_provisoire.dart';
+import '../auth/session.dart';
 import 'redirection.dart';
 import 'routes.dart';
 
@@ -42,21 +46,23 @@ final routerProvider = Provider<GoRouter>((ref) {
       // ── Auth (Dev B : remplacer les pages provisoires) ──
       GoRoute(
         path: Routes.connexion,
-        builder: (context, state) => const ConnexionDevPage(),
+        builder: (context, state) => const PageConnexion(),
       ),
       GoRoute(
         path: Routes.inscription,
-        builder: (context, state) => const PageProvisoire('Inscription'),
+        builder: (context, state) => const PageInscription(),
       ),
       GoRoute(
         path: Routes.verificationTelephone,
-        builder: (context, state) =>
-            const PageProvisoire('Vérification du téléphone'),
+        builder: (context, state) => const PageVerificationTelephone(),
       ),
       GoRoute(
         path: Routes.motDePasseOublie,
-        builder: (context, state) =>
-            const PageProvisoire('Mot de passe oublié'),
+        builder: (context, state) => const PageMotDePasseOublie(),
+      ),
+      GoRoute(
+        path: Routes.reinitialiserMotDePasse,
+        builder: (context, state) => const PageReinitialisation(),
       ),
 
       // ── Onglets ──

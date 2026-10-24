@@ -10,5 +10,89 @@
   "navPanierArticles": "Cart, {count, plural, =1{1 item} other{{count} items}}",
   "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
   "navMessagesNonLus": "Messages, {count, plural, =1{1 unread} other{{count} unread}}",
-  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } }
+  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } },
+
+  "champPrenom": "First name",
+  "champNom": "Last name",
+  "champSexe": "Gender",
+  "sexeMasculin": "Male",
+  "sexeFeminin": "Female",
+  "sexeAutre": "Other",
+  "champTelephone": "Phone",
+  "champEmailFacultatif": "Email (optional)",
+  "champMotDePasse": "Password",
+  "erreurRequis": "This field is required",
+  "erreurTelephoneInvalide": "Invalid phone number",
+  "erreurEmailInvalide": "Invalid email address",
+  "erreurMotDePasseCourt": "At least 8 characters",
+  "erreurCodeIncomplet": "Enter the 6 digits of the code",
+  "forceMotDePasse1": "Weak. Use at least 8 characters, with letters and numbers.",
+  "forceMotDePasse2": "Fair. Add numbers or capital letters.",
+  "forceMotDePasse3": "Strong. Add a symbol to make it very strong.",
+  "forceMotDePasse4": "Very strong.",
+
+  "champCode": "Verification code",
+  "motDePasseAfficher": "Show password",
+  "motDePasseMasquer": "Hide password",
+
+    "champIdentifiant": "Phone or email",
+  "champNouveauMotDePasse": "New password",
+  "champCode": "Verification code",
+  "motDePasseAfficher": "Show password",
+  "motDePasseMasquer": "Hide password",
+
+  "erreurIdentifiantInvalide": "Invalid number or email",
+
+  "erreurReseau": "No internet connection.",
+  "erreurDelai": "The server is taking too long to respond. Try again.",
+  "erreurTropDeTentatives": "Too many attempts. Wait a minute before trying again.",
+  "erreurServeur": "The server is having a problem. Try again later.",
+  "erreurInterdit": "This account can't be used right now.",
+  "erreurRequeteInvalide": "Check the information you entered.",
+  "erreurInconnue": "Something went wrong. Try again.",
+  "erreurIdentifiantsIncorrects": "Incorrect credentials.",
+  "erreurCompteExistant": "An account already exists with this number or email.",
+  "erreurCodeIncorrect": "Incorrect or expired code. Check it or request a new one.",
+  "erreurCodeExpire": "Code expired or too many attempts. Request a new code.",
+  "erreurVerificationExpiree": "Verification expired. Start over.",
+  "erreurRequeteEnCours": "An identical request is in progress. Please wait.",
+  "sessionExpiree": "Your session has expired. Sign in again.",
+
+  "inscriptionTitre": "Create your account",
+  "inscriptionSousTitre": "An activation code will be sent to you by SMS.",
+  "inscriptionBouton": "Get the code by SMS",
+  "inscriptionConditions": "By continuing, you accept the terms of use.",
+  "jaiDejaUnCompte": "I already have an account",
+
+  "connexionTitre": "Welcome back",
+  "connexionSousTitre": "Sign in with your number or email.",
+  "connexionBouton": "Sign in",
+  "creerUnCompte": "Create an account",
+  "motDePasseOublieLien": "Forgot password?",
+
+  "codeTitre": "Enter the code received by SMS",
+  "codeEnvoyeA": "Sent to {numero}. Valid for 5 minutes.",
+  "@codeEnvoyeA": {
+    "placeholders": {
+      "numero": { "type": "String" }
+    }
+  },
+  "codeEnvoyeAuCompte": "A code has just been sent by SMS to your account's number. Valid for 5 minutes.",
+  "codeVerifier": "Verify",
+  "renvoyerCode": "Resend code",
+  "renvoyerCodeDans": "Resend code in {duree}",
+  "@renvoyerCodeDans": {
+    "placeholders": {
+      "duree": { "type": "String" }
+    }
+  },
+
+  "oubliTitre": "Forgot password",
+  "oubliSousTitre": "Enter your number or email. If an account exists, a code will be sent.",
+  "oubliSecurite": "For security, all your sessions will be signed out after the change.",
+  "oubliBouton": "Get a code",
+
+  "reinitTitre": "New password",
+  "reinitSousTitre": "Enter the code you received, then choose a new password.",
+  "reinitBouton": "Change password"
 }
