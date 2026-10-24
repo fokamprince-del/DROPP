@@ -1,4 +1,4 @@
-import '../../core/auth/session.dart';
+import '../auth/session.dart';
 import 'routes.dart';
 
 /// Règles de navigation, sans dépendance à Flutter : testées dans

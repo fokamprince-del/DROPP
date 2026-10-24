@@ -9,6 +9,7 @@ abstract final class Routes {
   static const inscription = '/inscription';
   static const verificationTelephone = '/verification-telephone';
   static const motDePasseOublie = '/mot-de-passe-oublie';
+  static const reinitialiserMotDePasse = '/reinitialiser-mot-de-passe';
 
   // Onglets
   static const accueil = '/';
@@ -34,6 +35,7 @@ const pagesVisiteur = {
   Routes.inscription,
   Routes.verificationTelephone,
   Routes.motDePasseOublie,
+  Routes.reinitialiserMotDePasse,
 };
 
 /// Préfixes qui demandent d'être connecté. Le reste (fil, catalogue, fiches
