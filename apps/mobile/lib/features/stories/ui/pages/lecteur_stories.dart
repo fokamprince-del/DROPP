@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,8 +18,8 @@ import '../../../../utils/format.dart';
 import '../../application/barre_stories.dart';
 import '../../data/modeles_stories.dart';
 
-/// Lecteur plein Ã©cran : les stories d'une boutique s'enchaÃ®nent, puis celles
-/// de la boutique suivante. Toucher Ã  gauche revient en arriÃ¨re, Ã  droite
+/// Lecteur plein écran : les stories d'une boutique s'enchaînent, puis celles
+/// de la boutique suivante. Toucher à gauche revient en arrière, à droite
 /// avance, appui long met en pause, glisser vers le bas ferme.
 class LecteurStories extends ConsumerStatefulWidget {
   const LecteurStories({super.key, this.indexInitial = 0});
@@ -32,7 +32,7 @@ class LecteurStories extends ConsumerStatefulWidget {
 }
 
 class _LecteurStoriesState extends ConsumerState<LecteurStories> {
-  /// Copie figÃ©e Ã  l'ouverture : marquer une story comme vue rÃ©ordonne la
+  /// Copie figée à l'ouverture : marquer une story comme vue réordonne la
   /// barre, pas le lecteur.
   late final List<GroupeStories> _groupes;
   late final PageController _pages;
@@ -129,7 +129,7 @@ class _VueGroupe extends StatefulWidget {
 
   final GroupeStories groupe;
 
-  /// Seule la boutique affichÃ©e joue ; les voisines restent en pause.
+  /// Seule la boutique affichée joue ; les voisines restent en pause.
   final bool actif;
   final ValueChanged<String> surVue;
   final VoidCallback surFin;
@@ -156,7 +156,7 @@ class _VueGroupeState extends State<_VueGroupe>
   bool _echec = false;
   bool _maintenu = false;
 
-  /// IncrÃ©mentÃ© Ã  chaque story : une prÃ©paration d'avant est ignorÃ©e.
+  /// Incrémenté à chaque story : une préparation d'avant est ignorée.
   int _generation = 0;
 
   Story get _story => widget.groupe.stories[_index];
@@ -239,7 +239,7 @@ class _VueGroupeState extends State<_VueGroupe>
       _pret = true;
       _echec = echec;
     });
-    // MÃ©dia illisible : on laisse le message quelques secondes puis on avance.
+    // Média illisible : on laisse le message quelques secondes puis on avance.
     _progression.duration = echec ? const Duration(seconds: 3) : duree;
     if (widget.actif && !_maintenu) _jouer();
   }
@@ -337,7 +337,7 @@ class _VueGroupeState extends State<_VueGroupe>
               const Center(
                 child: CircularProgressIndicator(color: Colors.white),
               ),
-            // Assombrit le haut pour que l'en-tÃªte reste lisible.
+            // Assombrit le haut pour que l'en-tête reste lisible.
             const IgnorePointer(
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -413,7 +413,7 @@ class _VueGroupeState extends State<_VueGroupe>
   }
 }
 
-/// Une barre par story : pleine si vue, animÃ©e pour la story en cours.
+/// Une barre par story : pleine si vue, animée pour la story en cours.
 class _Segments extends StatelessWidget {
   const _Segments({
     required this.nombre,
