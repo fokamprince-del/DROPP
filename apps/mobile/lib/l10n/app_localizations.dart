@@ -517,6 +517,186 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Changer le mot de passe'**
   String get reinitBouton;
+
+  /// No description provided for @reessayer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get reessayer;
+
+  /// No description provided for @rienAAfficher.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien à afficher pour le moment.'**
+  String get rienAAfficher;
+
+  /// No description provided for @tempsInstant.
+  ///
+  /// In fr, this message translates to:
+  /// **'à l\'instant'**
+  String get tempsInstant;
+
+  /// No description provided for @tempsMinutes.
+  ///
+  /// In fr, this message translates to:
+  /// **'il y a {n} min'**
+  String tempsMinutes(int n);
+
+  /// No description provided for @tempsHeures.
+  ///
+  /// In fr, this message translates to:
+  /// **'il y a {n} h'**
+  String tempsHeures(int n);
+
+  /// No description provided for @tempsJours.
+  ///
+  /// In fr, this message translates to:
+  /// **'il y a {n} j'**
+  String tempsJours(int n);
+
+  /// No description provided for @filPourToi.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour toi'**
+  String get filPourToi;
+
+  /// No description provided for @filAbonnements.
+  ///
+  /// In fr, this message translates to:
+  /// **'Abonnements'**
+  String get filAbonnements;
+
+  /// No description provided for @filPourToiVide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune publication pour le moment. Reviens bientôt !'**
+  String get filPourToiVide;
+
+  /// No description provided for @filAbonnementsVideTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton fil est encore vide'**
+  String get filAbonnementsVideTitre;
+
+  /// No description provided for @filAbonnementsVideTexte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suis des boutiques pour voir leurs nouveautés ici en premier.'**
+  String get filAbonnementsVideTexte;
+
+  /// No description provided for @filDecouvrirBoutiques.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir des boutiques'**
+  String get filDecouvrirBoutiques;
+
+  /// No description provided for @filConnexionTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connecte-toi pour suivre des boutiques'**
+  String get filConnexionTitre;
+
+  /// No description provided for @filConnexionTexte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les nouveautés des boutiques que tu suis apparaîtront ici.'**
+  String get filConnexionTexte;
+
+  /// No description provided for @publicationTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Publication'**
+  String get publicationTitre;
+
+  /// No description provided for @publicationOuvrir.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir la publication de {boutique}'**
+  String publicationOuvrir(String boutique);
+
+  /// No description provided for @publicationVues.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{aucune vue} =1{1 vue} other{{count} vues}}'**
+  String publicationVues(int count);
+
+  /// No description provided for @publicationLikes.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun j\'aime} =1{1 j\'aime} other{{count} j\'aime}}'**
+  String publicationLikes(int count);
+
+  /// No description provided for @publicationCommentaires.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun commentaire} =1{1 commentaire} other{{count} commentaires}}'**
+  String publicationCommentaires(int count);
+
+  /// No description provided for @publicationAbonnes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservée aux abonnés'**
+  String get publicationAbonnes;
+
+  /// No description provided for @publicationProduits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dans cette publication'**
+  String get publicationProduits;
+
+  /// No description provided for @mediaVideo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vidéo'**
+  String get mediaVideo;
+
+  /// No description provided for @mediaPosition.
+  ///
+  /// In fr, this message translates to:
+  /// **'{position}/{total}'**
+  String mediaPosition(int position, int total);
+
+  /// No description provided for @videoIllisible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de lire la vidéo. Touche pour réessayer.'**
+  String get videoIllisible;
+
+  /// No description provided for @storyDe.
+  ///
+  /// In fr, this message translates to:
+  /// **'Story de {boutique}'**
+  String storyDe(String boutique);
+
+  /// No description provided for @storyNouvelle.
+  ///
+  /// In fr, this message translates to:
+  /// **'{boutique}, nouvelle story'**
+  String storyNouvelle(String boutique);
+
+  /// No description provided for @storySuivante.
+  ///
+  /// In fr, this message translates to:
+  /// **'Story suivante'**
+  String get storySuivante;
+
+  /// No description provided for @storyPrecedente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Story précédente'**
+  String get storyPrecedente;
+
+  /// No description provided for @storyFermer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get storyFermer;
+
+  /// No description provided for @storyIllisible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette story ne peut pas être affichée.'**
+  String get storyIllisible;
 }
 
 class _AppLocalizationsDelegate

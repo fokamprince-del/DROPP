@@ -9,7 +9,11 @@ import '../../features/auth/ui/pages/pages_inscription.dart';
 import '../../features/auth/ui/pages/verification_telephone.dart';
 import '../../features/demarrage/demarrage.dart';
 import '../../features/demarrage/page_demarrage.dart';
+import '../../features/fil/data/modeles_fil.dart';
+import '../../features/fil/ui/pages/page_accueil.dart';
+import '../../features/fil/ui/pages/page_publication.dart';
 import '../../features/navigation/navigation_principale.dart';
+import '../../features/stories/ui/pages/lecteur_stories.dart';
 import '../../shared/widgets/page_provisoire.dart';
 import '../auth/session.dart';
 import 'redirection.dart';
@@ -74,7 +78,16 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.accueil,
-                builder: (context, state) => const PageProvisoire('Accueil'),
+                builder: (context, state) => const PageAccueil(),
+                routes: [
+                  GoRoute(
+                    path: 'publications/:id',
+                    builder: (context, state) => PagePublication(
+                      id: state.pathParameters['id']!,
+                      initiale: state.extra as Publication?,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -118,6 +131,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+
+      // ── Stories (plein écran, sans la barre d'onglets) ──
+      GoRoute(
+        path: Routes.stories,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          fullscreenDialog: true,
+          child: LecteurStories(indexInitial: state.extra as int? ?? 0),
+        ),
       ),
 
       // ── Vendeur ──

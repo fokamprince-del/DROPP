@@ -252,4 +252,142 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reinitBouton => 'Change password';
+
+  @override
+  String get reessayer => 'Retry';
+
+  @override
+  String get rienAAfficher => 'Nothing to show yet.';
+
+  @override
+  String get tempsInstant => 'just now';
+
+  @override
+  String tempsMinutes(int n) {
+    return '$n min ago';
+  }
+
+  @override
+  String tempsHeures(int n) {
+    return '$n h ago';
+  }
+
+  @override
+  String tempsJours(int n) {
+    return '$n d ago';
+  }
+
+  @override
+  String get filPourToi => 'For you';
+
+  @override
+  String get filAbonnements => 'Following';
+
+  @override
+  String get filPourToiVide => 'No posts yet. Check back soon!';
+
+  @override
+  String get filAbonnementsVideTitre => 'Your feed is still empty';
+
+  @override
+  String get filAbonnementsVideTexte =>
+      'Follow shops to see their latest items here first.';
+
+  @override
+  String get filDecouvrirBoutiques => 'Discover shops';
+
+  @override
+  String get filConnexionTitre => 'Log in to follow shops';
+
+  @override
+  String get filConnexionTexte =>
+      'New posts from the shops you follow will show up here.';
+
+  @override
+  String get publicationTitre => 'Post';
+
+  @override
+  String publicationOuvrir(String boutique) {
+    return 'Open $boutique\'s post';
+  }
+
+  @override
+  String publicationVues(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString views',
+      one: '1 view',
+      zero: 'no views',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String publicationLikes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count likes',
+      one: '1 like',
+      zero: 'No likes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String publicationCommentaires(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comments',
+      one: '1 comment',
+      zero: 'No comments',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get publicationAbonnes => 'Followers only';
+
+  @override
+  String get publicationProduits => 'In this post';
+
+  @override
+  String get mediaVideo => 'Video';
+
+  @override
+  String mediaPosition(int position, int total) {
+    return '$position/$total';
+  }
+
+  @override
+  String get videoIllisible => 'Couldn\'t play the video. Tap to try again.';
+
+  @override
+  String storyDe(String boutique) {
+    return '$boutique\'s story';
+  }
+
+  @override
+  String storyNouvelle(String boutique) {
+    return '$boutique, new story';
+  }
+
+  @override
+  String get storySuivante => 'Next story';
+
+  @override
+  String get storyPrecedente => 'Previous story';
+
+  @override
+  String get storyFermer => 'Close';
+
+  @override
+  String get storyIllisible => 'This story can\'t be displayed.';
 }

@@ -256,4 +256,144 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reinitBouton => 'Changer le mot de passe';
+
+  @override
+  String get reessayer => 'Réessayer';
+
+  @override
+  String get rienAAfficher => 'Rien à afficher pour le moment.';
+
+  @override
+  String get tempsInstant => 'à l\'instant';
+
+  @override
+  String tempsMinutes(int n) {
+    return 'il y a $n min';
+  }
+
+  @override
+  String tempsHeures(int n) {
+    return 'il y a $n h';
+  }
+
+  @override
+  String tempsJours(int n) {
+    return 'il y a $n j';
+  }
+
+  @override
+  String get filPourToi => 'Pour toi';
+
+  @override
+  String get filAbonnements => 'Abonnements';
+
+  @override
+  String get filPourToiVide =>
+      'Aucune publication pour le moment. Reviens bientôt !';
+
+  @override
+  String get filAbonnementsVideTitre => 'Ton fil est encore vide';
+
+  @override
+  String get filAbonnementsVideTexte =>
+      'Suis des boutiques pour voir leurs nouveautés ici en premier.';
+
+  @override
+  String get filDecouvrirBoutiques => 'Découvrir des boutiques';
+
+  @override
+  String get filConnexionTitre => 'Connecte-toi pour suivre des boutiques';
+
+  @override
+  String get filConnexionTexte =>
+      'Les nouveautés des boutiques que tu suis apparaîtront ici.';
+
+  @override
+  String get publicationTitre => 'Publication';
+
+  @override
+  String publicationOuvrir(String boutique) {
+    return 'Voir la publication de $boutique';
+  }
+
+  @override
+  String publicationVues(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString vues',
+      one: '1 vue',
+      zero: 'aucune vue',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String publicationLikes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count j\'aime',
+      one: '1 j\'aime',
+      zero: 'Aucun j\'aime',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String publicationCommentaires(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count commentaires',
+      one: '1 commentaire',
+      zero: 'Aucun commentaire',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get publicationAbonnes => 'Réservée aux abonnés';
+
+  @override
+  String get publicationProduits => 'Dans cette publication';
+
+  @override
+  String get mediaVideo => 'Vidéo';
+
+  @override
+  String mediaPosition(int position, int total) {
+    return '$position/$total';
+  }
+
+  @override
+  String get videoIllisible =>
+      'Impossible de lire la vidéo. Touche pour réessayer.';
+
+  @override
+  String storyDe(String boutique) {
+    return 'Story de $boutique';
+  }
+
+  @override
+  String storyNouvelle(String boutique) {
+    return '$boutique, nouvelle story';
+  }
+
+  @override
+  String get storySuivante => 'Story suivante';
+
+  @override
+  String get storyPrecedente => 'Story précédente';
+
+  @override
+  String get storyFermer => 'Fermer';
+
+  @override
+  String get storyIllisible => 'Cette story ne peut pas être affichée.';
 }

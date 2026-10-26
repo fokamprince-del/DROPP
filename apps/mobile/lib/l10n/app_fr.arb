@@ -95,5 +95,50 @@
 
   "reinitTitre": "Nouveau mot de passe",
   "reinitSousTitre": "Saisis le code reçu, puis choisis un nouveau mot de passe.",
-  "reinitBouton": "Changer le mot de passe"
+  "reinitBouton": "Changer le mot de passe",
+
+  "reessayer": "Réessayer",
+  "rienAAfficher": "Rien à afficher pour le moment.",
+
+  "tempsInstant": "à l'instant",
+  "tempsMinutes": "il y a {n} min",
+  "@tempsMinutes": { "placeholders": { "n": { "type": "int" } } },
+  "tempsHeures": "il y a {n} h",
+  "@tempsHeures": { "placeholders": { "n": { "type": "int" } } },
+  "tempsJours": "il y a {n} j",
+  "@tempsJours": { "placeholders": { "n": { "type": "int" } } },
+
+  "filPourToi": "Pour toi",
+  "filAbonnements": "Abonnements",
+  "filPourToiVide": "Aucune publication pour le moment. Reviens bientôt !",
+  "filAbonnementsVideTitre": "Ton fil est encore vide",
+  "filAbonnementsVideTexte": "Suis des boutiques pour voir leurs nouveautés ici en premier.",
+  "filDecouvrirBoutiques": "Découvrir des boutiques",
+  "filConnexionTitre": "Connecte-toi pour suivre des boutiques",
+  "filConnexionTexte": "Les nouveautés des boutiques que tu suis apparaîtront ici.",
+
+  "publicationTitre": "Publication",
+  "publicationOuvrir": "Voir la publication de {boutique}",
+  "@publicationOuvrir": { "placeholders": { "boutique": { "type": "String" } } },
+  "publicationVues": "{count, plural, =0{aucune vue} =1{1 vue} other{{count} vues}}",
+  "@publicationVues": { "placeholders": { "count": { "type": "int", "format": "compact" } } },
+  "publicationLikes": "{count, plural, =0{Aucun j'aime} =1{1 j'aime} other{{count} j'aime}}",
+  "@publicationLikes": { "placeholders": { "count": { "type": "int" } } },
+  "publicationCommentaires": "{count, plural, =0{Aucun commentaire} =1{1 commentaire} other{{count} commentaires}}",
+  "@publicationCommentaires": { "placeholders": { "count": { "type": "int" } } },
+  "publicationAbonnes": "Réservée aux abonnés",
+  "publicationProduits": "Dans cette publication",
+  "mediaVideo": "Vidéo",
+  "mediaPosition": "{position}/{total}",
+  "@mediaPosition": { "placeholders": { "position": { "type": "int" }, "total": { "type": "int" } } },
+  "videoIllisible": "Impossible de lire la vidéo. Touche pour réessayer.",
+
+  "storyDe": "Story de {boutique}",
+  "@storyDe": { "placeholders": { "boutique": { "type": "String" } } },
+  "storyNouvelle": "{boutique}, nouvelle story",
+  "@storyNouvelle": { "placeholders": { "boutique": { "type": "String" } } },
+  "storySuivante": "Story suivante",
+  "storyPrecedente": "Story précédente",
+  "storyFermer": "Fermer",
+  "storyIllisible": "Cette story ne peut pas être affichée."
 }

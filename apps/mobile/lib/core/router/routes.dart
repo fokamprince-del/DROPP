@@ -20,6 +20,11 @@ abstract final class Routes {
 
   static const securite = '/profil/securite';
 
+  // Fil et stories (consultables sans compte)
+  static const publications = '/publications';
+  static String publication(String id) => '$publications/$id';
+  static const stories = '/stories';
+
   // Vendeur
   static const devenirVendeur = '/devenir-vendeur';
   static const espaceVendeur = '/vendeur';

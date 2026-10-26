@@ -16,6 +16,18 @@ abstract final class Couleurs {
   static const indigoClair = Color(0xFF8C9BFF);
   static const hibiscusVif = Color(0xFFFF5C93);
 
+  // Fonds secondaires (puces, squelettes) et texte secondaire.
+  static const surface2 = Color(0xFFECEEF6);
+  static const texte2 = Color(0xFF4A5078);
+  static const surface2Sombre = Color(0xFF1C2350);
+  static const texte2Sombre = Color(0xFFB3B8DA);
+
+  /// Fond des vidéos et des stories.
+  static const nuitTeinte = Color(0xFF0E1433);
+
+  /// Prix posé sur un média (fond sombre).
+  static const hibiscusDoux = Color(0xFFFF8AB0);
+
   // ── Ajouts : valeurs estimées, à valider visuellement ──
   static const blanc = Color(0xFFFFFFFF);
   static const bordure = Color(0xFFD9DCE8);

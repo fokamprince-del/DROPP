@@ -4,10 +4,18 @@ import '../theme/couleurs.dart';
 import '../theme/typographie.dart';
 
 class LogoDropp extends StatefulWidget {
-  const LogoDropp({super.key, this.taille = 48, this.anime = true});
+  const LogoDropp({
+    super.key,
+    this.taille = 48,
+    this.anime = true,
+    this.couleur = Couleurs.blanc,
+  });
 
   final double taille;
   final bool anime;
+
+  /// Couleur de « DROP » (le dernier P reste hibiscus).
+  final Color couleur;
 
   @override
   State<LogoDropp> createState() => _LogoDroppState();
@@ -52,7 +60,7 @@ class _LogoDroppState extends State<LogoDropp>
       fontSize: widget.taille,
       letterSpacing: -1,
       height: 1,
-      color: Couleurs.blanc,
+      color: widget.couleur,
     );
 
     return Semantics(
