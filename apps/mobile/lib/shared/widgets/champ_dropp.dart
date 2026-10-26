@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../features/auth/domain/validateurs.dart';
-import 'libelles_erreurs.dart';
+import '../../features/auth/ui/widgets/libelles_erreurs.dart';
 
 class ChampDropp extends StatelessWidget {
   const ChampDropp({
@@ -23,6 +23,7 @@ class ChampDropp extends StatelessWidget {
     this.longueurMax,
     this.actif = true,
     this.erreurServeur,
+    this.capitalisation = TextCapitalization.none,
   });
 
   final String libelle;
@@ -38,6 +39,7 @@ class ChampDropp extends StatelessWidget {
   final ValueChanged<String>? surSoumission;
   final int? longueurMax;
   final bool actif;
+  final TextCapitalization capitalisation;
 
   /// Erreur renvoyée par le serveur (déjà traduite) : prioritaire.
   final String? erreurServeur;
@@ -52,6 +54,7 @@ class ChampDropp extends StatelessWidget {
         const SizedBox(height: Espacements.xs),
         TextFormField(
           controller: controleur,
+          textCapitalization: capitalisation,
           enabled: actif,
           obscureText: masque,
           keyboardType: typeClavier,

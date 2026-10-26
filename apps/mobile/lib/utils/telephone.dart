@@ -21,3 +21,10 @@ String? normaliserTelephone(String saisie, {IsoCode pays = paysParDefaut}) {
     return null;
   }
 }
+
+/// `+237670000001` → `+237670 •• •• 01`. Les numéros trop courts restent tels quels.
+String masquerTelephone(String international) {
+  if (international.length < 9) return international;
+  final fin = international.length;
+  return '${international.substring(0, fin - 6)} •• •• ${international.substring(fin - 2)}';
+}
