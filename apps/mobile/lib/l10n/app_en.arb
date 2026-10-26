@@ -94,5 +94,20 @@
 
   "reinitTitre": "New password",
   "reinitSousTitre": "Enter the code you received, then choose a new password.",
-  "reinitBouton": "Change password"
+  "reinitBouton": "Change password",
+
+
+  "bienvenue1Titre": "Follow the shops you love",
+  "bienvenue1Texte": "Discover their new arrivals in video, chat with the seller and pay with Mobile Money.",
+  "bienvenue2Titre": "Chat with the seller",
+  "bienvenue2Texte": "Ask your questions, check a size or a colour before ordering, right in the app.",
+  "bienvenue3Titre": "Pay with Mobile Money, with confidence",
+  "bienvenue3Texte": "MTN MoMo or Orange Money. Your money is held until the parcel arrives.",
+  "bienvenuePage": "Page {numero} of {total}",
+  "@bienvenuePage": {
+    "placeholders": {
+      "numero": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  }
 }

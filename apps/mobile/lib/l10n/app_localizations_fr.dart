@@ -256,4 +256,30 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reinitBouton => 'Changer le mot de passe';
+
+  @override
+  String get bienvenue1Titre => 'Suis les boutiques que tu aimes';
+
+  @override
+  String get bienvenue1Texte =>
+      'Découvre leurs nouveautés en vidéo, discute avec le vendeur et achète en Mobile Money.';
+
+  @override
+  String get bienvenue2Titre => 'Discute avec le vendeur';
+
+  @override
+  String get bienvenue2Texte =>
+      'Pose tes questions, demande une taille ou une couleur avant de commander, directement dans l\'app.';
+
+  @override
+  String get bienvenue3Titre => 'Paie en Mobile Money, en confiance';
+
+  @override
+  String get bienvenue3Texte =>
+      'MTN MoMo ou Orange Money. Ton argent est bloqué jusqu\'à la réception du colis.';
+
+  @override
+  String bienvenuePage(int numero, int total) {
+    return 'Page $numero sur $total';
+  }
 }
