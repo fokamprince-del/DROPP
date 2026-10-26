@@ -31,3 +31,7 @@ String tempsRelatif(
   if (ecart.inDays < 7) return l10n.tempsJours(ecart.inDays);
   return DateFormat.MMMd(l10n.localeName).format(date);
 }
+
+/// Note moyenne à une décimale : `4,8` en français, `4.8` en anglais.
+String formaterNote(double note, String langue) =>
+    NumberFormat('0.0', langue).format(note);

@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>DROPP accède à tes photos pour les envoyer dans tes messages.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>DROPP utilise l'appareil photo pour prendre une photo ou une vidéo à envoyer.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>DROPP utilise le micro pour enregistrer le son de tes vidéos.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

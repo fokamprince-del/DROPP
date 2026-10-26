@@ -9,17 +9,21 @@ class PageAcces extends StatelessWidget {
     required this.titre,
     required this.enfants,
     this.sousTitre,
+    this.actions = const [],
   });
 
   final String titre;
   final String? sousTitre;
   final List<Widget> enfants;
 
+  /// Boutons à droite de la barre (« Plus tard »…).
+  final List<Widget> actions;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: actions),
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,

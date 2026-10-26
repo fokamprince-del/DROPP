@@ -86,4 +86,45 @@ void main() {
     expect(api.dernierChemin, '/auth/reinitialiser-mot-de-passe');
     expect(api.dernieresOptions?.headers?['Idempotency-Key'], 'cle-unique-1');
   });
+
+  group('email', () {
+    test('le renvoi du code renvoie l’adresse ciblée', () async {
+      final api = _FauxApi({
+        'email': 'awa@exemple.cm',
+        'expireA': '2026-10-26T10:05:00.000Z',
+      });
+      final email = await AuthRepository(api).envoyerCodeEmail();
+
+      expect(api.dernierChemin, '/auth/email/envoyer-code');
+      expect(email, 'awa@exemple.cm');
+    });
+
+    test(
+      'le changement normalise l’adresse et envoie le mot de passe',
+      () async {
+        final api = _FauxApi({
+          'email': 'awa@exemple.cm',
+          'expireA': '2026-10-26T10:05:00.000Z',
+        });
+        await AuthRepository(api)
+            .changerEmail(email: ' Awa@Exemple.CM ', motDePasse: 'secret123');
+
+        expect(api.dernierChemin, '/auth/email/changer');
+        expect(api.dernierCorps, {
+          'email': 'awa@exemple.cm',
+          'motDePasse': 'secret123',
+        });
+      },
+    );
+
+    test('la vérification n’envoie l’adresse que pour un changement', () async {
+      final api = _FauxApi({'email': 'awa@exemple.cm', 'emailVerifie': true});
+      await AuthRepository(api).verifierEmail('123456');
+      expect(api.dernierChemin, '/auth/email/verifier');
+      expect(api.dernierCorps, {'code': '123456'});
+
+      await AuthRepository(api).verifierEmail('123456', email: 'b@ex.cm');
+      expect(api.dernierCorps, {'code': '123456', 'email': 'b@ex.cm'});
+    });
+  });
 }

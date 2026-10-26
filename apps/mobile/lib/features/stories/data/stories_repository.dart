@@ -8,13 +8,19 @@ final storiesRepositoryProvider = Provider<StoriesRepository>(
   (ref) => StoriesRepository(ref.watch(apiClientProvider)),
 );
 
+/// Stories actives (moins de 24 h, ou jusqu'à leur date d'expiration).
+///
 /// Toute erreur est une `ApiException`.
 class StoriesRepository {
   StoriesRepository(this._api);
 
   final ApiClient _api;
 
-  /// Boutiques suivies, non vues d'abord (connexion requise).
+  /// `GET /stories/abonnements` (connexion requise, non paginé) : stories
+  /// des boutiques suivies, y compris celles réservées aux abonnés,
+  /// **regroupées par boutique** (des plus anciennes aux plus récentes) avec
+  /// l'état `vue` de chaque story ; les boutiques non entièrement vues en
+  /// premier.
   Future<List<GroupeStories>> abonnements() async {
     final json = await _api.get<List<dynamic>>('/stories/abonnements');
     return json
@@ -23,10 +29,14 @@ class StoriesRepository {
         .toList();
   }
 
-  /// Stories publiques actives, les plus récentes d'abord.
+  /// `GET /stories` (public) : stories publiques actives, **à plat** (non
+  /// regroupées) et les plus récentes d'abord, sans état `vue`. Le
+  /// regroupement est fait par `composerBarre`.
   Future<PageResultats<Story>> publiques({int limite = 50}) =>
       _api.page('/stories', Story.fromJson, limite: limite);
 
-  /// Idempotent. Connexion requise.
+  /// `POST /stories/:id/vue` (connexion requise) : idempotent. Les vues de
+  /// la boutique sur ses propres stories ne sont pas comptées. 404 si la
+  /// story a expiré entre-temps.
   Future<void> marquerVue(String id) => _api.post<Object?>('/stories/$id/vue');
 }

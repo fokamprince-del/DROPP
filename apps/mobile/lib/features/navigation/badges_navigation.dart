@@ -1,7 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+/// Pastilles de la barre d'onglets : articles du panier et messages non lus.
+library;
 
-/// Provisoire : à brancher sur le vrai panier quand ce module existe.
-final nombreArticlesPanierProvider = Provider<int>((ref) => 1);
-
-/// Provisoire : à brancher sur la messagerie (conversations non lues).
-final nombreMessagesNonLusProvider = Provider<int>((ref) => 5);
+export '../messagerie/application/non_lus.dart'
+    show nombreMessagesNonLusProvider;
+export '../panier/application/panier.dart' show nombreArticlesPanierProvider;

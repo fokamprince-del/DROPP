@@ -88,4 +88,45 @@ class AuthRepository {
     );
     return Jetons.fromJson(json);
   }
+
+  // ── Email (session requise) ──────────────────────────────────────────────
+  // Le serveur envoie déjà un code automatiquement après l'activation par
+  // SMS si un email a été donné à l'inscription. Codes à 6 chiffres envoyés
+  // par email (Resend, via le worker), valables 5 minutes, 60 s entre deux
+  // envois.
+
+  /// `POST /auth/email/envoyer-code` : (r)envoie un code à l'adresse
+  /// actuelle et la renvoie. 400 s'il n'y a pas d'email, 409 s'il est déjà
+  /// vérifié, 429 si on redemande trop vite.
+  Future<String> envoyerCodeEmail() async {
+    final json = await _api.post<Map<String, dynamic>>(
+      '/auth/email/envoyer-code',
+    );
+    return json['email'] as String;
+  }
+
+  /// `POST /auth/email/changer` : envoie un code à la **nouvelle** adresse,
+  /// qui n'est enregistrée qu'après [verifierEmail]. [motDePasse] est exigé
+  /// si le compte en a un (401 s'il est faux). 409 si l'adresse est déjà
+  /// utilisée, 400 si c'est déjà la sienne.
+  Future<String> changerEmail({
+    required String email,
+    required String motDePasse,
+  }) async {
+    final json = await _api.post<Map<String, dynamic>>(
+      '/auth/email/changer',
+      data: {'email': email.trim().toLowerCase(), 'motDePasse': motDePasse},
+    );
+    return json['email'] as String;
+  }
+
+  /// `POST /auth/email/verifier` : valide le code. [email] seulement pour un
+  /// changement d'adresse (sinon l'adresse actuelle). 400 si le code est faux
+  /// ou expiré, 410 après trop d'essais (redemander un code), 409 si
+  /// l'adresse a été prise entre-temps.
+  Future<void> verifierEmail(String code, {String? email}) =>
+      _api.post<Object?>(
+        '/auth/email/verifier',
+        data: {'code': code, 'email': ?email},
+      );
 }

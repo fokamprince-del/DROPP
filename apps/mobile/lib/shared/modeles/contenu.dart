@@ -65,3 +65,15 @@ class MediaContenu {
     );
   }
 }
+
+/// Montant de l'API : un nombre, ou une chaîne pour les `Decimal` Prisma
+/// (`"25000"`, `"4500.50"`).
+num lireMontant(Object? valeur) => switch (valeur) {
+  final num n => n,
+  final String s => num.tryParse(s) ?? 0,
+  _ => 0,
+};
+
+/// Image facultative d'une boutique (logo) : `null` si absente.
+String? lireUrl(Object? valeur) =>
+    valeur is String && valeur.isNotEmpty ? valeur : null;

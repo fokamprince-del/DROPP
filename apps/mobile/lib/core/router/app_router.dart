@@ -2,17 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/adresses/data/adresses.dart';
+import '../../features/adresses/ui/pages_adresses.dart';
+import '../../features/auth/ui/pages/page_confirmation_email.dart';
 import '../../features/auth/ui/pages/page_connexion.dart';
 import '../../features/auth/ui/pages/page_mot_de_passe_oublie.dart';
 import '../../features/auth/ui/pages/page_reinitialisation.dart';
 import '../../features/auth/ui/pages/pages_inscription.dart';
 import '../../features/auth/ui/pages/verification_telephone.dart';
+import '../../features/avis/ui/avis_ui.dart';
+import '../../features/boutiques/ui/pages/page_boutique.dart';
+import '../../features/boutiques/ui/pages/page_mes_abonnements.dart';
+import '../../features/catalogue/ui/pages/page_avis_produit.dart';
+import '../../features/catalogue/ui/pages/page_decouvrir.dart';
+import '../../features/catalogue/ui/pages/page_produit.dart';
+import '../../features/commandes/data/commandes.dart';
+import '../../features/commandes/ui/commandes_ui.dart';
 import '../../features/demarrage/demarrage.dart';
 import '../../features/demarrage/page_demarrage.dart';
 import '../../features/fil/data/modeles_fil.dart';
 import '../../features/fil/ui/pages/page_accueil.dart';
 import '../../features/fil/ui/pages/page_publication.dart';
+import '../../features/interactions/ui/page_favoris.dart';
+import '../../features/messagerie/data/messagerie.dart';
+import '../../features/messagerie/ui/page_conversations.dart';
+import '../../features/messagerie/ui/page_discussion.dart';
+import '../../features/moderation/ui/moderation_ui.dart';
 import '../../features/navigation/navigation_principale.dart';
+import '../../features/notifications/ui/notifications_ui.dart';
+import '../../features/panier/ui/page_panier.dart';
+import '../../features/profil/ui/page_modifier_profil.dart';
+import '../../features/profil/ui/page_profil.dart';
+import '../../features/profil/ui/pages_securite.dart';
 import '../../features/stories/ui/pages/lecteur_stories.dart';
 import '../../shared/widgets/page_provisoire.dart';
 import '../auth/session.dart';
@@ -95,7 +116,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.recherche,
-                builder: (context, state) => const PageProvisoire('Rechercher'),
+                builder: (context, state) => const PageDecouvrir(),
               ),
             ],
           ),
@@ -103,7 +124,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.panier,
-                builder: (context, state) => const PageProvisoire('Panier'),
+                builder: (context, state) => const PagePanier(),
               ),
             ],
           ),
@@ -111,7 +132,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.messages,
-                builder: (context, state) => const PageProvisoire('Messages'),
+                builder: (context, state) => const PageConversations(),
               ),
             ],
           ),
@@ -119,12 +140,77 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.profil,
-                builder: (context, state) => const _ProfilProvisoire(),
+                builder: (context, state) => const PageProfil(),
                 routes: [
                   GoRoute(
+                    path: 'modifier',
+                    builder: (context, state) => const PageModifierProfil(),
+                  ),
+                  GoRoute(
                     path: 'securite',
-                    builder: (context, state) =>
-                        const PageProvisoire('Sécurité'),
+                    builder: (context, state) => const PageSecurite(),
+                    routes: [
+                      GoRoute(
+                        path: 'mot-de-passe',
+                        builder: (context, state) =>
+                            const PageChangerMotDePasse(),
+                      ),
+                      GoRoute(
+                        path: 'telephone',
+                        builder: (context, state) =>
+                            const PageChangerTelephone(),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'favoris',
+                    builder: (context, state) => const PageFavoris(),
+                  ),
+                  GoRoute(
+                    path: 'bloques',
+                    builder: (context, state) => const PageBloques(),
+                  ),
+                  GoRoute(
+                    path: 'signalements',
+                    builder: (context, state) => const PageMesSignalements(),
+                  ),
+                  GoRoute(
+                    path: 'abonnements',
+                    builder: (context, state) => const PageMesAbonnements(),
+                  ),
+                  GoRoute(
+                    path: 'adresses',
+                    builder: (context, state) => const PageAdresses(),
+                    routes: [
+                      // Avant « :id », sinon « nouvelle » serait pris pour un id.
+                      GoRoute(
+                        path: 'nouvelle',
+                        builder: (context, state) =>
+                            const PageFormulaireAdresse(),
+                      ),
+                      GoRoute(
+                        path: ':id',
+                        builder: (context, state) => PageFormulaireAdresse(
+                          adresse: state.extra as Adresse?,
+                        ),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'avis',
+                    builder: (context, state) => const PageAvisANoter(),
+                  ),
+                  GoRoute(
+                    path: 'email',
+                    builder: (context, state) {
+                      final p = state.uri.queryParameters;
+                      return PageConfirmationEmail(
+                        codeDejaEnvoye:
+                            p[PageConfirmationEmail.parametreEnvoye] == '1',
+                        changement:
+                            p[PageConfirmationEmail.parametreChanger] == '1',
+                      );
+                    },
                   ),
                 ],
               ),
@@ -139,6 +225,60 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => MaterialPage<void>(
           fullscreenDialog: true,
           child: LecteurStories(indexInitial: state.extra as int? ?? 0),
+        ),
+      ),
+
+      // ── Catalogue et boutiques (au-dessus des onglets : on y arrive depuis
+      // le fil comme depuis Découvrir) ──
+      GoRoute(
+        path: '${Routes.produits}/:id',
+        builder: (context, state) =>
+            PageProduit(id: state.pathParameters['id']!),
+        routes: [
+          GoRoute(
+            path: 'avis',
+            builder: (context, state) =>
+                PageAvisProduit(produitId: state.pathParameters['id']!),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '${Routes.boutiques}/:id',
+        builder: (context, state) =>
+            PageBoutique(id: state.pathParameters['id']!),
+      ),
+
+      // ── Notifications (au-dessus des onglets) ──
+      GoRoute(
+        path: Routes.notifications,
+        builder: (context, state) => const PageNotifications(),
+        routes: [
+          GoRoute(
+            path: 'preferences',
+            builder: (context, state) => const PagePreferencesNotifications(),
+          ),
+        ],
+      ),
+
+      // ── Commandes et discussions (au-dessus des onglets) ──
+      GoRoute(
+        path: Routes.commandes,
+        builder: (context, state) => const PageCommandes(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => PageCommande(
+              id: state.pathParameters['id']!,
+              initiale: state.extra as Commande?,
+            ),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '${Routes.conversations}/:id',
+        builder: (context, state) => PageDiscussion(
+          id: state.pathParameters['id']!,
+          initiale: state.extra as Conversation?,
         ),
       ),
 
@@ -161,30 +301,6 @@ final routerProvider = Provider<GoRouter>((ref) {
   });
   return router;
 });
-
-/// En attendant le vrai profil (Dev B, J4) : de quoi tester la session.
-class _ProfilProvisoire extends ConsumerWidget {
-  const _ProfilProvisoire();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final utilisateur = ref.watch(utilisateurConnecteProvider);
-    return PageProvisoire(
-      'Profil',
-      actions: [
-        if (utilisateur != null) Text(utilisateur.nomComplet),
-        OutlinedButton(
-          onPressed: () => context.push(Routes.espaceVendeur),
-          child: const Text('Espace vendeur'),
-        ),
-        FilledButton(
-          onPressed: () => ref.read(sessionProvider.notifier).deconnecter(),
-          child: const Text('Se déconnecter'),
-        ),
-      ],
-    );
-  }
-}
 
 /// En attendant le vrai écran « Bienvenue » (3 écrans de présentation).
 class _BienvenueProvisoire extends ConsumerWidget {

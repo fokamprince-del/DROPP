@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/api/api_exception.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/theme/typographie.dart';
@@ -92,13 +94,17 @@ class _Detail extends StatelessWidget {
       ),
       children: [
         EntetePublication(publication: p),
-        MediasPublication(
-          medias: p.medias,
-          // Format d'origine, borné entre le portrait 4:5 et le paysage 1,91:1.
-          ratio: (ratio ?? 4 / 5).clamp(0.8, 1.91),
-          lecture: true,
+        MediaAimable(
+          publication: p,
+          child: MediasPublication(
+            medias: p.medias,
+            // Format d'origine, borné entre le portrait 4:5 et le paysage
+            // 1,91:1.
+            ratio: (ratio ?? 4 / 5).clamp(0.8, 1.91),
+            lecture: true,
+          ),
         ),
-        CompteursPublication(publication: p),
+        ActionsPublication(publication: p),
         if (p.contenu != null)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Espacements.m),
@@ -136,7 +142,7 @@ class _Detail extends StatelessWidget {
   }
 }
 
-/// La fiche produit n'existe pas encore : tuile non cliquable pour l'instant.
+/// Produit lié : ouvre sa fiche.
 class _TuileProduit extends StatelessWidget {
   const _TuileProduit({required this.produit});
 
@@ -147,10 +153,21 @@ class _TuileProduit extends StatelessWidget {
     final theme = Theme.of(context);
     final schema = theme.colorScheme;
     final image = produit.imageUrl;
+    return Material(
+      color: schema.surface,
+      borderRadius: Rayons.borduresCarte,
+      child: InkWell(
+        borderRadius: Rayons.borduresCarte,
+        onTap: () => unawaited(context.push<void>(Routes.produit(produit.id))),
+        child: _contenu(theme, schema, image),
+      ),
+    );
+  }
+
+  Widget _contenu(ThemeData theme, ColorScheme schema, String? image) {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: schema.surface,
         borderRadius: Rayons.borduresCarte,
         border: Border.all(color: schema.outline),
       ),

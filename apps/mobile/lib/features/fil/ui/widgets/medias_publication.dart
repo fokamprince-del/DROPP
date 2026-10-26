@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../core/router/routes.dart';
 import '../../../../shared/modeles/contenu.dart';
 import '../../../../shared/theme/couleurs.dart';
 import '../../../../shared/theme/espacements.dart';
@@ -98,7 +100,7 @@ class _MediasPublicationState extends State<MediasPublication> {
   }
 }
 
-/// « 🛍 Robe wax · 25 000 FCFA » posé sur le média.
+/// « 🛍 Robe wax · 25 000 FCFA » posé sur le média ; ouvre la fiche.
 class EtiquetteProduit extends StatelessWidget {
   const EtiquetteProduit({super.key, required this.produit});
 
@@ -106,6 +108,17 @@ class EtiquetteProduit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => unawaited(context.push<void>(Routes.produit(produit.id))),
+        child: _etiquette(context),
+      ),
+    );
+  }
+
+  Widget _etiquette(BuildContext context) {
     final style = Theme.of(context).textTheme.labelMedium
         ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700);
     return ConstrainedBox(

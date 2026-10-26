@@ -8,11 +8,21 @@
   "navProfil": "Profil",
   "baselineApp": "Le marché camerounais dans ta poche",
   "navPanierArticles": "Panier, {count, plural, =1{1 article} other{{count} articles}}",
-  "@navPanierArticles": { "placeholders": { "count": { "type": "int" } } },
+  "@navPanierArticles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "navMessagesNonLus": "Messages, {count, plural, =1{1 non lu} other{{count} non lus}}",
-  "@navMessagesNonLus": { "placeholders": { "count": { "type": "int" } } },
-
-  
+  "@navMessagesNonLus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "champPrenom": "Prénom",
   "champNom": "Nom",
   "champSexe": "Sexe",
@@ -31,19 +41,12 @@
   "forceMotDePasse2": "Moyen. Ajoute des chiffres ou des majuscules.",
   "forceMotDePasse3": "Solide. Ajoute un symbole pour le rendre très solide.",
   "forceMotDePasse4": "Très solide.",
-
   "champCode": "Code de vérification",
   "motDePasseAfficher": "Afficher le mot de passe",
   "motDePasseMasquer": "Masquer le mot de passe",
-
   "champIdentifiant": "Téléphone ou email",
   "champNouveauMotDePasse": "Nouveau mot de passe",
-  "champCode": "Code de vérification",
-  "motDePasseAfficher": "Afficher le mot de passe",
-  "motDePasseMasquer": "Masquer le mot de passe",
-
   "erreurIdentifiantInvalide": "Numéro ou email invalide",
-
   "erreurReseau": "Pas de connexion internet.",
   "erreurDelai": "Le serveur met trop de temps à répondre. Réessaie.",
   "erreurTropDeTentatives": "Trop de tentatives. Patiente une minute avant de réessayer.",
@@ -58,24 +61,23 @@
   "erreurVerificationExpiree": "Vérification expirée. Recommence depuis le début.",
   "erreurRequeteEnCours": "Une demande identique est en cours. Patiente un instant.",
   "sessionExpiree": "Ta session a expiré. Reconnecte-toi.",
-
   "inscriptionTitre": "Crée ton compte",
   "inscriptionSousTitre": "Un code d'activation te sera envoyé par SMS.",
   "inscriptionBouton": "Recevoir le code par SMS",
   "inscriptionConditions": "En continuant, tu acceptes les conditions d'utilisation.",
   "jaiDejaUnCompte": "J'ai déjà un compte",
-
   "connexionTitre": "Content de te revoir",
   "connexionSousTitre": "Connecte-toi avec ton numéro ou ton email.",
   "connexionBouton": "Se connecter",
   "creerUnCompte": "Créer un compte",
   "motDePasseOublieLien": "Mot de passe oublié ?",
-
   "codeTitre": "Entre le code reçu par SMS",
   "codeEnvoyeA": "Envoyé au {numero}. Valable 5 minutes.",
   "@codeEnvoyeA": {
     "placeholders": {
-      "numero": { "type": "String" }
+      "numero": {
+        "type": "String"
+      }
     }
   },
   "codeEnvoyeAuCompte": "Un code vient d'être envoyé par SMS au numéro de ton compte. Valable 5 minutes.",
@@ -84,30 +86,45 @@
   "renvoyerCodeDans": "Renvoyer le code dans {duree}",
   "@renvoyerCodeDans": {
     "placeholders": {
-      "duree": { "type": "String" }
+      "duree": {
+        "type": "String"
+      }
     }
   },
-
   "oubliTitre": "Mot de passe oublié",
   "oubliSousTitre": "Saisis ton numéro ou ton email. Si un compte existe, un code te sera envoyé.",
   "oubliSecurite": "Par sécurité, toutes tes sessions seront déconnectées après le changement.",
   "oubliBouton": "Recevoir un code",
-
   "reinitTitre": "Nouveau mot de passe",
   "reinitSousTitre": "Saisis le code reçu, puis choisis un nouveau mot de passe.",
   "reinitBouton": "Changer le mot de passe",
-
   "reessayer": "Réessayer",
   "rienAAfficher": "Rien à afficher pour le moment.",
-
   "tempsInstant": "à l'instant",
   "tempsMinutes": "il y a {n} min",
-  "@tempsMinutes": { "placeholders": { "n": { "type": "int" } } },
+  "@tempsMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tempsHeures": "il y a {n} h",
-  "@tempsHeures": { "placeholders": { "n": { "type": "int" } } },
+  "@tempsHeures": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "tempsJours": "il y a {n} j",
-  "@tempsJours": { "placeholders": { "n": { "type": "int" } } },
-
+  "@tempsJours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "filPourToi": "Pour toi",
   "filAbonnements": "Abonnements",
   "filPourToiVide": "Aucune publication pour le moment. Reviens bientôt !",
@@ -116,29 +133,614 @@
   "filDecouvrirBoutiques": "Découvrir des boutiques",
   "filConnexionTitre": "Connecte-toi pour suivre des boutiques",
   "filConnexionTexte": "Les nouveautés des boutiques que tu suis apparaîtront ici.",
-
   "publicationTitre": "Publication",
   "publicationOuvrir": "Voir la publication de {boutique}",
-  "@publicationOuvrir": { "placeholders": { "boutique": { "type": "String" } } },
+  "@publicationOuvrir": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      }
+    }
+  },
   "publicationVues": "{count, plural, =0{aucune vue} =1{1 vue} other{{count} vues}}",
-  "@publicationVues": { "placeholders": { "count": { "type": "int", "format": "compact" } } },
+  "@publicationVues": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
   "publicationLikes": "{count, plural, =0{Aucun j'aime} =1{1 j'aime} other{{count} j'aime}}",
-  "@publicationLikes": { "placeholders": { "count": { "type": "int" } } },
+  "@publicationLikes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "publicationCommentaires": "{count, plural, =0{Aucun commentaire} =1{1 commentaire} other{{count} commentaires}}",
-  "@publicationCommentaires": { "placeholders": { "count": { "type": "int" } } },
+  "@publicationCommentaires": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "publicationAbonnes": "Réservée aux abonnés",
   "publicationProduits": "Dans cette publication",
   "mediaVideo": "Vidéo",
   "mediaPosition": "{position}/{total}",
-  "@mediaPosition": { "placeholders": { "position": { "type": "int" }, "total": { "type": "int" } } },
+  "@mediaPosition": {
+    "placeholders": {
+      "position": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "videoIllisible": "Impossible de lire la vidéo. Touche pour réessayer.",
-
   "storyDe": "Story de {boutique}",
-  "@storyDe": { "placeholders": { "boutique": { "type": "String" } } },
+  "@storyDe": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      }
+    }
+  },
   "storyNouvelle": "{boutique}, nouvelle story",
-  "@storyNouvelle": { "placeholders": { "boutique": { "type": "String" } } },
+  "@storyNouvelle": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      }
+    }
+  },
   "storySuivante": "Story suivante",
   "storyPrecedente": "Story précédente",
   "storyFermer": "Fermer",
-  "storyIllisible": "Cette story ne peut pas être affichée."
+  "storyIllisible": "Cette story ne peut pas être affichée.",
+  "annuler": "Annuler",
+  "supprimer": "Supprimer",
+  "erreurActionInterdite": "Action impossible avec ce compte. Vérifie ton numéro de téléphone.",
+  "erreurContenuIntrouvable": "Ce contenu n'est plus disponible.",
+  "favoriAjouter": "Ajouter aux favoris",
+  "favoriRetirer": "Retirer des favoris",
+  "partageTitre": "Partager",
+  "partageCopierLien": "Copier le lien",
+  "partageLienCopie": "Lien copié",
+  "partageWhatsAppAbsent": "Impossible d'ouvrir WhatsApp sur cet appareil.",
+  "partageTexte": "Découvre {boutique} sur DROPP : {lien}",
+  "@partageTexte": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      },
+      "lien": {
+        "type": "String"
+      }
+    }
+  },
+  "commentairesTitre": "{count, plural, =0{Commentaires} =1{1 commentaire} other{{count} commentaires}}",
+  "@commentairesTitre": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentairesVide": "Pas encore de commentaire. Sois le premier !",
+  "commentairesVoirReponses": "{count, plural, =1{Voir 1 autre réponse} other{Voir {count} autres réponses}}",
+  "@commentairesVoirReponses": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentairesConnexion": "Connecte-toi pour commenter",
+  "commentaireRepondre": "Répondre",
+  "commentaireCreateur": "Créateur",
+  "commentaireReponseA": "Réponse à {auteur}",
+  "@commentaireReponseA": {
+    "placeholders": {
+      "auteur": {
+        "type": "String"
+      }
+    }
+  },
+  "commentairePlaceholder": "Ajouter un commentaire… (@pseudo pour mentionner)",
+  "commentairePublier": "Publier",
+  "commentaireSupprimerTitre": "Supprimer ce commentaire ?",
+  "commentaireSupprimerTexte": "Il disparaîtra pour tout le monde, avec ses réponses.",
+  "rechercheIndice": "Robe, téléphone, boutique…",
+  "rechercheEffacer": "Effacer la recherche",
+  "decouvrirProduits": "Produits",
+  "decouvrirBoutiques": "Boutiques",
+  "catalogueTout": "Tout",
+  "catalogueVide": "Aucun produit avec ces filtres",
+  "catalogueEffacerFiltres": "Effacer les filtres",
+  "boutiquesVide": "Aucune boutique trouvée",
+  "triRecents": "Plus récents",
+  "triPrixCroissant": "Prix croissant",
+  "triPrixDecroissant": "Prix décroissant",
+  "triPopulaires": "Les plus aimés",
+  "filtresTitre": "Filtres",
+  "filtresPrix": "Prix (FCFA)",
+  "filtresPrixMin": "Min",
+  "filtresPrixMax": "Max",
+  "filtresTri": "Trier par",
+  "filtresEnStock": "En stock uniquement",
+  "filtresReinitialiser": "Réinitialiser",
+  "filtresAppliquer": "Voir les produits",
+  "prixMoinsDe": "Moins de {montant}",
+  "@prixMoinsDe": {
+    "placeholders": {
+      "montant": {
+        "type": "String"
+      }
+    }
+  },
+  "prixPlusDe": "Plus de {montant}",
+  "@prixPlusDe": {
+    "placeholders": {
+      "montant": {
+        "type": "String"
+      }
+    }
+  },
+  "prixAPartirDe": "À partir de {prix}",
+  "@prixAPartirDe": {
+    "placeholders": {
+      "prix": {
+        "type": "String"
+      }
+    }
+  },
+  "stockEnStock": "En stock",
+  "stockRupture": "Rupture de stock",
+  "stockPlusQue": "{count, plural, =1{Plus qu'1 en stock} other{Plus que {count} en stock}}",
+  "@stockPlusQue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "varianteNumero": "Option {numero}",
+  "@varianteNumero": {
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      }
+    }
+  },
+  "avisTitre": "Avis",
+  "avisTitreNombre": "{count, plural, =0{Avis} other{Avis ({count})}}",
+  "@avisTitreNombre": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avisNombre": "{count, plural, =0{aucun avis} =1{1 avis} other{{count} avis}}",
+  "@avisNombre": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avisAucun": "Pas encore d'avis sur ce produit.",
+  "avisVoirTous": "Voir les {count} avis",
+  "@avisVoirTous": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avisNote": "{note} étoiles sur 5",
+  "@avisNote": {
+    "placeholders": {
+      "note": {
+        "type": "int"
+      }
+    }
+  },
+  "avisMoyenne": "Note moyenne : {note} sur 5",
+  "@avisMoyenne": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "avisAchatVerifie": "Achat vérifié",
+  "boutiqueSuivre": "Suivre",
+  "boutiqueAbonne": "Abonné",
+  "boutiqueAbonnes": "{count, plural, =0{aucun abonné} =1{1 abonné} other{{count} abonnés}}",
+  "@boutiqueAbonnes": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "boutiqueAbonnesLibelle": "{count, plural, =1{abonné} other{abonnés}}",
+  "@boutiqueAbonnesLibelle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "boutiqueProduitsLibelle": "{count, plural, =1{produit} other{produits}}",
+  "@boutiqueProduitsLibelle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "boutiquePublications": "Publications",
+  "boutiqueAucunProduit": "Aucun produit en ligne pour le moment.",
+  "boutiqueAucunePublication": "Aucune publication pour le moment.",
+  "abonnementsTitre": "Mes abonnements",
+  "abonnementsVideTitre": "Tu ne suis encore aucune boutique",
+  "abonnementsDepuis": "Abonné depuis le {date}",
+  "@abonnementsDepuis": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "champEmail": "Adresse email",
+  "erreurEmailUtilisee": "Cette adresse email est déjà utilisée.",
+  "erreurMotDePasseIncorrect": "Mot de passe incorrect.",
+  "emailTitre": "Confirme ton adresse email",
+  "emailSousTitre": "Nous avons envoyé un code à {email}. Elle servira à récupérer ton compte.",
+  "@emailSousTitre": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailConfirmer": "Confirmer",
+  "emailConfirmee": "Adresse email confirmée.",
+  "emailPlusTard": "Plus tard",
+  "emailChangerLien": "Changer d'adresse",
+  "emailAjouterTitre": "Ajoute ton adresse email",
+  "emailChangerTitre": "Changer d'adresse email",
+  "emailChangerSousTitre": "Un code sera envoyé à la nouvelle adresse. L'ancienne reste active jusqu'à la confirmation.",
+  "emailRecevoirCode": "Recevoir le code",
+  "emailTitreConfirmee": "Adresse email confirmée",
+  "emailDejaConfirmee": "{email} est confirmée. Tu peux t'en servir pour récupérer ton compte.",
+  "@emailDejaConfirmee": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "enregistrer": "Enregistrer",
+  "aujourdhui": "Aujourd'hui",
+  "hier": "Hier",
+  "mediaGaleriePhoto": "Photo de la galerie",
+  "mediaPrendrePhoto": "Prendre une photo",
+  "mediaGalerieVideo": "Vidéo de la galerie",
+  "mediaFilmer": "Filmer une vidéo",
+  "fichierTropGros": "Fichier trop volumineux : {mo} Mo au maximum.",
+  "@fichierTropGros": {
+    "placeholders": {
+      "mo": {
+        "type": "int"
+      }
+    }
+  },
+  "fichierFormatRefuse": "Format non pris en charge. Choisis une photo (JPEG, PNG, WebP) ou une vidéo (MP4, MOV).",
+  "panierVide": "Ton panier est vide",
+  "panierVideTexte": "Ajoute des articles depuis la fiche d'un produit.",
+  "panierNombreArticles": "{count, plural, =1{1 article} other{{count} articles}}",
+  "@panierNombreArticles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panierAjouter": "Ajouter au panier",
+  "panierChoisirOption": "Choisis une option",
+  "panierAjoute": "Ajouté au panier",
+  "panierVoir": "Voir",
+  "panierStockInsuffisant": "Stock insuffisant pour cette quantité.",
+  "panierStockRestant": "{count, plural, =1{Plus qu'1 en stock : réduis la quantité} other{Plus que {count} en stock : réduis la quantité}}",
+  "@panierStockRestant": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panierIndisponible": "Plus disponible : retire-le pour commander",
+  "panierPrixModifie": "Prix mis à jour depuis l'ajout",
+  "panierQuantite": "Quantité : {count}",
+  "@panierQuantite": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panierMoins": "Diminuer la quantité",
+  "panierPlus": "Augmenter la quantité",
+  "panierSousTotal": "Sous-total",
+  "panierLivraison": "Livraison",
+  "panierLivraisonPlusTard": "Calculée à l'étape suivante",
+  "panierTotal": "Total",
+  "panierProtection": "Paiement protégé : le vendeur est payé après la livraison.",
+  "panierNonCommandable": "Retire les articles indisponibles pour commander.",
+  "panierCommander": "Commander · {prix}",
+  "@panierCommander": {
+    "placeholders": {
+      "prix": {
+        "type": "String"
+      }
+    }
+  },
+  "commanderTitre": "Passer la commande ?",
+  "commanderTexte": "Les articles sont réservés pendant {minutes} minutes, le temps du paiement. Sans paiement, la commande est annulée et le stock rendu.",
+  "@commanderTexte": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "commanderConfirmer": "Commander",
+  "commanderPanierChange": "Ton panier a changé (stock ou prix). Vérifie-le avant de commander.",
+  "commandesTitre": "Mes commandes",
+  "commandesVide": "Aucune commande pour le moment",
+  "commandeTitre": "Commande",
+  "commandeDu": "Commande du {date}",
+  "@commandeDu": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "commandeAPayerAvant": "À payer avant l'annulation automatique",
+  "commandeDelaiDepasse": "Délai dépassé : la commande va être annulée.",
+  "commandePaiementBientot": "Le paiement par Mobile Money (MTN MoMo, Orange Money) arrive très bientôt dans l'application.",
+  "commandeAnnuler": "Annuler la commande",
+  "commandeAnnulerTitre": "Annuler cette commande ?",
+  "commandeAnnulerTexte": "Les articles seront remis en vente.",
+  "commandeGarder": "Garder",
+  "commandeDejaTraitee": "Cette commande a déjà été traitée.",
+  "statutEnAttentePaiement": "En attente de paiement",
+  "statutNouvelle": "Payée",
+  "statutEnCours": "En préparation",
+  "statutExpediee": "Expédiée",
+  "statutLivree": "Livrée",
+  "statutAnnulee": "Annulée",
+  "statutEnLitige": "En litige",
+  "adressesTitre": "Mes adresses",
+  "adressesVide": "Aucune adresse enregistrée",
+  "adressesVideTexte": "Ajoute une adresse pour être livré plus vite.",
+  "adresseAjouter": "Ajouter une adresse",
+  "adresseModifier": "Modifier l'adresse",
+  "adresseSupprimerTitre": "Supprimer cette adresse ?",
+  "adresseLivraison": "Livraison",
+  "adresseFacturation": "Facturation",
+  "adresseAutre": "Autre",
+  "adressePrincipale": "Principale",
+  "adresseLigne1": "Quartier, rue, point de repère",
+  "adresseLigne2": "Complément (bâtiment, étage…)",
+  "adresseVille": "Ville",
+  "adresseRegion": "Région",
+  "adressePays": "Pays",
+  "adresseCodePostal": "Code postal",
+  "adresseDefinirPrincipale": "Adresse principale",
+  "avisANoterTitre": "Avis à laisser",
+  "avisANoterVide": "Rien à noter pour le moment",
+  "avisANoterVideTexte": "Tes articles livrés apparaîtront ici.",
+  "avisCommandeLe": "commandé le {date}",
+  "@avisCommandeLe": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "avisNoter": "Noter",
+  "avisTonAvis": "Ton avis",
+  "avisCommentaireIndice": "Qualité, taille, livraison… (facultatif)",
+  "avisPublier": "Publier l'avis",
+  "avisModifier": "Modifier mon avis",
+  "avisSupprimerTitre": "Supprimer ton avis ?",
+  "avisMesActions": "Gérer mon avis",
+  "avisNonModifiable": "Un avis n'est plus modifiable après 30 jours.",
+  "avisDejaDonne": "Tu as déjà donné ton avis sur cet article.",
+  "boutiqueMessage": "Message",
+  "boutiqueEcrire": "Écrire à la boutique",
+  "conversationsVide": "Aucune conversation",
+  "conversationsVideTexte": "Écris à une boutique depuis la fiche d'un produit ou sa page.",
+  "conversationCompteSupprime": "Compte supprimé",
+  "messageDeMoi": "Toi : {texte}",
+  "@messageDeMoi": {
+    "placeholders": {
+      "texte": {
+        "type": "String"
+      }
+    }
+  },
+  "messagePhoto": "📷 Photo",
+  "messageVideo": "🎥 Vidéo",
+  "messagePieceJointe": "📎 Pièce jointe",
+  "messageIndice": "Écris un message…",
+  "messageEnvoyer": "Envoyer",
+  "messageJoindre": "Joindre une photo ou une vidéo",
+  "messagePiecesMax": "{max} fichiers au plus par message.",
+  "@messagePiecesMax": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "messageFichiers": "{count, plural, =1{1 fichier} other{{count} fichiers}}",
+  "@messageFichiers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "messageEnvoi": "Envoi…",
+  "messageEnvoye": "Envoyé",
+  "messageLu": "Lu",
+  "messageEnvoiInterdit": "Impossible d'écrire dans cette conversation.",
+  "discussionDebut": "Début de la conversation",
+  "discussionFermee": "Cette conversation est fermée.",
+  "plusDOptions": "Plus d'options",
+  "discussionEcrit": "en train d'écrire…",
+  "signaler": "Signaler",
+  "signalerTitre": "Signaler ce contenu",
+  "signalementDescriptionObligatoire": "Explique ce qui ne va pas (obligatoire)",
+  "signalementDescriptionFacultative": "Précisions (facultatif)",
+  "signalementEnvoyer": "Envoyer le signalement",
+  "signalementAnonyme": "La personne signalée ne saura pas que c'est toi.",
+  "signalementEnvoye": "Merci. Notre équipe va examiner ce contenu.",
+  "signalementDejaFait": "Tu as déjà signalé ce contenu : il est en cours d'examen.",
+  "signalementPropreContenu": "Tu ne peux pas signaler ton propre contenu.",
+  "signalementsTitre": "Mes signalements",
+  "signalementsVide": "Aucun signalement",
+  "signalementOuvert": "Reçu",
+  "signalementEnCours": "En examen",
+  "signalementTraite": "Traité",
+  "signalementRejete": "Sans suite",
+  "ciblePublication": "Publication",
+  "cibleCommentaire": "Commentaire",
+  "cibleProduit": "Produit",
+  "cibleBoutique": "Boutique",
+  "cibleMessage": "Message",
+  "bloquer": "Bloquer",
+  "debloquer": "Débloquer",
+  "bloquerTitre": "Bloquer {nom} ?",
+  "@bloquerTitre": {
+    "placeholders": {
+      "nom": {
+        "type": "String"
+      }
+    }
+  },
+  "bloquerTexte": "Vous ne pourrez plus vous écrire, et cette personne ne pourra plus commenter tes publications ni te suivre. Tu pourras la débloquer depuis ton profil.",
+  "bloqueConfirme": "{nom} est bloqué.",
+  "@bloqueConfirme": {
+    "placeholders": {
+      "nom": {
+        "type": "String"
+      }
+    }
+  },
+  "bloquesTitre": "Utilisateurs bloqués",
+  "bloquesVide": "Personne n'est bloqué",
+  "bloquesVideTexte": "Tu peux bloquer quelqu'un depuis une conversation ou une page boutique.",
+  "bloqueLe": "Bloqué le {date}",
+  "@bloqueLe": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsTitre": "Notifications",
+  "notificationsNonLues": "{count, plural, =1{1 notification non lue} other{{count} notifications non lues}}",
+  "@notificationsNonLues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationsToutLire": "Tout marquer comme lu",
+  "notificationsPreferences": "Préférences de notification",
+  "notificationsVide": "Aucune notification",
+  "notificationNonLue": "Non lue",
+  "preferenceMessages": "Messages",
+  "preferenceSocial": "J'aime, commentaires, abonnés",
+  "preferencePromotions": "Promotions",
+  "preferencesExplication": "Choisis les notifications envoyées sur ton téléphone. Elles restent toutes visibles dans l'application. Les commandes, paiements et alertes de sécurité sont toujours envoyés.",
+  "favorisTitre": "Mes favoris",
+  "favorisProduitsVide": "Aucun produit en favori",
+  "favorisPublicationsVide": "Aucune publication enregistrée",
+  "favoriPlusEnVente": "plus en vente",
+  "profilPhoto": "Photo de profil",
+  "profilChangerPhoto": "Changer la photo",
+  "profilRetirerPhoto": "Retirer la photo",
+  "profilModifier": "Modifier le profil",
+  "profilSansPseudo": "Pas encore de pseudo",
+  "profilEmail": "Adresse email",
+  "profilEmailAbsent": "Aucune adresse email",
+  "profilEmailAConfirmer": "{email} · à confirmer",
+  "@profilEmailAConfirmer": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profilSectionAchats": "ACHATS",
+  "profilSectionSocial": "SUIVIS ET FAVORIS",
+  "profilSectionCompte": "COMPTE",
+  "profilSectionVendeur": "VENDRE SUR DROPP",
+  "profilEspaceVendeur": "Espace vendeur",
+  "profilDevenirVendeur": "Devenir vendeur",
+  "deconnexion": "Se déconnecter",
+  "deconnexionTitre": "Se déconnecter de cet appareil ?",
+  "champPseudo": "Pseudo (@)",
+  "pseudoDisponible": "Ce pseudo est disponible.",
+  "pseudoPris": "Ce pseudo est déjà pris.",
+  "pseudoReserve": "Ce pseudo est réservé. Choisis-en un autre.",
+  "pseudoFormat": "3 à 30 caractères : lettres minuscules, chiffres, « _ » ou « . ».",
+  "securiteTitre": "Sécurité",
+  "securiteIdentifiants": "IDENTIFIANTS",
+  "securiteAppareils": "APPAREILS CONNECTÉS",
+  "securiteCompte": "COMPTE",
+  "motDePasseChanger": "Changer le mot de passe",
+  "motDePasseChangerTexte": "Tes autres appareils seront déconnectés.",
+  "champMotDePasseActuel": "Mot de passe actuel",
+  "motDePasseChange": "Mot de passe changé.",
+  "erreurMotDePasseActuel": "Mot de passe actuel incorrect.",
+  "erreurMotDePasseRefuse": "Ce mot de passe n'est pas accepté : il doit être différent de l'actuel et plus solide.",
+  "telephoneChanger": "Changer de numéro",
+  "telephoneChangerTexte": "Un code sera envoyé par SMS au nouveau numéro.",
+  "telephoneDejaUtilise": "Ce numéro est déjà utilisé par un autre compte.",
+  "telephoneChange": "Numéro de téléphone changé.",
+  "appareilInconnu": "Appareil",
+  "appareilActuel": "Cet appareil",
+  "appareilDerniereUtilisation": "Dernière activité : {quand}",
+  "@appareilDerniereUtilisation": {
+    "placeholders": {
+      "quand": {
+        "type": "String"
+      }
+    }
+  },
+  "deconnecterPartout": "Déconnecter tous les appareils",
+  "deconnecterPartoutTitre": "Déconnecter tous les appareils ?",
+  "deconnecterPartoutTexte": "Y compris celui-ci : il faudra te reconnecter partout.",
+  "compteSupprimer": "Supprimer mon compte",
+  "compteSupprimerTitre": "Supprimer ton compte ?",
+  "compteSupprimerTexte": "Ton profil, tes favoris, tes messages et ta boutique éventuelle seront supprimés. C'est définitif. Saisis ton mot de passe pour confirmer.",
+  "compteSupprimerConfirmer": "Supprimer définitivement",
+  "compteSupprime": "Ton compte a été supprimé.",
+  "compteCommandesEnCours": "Des commandes sont encore en cours : attends leur livraison ou annule-les avant de supprimer ton compte."
 }

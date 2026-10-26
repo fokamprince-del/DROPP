@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../core/api/api_exception.dart';
@@ -15,9 +17,11 @@ import 'vue_erreur.dart';
 /// )
 /// ```
 ///
-/// Pour recharger ou modifier un élément (like optimiste…), passer une
-/// `GlobalKey<ListePagineeState<T>>` et appeler `recharger()` ou
-/// `mettreAJour()`.
+/// Pour recharger, modifier, insérer ou retirer un élément, passer une
+/// `GlobalKey<ListePagineeState<T>>` et appeler `recharger()`,
+/// `mettreAJour()`, `inserer()` ou `retirer()`.
+///
+/// Avec [grille], les éléments s'affichent en grille (catalogue).
 class ListePaginee<T> extends StatefulWidget {
   const ListePaginee({
     super.key,
@@ -29,6 +33,8 @@ class ListePaginee<T> extends StatefulWidget {
     this.squelette,
     this.auRafraichir,
     this.padding,
+    this.grille,
+    this.defilementPrincipal = false,
   });
 
   final Future<PageResultats<T>> Function(int page) charger;
@@ -47,6 +53,13 @@ class ListePaginee<T> extends StatefulWidget {
   /// rechargement de la liste : pour ce qui vit dans l'en-tête.
   final Future<void> Function()? auRafraichir;
   final EdgeInsetsGeometry? padding;
+
+  /// Disposition en grille ; `null` : liste.
+  final SliverGridDelegate? grille;
+
+  /// Utilise le défilement principal (`PrimaryScrollController`) : à activer
+  /// dans le corps d'un `NestedScrollView`, pour que l'en-tête se replie.
+  final bool defilementPrincipal;
 
   @override
   State<ListePaginee<T>> createState() => ListePagineeState<T>();
@@ -70,7 +83,6 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
   @override
   void initState() {
     super.initState();
-    _defilement.addListener(_surDefilement);
     // setState est interdit pendant initState.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _chargerSuivante();
@@ -104,11 +116,29 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
     });
   }
 
+  /// Ajoute un élément créé sur l'appareil (commentaire publié…).
+  void inserer(T element, [int index = 0]) => setState(
+    () => _elements.insert(index.clamp(0, _elements.length), element),
+  );
+
   void retirer(bool Function(T) test) =>
       setState(() => _elements.removeWhere(test));
 
-  void _surDefilement() {
-    if (_defilement.position.extentAfter < _seuilChargement) _chargerSuivante();
+  ScrollController? get _controleur =>
+      widget.defilementPrincipal ? null : _defilement;
+
+  bool? get _primaire => widget.defilementPrincipal ? true : null;
+
+  /// Défilement de cette liste (pas d'une rangée horizontale de l'en-tête) :
+  /// près du bas, on charge la page suivante.
+  bool _surDefilement(ScrollUpdateNotification notification) {
+    final metriques = notification.metrics;
+    if (notification.depth == 0 &&
+        metriques.axis == Axis.vertical &&
+        metriques.extentAfter < _seuilChargement) {
+      unawaited(Future.microtask(_chargerSuivante));
+    }
+    return false;
   }
 
   Future<void> _chargerSuivante() async {
@@ -130,9 +160,11 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
       });
       // Première page trop courte pour défiler : charger la suivante.
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        final controleur = _controleur;
         if (mounted &&
-            _defilement.hasClients &&
-            _defilement.position.maxScrollExtent <= 0) {
+            controleur != null &&
+            controleur.hasClients &&
+            controleur.position.maxScrollExtent <= 0) {
           _chargerSuivante();
         }
       });
@@ -154,7 +186,8 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
     if (_elements.isEmpty) {
       final enAttente = _erreur == null && (_chargement || _aSuivante);
       contenu = ListView(
-        controller: _defilement,
+        controller: _controleur,
+        primary: _primaire,
         physics: const AlwaysScrollableScrollPhysics(),
         padding: widget.padding,
         children: [
@@ -176,9 +209,36 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
             ),
         ],
       );
+    } else if (widget.grille != null) {
+      contenu = CustomScrollView(
+        controller: _controleur,
+        primary: _primaire,
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          if (enTete != null) SliverToBoxAdapter(child: enTete),
+          SliverPadding(
+            padding: widget.padding ?? EdgeInsets.zero,
+            sliver: SliverGrid(
+              gridDelegate: widget.grille!,
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => widget.elementBuilder(context, _elements[i], i),
+                childCount: _elements.length,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: _PiedDeListe(
+              chargement: _chargement,
+              erreur: _erreur,
+              reessayer: _chargerSuivante,
+            ),
+          ),
+        ],
+      );
     } else {
       contenu = ListView.separated(
-        controller: _defilement,
+        controller: _controleur,
+        primary: _primaire,
         physics: const AlwaysScrollableScrollPhysics(),
         padding: widget.padding,
         itemCount: decalage + _elements.length + 1,
@@ -204,7 +264,10 @@ class ListePagineeState<T> extends State<ListePaginee<T>> {
       onRefresh: () async {
         await Future.wait([recharger(), ?widget.auRafraichir?.call()]);
       },
-      child: contenu,
+      child: NotificationListener<ScrollUpdateNotification>(
+        onNotification: _surDefilement,
+        child: contenu,
+      ),
     );
   }
 }

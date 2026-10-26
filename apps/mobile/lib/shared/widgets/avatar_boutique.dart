@@ -2,17 +2,33 @@ import 'package:flutter/material.dart';
 
 import '../theme/couleurs.dart';
 import '../theme/typographie.dart';
+import 'image_reseau.dart';
 
-/// Pastille ronde avec l'initiale de la boutique (l'API ne renvoie pas encore
-/// de logo). Décorative : le nom est toujours affiché à côté.
+/// Logo rond de la boutique, ou son initiale sur un dégradé indigo quand
+/// l'API n'en fournit pas. Décoratif : le nom est toujours affiché à côté.
 class AvatarBoutique extends StatelessWidget {
-  const AvatarBoutique({super.key, required this.nom, this.taille = 36});
+  const AvatarBoutique({
+    super.key,
+    required this.nom,
+    this.taille = 36,
+    this.logoUrl,
+  });
 
   final String nom;
   final double taille;
+  final String? logoUrl;
 
   @override
   Widget build(BuildContext context) {
+    final url = logoUrl;
+    if (url != null) {
+      return ExcludeSemantics(
+        child: ClipOval(
+          child: ImageReseau(url: url, largeur: taille, hauteur: taille),
+        ),
+      );
+    }
+
     final initiale = nom.trim().isEmpty
         ? '?'
         : nom.trim().characters.first.toUpperCase();

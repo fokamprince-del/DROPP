@@ -110,6 +110,13 @@ class SessionNotifier extends Notifier<EtatSession> {
     state = const SessionAnonyme();
   }
 
+  /// Efface la session sans appeler l'API : après « déconnecter tous les
+  /// appareils » ou la suppression du compte, le serveur a déjà tout révoqué.
+  Future<void> fermerLocalement() async {
+    await _stockage.effacer();
+    state = const SessionAnonyme();
+  }
+
   /// Appelé par l'intercepteur quand le refresh est refusé.
   Future<void> expirer() async {
     await _stockage.effacer();

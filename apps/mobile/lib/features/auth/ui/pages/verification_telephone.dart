@@ -17,6 +17,7 @@ import '../widgets/bouton_action.dart';
 import '../widgets/champ_code.dart';
 import '../widgets/lien_renvoyer_code.dart';
 import '../widgets/page_acces.dart';
+import 'page_confirmation_email.dart';
 
 class PageVerificationTelephone extends ConsumerStatefulWidget {
   const PageVerificationTelephone({super.key});
@@ -63,6 +64,9 @@ class _PageVerificationTelephoneState
     final depot = ref.read(authRepositoryProvider);
     final session = ref.read(sessionProvider.notifier);
     final fluxNotifier = ref.read(fluxVerificationProvider.notifier);
+    // Lus avant l'ouverture de session : la page est fermée juste après.
+    final conteneur = ProviderScope.containerOf(context);
+    final routeur = GoRouter.of(context);
 
     setState(() {
       _envoi = true;
@@ -76,6 +80,14 @@ class _PageVerificationTelephoneState
       // Le routeur quitte cette page dès que la session est ouverte.
       await session.ouvrir(jetons);
       fluxNotifier.terminer();
+      // Email donné à l'inscription : le serveur vient d'y envoyer un code
+      // de confirmation. On propose de le saisir (« Plus tard » possible).
+      final utilisateur = conteneur.read(utilisateurConnecteProvider);
+      if (utilisateur != null &&
+          utilisateur.email != null &&
+          !utilisateur.emailVerifie) {
+        routeur.go(cheminConfirmationEmail(envoye: true));
+      }
     } on ApiException catch (e) {
       if (!mounted) return;
       _code.clear();

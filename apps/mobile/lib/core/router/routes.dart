@@ -25,6 +25,40 @@ abstract final class Routes {
   static String publication(String id) => '$publications/$id';
   static const stories = '/stories';
 
+  // Catalogue et boutiques (consultables sans compte)
+  static const produits = '/produits';
+  static String produit(String id) => '$produits/$id';
+  static String avisProduit(String id) => '$produits/$id/avis';
+  static const boutiques = '/boutiques';
+  static String boutique(String id) => '$boutiques/$id';
+
+  static const mesAbonnements = '/profil/abonnements';
+
+  /// Confirmation ou changement de l'adresse email (connexion requise).
+  static const confirmerEmail = '/profil/email';
+  static const adresses = '/profil/adresses';
+  static const nouvelleAdresse = '/profil/adresses/nouvelle';
+  static String adresse(String id) => '$adresses/$id';
+  static const avisANoter = '/profil/avis';
+  static const modifierProfil = '/profil/modifier';
+  static const motDePasse = '/profil/securite/mot-de-passe';
+  static const changerTelephone = '/profil/securite/telephone';
+  static const bloques = '/profil/bloques';
+  static const mesSignalements = '/profil/signalements';
+  static const mesFavoris = '/profil/favoris';
+
+  // Notifications (connexion requise)
+  static const notifications = '/notifications';
+  static const preferencesNotifications = '/notifications/preferences';
+
+  // Achat (connexion requise)
+  static const commandes = '/commandes';
+  static String commande(String id) => '$commandes/$id';
+
+  // Messagerie (connexion et téléphone vérifié)
+  static const conversations = '/conversations';
+  static String conversation(String id) => '$conversations/$id';
+
   // Vendeur
   static const devenirVendeur = '/devenir-vendeur';
   static const espaceVendeur = '/vendeur';
@@ -51,13 +85,15 @@ const prefixesConnexion = [
   Routes.profil,
   Routes.devenirVendeur,
   Routes.espaceVendeur,
-  '/commandes',
-  '/notifications',
+  Routes.commandes,
+  Routes.conversations,
+  Routes.notifications,
 ];
 
 /// Préfixes qui demandent un téléphone vérifié (même règle que l'API).
 const prefixesTelephone = [
   Routes.messages,
+  Routes.conversations,
   Routes.devenirVendeur,
   Routes.espaceVendeur,
 ];

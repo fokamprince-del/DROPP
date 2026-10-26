@@ -12,6 +12,7 @@ import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/widgets/etat_vide.dart';
 import '../../../../shared/widgets/liste_paginee.dart';
 import '../../../../shared/widgets/logo_dropp.dart';
+import '../../../notifications/ui/notifications_ui.dart';
 import '../../../stories/application/barre_stories.dart';
 import '../../../stories/ui/widgets/barre_stories.dart';
 import '../../data/fil_repository.dart';
@@ -53,6 +54,8 @@ class PageAccueil extends StatelessWidget {
                         couleur: schema.onSurface,
                       ),
                     ),
+                    const Spacer(),
+                    const BoutonNotifications(),
                   ],
                 ),
               ),
