@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../../../core/l10n/contexte_l10n.dart';
+import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
 import '../../domain/validateurs.dart';
 

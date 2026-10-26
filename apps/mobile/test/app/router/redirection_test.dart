@@ -1,7 +1,7 @@
-import 'package:dropp/app/router/redirection.dart';
-import 'package:dropp/app/router/routes.dart';
 import 'package:dropp/core/auth/session.dart';
 import 'package:dropp/core/auth/utilisateur.dart';
+import 'package:dropp/core/router/redirection.dart';
+import 'package:dropp/core/router/routes.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Utilisateur _utilisateur({

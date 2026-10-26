@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/l10n/contexte_l10n.dart';
-import '../../../../../shared/theme/couleurs_metier.dart';
-import '../../../../../shared/theme/espacements.dart';
+import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../shared/theme/couleurs_metier.dart';
+import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
 import '../../domain/validateurs.dart';
 

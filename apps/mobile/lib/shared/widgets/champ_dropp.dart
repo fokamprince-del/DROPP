@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../core/l10n/contexte_l10n.dart';
-import '../../../../shared/theme/espacements.dart';
+import '../../core/l10n/contexte_l10n.dart';
 import '../../features/auth/domain/validateurs.dart';
+import '../theme/espacements.dart';
 import 'libelles_erreurs.dart';
 
 class ChampDropp extends StatelessWidget {
@@ -14,6 +14,7 @@ class ChampDropp extends StatelessWidget {
     this.validateur,
     this.typeClavier,
     this.actionClavier = TextInputAction.next,
+    this.capitalisation = TextCapitalization.none,
     this.indicesAutoRemplissage,
     this.masque = false,
     this.suffixe,
@@ -30,6 +31,7 @@ class ChampDropp extends StatelessWidget {
   final ErreurChamp? Function(String?)? validateur;
   final TextInputType? typeClavier;
   final TextInputAction actionClavier;
+  final TextCapitalization capitalisation;
   final Iterable<String>? indicesAutoRemplissage;
   final bool masque;
   final Widget? suffixe;
@@ -56,6 +58,7 @@ class ChampDropp extends StatelessWidget {
           obscureText: masque,
           keyboardType: typeClavier,
           textInputAction: actionClavier,
+          textCapitalization: capitalisation,
           autofillHints: indicesAutoRemplissage,
           inputFormatters: formateurs,
           maxLength: longueurMax,

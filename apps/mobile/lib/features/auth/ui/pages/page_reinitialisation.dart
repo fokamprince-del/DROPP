@@ -8,6 +8,7 @@ import '../../../../core/auth/session.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/widgets/libelles_erreurs.dart';
 import '../../application/flux_verification.dart';
 import '../../data/auth_repository.dart';
 import '../../domain/validateurs.dart';
@@ -17,7 +18,6 @@ import '../widgets/bandeau_message.dart';
 import '../widgets/bouton_action.dart';
 import '../widgets/champ_code.dart';
 import '../widgets/champ_mot_de_passe.dart';
-import '../widgets/libelles_erreurs.dart';
 import '../widgets/lien_renvoyer_code.dart';
 import '../widgets/page_acces.dart';
 

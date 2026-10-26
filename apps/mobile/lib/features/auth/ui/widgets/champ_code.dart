@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../../core/l10n/contexte_l10n.dart';
-import '../../../../../shared/theme/espacements.dart';
-import '../../../../../shared/theme/rayons.dart';
+import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/rayons.dart';
 import '../../domain/validateurs.dart';
 
 /// Le contrôleur ne doit pas changer pendant la vie du widget.

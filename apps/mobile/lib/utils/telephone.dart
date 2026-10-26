@@ -21,3 +21,12 @@ String? normaliserTelephone(String saisie, {IsoCode pays = paysParDefaut}) {
     return null;
   }
 }
+
+/// Masque le milieu d'un numéro pour l'afficher : `+237670 •• •• 01`.
+/// Un texte trop court pour être un numéro est rendu tel quel.
+String masquerTelephone(String numero) {
+  if (numero.length < 8) return numero;
+  final debut = numero.substring(0, numero.length - 6);
+  final fin = numero.substring(numero.length - 2);
+  return '$debut •• •• $fin';
+}
