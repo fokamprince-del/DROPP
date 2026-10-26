@@ -517,6 +517,48 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Changer le mot de passe'**
   String get reinitBouton;
+
+  /// No description provided for @bienvenue1Titre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suis les boutiques que tu aimes'**
+  String get bienvenue1Titre;
+
+  /// No description provided for @bienvenue1Texte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvre leurs nouveautés en vidéo, discute avec le vendeur et achète en Mobile Money.'**
+  String get bienvenue1Texte;
+
+  /// No description provided for @bienvenue2Titre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Discute avec le vendeur'**
+  String get bienvenue2Titre;
+
+  /// No description provided for @bienvenue2Texte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pose tes questions, demande une taille ou une couleur avant de commander, directement dans l\'app.'**
+  String get bienvenue2Texte;
+
+  /// No description provided for @bienvenue3Titre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paie en Mobile Money, en confiance'**
+  String get bienvenue3Titre;
+
+  /// No description provided for @bienvenue3Texte.
+  ///
+  /// In fr, this message translates to:
+  /// **'MTN MoMo ou Orange Money. Ton argent est bloqué jusqu\'à la réception du colis.'**
+  String get bienvenue3Texte;
+
+  /// No description provided for @bienvenuePage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Page {numero} sur {total}'**
+  String bienvenuePage(int numero, int total);
 }
 
 class _AppLocalizationsDelegate

@@ -95,5 +95,20 @@
 
   "reinitTitre": "Nouveau mot de passe",
   "reinitSousTitre": "Saisis le code reçu, puis choisis un nouveau mot de passe.",
-  "reinitBouton": "Changer le mot de passe"
+  "reinitBouton": "Changer le mot de passe",
+
+
+  "bienvenue1Titre": "Suis les boutiques que tu aimes",
+  "bienvenue1Texte": "Découvre leurs nouveautés en vidéo, discute avec le vendeur et achète en Mobile Money.",
+  "bienvenue2Titre": "Discute avec le vendeur",
+  "bienvenue2Texte": "Pose tes questions, demande une taille ou une couleur avant de commander, directement dans l'app.",
+  "bienvenue3Titre": "Paie en Mobile Money, en confiance",
+  "bienvenue3Texte": "MTN MoMo ou Orange Money. Ton argent est bloqué jusqu'à la réception du colis.",
+  "bienvenuePage": "Page {numero} sur {total}",
+  "@bienvenuePage": {
+    "placeholders": {
+      "numero": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  }
 }
