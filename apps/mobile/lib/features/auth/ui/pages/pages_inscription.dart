@@ -111,13 +111,8 @@ class _PageInscriptionState extends ConsumerState<PageInscription> {
     }
   }
 
-  void _versConnexion() {
-    if (context.canPop()) {
-      context.pop();
-    } else {
-      context.go(cheminAvecRetour(context, Routes.connexion));
-    }
-  }
+  void _versConnexion() =>
+      context.pushReplacement(cheminAvecRetour(context, Routes.connexion));
 
   @override
   Widget build(BuildContext context) {
