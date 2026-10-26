@@ -19,6 +19,7 @@ import '../../features/catalogue/ui/pages/page_produit.dart';
 import '../../features/commandes/data/commandes.dart';
 import '../../features/commandes/ui/commandes_ui.dart';
 import '../../features/demarrage/demarrage.dart';
+import '../../features/demarrage/page_bienvenue.dart';
 import '../../features/demarrage/page_demarrage.dart';
 import '../../features/fil/data/modeles_fil.dart';
 import '../../features/fil/ui/pages/page_accueil.dart';
@@ -65,7 +66,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       GoRoute(
         path: Routes.bienvenue,
-        builder: (context, state) => const _BienvenueProvisoire(),
+        builder: (context, state) => const PageBienvenue(),
       ),
 
       // ── Auth (Dev B : remplacer les pages provisoires) ──
@@ -301,24 +302,3 @@ final routerProvider = Provider<GoRouter>((ref) {
   });
   return router;
 });
-
-/// En attendant le vrai écran « Bienvenue » (3 écrans de présentation).
-class _BienvenueProvisoire extends ConsumerWidget {
-  const _BienvenueProvisoire();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return PageProvisoire(
-      'Bienvenue',
-      actions: [
-        FilledButton(
-          onPressed: () async {
-            await ref.read(demarrageProvider.notifier).marquerBienvenueVue();
-            if (context.mounted) context.go(Routes.accueil);
-          },
-          child: const Text('Continuer'),
-        ),
-      ],
-    );
-  }
-}
