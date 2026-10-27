@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs.nuit : fond du lancement, identique à PageDemarrage. -->
+    <color name="dropp_nuit">#0B1029</color>
+</resources>
