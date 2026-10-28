@@ -19,6 +19,7 @@ import { Prisma, type StatutCommande } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import { NotificateurService } from '../notifications/notificateur.service.js';
 import { BOUTIQUE_VISIBLE } from '../shops/boutique-visible.js';
+import { CommissionService } from '../parametres/commission.service.js';
 
 const ligneSelect = {
   id: true,
@@ -41,6 +42,9 @@ const commandeSelect = {
       vendeurId: true,
       statut: true,
       sousTotal: true,
+      tauxCommission: true,
+      montantCommission: true,
+      montantVendeur: true,
       montantTotal: true,
       vendeur: { select: { boutique: { select: { nom: true } } } },
       lignes: { select: ligneSelect },
@@ -66,8 +70,9 @@ export class CommandeService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificateur: NotificateurService,
+    private readonly commission: CommissionService,
     @InjectQueue(QUEUE_COMMANDE) private readonly queue: Queue,
-    config: ConfigService,
+    private readonly config: ConfigService,
   ) {
     this.delaiPaiementMs =
       config.getOrThrow<number>('commande.delaiPaiementMinutes') * 60_000;
@@ -232,7 +237,16 @@ export class CommandeService {
                       id: true,
                       nom: true,
                       prixBase: true,
-                      boutiqueId: true,
+                      boutique:{
+                        select:{
+                          vendeur:{
+                            select:{
+                              id: true,
+                              commissionPersonnalisee: true
+                            }
+                          }
+                        }
+                      },
                       statut: true,
                     },
                   },
@@ -275,14 +289,25 @@ export class CommandeService {
           new Prisma.Decimal(0),
         );
 
-      const groupes = new Map<string, typeof panier.articles>();
+      const groupes = new Map<string,{
+        commission: Prisma.Decimal | null,
+        articles: typeof panier.articles
+      }>();
       for (const article of panier.articles) {
-        const vendeurId = article.varianteProduit.produit.boutiqueId;
+        const vendeurId = article.varianteProduit.produit.boutique.vendeur.id;
+        const commission = article.varianteProduit.produit.boutique.vendeur.commissionPersonnalisee;
         if (vendeurId === utilisateurId)
           throw new BadRequestException(
             'Vous ne pouvez pas commander dans votre propre boutique.',
           );
-        groupes.set(vendeurId, [...(groupes.get(vendeurId) ?? []), article]);
+        const groupe = groupes.get(vendeurId);
+        if(groupe)
+          groupe.articles.push(article);
+        else
+          groupes.set(vendeurId,{
+            commission,
+            articles: [article],
+        });
       }
 
       const total = montant(panier.articles);
@@ -307,13 +332,19 @@ export class CommandeService {
         },
       });
 
-      for (const [vendeurId, articles] of groupes) {
+      for (const [vendeurId, groupe] of groupes) {
+        const articles = groupe.articles
         const sousTotal = montant(articles);
+        const taux = await this.commission.tauxPour(groupe.commission);
+        const { tauxCommission, montantCommission, montantNetVendeur } = this.commission.calculer(sousTotal, taux);
         const sousCommande = await tx.sousCommande.create({
           data: {
             commandeId: commande.id,
             vendeurId,
             sousTotal,
+            tauxCommission,
+            montantCommission,
+            montantNetVendeur,
             montantTotal: sousTotal,
             devise: 'XAF',
           },
