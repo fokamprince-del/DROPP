@@ -9,12 +9,12 @@ import '../../../core/auth/session.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/widgets/bandeau_message.dart';
+import '../../../shared/widgets/bouton_action.dart';
 import '../../../shared/widgets/champ_dropp.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../auth/data/modeles_auth.dart';
 import '../../auth/domain/validateurs.dart';
-import '../../auth/ui/messages_erreurs.dart';
-import '../../auth/ui/widgets/bandeau_message.dart';
-import '../../auth/ui/widgets/bouton_action.dart';
 import '../../auth/ui/widgets/selecteur_sexe.dart';
 import '../data/profil.dart';
 

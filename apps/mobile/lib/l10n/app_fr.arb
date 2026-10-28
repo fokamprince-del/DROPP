@@ -759,5 +759,17 @@
         "type": "int"
       }
     }
-  }
+  },
+
+
+  "vendeurTitre": "Devenir vendeur",
+  "vendeurIntro": "Vends tes produits aux clients de DROPP. Nous vérifions ton identité pour protéger les acheteurs.",
+  "vendeurPrerequisTitre": "Ce qu'il te faut",
+  "vendeurPrerequisTelephone": "Un téléphone vérifié",
+  "vendeurPrerequisCni": "Ta carte nationale d'identité (CNI)",
+  "vendeurPrerequisSelfie": "Un selfie de vérification",
+  "vendeurDelai": "Validation par l'équipe DROPP : prévois 24 à 48 h.",
+  "vendeurCommencer": "Commencer",
+  "vendeurSuite": "Prochaine étape : l'envoi de tes documents.",
+  "vendeurSuspendu": "Ton compte vendeur est suspendu. Contacte le support DROPP."
 }

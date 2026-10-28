@@ -14,9 +14,9 @@ import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
 import '../../../shared/theme/typographie.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../../auth/ui/pages/page_confirmation_email.dart';
 import '../data/profil.dart';
 

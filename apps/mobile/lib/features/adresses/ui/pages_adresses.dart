@@ -10,14 +10,14 @@ import '../../../core/router/routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/espacements.dart';
 import '../../../shared/theme/rayons.dart';
+import '../../../shared/widgets/bandeau_message.dart';
+import '../../../shared/widgets/bouton_action.dart';
 import '../../../shared/widgets/champ_dropp.dart';
 import '../../../shared/widgets/etat_vide.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
 import '../../auth/domain/validateurs.dart';
-import '../../auth/ui/messages_erreurs.dart';
-import '../../auth/ui/widgets/bandeau_message.dart';
-import '../../auth/ui/widgets/bouton_action.dart';
 import '../data/adresses.dart';
 
 String libelleType(AppLocalizations l10n, TypeAdresse type) => switch (type) {

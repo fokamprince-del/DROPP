@@ -11,20 +11,20 @@ import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/widgets/bandeau_message.dart';
+import '../../../shared/widgets/bouton_action.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
+import '../../../shared/widgets/page_acces.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
 import '../../../utils/format.dart';
 import '../../../utils/telephone.dart';
 import '../../auth/domain/validateurs.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../../auth/ui/pages/page_confirmation_email.dart';
-import '../../auth/ui/widgets/bandeau_message.dart';
-import '../../auth/ui/widgets/bouton_action.dart';
 import '../../auth/ui/widgets/champ_code.dart';
 import '../../auth/ui/widgets/champ_mot_de_passe.dart';
 import '../../auth/ui/widgets/champ_telephone.dart';
 import '../../auth/ui/widgets/lien_renvoyer_code.dart';
-import '../../auth/ui/widgets/page_acces.dart';
 import '../data/profil.dart';
 
 /// Sécurité : identifiants, appareils connectés, suppression du compte.

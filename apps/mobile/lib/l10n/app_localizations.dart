@@ -2407,6 +2407,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Page {numero} sur {total}'**
   String bienvenuePage(int numero, int total);
+
+  /// No description provided for @vendeurTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Devenir vendeur'**
+  String get vendeurTitre;
+
+  /// No description provided for @vendeurIntro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vends tes produits aux clients de DROPP. Nous vérifions ton identité pour protéger les acheteurs.'**
+  String get vendeurIntro;
+
+  /// No description provided for @vendeurPrerequisTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce qu\'il te faut'**
+  String get vendeurPrerequisTitre;
+
+  /// No description provided for @vendeurPrerequisTelephone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un téléphone vérifié'**
+  String get vendeurPrerequisTelephone;
+
+  /// No description provided for @vendeurPrerequisCni.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta carte nationale d\'identité (CNI)'**
+  String get vendeurPrerequisCni;
+
+  /// No description provided for @vendeurPrerequisSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un selfie de vérification'**
+  String get vendeurPrerequisSelfie;
+
+  /// No description provided for @vendeurDelai.
+  ///
+  /// In fr, this message translates to:
+  /// **'Validation par l\'équipe DROPP : prévois 24 à 48 h.'**
+  String get vendeurDelai;
+
+  /// No description provided for @vendeurCommencer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get vendeurCommencer;
+
+  /// No description provided for @vendeurSuite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prochaine étape : l\'envoi de tes documents.'**
+  String get vendeurSuite;
+
+  /// No description provided for @vendeurSuspendu.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte vendeur est suspendu. Contacte le support DROPP.'**
+  String get vendeurSuspendu;
 }
 
 class _AppLocalizationsDelegate

@@ -1,5 +1,5 @@
-import '../../../core/api/api_exception.dart';
-import '../../../l10n/app_localizations.dart';
+import '../../core/api/api_exception.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Texte traduit pour une erreur d'API. [specifiques] prime sur le texte
 /// générique du type. Le message du serveur n'est jamais affiché.

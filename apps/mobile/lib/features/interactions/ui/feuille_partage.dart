@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../shared/theme/espacements.dart';
-import '../../auth/ui/messages_erreurs.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../fil/data/modeles_fil.dart';
 import '../data/interactions_repository.dart';
 import 'actions_connectees.dart';

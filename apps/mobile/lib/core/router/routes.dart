@@ -101,6 +101,9 @@ const prefixesTelephone = [
 /// Préfixes réservés aux vendeurs.
 const prefixesVendeur = [Routes.espaceVendeur];
 
+/// Pages du parcours « devenir vendeur » : fermées aux vendeurs actifs.
+const prefixesDevenirVendeur = [Routes.devenirVendeur];
+
 bool commencePar(String chemin, Iterable<String> prefixes) => prefixes.any(
   (p) => p == Routes.accueil
       ? chemin == p

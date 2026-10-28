@@ -41,10 +41,12 @@ String? redirection(
           commencePar(chemin, prefixesTelephone)) {
         return Routes.securite;
       }
-      if (!utilisateur.estVendeur && commencePar(chemin, prefixesVendeur)) {
+      if (!utilisateur.estVendeurActif &&
+          commencePar(chemin, prefixesVendeur)) {
         return Routes.devenirVendeur;
       }
-      if (utilisateur.estVendeur && chemin == Routes.devenirVendeur) {
+      if (utilisateur.estVendeurActif &&
+          commencePar(chemin, prefixesDevenirVendeur)) {
         return Routes.espaceVendeur;
       }
       return null;

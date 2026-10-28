@@ -1442,4 +1442,37 @@ class AppLocalizationsFr extends AppLocalizations {
   String bienvenuePage(int numero, int total) {
     return 'Page $numero sur $total';
   }
+
+  @override
+  String get vendeurTitre => 'Devenir vendeur';
+
+  @override
+  String get vendeurIntro =>
+      'Vends tes produits aux clients de DROPP. Nous vérifions ton identité pour protéger les acheteurs.';
+
+  @override
+  String get vendeurPrerequisTitre => 'Ce qu\'il te faut';
+
+  @override
+  String get vendeurPrerequisTelephone => 'Un téléphone vérifié';
+
+  @override
+  String get vendeurPrerequisCni => 'Ta carte nationale d\'identité (CNI)';
+
+  @override
+  String get vendeurPrerequisSelfie => 'Un selfie de vérification';
+
+  @override
+  String get vendeurDelai =>
+      'Validation par l\'équipe DROPP : prévois 24 à 48 h.';
+
+  @override
+  String get vendeurCommencer => 'Commencer';
+
+  @override
+  String get vendeurSuite => 'Prochaine étape : l\'envoi de tes documents.';
+
+  @override
+  String get vendeurSuspendu =>
+      'Ton compte vendeur est suspendu. Contacte le support DROPP.';
 }

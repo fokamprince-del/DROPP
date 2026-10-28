@@ -15,10 +15,10 @@ import '../../../shared/theme/rayons.dart';
 import '../../../shared/theme/typographie.dart';
 import '../../../shared/widgets/etat_vide.dart';
 import '../../../shared/widgets/liste_paginee.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
 import '../../../utils/format.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../data/commandes.dart';
 
 final commandeProvider = FutureProvider.autoDispose.family<Commande, String>(

@@ -759,5 +759,17 @@
         "type": "int"
       }
     }
-  }
+  },
+
+
+  "vendeurTitre": "Become a seller",
+  "vendeurIntro": "Sell your products to DROPP customers. We verify your identity to protect buyers.",
+  "vendeurPrerequisTitre": "What you need",
+  "vendeurPrerequisTelephone": "A verified phone",
+  "vendeurPrerequisCni": "Your national ID card",
+  "vendeurPrerequisSelfie": "A verification selfie",
+  "vendeurDelai": "Review by the DROPP team: allow 24 to 48 hours.",
+  "vendeurCommencer": "Start",
+  "vendeurSuite": "Next step: uploading your documents.",
+  "vendeurSuspendu": "Your seller account is suspended. Contact DROPP support."
 }

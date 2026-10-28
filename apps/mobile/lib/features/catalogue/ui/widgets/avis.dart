@@ -5,14 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/api/api_exception.dart';
 import '../../../../core/auth/session.dart';
-
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/theme/typographie.dart';
 import '../../../../shared/widgets/etoiles.dart';
+import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../utils/format.dart';
-import '../../../auth/ui/messages_erreurs.dart';
 import '../../../avis/data/mes_avis.dart';
 import '../../../avis/ui/avis_ui.dart';
 import '../../data/modeles_catalogue.dart';
