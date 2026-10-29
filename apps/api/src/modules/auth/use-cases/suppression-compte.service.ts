@@ -131,7 +131,7 @@ export class SuppressionCompteService {
           pseudo: null,
           email: `supprime-${id}@supprime.invalid`,
           emailVerifieLe: null,
-          telephone: null,
+          telephone: '0000000000',
           telephoneVerifieLe: null,
           motDePasseHash: null,
           photoProfilCle: null,
