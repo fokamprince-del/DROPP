@@ -7,7 +7,7 @@ model Utilisateur {
   pseudo                  String?                   @unique
   email                   String?                   @unique
   emailVerifieLe          DateTime?                 @map("email_verifie_le") @db.Timestamptz(3)
-  telephone               String?                   @unique
+  telephone               String                    @unique
   telephoneVerifieLe      DateTime?                 @map("telephone_verifie_le") @db.Timestamptz(3)
   motDePasseHash          String?                   @map("mot_de_passe_hash")
   photoProfilCle          String?                   @map("photo_profil_cle")
