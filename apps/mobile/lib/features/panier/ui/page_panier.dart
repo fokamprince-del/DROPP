@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -9,6 +10,7 @@ import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/theme/rayons.dart';
 import '../../../shared/theme/typographie.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
@@ -46,7 +48,7 @@ class PagePanier extends ConsumerWidget {
       corps = ListView(
         children: [
           EtatVide(
-            icone: Icons.shopping_bag_outlined,
+            icone: IconesDropp.shoppingBasket,
             titre: l10n.panierVide,
             texte: l10n.panierVideTexte,
             action: FilledButton(
@@ -237,8 +239,8 @@ class _ContenuState extends ConsumerState<_Contenu> {
               const SizedBox(height: Espacements.m),
               Row(
                 children: [
-                  Icon(
-                    Icons.verified_user_outlined,
+                  FaIcon(
+                    IconesDropp.userShield,
                     size: 18,
                     color: context.couleursMetier.succes,
                   ),
@@ -385,8 +387,8 @@ class _CarteArticle extends StatelessWidget {
                 color: schema.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                Icons.shopping_bag_outlined,
+              child: FaIcon(
+                IconesDropp.shoppingBasket,
                 color: schema.onSurfaceVariant,
               ),
             ),
@@ -412,7 +414,7 @@ class _CarteArticle extends StatelessWidget {
                     IconButton(
                       tooltip: l10n.supprimer,
                       visualDensity: VisualDensity.compact,
-                      icon: const Icon(Icons.delete_outline, size: 20),
+                      icon: const FaIcon(IconesDropp.delete, size: 20),
                       onPressed: surSupprimer,
                     ),
                   ],

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +16,7 @@ import '../../../core/upload/choix_media.dart';
 import '../../../core/upload/service_upload.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
 import '../../../shared/widgets/image_reseau.dart';
 import '../../../shared/widgets/messages_erreurs.dart';
@@ -867,7 +869,7 @@ class _BarreSaisie extends StatelessWidget {
                                 child: f.estVideo
                                     ? ColoredBox(
                                         color: schema.surfaceContainerHighest,
-                                        child: const Icon(Icons.videocam),
+                                        child: const FaIcon(IconesDropp.video),
                                       )
                                     : Image.file(
                                         File(f.fichier.path),

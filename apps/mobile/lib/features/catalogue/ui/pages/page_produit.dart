@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/api/api_exception.dart';
@@ -10,6 +11,7 @@ import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/couleurs_metier.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/theme/typographie.dart';
 import '../../../../shared/widgets/avatar_boutique.dart';
@@ -145,7 +147,7 @@ class _FicheState extends ConsumerState<_Fiche> {
         automaticallyImplyLeading: false,
         leading: Center(
           child: _BoutonRond(
-            icone: Icons.arrow_back,
+            icone: IconesDropp.arrowBack,
             libelle: MaterialLocalizations.of(context).backButtonTooltip,
             surAppui: () => context.pop(),
           ),
@@ -153,7 +155,7 @@ class _FicheState extends ConsumerState<_Fiche> {
         actions: [
           if (ref.watch(utilisateurConnecteProvider)?.id != p.boutiqueId)
             _BoutonRond(
-              icone: Icons.flag_outlined,
+              icone: IconesDropp.solidFlag,
               libelle: l10n.signaler,
               surAppui: () => unawaited(
                 ouvrirSignalement(
@@ -486,7 +488,7 @@ class _LigneBoutique extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    const Icon(Icons.chevron_right),
+                    const FaIcon(IconesDropp.chevronRigth),
                   ],
                 ),
         ),
@@ -636,7 +638,7 @@ class _BarreAchatState extends ConsumerState<_BarreAchat> {
                 tooltip: l10n.boutiqueEcrire,
                 onPressed: _ouverture ? null : _ecrire,
                 style: IconButton.styleFrom(minimumSize: const Size(48, 48)),
-                icon: const Icon(Icons.chat_bubble_outline),
+                icon: const FaIcon(IconesDropp.messages),
               ),
               const SizedBox(width: Espacements.s),
               Expanded(
@@ -668,7 +670,7 @@ class _BoutonRond extends StatelessWidget {
     required this.surAppui,
   });
 
-  final IconData icone;
+  final FaIconData icone;
   final String libelle;
   final VoidCallback surAppui;
 
@@ -681,7 +683,7 @@ class _BoutonRond extends StatelessWidget {
         backgroundColor: Colors.white.withValues(alpha: 0.92),
         foregroundColor: const Color(0xFF151936),
       ),
-      icon: Icon(icone),
+      icon: FaIcon(icone),
     );
   }
 }

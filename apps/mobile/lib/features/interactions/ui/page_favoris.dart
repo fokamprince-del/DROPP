@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/widgets/etat_vide.dart';
 import '../../../shared/widgets/liste_paginee.dart';
 import '../../../utils/format.dart';
@@ -52,7 +54,7 @@ class _PageFavorisState extends ConsumerState<PageFavoris> {
               charger: depot.produits,
               separateur: const Divider(height: 1),
               vide: EtatVide(
-                icone: Icons.favorite_border,
+                icone: IconesDropp.favorite,
                 titre: l10n.favorisProduitsVide,
               ),
               elementBuilder: (context, f, _) => ListTile(
@@ -69,8 +71,8 @@ class _PageFavorisState extends ConsumerState<PageFavoris> {
                 ),
                 trailing: IconButton(
                   tooltip: l10n.favoriRetirer,
-                  icon: Icon(
-                    Icons.favorite,
+                  icon: FaIcon(
+                    IconesDropp.solidFavorite,
                     color: theme.colorScheme.secondary,
                   ),
                   onPressed: () => actionConnectee(context, ref, () async {
@@ -90,7 +92,7 @@ class _PageFavorisState extends ConsumerState<PageFavoris> {
               charger: depot.publications,
               separateur: const Divider(height: 1),
               vide: EtatVide(
-                icone: Icons.bookmark_border,
+                icone: IconesDropp.bookmark,
                 titre: l10n.favorisPublicationsVide,
               ),
               elementBuilder: (context, f, _) => ListTile(
@@ -105,7 +107,10 @@ class _PageFavorisState extends ConsumerState<PageFavoris> {
                 ),
                 trailing: IconButton(
                   tooltip: l10n.favoriRetirer,
-                  icon: Icon(Icons.bookmark, color: theme.colorScheme.primary),
+                  icon: FaIcon(
+                    IconesDropp.solidBookmark,
+                    color: theme.colorScheme.primary,
+                  ),
                   onPressed: () => actionConnectee(context, ref, () async {
                     await notifier.basculerFavoriPublication(
                       f.publicationId,

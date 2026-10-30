@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -12,6 +13,7 @@ import '../../../core/upload/choix_media.dart';
 import '../../../core/upload/service_upload.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/theme/typographie.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
 import '../../../shared/widgets/messages_erreurs.dart';
@@ -140,12 +142,12 @@ class _PageProfilState extends ConsumerState<PageProfil> {
 
     void aller(String route) => unawaited(context.push<void>(route));
     Widget entree(
-      IconData icone,
+      FaIconData icone,
       String titre,
       VoidCallback surAppui, {
       String? sousTitre,
     }) => ListTile(
-      leading: Icon(icone),
+      leading: FaIcon(icone),
       title: Text(titre),
       subtitle: sousTitre == null ? null : Text(sousTitre),
       trailing: const Icon(Icons.chevron_right),
@@ -216,8 +218,8 @@ class _PageProfilState extends ConsumerState<PageProfil> {
                       child: CircleAvatar(
                         radius: 18,
                         backgroundColor: theme.colorScheme.primary,
-                        child: Icon(
-                          Icons.photo_camera_outlined,
+                        child: FaIcon(
+                          IconesDropp.photo,
                           size: 18,
                           color: theme.colorScheme.onPrimary,
                         ),
@@ -260,64 +262,68 @@ class _PageProfilState extends ConsumerState<PageProfil> {
             ),
             section(l10n.profilSectionAchats),
             entree(
-              Icons.receipt_long_outlined,
+              IconesDropp.receipt,
               l10n.commandesTitre,
               () => aller(Routes.commandes),
             ),
             entree(
-              Icons.location_on_outlined,
+              IconesDropp.location,
               l10n.adressesTitre,
               () => aller(Routes.adresses),
             ),
             entree(
-              Icons.star_outline_rounded,
+              IconesDropp.solidStar,
               l10n.avisANoterTitre,
               () => aller(Routes.avisANoter),
             ),
             section(l10n.profilSectionSocial),
             entree(
-              Icons.bookmark_border,
+              IconesDropp.solidBookmark,
               l10n.favorisTitre,
               () => aller(Routes.mesFavoris),
             ),
             entree(
-              Icons.storefront_outlined,
+              IconesDropp.shop,
               l10n.abonnementsTitre,
               () => aller(Routes.mesAbonnements),
             ),
             section(l10n.profilSectionCompte),
             entree(
-              Icons.alternate_email,
+              IconesDropp.emailAt,
               l10n.profilEmail,
               () => ouvrirConfirmationEmail(context),
               sousTitre: emailEtat,
             ),
             entree(
-              Icons.shield_outlined,
+              IconesDropp.securite,
               l10n.securiteTitre,
               () => aller(Routes.securite),
             ),
             entree(
-              Icons.notifications_none,
+              IconesDropp.notification,
               l10n.notificationsPreferences,
               () => aller(Routes.preferencesNotifications),
             ),
-            entree(Icons.block, l10n.bloquesTitre, () => aller(Routes.bloques)),
             entree(
-              Icons.flag_outlined,
+              IconesDropp.ban,
+              l10n.bloquesTitre,
+              () => aller(Routes.bloques),
+            ),
+            entree(
+              IconesDropp.solidFlag,
               l10n.signalementsTitre,
               () => aller(Routes.mesSignalements),
             ),
             section(l10n.profilSectionVendeur),
             if (utilisateur?.estVendeur ?? false)
               entree(
-                Icons.store_mall_directory_outlined,
+                IconesDropp.storeFront,
                 l10n.profilEspaceVendeur,
                 () => aller(Routes.espaceVendeur),
               )
             else
               entree(
-                Icons.add_business_outlined,
+                IconesDropp.vendeur,
                 l10n.profilDevenirVendeur,
                 () => aller(Routes.devenirVendeur),
               ),
@@ -328,7 +334,7 @@ class _PageProfilState extends ConsumerState<PageProfil> {
                 style: TextButton.styleFrom(
                   foregroundColor: context.couleursMetier.erreur,
                 ),
-                icon: const Icon(Icons.logout),
+                icon: const FaIcon(IconesDropp.logout),
                 label: Text(l10n.deconnexion),
               ),
             ),

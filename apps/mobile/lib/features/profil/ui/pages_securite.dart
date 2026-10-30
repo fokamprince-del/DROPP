@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -11,6 +12,7 @@ import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/widgets/bandeau_message.dart';
 import '../../../shared/widgets/bouton_action.dart';
 import '../../../shared/widgets/messages_erreurs.dart';
@@ -108,22 +110,22 @@ class PageSecurite extends ConsumerWidget {
           children: [
             titre(l10n.securiteIdentifiants),
             ListTile(
-              leading: const Icon(Icons.lock_outline),
+              leading: const FaIcon(IconesDropp.userLock),
               title: Text(l10n.motDePasseChanger),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const FaIcon(IconesDropp.chevronRigth),
               onTap: () => unawaited(context.push<void>(Routes.motDePasse)),
             ),
             ListTile(
-              leading: const Icon(Icons.phone_android),
+              leading: const FaIcon(IconesDropp.mobile),
               title: Text(l10n.telephoneChanger),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const FaIcon(IconesDropp.chevronRigth),
               onTap: () =>
                   unawaited(context.push<void>(Routes.changerTelephone)),
             ),
             ListTile(
-              leading: const Icon(Icons.alternate_email),
+              leading: const FaIcon(IconesDropp.emailAt),
               title: Text(l10n.emailChangerTitre),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const FaIcon(IconesDropp.chevronRigth),
               onTap: () => ouvrirConfirmationEmail(context, changer: true),
             ),
             titre(l10n.securiteAppareils),
@@ -132,10 +134,10 @@ class PageSecurite extends ConsumerWidget {
                 children: [
                   for (final s in value)
                     ListTile(
-                      leading: Icon(
+                      leading: FaIcon(
                         s.plateforme == 'IOS'
-                            ? Icons.phone_iphone
-                            : Icons.phone_android,
+                            ? IconesDropp.iphone
+                            : IconesDropp.android,
                       ),
                       title: Text(
                         s.modele ??
@@ -195,10 +197,7 @@ class PageSecurite extends ConsumerWidget {
             ),
             titre(l10n.securiteCompte),
             ListTile(
-              leading: Icon(
-                Icons.delete_forever_outlined,
-                color: metier.erreur,
-              ),
+              leading: FaIcon(IconesDropp.deleteForever, color: metier.erreur),
               title: Text(
                 l10n.compteSupprimer,
                 style: TextStyle(color: metier.erreur),

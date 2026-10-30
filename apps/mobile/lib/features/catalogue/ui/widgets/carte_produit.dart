@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/couleurs.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/theme/typographie.dart';
 import '../../../../shared/widgets/image_reseau.dart';
 import '../../../../shared/widgets/squelette.dart';
@@ -68,8 +70,8 @@ class CarteProduit extends ConsumerWidget {
                     if (image == null)
                       ColoredBox(
                         color: theme.colorScheme.surfaceContainerHighest,
-                        child: Icon(
-                          Icons.shopping_bag_outlined,
+                        child: FaIcon(
+                          IconesDropp.shoppingBasket,
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       )
@@ -151,8 +153,8 @@ class BoutonFavoriProduit extends ConsumerWidget {
                 color: Colors.white.withValues(alpha: 0.92),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                favori ? Icons.favorite : Icons.favorite_border,
+              child: FaIcon(
+                favori ? IconesDropp.favorite : IconesDropp.solidFavorite,
                 size: 18,
                 color: favori ? Couleurs.hibiscus : Couleurs.encre,
               ),

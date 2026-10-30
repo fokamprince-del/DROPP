@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/couleurs_metier.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
 import '../../domain/validateurs.dart';
 
@@ -63,10 +65,10 @@ class _ChampMotDePasseState extends State<ChampMotDePasse> {
             tooltip: _visible
                 ? l10n.motDePasseMasquer
                 : l10n.motDePasseAfficher,
-            icon: Icon(
+            icon: FaIcon(
               _visible
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
+                  ? IconesDropp.masquerMotDePasse
+                  : IconesDropp.voirMotDePasse,
             ),
             onPressed: () => setState(() => _visible = !_visible),
           ),

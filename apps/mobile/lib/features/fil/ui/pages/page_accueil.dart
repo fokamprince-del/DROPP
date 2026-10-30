@@ -9,6 +9,7 @@ import '../../../../core/auth/session.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/etat_vide.dart';
 import '../../../../shared/widgets/liste_paginee.dart';
 import '../../../../shared/widgets/logo_dropp.dart';
@@ -129,7 +130,7 @@ class _FilPourToiState extends ConsumerState<_FilPourToi>
       separateur: const SeparateurFil(),
       squelette: const SqueletteFil(),
       vide: EtatVide(
-        icone: Icons.dynamic_feed_outlined,
+        icone: IconesDropp.windowRestore,
         titre: l10n.filPourToiVide,
       ),
       elementBuilder: (context, publication, _) =>
@@ -160,7 +161,7 @@ class _FilAbonnementsState extends ConsumerState<_FilAbonnements>
       return ListView(
         children: [
           EtatVide(
-            icone: Icons.storefront_outlined,
+            icone: IconesDropp.shop,
             titre: l10n.filConnexionTitre,
             texte: l10n.filConnexionTexte,
             action: FilledButton(
@@ -180,7 +181,7 @@ class _FilAbonnementsState extends ConsumerState<_FilAbonnements>
       separateur: const SeparateurFil(),
       squelette: const SqueletteFil(),
       vide: EtatVide(
-        icone: Icons.storefront_outlined,
+        icone: IconesDropp.shop,
         titre: l10n.filAbonnementsVideTitre,
         texte: l10n.filAbonnementsVideTexte,
         action: FilledButton(
