@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../theme/espacements.dart';
 import 'motif_ndop.dart';
@@ -13,7 +14,7 @@ class EtatVide extends StatelessWidget {
     this.action,
   });
 
-  final IconData icone;
+  final FaIconData icone;
   final String titre;
   final String? texte;
   final Widget? action;
@@ -50,7 +51,7 @@ class EtatVide extends StatelessWidget {
                     color: theme.scaffoldBackgroundColor,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icone, size: 30, color: schema.primary),
+                  child: FaIcon(icone, size: 30, color: schema.primary),
                 ),
               ],
             ),
