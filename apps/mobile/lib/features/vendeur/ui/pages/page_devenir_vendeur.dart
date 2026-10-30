@@ -11,6 +11,7 @@ import '../../../../shared/widgets/bouton_action.dart';
 import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../shared/widgets/page_acces.dart';
 import '../../data/vendeur_repository.dart';
+import '../widgets/verification_vendeur.dart';
 
 class PageDevenirVendeur extends ConsumerStatefulWidget {
   const PageDevenirVendeur({super.key});
@@ -54,16 +55,16 @@ class _PageDevenirVendeurState extends ConsumerState<PageDevenirVendeur> {
     final utilisateur = ref.watch(utilisateurConnecteProvider);
     if (utilisateur == null) return const Scaffold();
 
-    if (utilisateur.estVendeur) {
-      final suspendu = utilisateur.statutVendeur == 'SUSPENDU';
+        if (utilisateur.estVendeur) {
+      if (utilisateur.statutVendeur == 'SUSPENDU') {
+        return PageAcces(
+          titre: l10n.vendeurTitre,
+          enfants: [BandeauMessage(message: l10n.vendeurSuspendu)],
+        );
+      }
       return PageAcces(
         titre: l10n.vendeurTitre,
-        enfants: [
-          BandeauMessage(
-            message: suspendu ? l10n.vendeurSuspendu : l10n.vendeurSuite,
-            erreur: suspendu,
-          ),
-        ],
+        enfants: const [VerificationVendeur()],
       );
     }
 

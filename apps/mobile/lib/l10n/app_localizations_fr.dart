@@ -211,6 +211,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get motDePasseOublieLien => 'Mot de passe oublié ?';
 
   @override
+  String get ouSeparateur => 'ou';
+
+  @override
+  String get googleSeConnecter => 'Se connecter avec Google';
+
+  @override
+  String get googleSInscrire => 'S\'inscrire avec Google';
+
+  @override
+  String get fonctionnaliteBientot =>
+      'Cette fonctionnalité n\'est pas encore disponible.';
+
+  @override
   String get codeTitre => 'Entre le code reçu par SMS';
 
   @override
@@ -1475,4 +1488,92 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get vendeurSuspendu =>
       'Ton compte vendeur est suspendu. Contacte le support DROPP.';
+
+  @override
+  String get kycIntro =>
+      'Envoie ta carte d\'identité (recto et verso) et un selfie. Ces documents ne servent qu\'à vérifier ton identité.';
+
+  @override
+  String get kycTitreDocuments => 'Tes documents';
+
+  @override
+  String get kycCniRecto => 'Carte d\'identité · recto';
+
+  @override
+  String get kycCniVerso => 'Carte d\'identité · verso';
+
+  @override
+  String get kycSelfie => 'Selfie de vérification';
+
+  @override
+  String get kycAideCni =>
+      'Pose ta carte à plat, bien éclairée, sans reflet. Les quatre coins doivent être visibles.';
+
+  @override
+  String get kycAideSelfie =>
+      'Ton visage de face, bien éclairé, sans lunettes ni casquette.';
+
+  @override
+  String get kycPrendrePhoto => 'Prendre la photo';
+
+  @override
+  String get kycReprendrePhoto => 'Reprendre';
+
+  @override
+  String get kycGalerie => 'Choisir dans la galerie';
+
+  @override
+  String get kycEnvoye => 'Envoyé';
+
+  @override
+  String get kycRefuse => 'Refusé, à refaire';
+
+  @override
+  String get kycEnvoiEnCours => 'Envoi en cours…';
+
+  @override
+  String get kycPhotoTropLourde =>
+      'Photo trop lourde (10 Mo maximum). Reprends-la.';
+
+  @override
+  String get kycCameraIndisponible =>
+      'Impossible d\'ouvrir l\'appareil photo. Vérifie les autorisations de l\'app.';
+
+  @override
+  String get kycFormatNonSupporte =>
+      'Format non accepté. Utilise une photo JPEG, PNG ou WebP.';
+
+  @override
+  String kycDossierRefuse(String motif) {
+    return 'Ton dossier a été refusé : $motif';
+  }
+
+  @override
+  String get kycDossierRefuseSansMotif =>
+      'Ton dossier a été refusé. Reprends tes documents.';
+
+  @override
+  String get kycEnVerificationTitre => 'Vérification en cours';
+
+  @override
+  String get kycEnVerificationTexte =>
+      'Nous vérifions ton identité pour protéger les acheteurs. Prévois 24 à 48 h.';
+
+  @override
+  String get kycEtapeTelephone => 'Téléphone vérifié';
+
+  @override
+  String get kycEtapeCni => 'Pièce d\'identité (CNI) envoyée';
+
+  @override
+  String get kycEtapeSelfie => 'Selfie de vérification';
+
+  @override
+  String get kycEtapeValidation => 'Validation par l\'équipe DROPP';
+
+  @override
+  String get kycActualiser => 'Actualiser';
+
+  @override
+  String get kycRetourProfil => 'Retour au profil';
 }

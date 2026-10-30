@@ -71,6 +71,10 @@
   "connexionBouton": "Se connecter",
   "creerUnCompte": "Créer un compte",
   "motDePasseOublieLien": "Mot de passe oublié ?",
+  "ouSeparateur": "ou",
+  "googleSeConnecter": "Se connecter avec Google",
+  "googleSInscrire": "S'inscrire avec Google",
+  "fonctionnaliteBientot": "Cette fonctionnalité n'est pas encore disponible.",
   "codeTitre": "Entre le code reçu par SMS",
   "codeEnvoyeA": "Envoyé au {numero}. Valable 5 minutes.",
   "@codeEnvoyeA": {
@@ -771,5 +775,40 @@
   "vendeurDelai": "Validation par l'équipe DROPP : prévois 24 à 48 h.",
   "vendeurCommencer": "Commencer",
   "vendeurSuite": "Prochaine étape : l'envoi de tes documents.",
-  "vendeurSuspendu": "Ton compte vendeur est suspendu. Contacte le support DROPP."
+  "vendeurSuspendu": "Ton compte vendeur est suspendu. Contacte le support DROPP.",
+
+  "reessayer": "Réessayer",
+
+  "kycIntro": "Envoie ta carte d'identité (recto et verso) et un selfie. Ces documents ne servent qu'à vérifier ton identité.",
+  "kycTitreDocuments": "Tes documents",
+  "kycCniRecto": "Carte d'identité · recto",
+  "kycCniVerso": "Carte d'identité · verso",
+  "kycSelfie": "Selfie de vérification",
+  "kycAideCni": "Pose ta carte à plat, bien éclairée, sans reflet. Les quatre coins doivent être visibles.",
+  "kycAideSelfie": "Ton visage de face, bien éclairé, sans lunettes ni casquette.",
+  "kycPrendrePhoto": "Prendre la photo",
+  "kycReprendrePhoto": "Reprendre",
+  "kycGalerie": "Choisir dans la galerie",
+  "kycEnvoye": "Envoyé",
+  "kycRefuse": "Refusé, à refaire",
+  "kycEnvoiEnCours": "Envoi en cours…",
+  "kycPhotoTropLourde": "Photo trop lourde (10 Mo maximum). Reprends-la.",
+  "kycCameraIndisponible": "Impossible d'ouvrir l'appareil photo. Vérifie les autorisations de l'app.",
+  "kycFormatNonSupporte": "Format non accepté. Utilise une photo JPEG, PNG ou WebP.",
+  "kycDossierRefuse": "Ton dossier a été refusé : {motif}",
+  "@kycDossierRefuse": {
+    "placeholders": {
+      "motif": { "type": "String" }
+    }
+  },
+  "kycDossierRefuseSansMotif": "Ton dossier a été refusé. Reprends tes documents.",
+
+  "kycEnVerificationTitre": "Vérification en cours",
+  "kycEnVerificationTexte": "Nous vérifions ton identité pour protéger les acheteurs. Prévois 24 à 48 h.",
+  "kycEtapeTelephone": "Téléphone vérifié",
+  "kycEtapeCni": "Pièce d'identité (CNI) envoyée",
+  "kycEtapeSelfie": "Selfie de vérification",
+  "kycEtapeValidation": "Validation par l'équipe DROPP",
+  "kycActualiser": "Actualiser",
+  "kycRetourProfil": "Retour au profil"
 }
