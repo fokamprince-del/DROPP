@@ -15,9 +15,13 @@ import { AttribuerRoleService } from './use-cases/roles/attribuer-role.service.j
 import { RetirerRoleService } from './use-cases/roles/retirer-role.service.js';
 import { StatsService } from './use-cases/dashboard/stats.service.js';
 import { ListerAuditService } from './use-cases/audit/lister-audit.service.js';
+import { DefinirCommissionVendeurService } from './use-cases/parametres/definir-commission-vendeur.service.js';
+import { ListerParametresService } from './use-cases/parametres/lister-parametres.service.js';
+import { ModifierParametreService } from './use-cases/parametres/modifier-parametres.service.js';
+import { ParametresModule } from '../parametres/parametres.module.js';
 
 @Module({
-  imports: [PrismaModule, AuthentificationModule],
+  imports: [PrismaModule, AuthentificationModule, ParametresModule],
   controllers: [AdminController],
   providers: [
     ListerUtilisateursService,
@@ -32,6 +36,9 @@ import { ListerAuditService } from './use-cases/audit/lister-audit.service.js';
     RetirerRoleService,
     StatsService,
     ListerAuditService,
+    DefinirCommissionVendeurService,
+    ListerParametresService,
+    ModifierParametreService
   ],
 })
 export class AdminModule {}

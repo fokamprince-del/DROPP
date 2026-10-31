@@ -440,6 +440,30 @@ abstract class AppLocalizations {
   /// **'Mot de passe oublié ?'**
   String get motDePasseOublieLien;
 
+  /// No description provided for @ouSeparateur.
+  ///
+  /// In fr, this message translates to:
+  /// **'ou'**
+  String get ouSeparateur;
+
+  /// No description provided for @googleSeConnecter.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se connecter avec Google'**
+  String get googleSeConnecter;
+
+  /// No description provided for @googleSInscrire.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'inscrire avec Google'**
+  String get googleSInscrire;
+
+  /// No description provided for @fonctionnaliteBientot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette fonctionnalité n\'est pas encore disponible.'**
+  String get fonctionnaliteBientot;
+
   /// No description provided for @codeTitre.
   ///
   /// In fr, this message translates to:
@@ -2407,6 +2431,324 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Page {numero} sur {total}'**
   String bienvenuePage(int numero, int total);
+
+  /// No description provided for @vendeurTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Devenir vendeur'**
+  String get vendeurTitre;
+
+  /// No description provided for @vendeurIntro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vends tes produits aux clients de DROPP. Nous vérifions ton identité pour protéger les acheteurs.'**
+  String get vendeurIntro;
+
+  /// No description provided for @vendeurPrerequisTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce qu\'il te faut'**
+  String get vendeurPrerequisTitre;
+
+  /// No description provided for @vendeurPrerequisTelephone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un téléphone vérifié'**
+  String get vendeurPrerequisTelephone;
+
+  /// No description provided for @vendeurPrerequisCni.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta carte nationale d\'identité (CNI)'**
+  String get vendeurPrerequisCni;
+
+  /// No description provided for @vendeurPrerequisSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un selfie de vérification'**
+  String get vendeurPrerequisSelfie;
+
+  /// No description provided for @vendeurDelai.
+  ///
+  /// In fr, this message translates to:
+  /// **'Validation par l\'équipe DROPP : prévois 24 à 48 h.'**
+  String get vendeurDelai;
+
+  /// No description provided for @vendeurCommencer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get vendeurCommencer;
+
+  /// No description provided for @vendeurSuite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prochaine étape : l\'envoi de tes documents.'**
+  String get vendeurSuite;
+
+  /// No description provided for @vendeurSuspendu.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte vendeur est suspendu. Contacte le support DROPP.'**
+  String get vendeurSuspendu;
+
+  /// No description provided for @kycIntro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoie ta carte d\'identité (recto et verso) et un selfie. Ces documents ne servent qu\'à vérifier ton identité.'**
+  String get kycIntro;
+
+  /// No description provided for @kycTitreDocuments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tes documents'**
+  String get kycTitreDocuments;
+
+  /// No description provided for @kycCniRecto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Carte d\'identité · recto'**
+  String get kycCniRecto;
+
+  /// No description provided for @kycCniVerso.
+  ///
+  /// In fr, this message translates to:
+  /// **'Carte d\'identité · verso'**
+  String get kycCniVerso;
+
+  /// No description provided for @kycSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Selfie de vérification'**
+  String get kycSelfie;
+
+  /// No description provided for @kycAideCni.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pose ta carte à plat, bien éclairée, sans reflet. Les quatre coins doivent être visibles.'**
+  String get kycAideCni;
+
+  /// No description provided for @kycAideSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton visage de face, bien éclairé, sans lunettes ni casquette.'**
+  String get kycAideSelfie;
+
+  /// No description provided for @kycPrendrePhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prendre la photo'**
+  String get kycPrendrePhoto;
+
+  /// No description provided for @kycReprendrePhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre'**
+  String get kycReprendrePhoto;
+
+  /// No description provided for @kycGalerie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir dans la galerie'**
+  String get kycGalerie;
+
+  /// No description provided for @kycEnvoye.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyé'**
+  String get kycEnvoye;
+
+  /// No description provided for @kycRefuse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Refusé, à refaire'**
+  String get kycRefuse;
+
+  /// No description provided for @kycEnvoiEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoi en cours…'**
+  String get kycEnvoiEnCours;
+
+  /// No description provided for @kycPhotoTropLourde.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photo trop lourde (10 Mo maximum). Reprends-la.'**
+  String get kycPhotoTropLourde;
+
+  /// No description provided for @kycCameraIndisponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir l\'appareil photo. Vérifie les autorisations de l\'app.'**
+  String get kycCameraIndisponible;
+
+  /// No description provided for @kycFormatNonSupporte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Format non accepté. Utilise une photo JPEG, PNG ou WebP.'**
+  String get kycFormatNonSupporte;
+
+  /// No description provided for @kycDossierRefuse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier a été refusé : {motif}'**
+  String kycDossierRefuse(String motif);
+
+  /// No description provided for @kycDossierRefuseSansMotif.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier a été refusé. Reprends tes documents.'**
+  String get kycDossierRefuseSansMotif;
+
+  /// No description provided for @kycEnVerificationTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérification en cours'**
+  String get kycEnVerificationTitre;
+
+  /// No description provided for @kycEnVerificationTexte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous vérifions ton identité pour protéger les acheteurs. Prévois 24 à 48 h.'**
+  String get kycEnVerificationTexte;
+
+  /// No description provided for @kycEtapeTelephone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone vérifié'**
+  String get kycEtapeTelephone;
+
+  /// No description provided for @kycEtapeCni.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pièce d\'identité (CNI) envoyée'**
+  String get kycEtapeCni;
+
+  /// No description provided for @kycEtapeSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Selfie de vérification'**
+  String get kycEtapeSelfie;
+
+  /// No description provided for @kycEtapeValidation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Validation par l\'équipe DROPP'**
+  String get kycEtapeValidation;
+
+  /// No description provided for @kycActualiser.
+  ///
+  /// In fr, this message translates to:
+  /// **'Actualiser'**
+  String get kycActualiser;
+
+  /// No description provided for @kycRetourProfil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au profil'**
+  String get kycRetourProfil;
+
+  /// No description provided for @kycEtapeSur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {etape} sur {total}'**
+  String kycEtapeSur(int etape, int total);
+
+  /// No description provided for @kycCniTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta carte d\'identité'**
+  String get kycCniTitre;
+
+  /// No description provided for @kycCniExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importe le recto, puis le verso. Vérifie que la photo est bien nette avant de continuer.'**
+  String get kycCniExplication;
+
+  /// No description provided for @kycApercuRecto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu du recto de la carte d\'identité'**
+  String get kycApercuRecto;
+
+  /// No description provided for @kycApercuVerso.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu du verso de la carte d\'identité'**
+  String get kycApercuVerso;
+
+  /// No description provided for @kycApercuAbsent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Document envoyé. L\'aperçu n\'est pas disponible sur cet appareil.'**
+  String get kycApercuAbsent;
+
+  /// No description provided for @kycStatutAImporter.
+  ///
+  /// In fr, this message translates to:
+  /// **'À importer'**
+  String get kycStatutAImporter;
+
+  /// No description provided for @kycStatutAVerifier.
+  ///
+  /// In fr, this message translates to:
+  /// **'À vérifier'**
+  String get kycStatutAVerifier;
+
+  /// No description provided for @kycUtiliserPhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Utiliser cette photo'**
+  String get kycUtiliserPhoto;
+
+  /// No description provided for @kycRemplacerPhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplacer'**
+  String get kycRemplacerPhoto;
+
+  /// No description provided for @kycVersoApresRecto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importe d\'abord le recto.'**
+  String get kycVersoApresRecto;
+
+  /// No description provided for @kycContinuer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get kycContinuer;
+
+  /// No description provided for @kycRetour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour'**
+  String get kycRetour;
+
+  /// No description provided for @kycAgrandir.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toucher pour agrandir'**
+  String get kycAgrandir;
+
+  /// No description provided for @kycFermer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get kycFermer;
+
+  /// No description provided for @kycCommencer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer la vérification'**
+  String get kycCommencer;
+
+  /// No description provided for @kycReprendre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre ma vérification'**
+  String get kycReprendre;
 }
 
 class _AppLocalizationsDelegate

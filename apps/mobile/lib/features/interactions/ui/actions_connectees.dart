@@ -8,7 +8,7 @@ import '../../../core/api/api_exception.dart';
 import '../../../core/auth/session.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
-import '../../auth/ui/messages_erreurs.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 
 /// `true` si l'utilisateur est connecté. Sinon ouvre la connexion, qui
 /// ramènera sur la page actuelle, et renvoie `false`.

@@ -2,15 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/auth/session.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
 import '../../../shared/widgets/liste_paginee.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../utils/format.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../../fil/data/modeles_fil.dart';
 import '../../interactions/application/interactions.dart';
 import '../../interactions/ui/actions_connectees.dart';
@@ -448,8 +450,8 @@ class LigneCommentaire extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    aime ? Icons.favorite : Icons.favorite_border,
+                  FaIcon(
+                    aime ? IconesDropp.solidFavorite : IconesDropp.favorite,
                     size: 16,
                     color: aime
                         ? theme.colorScheme.secondary
@@ -607,7 +609,7 @@ class _ZoneSaisie extends StatelessWidget {
                 IconButton(
                   tooltip: l10n.annuler,
                   visualDensity: VisualDensity.compact,
-                  icon: const Icon(Icons.close, size: 18),
+                  icon: const FaIcon(IconesDropp.close, size: 18),
                   onPressed: surAnnulerReponse,
                 ),
               ],

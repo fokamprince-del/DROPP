@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../shared/theme/espacements.dart';
-import '../../auth/ui/messages_erreurs.dart';
+import '../../../shared/theme/icons.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../fil/data/modeles_fil.dart';
 import '../data/interactions_repository.dart';
 import 'actions_connectees.dart';
@@ -106,7 +108,7 @@ class _FeuillePartageState extends ConsumerState<_FeuillePartage> {
               children: [
                 _Option(
                   couleur: _vertWhatsApp,
-                  icone: Icons.chat,
+                  icone: IconesDropp.whatsapp,
                   libelle: 'WhatsApp',
                   enCours: _enCours == PlateformePartage.whatsapp,
                   surAppui: _enCours == null
@@ -115,7 +117,7 @@ class _FeuillePartageState extends ConsumerState<_FeuillePartage> {
                 ),
                 _Option(
                   couleur: theme.colorScheme.onSurfaceVariant,
-                  icone: Icons.link,
+                  icone: IconesDropp.link,
                   libelle: l10n.partageCopierLien,
                   enCours: _enCours == PlateformePartage.copierLien,
                   surAppui: _enCours == null
@@ -151,7 +153,7 @@ class _Option extends StatelessWidget {
   });
 
   final Color couleur;
-  final IconData icone;
+  final FaIconData icone;
   final String libelle;
   final bool enCours;
   final VoidCallback? surAppui;
@@ -177,7 +179,7 @@ class _Option extends StatelessWidget {
                         color: Colors.white,
                       ),
                     )
-                  : Icon(icone, color: Colors.white),
+                  : FaIcon(icone, color: Colors.white),
             ),
             const SizedBox(height: Espacements.xs),
             Text(libelle, style: Theme.of(context).textTheme.labelMedium),

@@ -30,8 +30,8 @@ abstract final class Couleurs {
 
   // ── Ajouts : valeurs estimées, à valider visuellement ──
   static const blanc = Color(0xFFFFFFFF);
-  static const bordure = Color(0xFFD9DCE8);
-  static const bordureSombre = Color(0xFF2A3160);
+  static const bordure = Color(0xFF7F87B0);
+  static const bordureSombre = Color(0xFF6B74B0);
   static const texteSombre = Color(0xFFF1F2FA);
 
   // Variantes pour le TEXTE (contraste ≥ 4,5 : 1, vérifié par un test).
@@ -51,4 +51,12 @@ abstract final class Couleurs {
   static const plantainFondSombre = Color(0xFF12301F);
   static const kolaFondSombre = Color(0xFF33270E);
   static const pimentFondSombre = Color(0xFF3A1A14);
+
+  // Filets décoratifs (séparateurs, barre d'onglets).
+  static const separateur = Color(0xFFD9DCE8);
+  static const separateurSombre = Color(0xFF2A3160);
+
+  // Texte secondaire, sans transparence.
+  static const texteSecondaire = Color(0xFF454B70); // 8,4 sur blanc
+  static const texteSecondaireSombre = Color(0xFFB4BBE3); // 9,0 sur la carte
 }

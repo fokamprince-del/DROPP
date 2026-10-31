@@ -28,7 +28,12 @@ class Utilisateur {
   final bool estVendeur;
   final String? statutVendeur;
 
+  static const statutVendeurActif = 'ACTIF';
+
   String get nomComplet => '$prenom $nom'.trim();
+
+  /// Vendeur dont le KYC est validé : seul celui-là accède à l'espace vendeur.
+  bool get estVendeurActif => estVendeur && statutVendeur == statutVendeurActif;
 
   factory Utilisateur.fromJson(Map<String, dynamic> json) => Utilisateur(
     id: json['id'] as String,

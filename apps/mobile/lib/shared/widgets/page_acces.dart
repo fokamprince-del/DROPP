@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/theme/espacements.dart';
+import '../theme/espacements.dart';
 
 /// Page d'écran d'accès : flèche retour, titre, contenu défilant centré.
 class PageAcces extends StatelessWidget {

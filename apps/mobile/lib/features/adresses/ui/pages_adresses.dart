@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -9,15 +10,16 @@ import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/theme/rayons.dart';
+import '../../../shared/widgets/bandeau_message.dart';
+import '../../../shared/widgets/bouton_action.dart';
 import '../../../shared/widgets/champ_dropp.dart';
 import '../../../shared/widgets/etat_vide.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
 import '../../auth/domain/validateurs.dart';
-import '../../auth/ui/messages_erreurs.dart';
-import '../../auth/ui/widgets/bandeau_message.dart';
-import '../../auth/ui/widgets/bouton_action.dart';
 import '../data/adresses.dart';
 
 String libelleType(AppLocalizations l10n, TypeAdresse type) => switch (type) {
@@ -40,7 +42,7 @@ class PageAdresses extends ConsumerWidget {
       AsyncData(:final value) when value.isEmpty => ListView(
         children: [
           EtatVide(
-            icone: Icons.location_on_outlined,
+            icone: IconesDropp.location,
             titre: l10n.adressesVide,
             texte: l10n.adressesVideTexte,
           ),
@@ -71,10 +73,10 @@ class PageAdresses extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    FaIcon(
                       a.type == TypeAdresse.livraison
-                          ? Icons.local_shipping_outlined
-                          : Icons.location_on_outlined,
+                          ? IconesDropp.truck
+                          : IconesDropp.location,
                       color: theme.colorScheme.primary,
                     ),
                     const SizedBox(width: Espacements.m),
@@ -102,7 +104,7 @@ class PageAdresses extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    const Icon(Icons.chevron_right),
+                    const FaIcon(IconesDropp.chevronRigth),
                   ],
                 ),
               ),
@@ -130,7 +132,7 @@ class PageAdresses extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.adressesTitre)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => unawaited(context.push<void>(Routes.nouvelleAdresse)),
-        icon: const Icon(Icons.add),
+        icon: const FaIcon(IconesDropp.add),
         label: Text(l10n.adresseAjouter),
       ),
       body: RefreshIndicator(
@@ -275,7 +277,7 @@ class _PageFormulaireAdresseState extends ConsumerState<PageFormulaireAdresse> {
             IconButton(
               tooltip: l10n.supprimer,
               onPressed: _envoi ? null : _supprimer,
-              icon: const Icon(Icons.delete_outline),
+              icon: const FaIcon(IconesDropp.delete),
             ),
         ],
       ),

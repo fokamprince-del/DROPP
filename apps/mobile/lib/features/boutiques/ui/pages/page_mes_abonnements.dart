@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/etat_vide.dart';
 import '../../../../shared/widgets/liste_paginee.dart';
 import '../../data/boutiques_repository.dart';
@@ -26,7 +27,7 @@ class PageMesAbonnements extends ConsumerWidget {
       body: ListePaginee<AbonnementBoutique>(
         charger: depot.mesAbonnements,
         vide: EtatVide(
-          icone: Icons.storefront_outlined,
+          icone: IconesDropp.storeFront,
           titre: l10n.abonnementsVideTitre,
           texte: l10n.filAbonnementsVideTexte,
           action: FilledButton(

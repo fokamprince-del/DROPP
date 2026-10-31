@@ -36,6 +36,7 @@ import { SignalementsModule } from './modules/signalements/signalements.module.j
 import { AvisModule } from './modules/avis/avis.module.js';
 import { KycModule } from './modules/kyc/kyc.module.js';
 import { AdminModule } from './modules/admin/admin.module.js';
+import { ParametresModule } from './modules/parametres/parametres.module.js';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { AdminModule } from './modules/admin/admin.module.js';
     MaintenanceModule,
     NotificationsModule,
     AuthentificationModule,
+    ParametresModule,
     ProduitsModule,
     UsersModule,
     ClientsModule,

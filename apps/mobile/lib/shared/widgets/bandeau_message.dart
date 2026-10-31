@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/theme/couleurs_metier.dart';
-import '../../../../shared/theme/espacements.dart';
-import '../../../../shared/theme/rayons.dart';
+import '../theme/couleurs_metier.dart';
+import '../theme/espacements.dart';
+import '../theme/rayons.dart';
 
 /// Message d'erreur (`erreur`) ou d'information (sinon), annoncé par les
 /// lecteurs d'écran.

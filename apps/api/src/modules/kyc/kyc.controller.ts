@@ -31,6 +31,9 @@ import { DecisionAdminService } from './use-cases/decision-admin.service.js';
 import { ExtraireDonneesCniService } from './use-cases/extraire-donnees-cni.service.js';
 import { SoumettreDoissierService } from './use-cases/soummetre-dossier-kyc.service.js';
 import { UploadDocumentService } from './use-cases/upload-document.service.js';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ConfirmationOCRResponseDto, ConfirmerUploadKycReponseDto, ConsulterDossierKycAdminReponseDto, ConsulterDossierKycVendeurResponseDto, DemanderSignatureReponseDto, ExtractionCniReponseDto, ListeDossiersKycReponseDto, MessageReponseDto } from './dto/kyc-reponses.dto.js';
+import { ApiErreurs } from '../../infrastructure/http/api-erreur.decorator.js';
 
 /**
  * Parcours KYC : réservé aux vendeurs EN ATTENTE de validation
@@ -55,20 +58,22 @@ export class KycController {
   @Vendeur('EN_ATTENTE_VALIDATION')
   @Post('kyc/documents/signature')
   @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({type: DemanderSignatureReponseDto, })
   demanderSignatureDocument(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: DemanderSignatureDocumentKycDto,
-  ) {
+  ): Promise<DemanderSignatureReponseDto> {
     return this.uploadDocument.demanderSignature(u.id, dto);
   }
 
   @Vendeur('EN_ATTENTE_VALIDATION')
   @Post('kyc/documents/confirmer')
   @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({type: ConfirmerUploadKycReponseDto})
   confirmerDocument(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: ConfirmerUploadDocumentKycDto,
-  ) {
+  ): Promise<ConfirmerUploadKycReponseDto> {
     return this.uploadDocument.confirmerUpload(u.id, dto);
   }
 
@@ -79,17 +84,23 @@ export class KycController {
   @Vendeur('EN_ATTENTE_VALIDATION')
   @Post('kyc/cni/extraire')
   @HttpCode(HttpStatus.OK)
-  extraireCni(@CurrentUser() u: UtilisateurConnecte) {
+  @ApiErreurs(404)
+  @ApiOkResponse({type: ExtractionCniReponseDto})
+  extraireCni(
+    @CurrentUser() u: UtilisateurConnecte
+  ): Promise<ExtractionCniReponseDto> {
     return this.extraireDonneesCni.executer(u.id);
   }
 
   @Vendeur('EN_ATTENTE_VALIDATION')
   @Post('kyc/cni/confirmer')
   @HttpCode(HttpStatus.OK)
+  @ApiErreurs(400)
+  @ApiOkResponse({type: ConfirmationOCRResponseDto})
   confirmerCni(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() dto: DonneesCniDto,
-  ) {
+  ): Promise<ConfirmationOCRResponseDto> {
     return this.confirmerDonneesCni.executer(u.id, dto);
   }
 
@@ -100,10 +111,18 @@ export class KycController {
   @RequiertIdempotenceKey()
   @Post('kyc/soumettre')
   @HttpCode(HttpStatus.OK)
+  @ApiErreurs(400, 409)
+  @ApiOkResponse({
+    type: MessageReponseDto, 
+    example: {
+      statut: 'EN_COURS_VERIFICATION',
+      message: 'Dossier soumis. La vérification est en cours.',
+    }
+  })
   soumettre(
     @CurrentUser() u: UtilisateurConnecte,
     @Body() _dto: SoumettreDossierKycDto,
-  ) {
+  ): Promise<MessageReponseDto> {
     return this.soumettreDossier.executer(u.id);
   }
 
@@ -111,7 +130,9 @@ export class KycController {
 
   @Vendeur('EN_ATTENTE_VALIDATION', 'ACTIF', 'SUSPENDU')
   @Get('kyc/mon-dossier')
-  monDossier(@CurrentUser() u: UtilisateurConnecte) {
+  monDossier(
+    @CurrentUser() u: UtilisateurConnecte
+  ): Promise<ConsulterDossierKycVendeurResponseDto> {
     return this.consulterDossier.pourVendeur(u.id);
   }
 
@@ -124,7 +145,7 @@ export class KycController {
     statut?: StatutKyc,
     @Query('page', new ParseIntPipe({ optional: true })) page = 1,
     @Query('limite', new ParseIntPipe({ optional: true })) limite = 20,
-  ) {
+  ): Promise<ListeDossiersKycReponseDto> {
     return this.consulterDossier.listerPourAdmin({
       statut,
       page: Math.max(page, 1),
@@ -134,21 +155,23 @@ export class KycController {
 
   @Admin('SUPER_ADMIN', 'MODERATEUR')
   @Get('admin/kyc/:id')
+  @ApiErreurs(404)
   consulterDossierAdmin(
     @CurrentUser() u: UtilisateurConnecte,
     @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  ): Promise<ConsulterDossierKycAdminReponseDto> {
     return this.consulterDossier.pourAdmin(id, u.id);
   }
 
   @Admin('SUPER_ADMIN', 'MODERATEUR')
   @Post('admin/kyc/:id/decision')
   @HttpCode(HttpStatus.OK)
+  @ApiErreurs(404,400,409)
   prendreDecision(
     @CurrentUser() u: UtilisateurConnecte,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: DecisionAdminDto,
-  ) {
+  ): Promise<MessageReponseDto> {
     return this.decisionAdmin.executer(id, u.id, dto);
   }
 }

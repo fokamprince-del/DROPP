@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'badges_navigation.dart';
+import '../messagerie/application/non_lus.dart';
+import '../panier/application/panier.dart';
 import 'barre_navigation.dart';
 
 /// Barre d'onglets du bas. Chaque onglet garde sa propre pile de navigation.

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../data/modeles_catalogue.dart';
 
 /// Fourchettes de prix de la maquette (FCFA).
@@ -152,10 +154,10 @@ class _FeuilleFiltresState extends State<_FeuilleFiltres> {
                 contentPadding: EdgeInsets.zero,
                 title: Text(libelleTri(l10n, tri)),
                 selected: _filtres.tri == tri,
-                trailing: Icon(
+                trailing: FaIcon(
                   _filtres.tri == tri
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
+                      ? IconesDropp.circleDot
+                      : IconesDropp.circle,
                   color: _filtres.tri == tri ? schema.primary : schema.outline,
                 ),
                 onTap: () => setState(() => _filtres = _filtres.avec(tri: tri)),

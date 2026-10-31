@@ -62,7 +62,6 @@ class IntercepteurAuth extends Interceptor {
   ) async {
     final options = err.requestOptions;
     final jetonEnvoye = options.headers['Authorization'] as String?;
-
     if (err.response?.statusCode != 401 ||
         _sansJeton(options) ||
         jetonEnvoye == null ||

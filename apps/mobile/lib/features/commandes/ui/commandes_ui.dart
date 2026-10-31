@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -11,14 +12,15 @@ import '../../../core/router/routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/theme/rayons.dart';
 import '../../../shared/theme/typographie.dart';
 import '../../../shared/widgets/etat_vide.dart';
 import '../../../shared/widgets/liste_paginee.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
 import '../../../utils/format.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../data/commandes.dart';
 
 final commandeProvider = FutureProvider.autoDispose.family<Commande, String>(
@@ -89,7 +91,7 @@ class PageCommandes extends ConsumerWidget {
         padding: const EdgeInsets.all(Espacements.l),
         separateur: const SizedBox(height: Espacements.s),
         vide: EtatVide(
-          icone: Icons.receipt_long_outlined,
+          icone: IconesDropp.receipt,
           titre: l10n.commandesVide,
           action: FilledButton(
             onPressed: () => context.go(Routes.recherche),
@@ -329,7 +331,7 @@ class _Detail extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.phone_android, color: schema.primary),
+                FaIcon(IconesDropp.phoneScreen, color: schema.primary),
                 const SizedBox(width: Espacements.s),
                 Expanded(
                   child: Text(
@@ -500,7 +502,7 @@ class _MinuteurState extends State<_Minuteur> {
         ),
         child: Row(
           children: [
-            Icon(Icons.timer_outlined, color: metier.attente),
+            FaIcon(IconesDropp.timer, color: metier.attente),
             const SizedBox(width: Espacements.s),
             Expanded(
               child: Text(
