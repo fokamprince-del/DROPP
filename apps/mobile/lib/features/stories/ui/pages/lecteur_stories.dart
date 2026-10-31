@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/couleurs.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/avatar_boutique.dart';
 import '../../../../shared/widgets/image_reseau.dart';
 import '../../../../utils/format.dart';
@@ -397,7 +399,7 @@ class _VueGroupeState extends State<_VueGroupe>
                         IconButton(
                           tooltip: l10n.storyFermer,
                           color: Colors.white,
-                          icon: const Icon(Icons.close),
+                          icon: const FaIcon(IconesDropp.close),
                           onPressed: widget.surFermer,
                         ),
                       ],

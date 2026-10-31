@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/api/api_exception.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/couleurs.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/theme/typographie.dart';
 import '../../../../shared/widgets/avatar_boutique.dart';
 import '../../../../shared/widgets/etat_vide.dart';
@@ -188,7 +190,7 @@ class _EnTete extends ConsumerWidget {
                       backgroundColor: Colors.white.withValues(alpha: 0.92),
                       foregroundColor: Couleurs.encre,
                     ),
-                    icon: const Icon(Icons.arrow_back),
+                    icon: const FaIcon(IconesDropp.arrowBack),
                   ),
                 ),
               ),
@@ -204,7 +206,7 @@ class _EnTete extends ConsumerWidget {
                         icon: const CircleAvatar(
                           backgroundColor: Color(0xEBFFFFFF),
                           foregroundColor: Couleurs.encre,
-                          child: Icon(Icons.more_vert),
+                          child: FaIcon(IconesDropp.moveVert),
                         ),
                         onSelected: (signaler) => unawaited(
                           signaler
@@ -300,7 +302,7 @@ class _EnTete extends ConsumerWidget {
                           ref,
                           () => ouvrirDiscussionAvec(context, ref, b.id),
                         ),
-                        icon: const Icon(Icons.chat_bubble_outline, size: 18),
+                        icon: const FaIcon(IconesDropp.messages, size: 18),
                         label: Text(l10n.boutiqueMessage),
                       ),
                     ),
@@ -429,7 +431,7 @@ class _ProduitsBoutique extends ConsumerWidget {
           child: SqueletteGrille(),
         ),
         vide: EtatVide(
-          icone: Icons.shopping_bag_outlined,
+          icone: IconesDropp.shoppingBasket,
           titre: l10n.boutiqueAucunProduit,
         ),
         elementBuilder: (context, produit, _) => CarteProduit(produit: produit),
@@ -453,7 +455,7 @@ class _PublicationsBoutique extends ConsumerWidget {
       separateur: const SeparateurFil(),
       squelette: const SqueletteFil(),
       vide: EtatVide(
-        icone: Icons.dynamic_feed_outlined,
+        icone: IconesDropp.windowRestore,
         titre: l10n.boutiqueAucunePublication,
       ),
       elementBuilder: (context, publication, _) =>

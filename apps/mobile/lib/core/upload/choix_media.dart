@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../shared/theme/icons.dart';
 import '../l10n/contexte_l10n.dart';
 import 'service_upload.dart';
 
@@ -21,12 +23,14 @@ String? typeMimeDe(String nomFichier) {
   return _typesParExtension[nomFichier.substring(point + 1).toLowerCase()];
 }
 
+enum FichierRefuseRaison { formatNonSupporte, indisponible, tropLourd }
+
 /// Le fichier choisi n'a pas un format accepté ou dépasse la taille permise.
 class FichierRefuse implements Exception {
-  const FichierRefuse({this.tropGros = false, this.tailleMaxMo});
+  const FichierRefuse({this.tailleMaxMo, this.raison});
 
-  final bool tropGros;
   final int? tailleMaxMo;
+  final FichierRefuseRaison? raison;
 }
 
 /// Propose galerie ou appareil photo (et vidéo si [video]) dans une feuille,
@@ -49,23 +53,23 @@ Future<FichierLocal?> choisirMedia(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(Icons.photo_library_outlined),
+            leading: const FaIcon(IconesDropp.imagesGalery),
             title: Text(l10n.mediaGaleriePhoto),
             onTap: () => Navigator.pop(context, _Source.galeriePhoto),
           ),
           ListTile(
-            leading: const Icon(Icons.photo_camera_outlined),
+            leading: const FaIcon(IconesDropp.photo),
             title: Text(l10n.mediaPrendrePhoto),
             onTap: () => Navigator.pop(context, _Source.cameraPhoto),
           ),
           if (video) ...[
             ListTile(
-              leading: const Icon(Icons.video_library_outlined),
+              leading: const FaIcon(IconesDropp.videosGalery),
               title: Text(l10n.mediaGalerieVideo),
               onTap: () => Navigator.pop(context, _Source.galerieVideo),
             ),
             ListTile(
-              leading: const Icon(Icons.videocam_outlined),
+              leading: const FaIcon(IconesDropp.video),
               title: Text(l10n.mediaFilmer),
               onTap: () => Navigator.pop(context, _Source.cameraVideo),
             ),
@@ -108,13 +112,16 @@ Future<FichierLocal> preparerFichier(
   int tailleMaxVideoMo = 100,
 }) async {
   final typeMime = typeMimeDe(fichier.name) ?? typeMimeDe(fichier.path);
-  if (typeMime == null) throw const FichierRefuse();
+  if (typeMime == null) throw const FichierRefuse(raison: FichierRefuseRaison.formatNonSupporte);
   final taille = await fichier.length();
   final maxMo = typeMime.startsWith('video/')
       ? tailleMaxVideoMo
       : tailleMaxImageMo;
   if (taille > maxMo * 1024 * 1024) {
-    throw FichierRefuse(tropGros: true, tailleMaxMo: maxMo);
+    throw FichierRefuse(
+      raison: FichierRefuseRaison.tropLourd,
+      tailleMaxMo: maxMo,
+    );
   }
 
   int? largeur;

@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/theme/typographie.dart';
 import '../../../../shared/widgets/etat_vide.dart';
 import '../../../../shared/widgets/liste_paginee.dart';
@@ -97,12 +99,12 @@ class _PageDecouvrirState extends State<PageDecouvrir> {
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
                     hintText: l10n.rechercheIndice,
-                    prefixIcon: const Icon(Icons.search),
+                    prefixIcon:const Center(child: FaIcon(IconesDropp.decouvrir)),
                     suffixIcon: _recherche.text.isEmpty
                         ? null
                         : IconButton(
                             tooltip: l10n.rechercheEffacer,
-                            icon: const Icon(Icons.close),
+                            icon: const FaIcon(IconesDropp.close),
                             onPressed: _effacerRecherche,
                           ),
                   ),
@@ -196,7 +198,7 @@ class _OngletProduitsState extends ConsumerState<_OngletProduits>
         ),
         squelette: const SqueletteGrille(),
         vide: EtatVide(
-          icone: Icons.search_off,
+          icone: IconesDropp.searchChart,
           titre: l10n.catalogueVide,
           action: filtres.nombreActifs > 0 || filtres.categorieId != null
               ? TextButton(
@@ -304,7 +306,7 @@ class _EnTeteProduits extends ConsumerWidget {
                 backgroundColor: schema.secondary,
                 child: OutlinedButton.icon(
                   onPressed: surOuvrirFiltres,
-                  icon: const Icon(Icons.tune, size: 18),
+                  icon: const FaIcon(IconesDropp.slider, size: 18),
                   label: Text(l10n.filtresTitre),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 40),
@@ -320,7 +322,7 @@ class _EnTeteProduits extends ConsumerWidget {
               const Spacer(),
               TextButton.icon(
                 onPressed: surOuvrirFiltres,
-                icon: const Icon(Icons.swap_vert, size: 18),
+                icon: const FaIcon(IconesDropp.swatVert, size: 18),
                 label: Text(libelleTri(l10n, filtres.tri)),
               ),
             ],
@@ -354,10 +356,7 @@ class _OngletBoutiquesState extends ConsumerState<_OngletBoutiques>
     return ListePaginee<Boutique>(
       key: ValueKey('boutiques-${widget.q}'),
       charger: (page) => depot.rechercher(widget.q, page),
-      vide: EtatVide(
-        icone: Icons.storefront_outlined,
-        titre: l10n.boutiquesVide,
-      ),
+      vide: EtatVide(icone: IconesDropp.shopOff, titre: l10n.boutiquesVide),
       elementBuilder: (context, b, _) => TuileBoutique(
         boutiqueId: b.id,
         nom: b.nom,

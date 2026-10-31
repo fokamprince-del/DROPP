@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -9,12 +10,13 @@ import '../../../core/l10n/contexte_l10n.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
 import '../../../shared/widgets/etat_vide.dart';
 import '../../../shared/widgets/liste_paginee.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../../interactions/ui/actions_connectees.dart';
 import '../data/moderation.dart';
 
@@ -138,10 +140,10 @@ class _FeuilleSignalementState extends ConsumerState<_FeuilleSignalement> {
                       contentPadding: EdgeInsets.zero,
                       title: Text(m.libelle),
                       selected: _motif?.code == m.code,
-                      trailing: Icon(
+                      trailing: FaIcon(
                         _motif?.code == m.code
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
+                            ? IconesDropp.circleDot
+                            : IconesDropp.circle,
                         color: _motif?.code == m.code
                             ? schema.primary
                             : schema.outline,
@@ -277,7 +279,7 @@ class PageBloques extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.bloquesTitre)),
       body: switch (etat) {
         AsyncData(:final value) when value.isEmpty => EtatVide(
-          icone: Icons.block,
+          icone: IconesDropp.ban,
           titre: l10n.bloquesVide,
           texte: l10n.bloquesVideTexte,
         ),
@@ -355,7 +357,7 @@ class PageMesSignalements extends ConsumerWidget {
         charger: ref.read(moderationRepositoryProvider).mesSignalements,
         separateur: const Divider(height: 1),
         vide: EtatVide(
-          icone: Icons.flag_outlined,
+          icone: IconesDropp.solidFlag,
           titre: l10n.signalementsVide,
         ),
         elementBuilder: (context, s, _) {

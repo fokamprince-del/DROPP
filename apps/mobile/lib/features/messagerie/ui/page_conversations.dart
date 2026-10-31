@@ -10,6 +10,7 @@ import '../../../core/router/routes.dart';
 import '../../../core/temps_reel/temps_reel.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/theme/typographie.dart';
 import '../../../shared/widgets/avatar_boutique.dart';
 import '../../../shared/widgets/etat_vide.dart';
@@ -107,7 +108,7 @@ class _PageConversationsState extends ConsumerState<PageConversations> {
                 auRafraichir: () async =>
                     ref.read(nonLusProvider.notifier).rafraichir(),
                 vide: EtatVide(
-                  icone: Icons.chat_bubble_outline,
+                  icone: IconesDropp.messages,
                   titre: l10n.conversationsVide,
                   texte: l10n.conversationsVideTexte,
                 ),

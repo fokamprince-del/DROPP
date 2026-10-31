@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -9,12 +10,13 @@ import '../../../core/api/api_exception.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../core/router/routes.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/theme/rayons.dart';
 import '../../../shared/widgets/etat_vide.dart';
 import '../../../shared/widgets/etoiles.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/squelette.dart';
 import '../../../shared/widgets/vue_erreur.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../data/mes_avis.dart';
 
 /// Articles livrés à noter ; toucher ouvre la feuille de notation.
@@ -32,7 +34,7 @@ class PageAvisANoter extends ConsumerWidget {
       AsyncData(:final value) when value.isEmpty => ListView(
         children: [
           EtatVide(
-            icone: Icons.star_outline_rounded,
+            icone: IconesDropp.star,
             titre: l10n.avisANoterVide,
             texte: l10n.avisANoterVideTexte,
           ),
@@ -242,10 +244,8 @@ class _FeuilleNotationState extends State<_FeuilleNotation> {
                   tooltip: l10n.avisNote(n),
                   iconSize: 40,
                   onPressed: () => setState(() => _note = n),
-                  icon: Icon(
-                    n <= _note
-                        ? Icons.star_rounded
-                        : Icons.star_outline_rounded,
+                  icon: FaIcon(
+                    n <= _note ? IconesDropp.solidStar : IconesDropp.star,
                     color: n <= _note
                         ? Etoiles.couleur
                         : theme.colorScheme.outline,

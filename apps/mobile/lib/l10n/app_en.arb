@@ -71,6 +71,10 @@
   "connexionBouton": "Sign in",
   "creerUnCompte": "Create an account",
   "motDePasseOublieLien": "Forgot password?",
+  "ouSeparateur": "or",
+  "googleSeConnecter": "Sign in with Google",
+  "googleSInscrire": "Sign up with Google",
+  "fonctionnaliteBientot": "This feature isn't available yet.",
   "codeTitre": "Enter the code received by SMS",
   "codeEnvoyeA": "Sent to {numero}. Valid for 5 minutes.",
   "@codeEnvoyeA": {
@@ -759,5 +763,75 @@
         "type": "int"
       }
     }
-  }
+  },
+
+
+  "vendeurTitre": "Become a seller",
+  "vendeurIntro": "Sell your products to DROPP customers. We verify your identity to protect buyers.",
+  "vendeurPrerequisTitre": "What you need",
+  "vendeurPrerequisTelephone": "A verified phone",
+  "vendeurPrerequisCni": "Your national ID card",
+  "vendeurPrerequisSelfie": "A verification selfie",
+  "vendeurDelai": "Review by the DROPP team: allow 24 to 48 hours.",
+  "vendeurCommencer": "Start",
+  "vendeurSuite": "Next step: uploading your documents.",
+  "vendeurSuspendu": "Your seller account is suspended. Contact DROPP support.",
+
+  "reessayer": "Try again",
+
+  "kycIntro": "Send your ID card (front and back) and a selfie. These documents are only used to verify your identity.",
+  "kycTitreDocuments": "Your documents",
+  "kycCniRecto": "ID card · front",
+  "kycCniVerso": "ID card · back",
+  "kycSelfie": "Verification selfie",
+  "kycAideCni": "Lay your card flat, well lit, with no glare. All four corners must be visible.",
+  "kycAideSelfie": "Your face straight on, well lit, no glasses or cap.",
+  "kycPrendrePhoto": "Take the photo",
+  "kycReprendrePhoto": "Retake",
+  "kycGalerie": "Choose from gallery",
+  "kycEnvoye": "Sent",
+  "kycRefuse": "Rejected, please redo",
+  "kycEnvoiEnCours": "Sending…",
+  "kycPhotoTropLourde": "Photo too large (10 MB maximum). Retake it.",
+  "kycCameraIndisponible": "Can't open the camera. Check the app's permissions.",
+  "kycFormatNonSupporte": "Format not accepted. Use a JPEG, PNG or WebP photo.",
+  "kycDossierRefuse": "Your application was rejected: {motif}",
+  "@kycDossierRefuse": {
+    "placeholders": {
+      "motif": { "type": "String" }
+    }
+  },
+  "kycDossierRefuseSansMotif": "Your application was rejected. Redo your documents.",
+
+  "kycEnVerificationTitre": "Verification in progress",
+  "kycEnVerificationTexte": "We are verifying your identity to protect buyers. Allow 24 to 48 hours.",
+  "kycEtapeTelephone": "Phone verified",
+  "kycEtapeCni": "ID card sent",
+  "kycEtapeSelfie": "Verification selfie",
+  "kycEtapeValidation": "Review by the DROPP team",
+  "kycActualiser": "Refresh",
+  "kycRetourProfil": "Back to profile",
+  "kycEtapeSur": "Step {etape} of {total}",
+  "@kycEtapeSur": {
+    "placeholders": {
+      "etape": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kycCniTitre": "Your ID card",
+  "kycCniExplication": "Upload the front, then the back. Check that the photo is sharp before continuing.",
+  "kycApercuRecto": "Preview of the front of the ID card",
+  "kycApercuVerso": "Preview of the back of the ID card",
+  "kycApercuAbsent": "Document sent. The preview isn't available on this device.",
+  "kycStatutAImporter": "To upload",
+  "kycStatutAVerifier": "To check",
+  "kycUtiliserPhoto": "Use this photo",
+  "kycRemplacerPhoto": "Replace",
+  "kycVersoApresRecto": "Upload the front first.",
+  "kycContinuer": "Continue",
+  "kycRetour": "Back",
+  "kycAgrandir": "Tap to enlarge",
+  "kycFermer": "Close",
+  "kycCommencer": "Start verification",
+  "kycReprendre": "Resume my verification"
 }

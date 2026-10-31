@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -10,22 +11,23 @@ import '../../../core/router/routes.dart';
 import '../../../core/temps_reel/temps_reel.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
 import '../../../shared/widgets/etat_vide.dart';
 import '../../../shared/widgets/liste_paginee.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../../shared/widgets/vue_erreur.dart';
 import '../../../utils/format.dart';
-import '../../auth/ui/messages_erreurs.dart';
 import '../application/compteur.dart';
 import '../data/notifications.dart';
 
-IconData _icone(TypeNotification t) => switch (t) {
-  TypeNotification.commande => Icons.receipt_long_outlined,
-  TypeNotification.paiement => Icons.payments_outlined,
-  TypeNotification.message => Icons.chat_bubble_outline,
-  TypeNotification.social => Icons.favorite_border,
-  TypeNotification.promotion => Icons.local_offer_outlined,
-  TypeNotification.securite => Icons.shield_outlined,
-  TypeNotification.systeme => Icons.info_outline,
+FaIconData _icone(TypeNotification t) => switch (t) {
+  TypeNotification.commande => IconesDropp.receipt,
+  TypeNotification.paiement => IconesDropp.paiement,
+  TypeNotification.message => IconesDropp.messagesActif,
+  TypeNotification.social => IconesDropp.solidFavorite,
+  TypeNotification.promotion => IconesDropp.promotion,
+  TypeNotification.securite => IconesDropp.securite,
+  TypeNotification.systeme => IconesDropp.info,
 };
 
 /// Cloche avec pastille, pour l'en-tête de l'accueil.
@@ -43,7 +45,7 @@ class BoutonNotifications extends ConsumerWidget {
         isLabelVisible: n > 0,
         label: Text(n > 99 ? '99+' : '$n'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: const Icon(Icons.notifications_none),
+        child: const FaIcon(IconesDropp.notificationNone,),
       ),
     );
   }
@@ -145,7 +147,7 @@ class _PageNotificationsState extends ConsumerState<PageNotifications> {
             tooltip: l10n.notificationsPreferences,
             onPressed: () =>
                 unawaited(context.push<void>(Routes.preferencesNotifications)),
-            icon: const Icon(Icons.tune),
+            icon: const FaIcon(IconesDropp.slider),
           ),
         ],
       ),
@@ -154,7 +156,7 @@ class _PageNotificationsState extends ConsumerState<PageNotifications> {
         charger: (page) => _depot.lister(page),
         separateur: const Divider(height: 1),
         vide: EtatVide(
-          icone: Icons.notifications_none,
+          icone: IconesDropp.notificationNone,
           titre: l10n.notificationsVide,
         ),
         elementBuilder: (context, n, _) => Dismissible(
@@ -167,7 +169,7 @@ class _PageNotificationsState extends ConsumerState<PageNotifications> {
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: const EdgeInsets.only(right: Espacements.l),
-                child: Icon(Icons.delete_outline, color: schema.onError),
+                child: FaIcon(IconesDropp.delete, color: schema.onError),
               ),
             ),
           ),
@@ -178,7 +180,7 @@ class _PageNotificationsState extends ConsumerState<PageNotifications> {
               tileColor: n.lue ? null : schema.surfaceContainerHighest,
               leading: CircleAvatar(
                 backgroundColor: schema.primary.withValues(alpha: 0.12),
-                child: Icon(_icone(n.type), color: schema.primary, size: 20),
+                child: FaIcon(_icone(n.type), color: schema.primary, size: 20),
               ),
               title: Text(
                 n.titre,

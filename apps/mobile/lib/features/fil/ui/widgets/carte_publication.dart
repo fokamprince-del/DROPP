@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -10,6 +11,7 @@ import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/modeles/contenu.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/avatar_boutique.dart';
 import '../../../../shared/widgets/squelette.dart';
 import '../../../../utils/format.dart';
@@ -179,8 +181,8 @@ class _MediaAimableState extends ConsumerState<MediaAimable>
               opacity: _opacite,
               child: ScaleTransition(
                 scale: _echelle,
-                child: Icon(
-                  Icons.favorite,
+                child: FaIcon(
+                  IconesDropp.solidFavorite,
                   size: 96,
                   color: Theme.of(context).colorScheme.secondary,
                   shadows: const [
@@ -259,7 +261,7 @@ class EntetePublication extends ConsumerWidget {
           if (moi != p.boutique.id)
             PopupMenuButton<void>(
               tooltip: l10n.plusDOptions,
-              icon: const Icon(Icons.more_horiz),
+              icon: const FaIcon(IconesDropp.ellips),
               itemBuilder: (_) => [
                 PopupMenuItem(
                   onTap: () => unawaited(
@@ -279,8 +281,8 @@ class EntetePublication extends ConsumerWidget {
               padding: const EdgeInsets.only(right: Espacements.xs),
               child: Tooltip(
                 message: l10n.publicationAbonnes,
-                child: Icon(
-                  Icons.lock_outline,
+                child: FaIcon(
+                  IconesDropp.userLock,
                   size: 18,
                   semanticLabel: l10n.publicationAbonnes,
                   color: theme.colorScheme.onSurfaceVariant,
@@ -316,7 +318,7 @@ class ActionsPublication extends ConsumerWidget {
       child: Row(
         children: [
           _BoutonAction(
-            icone: aime ? Icons.favorite : Icons.favorite_border,
+            icone: aime ? IconesDropp.solidFavorite : IconesDropp.favorite,
             couleur: aime ? schema.secondary : null,
             valeur: likes,
             libelle: l10n.publicationLikes(likes),
@@ -328,19 +330,19 @@ class ActionsPublication extends ConsumerWidget {
             ),
           ),
           _BoutonAction(
-            icone: Icons.chat_bubble_outline,
+            icone: IconesDropp.commentaire,
             valeur: commentaires,
             libelle: l10n.publicationCommentaires(commentaires),
             surAppui: () => unawaited(ouvrirCommentaires(context, p)),
           ),
           _BoutonAction(
-            icone: Icons.share_outlined,
+            icone: IconesDropp.share,
             libelle: l10n.partageTitre,
             surAppui: () => unawaited(ouvrirPartage(context, ref, p)),
           ),
           const Spacer(),
           _BoutonAction(
-            icone: favori ? Icons.bookmark : Icons.bookmark_border,
+            icone: favori ? IconesDropp.solidBookmark : IconesDropp.bookmark,
             couleur: favori ? schema.primary : null,
             libelle: favori ? l10n.favoriRetirer : l10n.favoriAjouter,
             actif: favori,
@@ -366,7 +368,7 @@ class _BoutonAction extends StatelessWidget {
     this.actif,
   });
 
-  final IconData icone;
+  final FaIconData icone;
   final String libelle;
   final VoidCallback surAppui;
 
@@ -395,7 +397,7 @@ class _BoutonAction extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icone, size: 24, color: couleur),
+                FaIcon(icone, size: 24, color: couleur),
                 if (valeur != null) ...[
                   const SizedBox(width: 4),
                   Text(

@@ -56,7 +56,7 @@ abstract final class Typographie {
     ),
     bodySmall: TextStyle(
       fontFamily: texte,
-      fontSize: 12,
+      fontSize: 13,
       height: 1.4,
       color: couleur,
     ),
@@ -69,14 +69,14 @@ abstract final class Typographie {
     ),
     labelMedium: TextStyle(
       fontFamily: texte,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       fontSize: 12,
       height: 1.2,
       color: couleur,
     ),
     labelSmall: TextStyle(
       fontFamily: texte,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       fontSize: 11,
       height: 1.2,
       color: couleur,

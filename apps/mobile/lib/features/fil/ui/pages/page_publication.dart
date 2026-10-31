@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/api/api_exception.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/theme/typographie.dart';
 import '../../../../shared/widgets/image_reseau.dart';
@@ -180,8 +182,8 @@ class _TuileProduit extends StatelessWidget {
               child: image == null
                   ? ColoredBox(
                       color: schema.surfaceContainerHighest,
-                      child: Icon(
-                        Icons.shopping_bag_outlined,
+                      child: FaIcon(
+                        IconesDropp.shoppingBasket,
                         color: schema.onSurfaceVariant,
                       ),
                     )

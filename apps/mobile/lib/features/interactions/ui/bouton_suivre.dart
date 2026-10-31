@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/l10n/contexte_l10n.dart';
+import '../../../shared/theme/icons.dart';
 import '../application/interactions.dart';
 import 'actions_connectees.dart';
 
@@ -54,7 +56,7 @@ class BoutonSuivre extends ConsumerWidget {
               minimumSize: taille,
               padding: padding,
             ),
-            icon: const Icon(Icons.check, size: 18),
+            icon: const FaIcon(IconesDropp.check, size: 18),
             label: Text(l10n.boutiqueAbonne),
           )
         : FilledButton(

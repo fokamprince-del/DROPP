@@ -28,7 +28,6 @@ Thumbs.db
 .vscode/
 
 # Generated code
-apps/api/src/generated/
 packages/database/src/generated/
 
 todo.md

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -9,12 +10,13 @@ import '../../../core/auth/session.dart';
 import '../../../core/l10n/contexte_l10n.dart';
 import '../../../shared/theme/couleurs_metier.dart';
 import '../../../shared/theme/espacements.dart';
+import '../../../shared/theme/icons.dart';
+import '../../../shared/widgets/bandeau_message.dart';
+import '../../../shared/widgets/bouton_action.dart';
 import '../../../shared/widgets/champ_dropp.dart';
+import '../../../shared/widgets/messages_erreurs.dart';
 import '../../auth/data/modeles_auth.dart';
 import '../../auth/domain/validateurs.dart';
-import '../../auth/ui/messages_erreurs.dart';
-import '../../auth/ui/widgets/bandeau_message.dart';
-import '../../auth/ui/widgets/bouton_action.dart';
 import '../../auth/ui/widgets/selecteur_sexe.dart';
 import '../data/profil.dart';
 
@@ -158,7 +160,7 @@ class _PageModifierProfilState extends ConsumerState<PageModifierProfil> {
         l10n.pseudoPris,
       ),
       _EtatPseudo.invalide => (
-        Icon(Icons.info_outline, color: metier.attente),
+        FaIcon(IconesDropp.info, color: metier.attente),
         l10n.pseudoFormat,
       ),
       _EtatPseudo.inchange => (null, null),

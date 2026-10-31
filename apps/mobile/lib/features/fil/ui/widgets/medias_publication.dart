@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 
@@ -9,6 +10,7 @@ import '../../../../core/router/routes.dart';
 import '../../../../shared/modeles/contenu.dart';
 import '../../../../shared/theme/couleurs.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/image_reseau.dart';
 import '../../../../utils/format.dart';
 import '../../data/modeles_fil.dart';
@@ -133,8 +135,8 @@ class EtiquetteProduit extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
-                Icons.shopping_bag_outlined,
+              const FaIcon(
+                IconesDropp.shoppingBasket,
                 size: 14,
                 color: Colors.white,
               ),
@@ -187,8 +189,8 @@ class VignetteVideo extends StatelessWidget {
                   color: Colors.black.withValues(alpha: 0.45),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.play_arrow_rounded,
+                child: const FaIcon(
+                  IconesDropp.play,
                   color: Colors.white,
                   size: 40,
                 ),
@@ -305,8 +307,8 @@ class _LecteurVideoState extends State<LecteurVideo> {
               builder: (context, valeur, _) => valeur.isPlaying
                   ? const SizedBox.shrink()
                   : const Center(
-                      child: Icon(
-                        Icons.play_arrow_rounded,
+                      child: FaIcon(
+                        IconesDropp.play,
                         color: Colors.white,
                         size: 56,
                       ),
@@ -352,11 +354,7 @@ class _Pastille extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (video) ...[
-              const Icon(
-                Icons.play_arrow_rounded,
-                size: 12,
-                color: Colors.white,
-              ),
+              const FaIcon(IconesDropp.play, size: 12, color: Colors.white),
               const SizedBox(width: 2),
             ],
             Text(

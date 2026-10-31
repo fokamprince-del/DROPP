@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   ParseUUIDPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 
@@ -45,6 +46,12 @@ import { AttribuerRoleService } from './use-cases/roles/attribuer-role.service.j
 import { RetirerRoleService } from './use-cases/roles/retirer-role.service.js';
 import { StatsService } from './use-cases/dashboard/stats.service.js';
 import { ListerAuditService } from './use-cases/audit/lister-audit.service.js';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiErreurs } from '../../infrastructure/http/api-erreur.decorator.js';
+import { CommissionVendeurDto, DefinirCommissionVendeurDto, ModifierParametreDto, ParametreDto } from './dto/parametres.dto.js';
+import { DefinirCommissionVendeurService } from './use-cases/parametres/definir-commission-vendeur.service.js';
+import { ModifierParametreService } from './use-cases/parametres/modifier-parametres.service.js';
+import { ListerParametresService } from './use-cases/parametres/lister-parametres.service.js';
 
 const page = (p: number) => Math.max(p, 1);
 const limite = (l: number, max = 100) => Math.min(Math.max(l, 1), max);
@@ -65,6 +72,9 @@ export class AdminController {
     private readonly retirerRole: RetirerRoleService,
     private readonly stats: StatsService,
     private readonly listerAudit: ListerAuditService,
+    private readonly definirCommissionVendeur: DefinirCommissionVendeurService,
+    private readonly modifierParam: ModifierParametreService,
+    private readonly listerParametres: ListerParametresService,
   ) {}
 
   // ── Dashboard ─────────────────────────────────────────────────────────────
@@ -167,6 +177,18 @@ export class AdminController {
     );
   }
 
+  @Admin('SUPER_ADMIN', 'GESTIONNAIRE_FINANCIER')
+  @Put('vendeurs/:id/commission')
+  @ApiOkResponse({ type: CommissionVendeurDto })
+  @ApiErreurs(404)
+  definirCommission(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: DefinirCommissionVendeurDto,
+  ): Promise<CommissionVendeurDto> {
+    return this.definirCommissionVendeur.executer(id, u.id, dto);
+  }
+
   // ── Modération ────────────────────────────────────────────────────────────
 
   @Admin('SUPER_ADMIN', 'MODERATEUR')
@@ -241,4 +263,26 @@ export class AdminController {
       limite: limite(l),
     });
   }
+
+  // ____ Parametres _______________________________________________________
+
+  @Admin('SUPER_ADMIN', 'GESTIONNAIRE_FINANCIER', 'MODERATEUR')
+  @Get('parametres')
+  @ApiOkResponse({ type: [ParametreDto] })
+  listeParametres(): Promise<ParametreDto[]> {
+    return this.listerParametres.executer();
+  }
+
+  @Admin('SUPER_ADMIN', 'GESTIONNAIRE_FINANCIER')
+  @Put('parametres/:cle')
+  @ApiOkResponse({ type: ParametreDto })
+  @ApiErreurs(404)
+  modifierParametre(
+    @CurrentUser() u: UtilisateurConnecte,
+    @Param('cle') cle: string,
+    @Body() dto: ModifierParametreDto,
+  ): Promise<ParametreDto> {
+    return this.modifierParam.executer(cle, dto.valeur, u.id);
+  }
+  
 }

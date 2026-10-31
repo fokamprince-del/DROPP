@@ -62,6 +62,10 @@ abstract final class Routes {
   // Vendeur
   static const devenirVendeur = '/devenir-vendeur';
   static const espaceVendeur = '/vendeur';
+  static const kycCni = '/devenir-vendeur/cni';
+  static const kycInformations = '/devenir-vendeur/informations';
+  static const kycSelfie = '/devenir-vendeur/selfie';
+  static const kycRecapitulatif = '/devenir-vendeur/recapitulatif';
 
   /// Paramètre de requête qui ramène à la page demandée après connexion.
   static const parametreRetour = 'de';
@@ -100,6 +104,9 @@ const prefixesTelephone = [
 
 /// Préfixes réservés aux vendeurs.
 const prefixesVendeur = [Routes.espaceVendeur];
+
+/// Pages du parcours « devenir vendeur » : fermées aux vendeurs actifs.
+const prefixesDevenirVendeur = [Routes.devenirVendeur];
 
 bool commencePar(String chemin, Iterable<String> prefixes) => prefixes.any(
   (p) => p == Routes.accueil

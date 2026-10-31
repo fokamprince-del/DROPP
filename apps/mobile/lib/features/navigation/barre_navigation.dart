@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../core/l10n/contexte_l10n.dart';
+import '../../shared/theme/icons.dart';
 
 /// Barre d'onglets de la maquette : 5 entrées, le panier (index 2) en bouton
 /// plein au centre, pastilles de compteur sur le panier et les messages.
@@ -27,15 +29,20 @@ class BarreNavigation extends StatelessWidget {
 
     final entrees = <_Entree>[
       _Entree(
-        Icons.home_outlined,
-        Icons.home,
+        IconesDropp.acceuil,
+        IconesDropp.acceuilActif,
         l10n.navAccueil,
         l10n.navAccueil,
       ),
-      _Entree(Icons.search, Icons.search, l10n.navDecouvrir, l10n.navDecouvrir),
       _Entree(
-        Icons.shopping_bag_outlined,
-        Icons.shopping_bag,
+        IconesDropp.decouvrir,
+        IconesDropp.decouvrirActif,
+        l10n.navDecouvrir,
+        l10n.navDecouvrir,
+      ),
+      _Entree(
+        IconesDropp.panier,
+        IconesDropp.panierActif,
         l10n.navPanier,
         nombrePanier > 0
             ? l10n.navPanierArticles(nombrePanier)
@@ -43,8 +50,8 @@ class BarreNavigation extends StatelessWidget {
         compteur: nombrePanier,
       ),
       _Entree(
-        Icons.chat_bubble_outline,
-        Icons.chat_bubble,
+        IconesDropp.messages,
+        IconesDropp.messagesActif,
         l10n.navMessages,
         nombreMessages > 0
             ? l10n.navMessagesNonLus(nombreMessages)
@@ -52,8 +59,8 @@ class BarreNavigation extends StatelessWidget {
         compteur: nombreMessages,
       ),
       _Entree(
-        Icons.person_outline,
-        Icons.person,
+        IconesDropp.profil,
+        IconesDropp.profilActif,
         l10n.navProfil,
         l10n.navProfil,
       ),
@@ -61,27 +68,22 @@ class BarreNavigation extends StatelessWidget {
 
     return Material(
       color: schema.surface,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: schema.outline)),
-        ),
-        child: SafeArea(
-          top: false,
-          child: SizedBox(
-            height: 64,
-            child: Row(
-              children: [
-                for (var i = 0; i < entrees.length; i++)
-                  Expanded(
-                    child: _ItemBarre(
-                      entree: entrees[i],
-                      selectionne: i == indexSelectionne,
-                      central: i == indexPanier,
-                      surTouche: () => surSelection(i),
-                    ),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            children: [
+              for (var i = 0; i < entrees.length; i++)
+                Expanded(
+                  child: _ItemBarre(
+                    entree: entrees[i],
+                    selectionne: i == indexSelectionne,
+                    central: i == indexPanier,
+                    surTouche: () => surSelection(i),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),
@@ -98,8 +100,8 @@ class _Entree {
     this.compteur = 0,
   });
 
-  final IconData icone;
-  final IconData iconeActive;
+  final FaIconData icone;
+  final FaIconData iconeActive;
   final String libelle;
   final String libelleAccessible;
   final int compteur;
@@ -133,13 +135,12 @@ class _ItemBarre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final schema = Theme.of(context).colorScheme;
-    final couleurTexte = selectionne
-        ? schema.onSurface
-        : schema.onSurface.withValues(alpha: 0.65);
+    final couleurTexte = selectionne ? schema.primary : schema.onSurfaceVariant;
 
-    final icone = Icon(
+    final icone = FaIcon(
       selectionne ? entree.iconeActive : entree.icone,
       color: central ? schema.onPrimary : couleurTexte,
+      size: 23,
     );
 
     // Bouton central : la pastille entoure le bouton plein.
@@ -166,7 +167,8 @@ class _ItemBarre extends StatelessWidget {
                 entree.libelle,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: couleurTexte,
-                  fontWeight: selectionne ? FontWeight.w700 : FontWeight.w500,
+                  fontSize: 13,
+                  fontWeight: selectionne ? FontWeight.w700 : FontWeight.w600,
                 ),
               ),
             ],

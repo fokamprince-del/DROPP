@@ -7,16 +7,16 @@ import '../../../../core/auth/session.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/widgets/bouton_action.dart';
+import '../../../../shared/widgets/messages_erreurs.dart';
+import '../../../../shared/widgets/page_acces.dart';
 import '../../../../utils/telephone.dart';
 import '../../application/flux_verification.dart';
 import '../../data/auth_repository.dart';
 import '../../domain/validateurs.dart';
-import '../messages_erreurs.dart';
 import '../navigation_auth.dart';
-import '../widgets/bouton_action.dart';
 import '../widgets/champ_code.dart';
 import '../widgets/lien_renvoyer_code.dart';
-import '../widgets/page_acces.dart';
 import 'page_confirmation_email.dart';
 
 class PageVerificationTelephone extends ConsumerStatefulWidget {
