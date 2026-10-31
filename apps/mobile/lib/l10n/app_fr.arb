@@ -810,5 +810,28 @@
   "kycEtapeSelfie": "Selfie de vérification",
   "kycEtapeValidation": "Validation par l'équipe DROPP",
   "kycActualiser": "Actualiser",
-  "kycRetourProfil": "Retour au profil"
+  "kycRetourProfil": "Retour au profil",
+  "kycEtapeSur": "Étape {etape} sur {total}",
+  "@kycEtapeSur": {
+    "placeholders": {
+      "etape": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kycCniTitre": "Ta carte d'identité",
+  "kycCniExplication": "Importe le recto, puis le verso. Vérifie que la photo est bien nette avant de continuer.",
+  "kycApercuRecto": "Aperçu du recto de la carte d'identité",
+  "kycApercuVerso": "Aperçu du verso de la carte d'identité",
+  "kycApercuAbsent": "Document envoyé. L'aperçu n'est pas disponible sur cet appareil.",
+  "kycStatutAImporter": "À importer",
+  "kycStatutAVerifier": "À vérifier",
+  "kycUtiliserPhoto": "Utiliser cette photo",
+  "kycRemplacerPhoto": "Remplacer",
+  "kycVersoApresRecto": "Importe d'abord le recto.",
+  "kycContinuer": "Continuer",
+  "kycRetour": "Retour",
+  "kycAgrandir": "Toucher pour agrandir",
+  "kycFermer": "Fermer",
+  "kycCommencer": "Commencer la vérification",
+  "kycReprendre": "Reprendre ma vérification"
 }

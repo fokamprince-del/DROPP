@@ -99,7 +99,7 @@ class _PageDecouvrirState extends State<PageDecouvrir> {
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
                     hintText: l10n.rechercheIndice,
-                    prefixIcon: const FaIcon(IconesDropp.decouvrir),
+                    prefixIcon:const Center(child: FaIcon(IconesDropp.decouvrir)),
                     suffixIcon: _recherche.text.isEmpty
                         ? null
                         : IconButton(

@@ -182,7 +182,7 @@ class _MediaAimableState extends ConsumerState<MediaAimable>
               child: ScaleTransition(
                 scale: _echelle,
                 child: FaIcon(
-                  IconesDropp.favorite,
+                  IconesDropp.solidFavorite,
                   size: 96,
                   color: Theme.of(context).colorScheme.secondary,
                   shadows: const [

@@ -451,7 +451,7 @@ class LigneCommentaire extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FaIcon(
-                    aime ? IconesDropp.favorite : IconesDropp.solidFavorite,
+                    aime ? IconesDropp.solidFavorite : IconesDropp.favorite,
                     size: 16,
                     color: aime
                         ? theme.colorScheme.secondary

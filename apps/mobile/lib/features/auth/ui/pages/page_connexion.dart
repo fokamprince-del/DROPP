@@ -12,6 +12,7 @@ import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/bouton_action.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
+import '../../../../shared/widgets/message_temporaire.dart';
 import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../shared/widgets/page_acces.dart';
 import '../../application/flux_verification.dart';
@@ -19,7 +20,9 @@ import '../../data/auth_repository.dart';
 import '../../data/modeles_auth.dart';
 import '../../domain/identifiant.dart';
 import '../navigation_auth.dart';
+import '../widgets/bouton_google.dart';
 import '../widgets/champ_mot_de_passe.dart';
+import '../widgets/separateur_ou.dart';
 
 class PageConnexion extends ConsumerStatefulWidget {
   const PageConnexion({super.key});
@@ -166,6 +169,15 @@ class _PageConnexionState extends ConsumerState<PageConnexion> {
             ),
             child: Text(l10n.creerUnCompte),
           ),
+        ),
+
+        const SizedBox(height: Espacements.l),
+        const SeparateurOu(),
+        const SizedBox(height: Espacements.l),
+        BoutonGoogle(
+          libelle: l10n.googleSeConnecter,
+          surAppui: () =>
+              afficherMessageTemporaire(context, l10n.fonctionnaliteBientot),
         ),
       ],
     );

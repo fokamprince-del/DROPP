@@ -11,7 +11,7 @@ import '../../../../shared/widgets/bouton_action.dart';
 import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../shared/widgets/page_acces.dart';
 import '../../data/vendeur_repository.dart';
-import '../widgets/verification_vendeur.dart';
+import 'reprendre_dossier_kyc.dart';
 
 class PageDevenirVendeur extends ConsumerStatefulWidget {
   const PageDevenirVendeur({super.key});
@@ -64,7 +64,7 @@ class _PageDevenirVendeurState extends ConsumerState<PageDevenirVendeur> {
       }
       return PageAcces(
         titre: l10n.vendeurTitre,
-        enfants: const [VerificationVendeur()],
+        enfants: const [ReprendreDossierKyc()],
       );
     }
 

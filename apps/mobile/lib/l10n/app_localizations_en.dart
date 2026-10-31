@@ -1560,4 +1560,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycRetourProfil => 'Back to profile';
+
+  @override
+  String kycEtapeSur(int etape, int total) {
+    return 'Step $etape of $total';
+  }
+
+  @override
+  String get kycCniTitre => 'Your ID card';
+
+  @override
+  String get kycCniExplication =>
+      'Upload the front, then the back. Check that the photo is sharp before continuing.';
+
+  @override
+  String get kycApercuRecto => 'Preview of the front of the ID card';
+
+  @override
+  String get kycApercuVerso => 'Preview of the back of the ID card';
+
+  @override
+  String get kycApercuAbsent =>
+      'Document sent. The preview isn\'t available on this device.';
+
+  @override
+  String get kycStatutAImporter => 'To upload';
+
+  @override
+  String get kycStatutAVerifier => 'To check';
+
+  @override
+  String get kycUtiliserPhoto => 'Use this photo';
+
+  @override
+  String get kycRemplacerPhoto => 'Replace';
+
+  @override
+  String get kycVersoApresRecto => 'Upload the front first.';
+
+  @override
+  String get kycContinuer => 'Continue';
+
+  @override
+  String get kycRetour => 'Back';
+
+  @override
+  String get kycAgrandir => 'Tap to enlarge';
+
+  @override
+  String get kycFermer => 'Close';
+
+  @override
+  String get kycCommencer => 'Start verification';
+
+  @override
+  String get kycReprendre => 'Resume my verification';
 }

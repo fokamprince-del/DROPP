@@ -11,6 +11,7 @@ import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/bouton_action.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
+import '../../../../shared/widgets/message_temporaire.dart';
 import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../shared/widgets/page_acces.dart';
 import '../../../../utils/telephone.dart';
@@ -19,9 +20,11 @@ import '../../data/auth_repository.dart';
 import '../../data/modeles_auth.dart';
 import '../../domain/validateurs.dart';
 import '../navigation_auth.dart';
+import '../widgets/bouton_google.dart';
 import '../widgets/champ_mot_de_passe.dart';
 import '../widgets/champ_telephone.dart';
 import '../widgets/selecteur_sexe.dart';
+import '../widgets/separateur_ou.dart';
 
 class PageInscription extends ConsumerStatefulWidget {
   const PageInscription({super.key});
@@ -208,6 +211,15 @@ class _PageInscriptionState extends ConsumerState<PageInscription> {
         TextButton(
           onPressed: _versConnexion,
           child: Text(l10n.jaiDejaUnCompte),
+        ),
+
+        const SizedBox(height: Espacements.l),
+        const SeparateurOu(),
+        const SizedBox(height: Espacements.l),
+        BoutonGoogle(
+          libelle: l10n.googleSInscrire,
+          surAppui: () =>
+              afficherMessageTemporaire(context, l10n.fonctionnaliteBientot),
         ),
       ],
     );

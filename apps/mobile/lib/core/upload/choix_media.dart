@@ -23,12 +23,14 @@ String? typeMimeDe(String nomFichier) {
   return _typesParExtension[nomFichier.substring(point + 1).toLowerCase()];
 }
 
+enum FichierRefuseRaison { formatNonSupporte, indisponible, tropLourd }
+
 /// Le fichier choisi n'a pas un format accepté ou dépasse la taille permise.
 class FichierRefuse implements Exception {
-  const FichierRefuse({this.tropGros = false, this.tailleMaxMo});
+  const FichierRefuse({this.tailleMaxMo, this.raison});
 
-  final bool tropGros;
   final int? tailleMaxMo;
+  final FichierRefuseRaison? raison;
 }
 
 /// Propose galerie ou appareil photo (et vidéo si [video]) dans une feuille,
@@ -110,13 +112,16 @@ Future<FichierLocal> preparerFichier(
   int tailleMaxVideoMo = 100,
 }) async {
   final typeMime = typeMimeDe(fichier.name) ?? typeMimeDe(fichier.path);
-  if (typeMime == null) throw const FichierRefuse();
+  if (typeMime == null) throw const FichierRefuse(raison: FichierRefuseRaison.formatNonSupporte);
   final taille = await fichier.length();
   final maxMo = typeMime.startsWith('video/')
       ? tailleMaxVideoMo
       : tailleMaxImageMo;
   if (taille > maxMo * 1024 * 1024) {
-    throw FichierRefuse(tropGros: true, tailleMaxMo: maxMo);
+    throw FichierRefuse(
+      raison: FichierRefuseRaison.tropLourd,
+      tailleMaxMo: maxMo,
+    );
   }
 
   int? largeur;

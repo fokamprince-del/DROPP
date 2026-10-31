@@ -279,9 +279,11 @@ class _PageDiscussionState extends ConsumerState<PageDiscussion> {
       messager.showSnackBar(
         SnackBar(
           content: Text(
-            e.tropGros
-                ? l10n.fichierTropGros(e.tailleMaxMo ?? 0)
-                : l10n.fichierFormatRefuse,
+            e.raison == FichierRefuseRaison.formatNonSupporte
+                ? l10n.kycFormatNonSupporte
+                : e.raison == FichierRefuseRaison.indisponible
+                ? l10n.kycCameraIndisponible
+                : l10n.fichierTropGros(e.tailleMaxMo ?? 0),
           ),
         ),
       );

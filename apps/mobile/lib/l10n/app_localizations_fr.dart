@@ -1576,4 +1576,59 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get kycRetourProfil => 'Retour au profil';
+
+  @override
+  String kycEtapeSur(int etape, int total) {
+    return 'Étape $etape sur $total';
+  }
+
+  @override
+  String get kycCniTitre => 'Ta carte d\'identité';
+
+  @override
+  String get kycCniExplication =>
+      'Importe le recto, puis le verso. Vérifie que la photo est bien nette avant de continuer.';
+
+  @override
+  String get kycApercuRecto => 'Aperçu du recto de la carte d\'identité';
+
+  @override
+  String get kycApercuVerso => 'Aperçu du verso de la carte d\'identité';
+
+  @override
+  String get kycApercuAbsent =>
+      'Document envoyé. L\'aperçu n\'est pas disponible sur cet appareil.';
+
+  @override
+  String get kycStatutAImporter => 'À importer';
+
+  @override
+  String get kycStatutAVerifier => 'À vérifier';
+
+  @override
+  String get kycUtiliserPhoto => 'Utiliser cette photo';
+
+  @override
+  String get kycRemplacerPhoto => 'Remplacer';
+
+  @override
+  String get kycVersoApresRecto => 'Importe d\'abord le recto.';
+
+  @override
+  String get kycContinuer => 'Continuer';
+
+  @override
+  String get kycRetour => 'Retour';
+
+  @override
+  String get kycAgrandir => 'Toucher pour agrandir';
+
+  @override
+  String get kycFermer => 'Fermer';
+
+  @override
+  String get kycCommencer => 'Commencer la vérification';
+
+  @override
+  String get kycReprendre => 'Reprendre ma vérification';
 }

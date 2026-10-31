@@ -14,6 +14,7 @@ abstract final class IconesDropp {
   static const profilActif = FontAwesomeIcons.solidUser;
 
   //formulaires et messages
+  static const google = FontAwesomeIcons.google;
   static const voirMotDePasse = FontAwesomeIcons.eye;
   static const masquerMotDePasse = FontAwesomeIcons.eyeSlash;
   static const erreur = FontAwesomeIcons.circleExclamation;

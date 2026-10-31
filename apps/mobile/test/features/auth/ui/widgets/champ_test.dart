@@ -1,9 +1,11 @@
 import 'package:dropp/features/auth/ui/widgets/champ_code.dart';
 import 'package:dropp/features/auth/ui/widgets/champ_mot_de_passe.dart';
 import 'package:dropp/l10n/app_localizations.dart';
+import 'package:dropp/shared/theme/icons.dart';
 import 'package:dropp/shared/theme/theme_dropp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 
 Widget _app(Widget enfant) => MaterialApp(
   theme: ThemeDropp.clair,
@@ -55,7 +57,7 @@ void main() {
       isTrue,
     );
 
-    await tester.tap(find.byIcon(Icons.visibility_outlined));
+    await tester.tap(find.byIcon(IconesDropp.voirMotDePasse.data));
     await tester.pump();
     expect(
       tester.widget<EditableText>(find.byType(EditableText)).obscureText,

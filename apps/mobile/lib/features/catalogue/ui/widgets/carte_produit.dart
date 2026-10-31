@@ -154,7 +154,7 @@ class BoutonFavoriProduit extends ConsumerWidget {
                 shape: BoxShape.circle,
               ),
               child: FaIcon(
-                favori ? IconesDropp.favorite : IconesDropp.solidFavorite,
+                favori ? IconesDropp.solidFavorite : IconesDropp.favorite,
                 size: 18,
                 color: favori ? Couleurs.hibiscus : Couleurs.encre,
               ),

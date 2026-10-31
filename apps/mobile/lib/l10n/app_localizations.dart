@@ -2647,6 +2647,108 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Retour au profil'**
   String get kycRetourProfil;
+
+  /// No description provided for @kycEtapeSur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {etape} sur {total}'**
+  String kycEtapeSur(int etape, int total);
+
+  /// No description provided for @kycCniTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta carte d\'identité'**
+  String get kycCniTitre;
+
+  /// No description provided for @kycCniExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importe le recto, puis le verso. Vérifie que la photo est bien nette avant de continuer.'**
+  String get kycCniExplication;
+
+  /// No description provided for @kycApercuRecto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu du recto de la carte d\'identité'**
+  String get kycApercuRecto;
+
+  /// No description provided for @kycApercuVerso.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu du verso de la carte d\'identité'**
+  String get kycApercuVerso;
+
+  /// No description provided for @kycApercuAbsent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Document envoyé. L\'aperçu n\'est pas disponible sur cet appareil.'**
+  String get kycApercuAbsent;
+
+  /// No description provided for @kycStatutAImporter.
+  ///
+  /// In fr, this message translates to:
+  /// **'À importer'**
+  String get kycStatutAImporter;
+
+  /// No description provided for @kycStatutAVerifier.
+  ///
+  /// In fr, this message translates to:
+  /// **'À vérifier'**
+  String get kycStatutAVerifier;
+
+  /// No description provided for @kycUtiliserPhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Utiliser cette photo'**
+  String get kycUtiliserPhoto;
+
+  /// No description provided for @kycRemplacerPhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplacer'**
+  String get kycRemplacerPhoto;
+
+  /// No description provided for @kycVersoApresRecto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importe d\'abord le recto.'**
+  String get kycVersoApresRecto;
+
+  /// No description provided for @kycContinuer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get kycContinuer;
+
+  /// No description provided for @kycRetour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour'**
+  String get kycRetour;
+
+  /// No description provided for @kycAgrandir.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toucher pour agrandir'**
+  String get kycAgrandir;
+
+  /// No description provided for @kycFermer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get kycFermer;
+
+  /// No description provided for @kycCommencer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer la vérification'**
+  String get kycCommencer;
+
+  /// No description provided for @kycReprendre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre ma vérification'**
+  String get kycReprendre;
 }
 
 class _AppLocalizationsDelegate

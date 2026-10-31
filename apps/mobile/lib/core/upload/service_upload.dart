@@ -125,6 +125,7 @@ class ServiceUpload {
     CancelToken? annulation,
   }) async {
     final signature = await demanderSignature(fichier.typeMime, fichier.taille);
+
     try {
       await _dio.put<void>(
         signature.uploadUrl,

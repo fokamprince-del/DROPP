@@ -23,8 +23,8 @@ import '../data/notifications.dart';
 FaIconData _icone(TypeNotification t) => switch (t) {
   TypeNotification.commande => IconesDropp.receipt,
   TypeNotification.paiement => IconesDropp.paiement,
-  TypeNotification.message => IconesDropp.messages,
-  TypeNotification.social => IconesDropp.favorite,
+  TypeNotification.message => IconesDropp.messagesActif,
+  TypeNotification.social => IconesDropp.solidFavorite,
   TypeNotification.promotion => IconesDropp.promotion,
   TypeNotification.securite => IconesDropp.securite,
   TypeNotification.systeme => IconesDropp.info,
@@ -45,7 +45,7 @@ class BoutonNotifications extends ConsumerWidget {
         isLabelVisible: n > 0,
         label: Text(n > 99 ? '99+' : '$n'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: const FaIcon(IconesDropp.notification),
+        child: const FaIcon(IconesDropp.notificationNone,),
       ),
     );
   }

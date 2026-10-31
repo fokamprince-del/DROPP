@@ -62,9 +62,11 @@ class _PageProfilState extends ConsumerState<PageProfil> {
       messager.showSnackBar(
         SnackBar(
           content: Text(
-            e.tropGros
-                ? l10n.fichierTropGros(e.tailleMaxMo ?? tailleMaxPhotoProfilMo)
-                : l10n.fichierFormatRefuse,
+            e.raison == FichierRefuseRaison.formatNonSupporte
+                ? l10n.kycFormatNonSupporte
+                : e.raison == FichierRefuseRaison.indisponible
+                ? l10n.kycCameraIndisponible
+                : l10n.fichierTropGros(e.tailleMaxMo ?? tailleMaxPhotoProfilMo),
           ),
         ),
       );
@@ -142,17 +144,24 @@ class _PageProfilState extends ConsumerState<PageProfil> {
 
     void aller(String route) => unawaited(context.push<void>(route));
     Widget entree(
-      FaIconData icone,
-      String titre,
-      VoidCallback surAppui, {
-      String? sousTitre,
-    }) => ListTile(
-      leading: FaIcon(icone),
-      title: Text(titre),
-      subtitle: sousTitre == null ? null : Text(sousTitre),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: surAppui,
-    );
+    FaIconData icone,
+    String titre,
+    VoidCallback surAppui, {
+    String? sousTitre,
+  }) =>
+      ListTile(
+        leading: SizedBox(
+          width: 32,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: FaIcon(icone, size: 20),
+          ),
+        ),
+        title: Text(titre),
+        subtitle: sousTitre == null ? null : Text(sousTitre),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: surAppui,
+      );
     Widget section(String titre) => Padding(
       padding: const EdgeInsets.fromLTRB(
         Espacements.l,
@@ -218,8 +227,8 @@ class _PageProfilState extends ConsumerState<PageProfil> {
                       child: CircleAvatar(
                         radius: 18,
                         backgroundColor: theme.colorScheme.primary,
-                        child: FaIcon(
-                          IconesDropp.photo,
+                        child: Icon(
+                          Icons.camera_alt_outlined,
                           size: 18,
                           color: theme.colorScheme.onPrimary,
                         ),

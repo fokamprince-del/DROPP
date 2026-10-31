@@ -51,7 +51,9 @@ class EtatVide extends StatelessWidget {
                     color: theme.scaffoldBackgroundColor,
                     shape: BoxShape.circle,
                   ),
-                  child: FaIcon(icone, size: 30, color: schema.primary),
+                  child: Center(
+                    child: FaIcon(icone, size: 30, color: schema.primary),
+                  ),
                 ),
               ],
             ),

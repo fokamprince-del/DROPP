@@ -810,5 +810,28 @@
   "kycEtapeSelfie": "Verification selfie",
   "kycEtapeValidation": "Review by the DROPP team",
   "kycActualiser": "Refresh",
-  "kycRetourProfil": "Back to profile"
+  "kycRetourProfil": "Back to profile",
+  "kycEtapeSur": "Step {etape} of {total}",
+  "@kycEtapeSur": {
+    "placeholders": {
+      "etape": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kycCniTitre": "Your ID card",
+  "kycCniExplication": "Upload the front, then the back. Check that the photo is sharp before continuing.",
+  "kycApercuRecto": "Preview of the front of the ID card",
+  "kycApercuVerso": "Preview of the back of the ID card",
+  "kycApercuAbsent": "Document sent. The preview isn't available on this device.",
+  "kycStatutAImporter": "To upload",
+  "kycStatutAVerifier": "To check",
+  "kycUtiliserPhoto": "Use this photo",
+  "kycRemplacerPhoto": "Replace",
+  "kycVersoApresRecto": "Upload the front first.",
+  "kycContinuer": "Continue",
+  "kycRetour": "Back",
+  "kycAgrandir": "Tap to enlarge",
+  "kycFermer": "Close",
+  "kycCommencer": "Start verification",
+  "kycReprendre": "Resume my verification"
 }
