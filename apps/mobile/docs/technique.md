@@ -54,7 +54,15 @@ sur les formats particuliers de l'API (montants en chaînes, dates).
   `http://10.0.2.2:3000/v1` (l'API locale vue depuis l'émulateur Android).
   Sur un téléphone : `--dart-define=API_URL=http://<IP du PC>:3000/v1`.
 - **Release** : `Environnement.verifier()` refuse au démarrage une URL qui
-  n'est pas en `https`.
+  n'est pas en `https`. L'app affiche alors « Application mal configurée »
+  (`PageConfigurationInvalide`) au lieu de rester sur un écran blanc.
+- **APK de test** (API locale en `http`, avant le domaine) : construire en
+  debug, seul mode qui accepte le `http` :
+  `flutter build apk --debug --dart-define=API_URL=http://<IP du PC>:3000/v1`
+  (fichier `build/app/outputs/flutter-apk/app-debug.apk`). Un
+  `flutter build apk` (release) exige `--dart-define=API_URL=https://…`.
+- **Lancement Android** : fond bleu nuit (`@color/dropp_nuit`, comme
+  `PageDemarrage`) jusqu'à la première image Flutter, puis le logo DROPP.
 - **HTTP en clair** : autorisé uniquement en debug
   (`android/app/src/debug/AndroidManifest.xml`).
 - **Signature release** : `android/key.properties` (ignoré par git) pointe vers
@@ -685,3 +693,5 @@ Recettes :
 | Avertissements `LF will be replaced by CRLF` | `core.autocrlf=true` sous Windows ; le dépôt reste en LF. |
 | L'app ne joint pas l'API sur un téléphone | Passer l'IP du PC : `--dart-define=API_URL=http://192.168.x.x:3000/v1`, même réseau Wi-Fi. |
 | Erreur au démarrage en release « API_URL doit être en https » | Voulu : fournir une URL `https`. |
+| APK installé : « Application mal configurée » (avant : écran blanc) | APK release construit sans `--dart-define=API_URL=https://…`. Pour tester avec l'API locale, construire en `--debug` (voir § 2). |
+| `flutter test` bloqué sur « loading », ou « Espace insuffisant sur le disque » | Disque C: plein (fichiers temporaires de Flutter) : libérer de la place, ou lancer avec `$env:TEMP='D:\tmp\flutter'; $env:TMP='D:\tmp\flutter'`. |
