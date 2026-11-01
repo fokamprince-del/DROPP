@@ -290,13 +290,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.devenirVendeur,
         builder: (context, state) => const PageDevenirVendeur(),
       ),
-            GoRoute(
+      GoRoute(
         path: Routes.kycCni,
         builder: (context, state) => const PageKycCni(),
       ),
       GoRoute(
         path: Routes.kycInformations,
-        builder: (context, state) => const PageProvisoire('Informations de la CNI'),
+        builder: (context, state) =>
+            const PageProvisoire('Informations de la CNI'),
       ),
       GoRoute(
         path: Routes.kycSelfie,

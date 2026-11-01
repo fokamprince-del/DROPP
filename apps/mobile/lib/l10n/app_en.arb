@@ -65,6 +65,9 @@
   "inscriptionSousTitre": "An activation code will be sent to you by SMS.",
   "inscriptionBouton": "Get the code by SMS",
   "inscriptionConditions": "By continuing, you accept the terms of use.",
+  "continuer": "Continue",
+  "inscriptionSousTitreIdentite": "Tell us who you are.",
+  "inscriptionSousTitreCompte": "Choose how you sign in. An activation code will be sent to you by SMS.",
   "jaiDejaUnCompte": "I already have an account",
   "connexionTitre": "Welcome back",
   "connexionSousTitre": "Sign in with your number or email.",
@@ -811,8 +814,8 @@
   "kycEtapeValidation": "Review by the DROPP team",
   "kycActualiser": "Refresh",
   "kycRetourProfil": "Back to profile",
-  "kycEtapeSur": "Step {etape} of {total}",
-  "@kycEtapeSur": {
+  "etapeSur": "Step {etape} of {total}",
+  "@etapeSur": {
     "placeholders": {
       "etape": { "type": "int" },
       "total": { "type": "int" }
@@ -833,5 +836,14 @@
   "kycAgrandir": "Tap to enlarge",
   "kycFermer": "Close",
   "kycCommencer": "Start verification",
-  "kycReprendre": "Resume my verification"
+  "kycReprendre": "Resume my verification",
+  "kycTonParcours": "Your progress",
+  "kycEtapeCniTitre": "ID card",
+  "kycEtapeInfosTitre": "Card details",
+  "kycEtapeSelfieTitre": "Verification selfie",
+  "kycEtapeRecapTitre": "Summary and submission",
+  "kycEtapeTerminee": "Done · tap to edit",
+  "kycEtapeAFaire": "To do",
+  "kycEtapeVerrouillee": "Available after the previous step"
+  
 }

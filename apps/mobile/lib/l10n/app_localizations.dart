@@ -404,6 +404,24 @@ abstract class AppLocalizations {
   /// **'En continuant, tu acceptes les conditions d\'utilisation.'**
   String get inscriptionConditions;
 
+  /// No description provided for @continuer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get continuer;
+
+  /// No description provided for @inscriptionSousTitreIdentite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dis-nous qui tu es.'**
+  String get inscriptionSousTitreIdentite;
+
+  /// No description provided for @inscriptionSousTitreCompte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis comment te connecter. Un code d\'activation te sera envoyé par SMS.'**
+  String get inscriptionSousTitreCompte;
+
   /// No description provided for @jaiDejaUnCompte.
   ///
   /// In fr, this message translates to:
@@ -2648,11 +2666,11 @@ abstract class AppLocalizations {
   /// **'Retour au profil'**
   String get kycRetourProfil;
 
-  /// No description provided for @kycEtapeSur.
+  /// No description provided for @etapeSur.
   ///
   /// In fr, this message translates to:
   /// **'Étape {etape} sur {total}'**
-  String kycEtapeSur(int etape, int total);
+  String etapeSur(int etape, int total);
 
   /// No description provided for @kycCniTitre.
   ///
@@ -2749,6 +2767,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Reprendre ma vérification'**
   String get kycReprendre;
+
+  /// No description provided for @kycTonParcours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton parcours'**
+  String get kycTonParcours;
+
+  /// No description provided for @kycEtapeCniTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Carte d\'identité'**
+  String get kycEtapeCniTitre;
+
+  /// No description provided for @kycEtapeInfosTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de la carte'**
+  String get kycEtapeInfosTitre;
+
+  /// No description provided for @kycEtapeSelfieTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Selfie de vérification'**
+  String get kycEtapeSelfieTitre;
+
+  /// No description provided for @kycEtapeRecapTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récapitulatif et envoi'**
+  String get kycEtapeRecapTitre;
+
+  /// No description provided for @kycEtapeTerminee.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminé · toucher pour modifier'**
+  String get kycEtapeTerminee;
+
+  /// No description provided for @kycEtapeAFaire.
+  ///
+  /// In fr, this message translates to:
+  /// **'À faire'**
+  String get kycEtapeAFaire;
+
+  /// No description provided for @kycEtapeVerrouillee.
+  ///
+  /// In fr, this message translates to:
+  /// **'Disponible après l\'étape précédente'**
+  String get kycEtapeVerrouillee;
 }
 
 class _AppLocalizationsDelegate

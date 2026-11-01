@@ -55,7 +55,7 @@ class _PageDevenirVendeurState extends ConsumerState<PageDevenirVendeur> {
     final utilisateur = ref.watch(utilisateurConnecteProvider);
     if (utilisateur == null) return const Scaffold();
 
-        if (utilisateur.estVendeur) {
+    if (utilisateur.estVendeur) {
       if (utilisateur.statutVendeur == 'SUSPENDU') {
         return PageAcces(
           titre: l10n.vendeurTitre,

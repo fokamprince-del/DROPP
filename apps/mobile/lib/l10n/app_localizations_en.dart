@@ -189,6 +189,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'By continuing, you accept the terms of use.';
 
   @override
+  String get continuer => 'Continue';
+
+  @override
+  String get inscriptionSousTitreIdentite => 'Tell us who you are.';
+
+  @override
+  String get inscriptionSousTitreCompte =>
+      'Choose how you sign in. An activation code will be sent to you by SMS.';
+
+  @override
   String get jaiDejaUnCompte => 'I already have an account';
 
   @override
@@ -1562,7 +1572,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get kycRetourProfil => 'Back to profile';
 
   @override
-  String kycEtapeSur(int etape, int total) {
+  String etapeSur(int etape, int total) {
     return 'Step $etape of $total';
   }
 
@@ -1615,4 +1625,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycReprendre => 'Resume my verification';
+
+  @override
+  String get kycTonParcours => 'Your progress';
+
+  @override
+  String get kycEtapeCniTitre => 'ID card';
+
+  @override
+  String get kycEtapeInfosTitre => 'Card details';
+
+  @override
+  String get kycEtapeSelfieTitre => 'Verification selfie';
+
+  @override
+  String get kycEtapeRecapTitre => 'Summary and submission';
+
+  @override
+  String get kycEtapeTerminee => 'Done · tap to edit';
+
+  @override
+  String get kycEtapeAFaire => 'To do';
+
+  @override
+  String get kycEtapeVerrouillee => 'Available after the previous step';
 }

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:dropp/core/auth/session.dart';
@@ -9,8 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 
-FichierLocal _photo(XFile file) =>
-    FichierLocal(fichier: file, typeMime: 'image/jpeg', taille: 5*1024*1024);
+FichierLocal _photo(XFile file) => FichierLocal(
+  fichier: file,
+  typeMime: 'image/jpeg',
+  taille: 5 * 1024 * 1024,
+);
 
 ProviderContainer _conteneur() {
   final conteneur = ProviderContainer(
@@ -45,7 +47,9 @@ void main() {
 
     notifier.choisir(TypeDocumentKyc.cniRecto, _photo(fichiersTest[1]));
     expect(
-      conteneur.read(brouillonKycProvider).enAttenteDEnvoi(TypeDocumentKyc.cniRecto),
+      conteneur
+          .read(brouillonKycProvider)
+          .enAttenteDEnvoi(TypeDocumentKyc.cniRecto),
       isTrue,
     );
 

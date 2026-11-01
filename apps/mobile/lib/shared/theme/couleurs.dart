@@ -59,4 +59,9 @@ abstract final class Couleurs {
   // Texte secondaire, sans transparence.
   static const texteSecondaire = Color(0xFF454B70); // 8,4 sur blanc
   static const texteSecondaireSombre = Color(0xFFB4BBE3); // 9,0 sur la carte
+
+  // Accent hibiscus lisible en texte (5,9:1 sur blanc, 5,5:1 sur coton).
+  static const hibiscusTexte = Color(0xFFBC2459);
+  static const hibiscusFond = Color(0xFFFCE7EF);
+  static const hibiscusFondSombre = Color(0xFF3A1226);
 }

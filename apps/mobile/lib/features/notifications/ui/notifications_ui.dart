@@ -45,7 +45,7 @@ class BoutonNotifications extends ConsumerWidget {
         isLabelVisible: n > 0,
         label: Text(n > 99 ? '99+' : '$n'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: const FaIcon(IconesDropp.notificationNone,),
+        child: const FaIcon(IconesDropp.notificationNone),
       ),
     );
   }

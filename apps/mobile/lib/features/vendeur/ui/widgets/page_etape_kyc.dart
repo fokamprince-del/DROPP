@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../shared/theme/espacements.dart';
-import 'indicateur_etapes.dart';
+import '../../../../shared/widgets/indicateur_etapes.dart';
 
 /// Page d'une étape : indicateur, titre, explication, contenu défilant, et
 /// actions fixes en bas (le bouton retour Android et la flèche pilotent la

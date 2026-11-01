@@ -5,6 +5,7 @@ node_modules/
 dist/
 .next/
 .turbo/
+tsconfig.build.tsbuildinfo
 
 # Environment files
 .env

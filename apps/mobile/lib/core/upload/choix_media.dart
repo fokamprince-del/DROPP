@@ -112,7 +112,9 @@ Future<FichierLocal> preparerFichier(
   int tailleMaxVideoMo = 100,
 }) async {
   final typeMime = typeMimeDe(fichier.name) ?? typeMimeDe(fichier.path);
-  if (typeMime == null) throw const FichierRefuse(raison: FichierRefuseRaison.formatNonSupporte);
+  if (typeMime == null) {
+    throw const FichierRefuse(raison: FichierRefuseRaison.formatNonSupporte);
+  }
   final taille = await fichier.length();
   final maxMo = typeMime.startsWith('video/')
       ? tailleMaxVideoMo
