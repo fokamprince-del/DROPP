@@ -8,12 +8,12 @@ import '../../../../core/api/api_exception.dart';
 import '../../../../core/auth/session.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
+import '../../../../shared/forms/champ_dropp.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/icons.dart';
 import '../../../../shared/theme/styles_accent.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/bouton_action.dart';
-import '../../../../shared/widgets/champ_dropp.dart';
 import '../../../../shared/widgets/message_temporaire.dart';
 import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../shared/widgets/page_acces.dart';
@@ -135,12 +135,14 @@ class _PageConnexionState extends ConsumerState<PageConnexion> {
                   indicesAutoRemplissage: const [AutofillHints.username],
                   actif: !_envoi,
                   icone: IconesDropp.solidUser,
+                  placeholder: '+2376******** ',
                 ),
                 const SizedBox(height: Espacements.l),
                 ChampMotDePasse(
                   controleur: _motDePasse,
                   surSoumission: (_) => _soumettre(),
                   actif: !_envoi,
+                  placeholder: true,
                 ),
               ],
             ),

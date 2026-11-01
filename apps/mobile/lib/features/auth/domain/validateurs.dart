@@ -1,19 +1,10 @@
+import '../../../shared/forms/erreur_champ.dart';
 import '../../../utils/telephone.dart';
 
-enum ErreurChamp {
-  requis,
-  telephoneInvalide,
-  emailInvalide,
-  identifiantInvalide,
-  motDePasseTropCourt,
-  codeIncomplet,
-}
+export '../../../shared/forms/erreur_champ.dart';
 
 const longueurMinMotDePasse = 8;
 const longueurCode = 6;
-
-ErreurChamp? validerRequis(String? valeur) =>
-    (valeur == null || valeur.trim().isEmpty) ? ErreurChamp.requis : null;
 
 ErreurChamp? validerTelephone(String? valeur) {
   if (valeur == null || valeur.trim().isEmpty) return ErreurChamp.requis;

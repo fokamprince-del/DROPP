@@ -26,6 +26,9 @@ class ChampDropp extends StatelessWidget {
     this.actif = true,
     this.erreurServeur,
     this.icone,
+    this.aide,
+    this.couleurAide,
+    this.placeholder,
   });
 
   final String libelle;
@@ -43,6 +46,9 @@ class ChampDropp extends StatelessWidget {
   final ValueChanged<String>? surSoumission;
   final int? longueurMax;
   final bool actif;
+  final String? aide;
+  final Color? couleurAide;
+  final String? placeholder;
 
   /// Erreur renvoyée par le serveur (déjà traduite) : prioritaire.
   final String? erreurServeur;
@@ -86,6 +92,12 @@ class ChampDropp extends StatelessWidget {
                   ),
             counterText: '',
             errorText: erreurServeur,
+            hintText: placeholder,
+            helperText: aide,
+            helperMaxLines: 2,
+            helperStyle: couleurAide == null
+                ? null
+                : TextStyle(color: couleurAide),
           ),
         ),
       ],

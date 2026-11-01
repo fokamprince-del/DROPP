@@ -206,6 +206,12 @@ abstract class AppLocalizations {
   /// **'Mot de passe'**
   String get champMotDePasse;
 
+  /// No description provided for @champIdentifiantPlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'+2376******** '**
+  String get champIdentifiantPlaceholder;
+
   /// No description provided for @erreurRequis.
   ///
   /// In fr, this message translates to:
@@ -2815,6 +2821,204 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Disponible après l\'étape précédente'**
   String get kycEtapeVerrouillee;
+
+  /// No description provided for @kycInfosTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de ta carte'**
+  String get kycInfosTitre;
+
+  /// No description provided for @kycInfosExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifie que ces informations correspondent exactement à ta carte d\'identité.'**
+  String get kycInfosExplication;
+
+  /// No description provided for @kycAutoTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplir automatiquement'**
+  String get kycAutoTitre;
+
+  /// No description provided for @kycAutoExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous pouvons lire les informations visibles sur ta carte d\'identité pour préremplir ce formulaire. Vérifie chaque information et corrige les erreurs avant de continuer.'**
+  String get kycAutoExplication;
+
+  /// No description provided for @kycLectureEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lecture de ta carte en cours…'**
+  String get kycLectureEnCours;
+
+  /// No description provided for @kycLectureEchec.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous n\'avons pas réussi à lire ta carte. Remplis les informations à la main.'**
+  String get kycLectureEchec;
+
+  /// No description provided for @kycLectureIntrouvable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous ne trouvons pas ta carte. Reviens à l\'étape précédente et importe-la de nouveau.'**
+  String get kycLectureIntrouvable;
+
+  /// No description provided for @kycLectureLente.
+  ///
+  /// In fr, this message translates to:
+  /// **'La lecture prend trop de temps. Réessaie ou remplis les informations à la main.'**
+  String get kycLectureLente;
+
+  /// No description provided for @kycLectureIncertaine.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certaines informations sont difficiles à lire. Vérifie-les avec attention.'**
+  String get kycLectureIncertaine;
+
+  /// No description provided for @kycOuMain.
+  ///
+  /// In fr, this message translates to:
+  /// **'ou remplis à la main'**
+  String get kycOuMain;
+
+  /// No description provided for @kycChampNom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom (sur la carte)'**
+  String get kycChampNom;
+
+  /// No description provided for @kycChampPrenom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prénom(s) (sur la carte)'**
+  String get kycChampPrenom;
+
+  /// No description provided for @kycChampNumero.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro de la carte'**
+  String get kycChampNumero;
+
+  /// No description provided for @kycChampNaissance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de naissance'**
+  String get kycChampNaissance;
+
+  /// No description provided for @kycChampLieu.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu de naissance'**
+  String get kycChampLieu;
+
+  /// No description provided for @kycChampDelivrance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de délivrance'**
+  String get kycChampDelivrance;
+
+  /// No description provided for @kycChampExpiration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date d\'expiration'**
+  String get kycChampExpiration;
+
+  /// No description provided for @kycFormatDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'JJ/MM/AAAA'**
+  String get kycFormatDate;
+
+  /// No description provided for @kycChoisirDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir une date'**
+  String get kycChoisirDate;
+
+  /// No description provided for @kycLuSurCarte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lu sur ta carte : vérifie'**
+  String get kycLuSurCarte;
+
+  /// No description provided for @kycChampAComplete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non lu : à compléter'**
+  String get kycChampAComplete;
+
+  /// No description provided for @kycCarteExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette carte semble expirée. Elle risque d\'être refusée.'**
+  String get kycCarteExpiree;
+
+  /// No description provided for @kycInfosConformes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces informations correspondent à ma carte d\'identité.'**
+  String get kycInfosConformes;
+
+  /// No description provided for @kycInfosConfirmer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer et continuer'**
+  String get kycInfosConfirmer;
+
+  /// No description provided for @kycInfosRefusees.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certaines informations n\'ont pas été acceptées. Vérifie-les.'**
+  String get kycInfosRefusees;
+
+  /// No description provided for @kycRemplacerSaisieTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplacer ta saisie ?'**
+  String get kycRemplacerSaisieTitre;
+
+  /// No description provided for @kycRemplacerSaisieTexte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les informations déjà saisies seront remplacées par celles lues sur ta carte.'**
+  String get kycRemplacerSaisieTexte;
+
+  /// No description provided for @kycRemplacer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Remplacer'**
+  String get kycRemplacer;
+
+  /// No description provided for @erreurNumeroCni.
+  ///
+  /// In fr, this message translates to:
+  /// **'6 à 20 lettres ou chiffres'**
+  String get erreurNumeroCni;
+
+  /// No description provided for @erreurDateInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date invalide (JJ/MM/AAAA)'**
+  String get erreurDateInvalide;
+
+  /// No description provided for @erreurDateNaissance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de naissance impossible'**
+  String get erreurDateNaissance;
+
+  /// No description provided for @erreurDateFuture.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date ne peut pas être dans le futur'**
+  String get erreurDateFuture;
+
+  /// No description provided for @erreurExpirationAvantDelivrance.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'expiration doit venir après la délivrance'**
+  String get erreurExpirationAvantDelivrance;
 }
 
 class _AppLocalizationsDelegate

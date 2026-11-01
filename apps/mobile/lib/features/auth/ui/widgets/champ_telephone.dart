@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../shared/forms/champ_dropp.dart';
 import '../../../../shared/theme/icons.dart';
-import '../../../../shared/widgets/champ_dropp.dart';
 import '../../domain/validateurs.dart';
 
 /// Le contrôleur est créé par l'écran avec `TextEditingController(text:
