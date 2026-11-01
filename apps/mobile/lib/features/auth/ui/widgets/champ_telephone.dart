@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../shared/theme/icons.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
 import '../../domain/validateurs.dart';
 
@@ -36,6 +37,7 @@ class ChampTelephone extends StatelessWidget {
       surSoumission: surSoumission,
       actif: actif,
       erreurServeur: erreurServeur,
+      icone: IconesDropp.phoneScreen,
     );
   }
 }

@@ -61,8 +61,9 @@ class DossierEnVerification extends ConsumerWidget {
             await ref.read(sessionProvider.notifier).rafraichirProfil();
             if (!context.mounted) return;
             ref.invalidate(dossierKycProvider);
-          }, 
-          child: Text(l10n.kycActualiser)),
+          },
+          child: Text(l10n.kycActualiser),
+        ),
         const SizedBox(height: Espacements.m),
         OutlinedButton(
           onPressed: () => context.go(Routes.profil),

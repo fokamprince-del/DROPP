@@ -21,6 +21,19 @@ abstract final class IconesDropp {
   static const info = FontAwesomeIcons.circleInfo;
   static const valide = FontAwesomeIcons.circleCheck;
   static const circle = FontAwesomeIcons.circle;
+  static const lock = FontAwesomeIcons.lock;
+  static const unlock = FontAwesomeIcons.unlockKeyhole;
+  static const user = FontAwesomeIcons.user;
+  static const solidUser = FontAwesomeIcons.solidUser;
+  static const mail = FontAwesomeIcons.envelope;
+  static const solidMail = FontAwesomeIcons.solidEnvelope;
+
+  //bienvenue
+  static const help = FontAwesomeIcons.circleQuestion;
+  static const wallet = FontAwesomeIcons.wallet;
+  static const clothes = FontAwesomeIcons.shirt;
+  static const certified = FontAwesomeIcons.anchorCircleCheck;
+  static const shopLock = FontAwesomeIcons.shopLock;
 
   // acceuil
   static const notification = FontAwesomeIcons.solidBell;
@@ -33,7 +46,8 @@ abstract final class IconesDropp {
 
   //adresses
   static const location = FontAwesomeIcons.locationDot;
-  static const truck = FontAwesomeIcons.solidTruck;
+  static const truck = FontAwesomeIcons.truck;
+  static const solidTruck = FontAwesomeIcons.solidTruck;
   static const chevronRigth = FontAwesomeIcons.chevronRight;
   static const add = FontAwesomeIcons.plus;
   static const delete = FontAwesomeIcons.solidTrashCan;
@@ -107,6 +121,11 @@ abstract final class IconesDropp {
   static const iphone = FontAwesomeIcons.apple;
   static const android = FontAwesomeIcons.android;
   static const deleteForever = FontAwesomeIcons.trash;
+
+  //Kyc
+
+  static const idCard = FontAwesomeIcons.addressCard;
+  static const solidIdCard = FontAwesomeIcons.solidAddressCard;
 
   static const check = FontAwesomeIcons.check;
   static const ban = FontAwesomeIcons.ban;

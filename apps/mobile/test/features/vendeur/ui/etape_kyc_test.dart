@@ -25,10 +25,10 @@ class _FauxKyc extends KycRepository {
 
   @override
   Future<DossierKyc?> monDossier() async => DossierKyc(
-        id: 'd1',
-        statut: StatutDossierKyc.enAttente,
-        documents: List.of(documents),
-      );
+    id: 'd1',
+    statut: StatutDossierKyc.enAttente,
+    documents: List.of(documents),
+  );
 
   @override
   Future<DocumentKyc> envoyerDocument({
@@ -52,24 +52,22 @@ class _FauxSelecteur implements SelecteurPhoto {
   Future<FichierLocal?> prendre({
     required bool selfie,
     bool galerie = false,
-    int tailleMaxMo = 10
-  }) async =>
-      FichierLocal(fichier: XFile.fromData(
-          utf8.encode('Contenu du premier fichier de test'),
-          name: 'document1.jpeg',
-          mimeType: 'image/jpeg',
-        ), 
-        typeMime: 'image/jpeg', 
-        taille: taille
-      );
+    int tailleMaxMo = 10,
+  }) async => FichierLocal(
+    fichier: XFile.fromData(
+      utf8.encode('Contenu du premier fichier de test'),
+      name: 'document1.jpeg',
+      mimeType: 'image/jpeg',
+    ),
+    typeMime: 'image/jpeg',
+    taille: taille,
+  );
 
   @override
   Future<void> supprimer(String chemin) {
     // TODO: implement supprimer
     throw UnimplementedError();
   }
-
-  
 }
 
 Future<void> _afficher(
@@ -114,8 +112,9 @@ Future<void> _toucher(WidgetTester tester, Finder cible) async {
 }
 
 void main() {
-  testWidgets('recto puis verso : aperçu à valider, envoi, puis continuer',
-      (tester) async {
+  testWidgets('recto puis verso : aperçu à valider, envoi, puis continuer', (
+    tester,
+  ) async {
     final kyc = _FauxKyc();
     await _afficher(tester, kyc, _FauxSelecteur());
 
@@ -145,8 +144,9 @@ void main() {
     expect(find.text('page informations'), findsOneWidget);
   });
 
-  testWidgets('une photo trop lourde est refusée avant tout envoi',
-      (tester) async {
+  testWidgets('une photo trop lourde est refusée avant tout envoi', (
+    tester,
+  ) async {
     final kyc = _FauxKyc();
     await _afficher(
       tester,

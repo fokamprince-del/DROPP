@@ -7,19 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget _app(Widget enfant) => MaterialApp(
-      theme: ThemeDropp.clair,
-      locale: const Locale('fr'),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(body: Center(child: enfant)),
-    );
+  theme: ThemeDropp.clair,
+  locale: const Locale('fr'),
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
+  home: Scaffold(body: Center(child: enfant)),
+);
 
 void main() {
-  testWidgets('le bouton affiche son libellé et signale l\'appui',
-      (tester) async {
+  testWidgets('le bouton affiche son libellé et signale l\'appui', (
+    tester,
+  ) async {
     var appuis = 0;
     await tester.pumpWidget(
-      _app(BoutonGoogle(libelle: 'Se connecter avec Google', surAppui: () => appuis++)),
+      _app(
+        BoutonGoogle(
+          libelle: 'Se connecter avec Google',
+          surAppui: () => appuis++,
+        ),
+      ),
     );
 
     await tester.tap(find.text('Se connecter avec Google'));
@@ -31,7 +37,9 @@ void main() {
     expect(find.text('ou'), findsOneWidget);
   });
 
-  testWidgets('le message temporaire apparaît puis se remplace', (tester) async {
+  testWidgets('le message temporaire apparaît puis se remplace', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       _app(
         Builder(

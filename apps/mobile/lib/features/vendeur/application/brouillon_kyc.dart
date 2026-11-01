@@ -24,8 +24,8 @@ class BrouillonKyc {
 
 final brouillonKycProvider =
     NotifierProvider<BrouillonKycNotifier, BrouillonKyc>(
-  BrouillonKycNotifier.new,
-);
+      BrouillonKycNotifier.new,
+    );
 
 class BrouillonKycNotifier extends Notifier<BrouillonKyc> {
   @override

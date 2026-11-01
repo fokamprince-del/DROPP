@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'couleurs.dart';
 
-/// Couleurs de statut (payé, en attente, erreur) qui n'existent pas dans le
-/// `ColorScheme` de Material.
+/// Couleurs de statut et d'accent qui n'existent pas dans le `ColorScheme`.
 @immutable
 class CouleursMetier extends ThemeExtension<CouleursMetier> {
   const CouleursMetier({
@@ -13,6 +12,8 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
     required this.attenteFond,
     required this.erreur,
     required this.erreurFond,
+    required this.accent,
+    required this.accentFond,
   });
 
   final Color succes;
@@ -22,6 +23,10 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
   final Color erreur;
   final Color erreurFond;
 
+  /// Hibiscus lisible en texte et en icône.
+  final Color accent;
+  final Color accentFond;
+
   static const clair = CouleursMetier(
     succes: Couleurs.plantainTexte,
     succesFond: Couleurs.plantainFond,
@@ -29,6 +34,8 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
     attenteFond: Couleurs.kolaFond,
     erreur: Couleurs.pimentTexte,
     erreurFond: Couleurs.pimentFond,
+    accent: Couleurs.hibiscusTexte,
+    accentFond: Couleurs.hibiscusFond,
   );
 
   static const sombre = CouleursMetier(
@@ -38,6 +45,8 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
     attenteFond: Couleurs.kolaFondSombre,
     erreur: Couleurs.pimentTexteSombre,
     erreurFond: Couleurs.pimentFondSombre,
+    accent: Couleurs.hibiscusVif,
+    accentFond: Couleurs.hibiscusFondSombre,
   );
 
   @override
@@ -48,6 +57,8 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
     Color? attenteFond,
     Color? erreur,
     Color? erreurFond,
+    Color? accent,
+    Color? accentFond,
   }) => CouleursMetier(
     succes: succes ?? this.succes,
     succesFond: succesFond ?? this.succesFond,
@@ -55,6 +66,8 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
     attenteFond: attenteFond ?? this.attenteFond,
     erreur: erreur ?? this.erreur,
     erreurFond: erreurFond ?? this.erreurFond,
+    accent: accent ?? this.accent,
+    accentFond: accentFond ?? this.accentFond,
   );
 
   @override
@@ -67,6 +80,8 @@ class CouleursMetier extends ThemeExtension<CouleursMetier> {
       attenteFond: Color.lerp(attenteFond, other.attenteFond, t)!,
       erreur: Color.lerp(erreur, other.erreur, t)!,
       erreurFond: Color.lerp(erreurFond, other.erreurFond, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
+      accentFond: Color.lerp(accentFond, other.accentFond, t)!,
     );
   }
 }

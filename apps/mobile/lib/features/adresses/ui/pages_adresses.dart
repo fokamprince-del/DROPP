@@ -75,7 +75,7 @@ class PageAdresses extends ConsumerWidget {
                   children: [
                     FaIcon(
                       a.type == TypeAdresse.livraison
-                          ? IconesDropp.truck
+                          ? IconesDropp.solidTruck
                           : IconesDropp.location,
                       color: theme.colorScheme.primary,
                     ),

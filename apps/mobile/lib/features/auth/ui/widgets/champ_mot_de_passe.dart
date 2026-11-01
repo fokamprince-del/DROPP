@@ -61,6 +61,7 @@ class _ChampMotDePasseState extends State<ChampMotDePasse> {
           surSoumission: widget.surSoumission,
           actif: widget.actif,
           erreurServeur: widget.erreurServeur,
+          icone: IconesDropp.unlock,
           suffixe: IconButton(
             tooltip: _visible
                 ? l10n.motDePasseMasquer

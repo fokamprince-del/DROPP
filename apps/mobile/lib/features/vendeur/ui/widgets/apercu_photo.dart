@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 
@@ -28,9 +27,7 @@ class ApercuPhoto extends StatelessWidget {
     Object erreur,
     StackTrace? stackTrace,
   ) {
-    return const Center(
-      child: Icon(Icons.broken_image_outlined, size: 40),
-    );
+    return const Center(child: Icon(Icons.broken_image_outlined, size: 40));
   }
 
   void _agrandir(BuildContext context) {

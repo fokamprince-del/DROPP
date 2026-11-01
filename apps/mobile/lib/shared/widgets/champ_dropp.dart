@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../core/l10n/contexte_l10n.dart';
 import '../../features/auth/domain/validateurs.dart';
@@ -24,9 +25,11 @@ class ChampDropp extends StatelessWidget {
     this.longueurMax,
     this.actif = true,
     this.erreurServeur,
+    this.icone,
   });
 
   final String libelle;
+  final FaIconData? icone;
   final TextEditingController controleur;
   final ErreurChamp? Function(String?)? validateur;
   final TextInputType? typeClavier;
@@ -70,6 +73,17 @@ class ChampDropp extends StatelessWidget {
               : (valeur) => validateur!(valeur)?.libelle(l10n),
           decoration: InputDecoration(
             suffixIcon: suffixe,
+            prefixIcon: icone == null
+                ? null
+                : SizedBox(
+                    width: 48,
+                    child: Center(
+                      child: Transform.translate(
+                        offset: const Offset(0, 2),
+                        child: FaIcon(icone, size: 20),
+                      ),
+                    ),
+                  ),
             counterText: '',
             errorText: erreurServeur,
           ),

@@ -9,6 +9,8 @@ import '../../../../core/auth/session.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../shared/theme/espacements.dart';
+import '../../../../shared/theme/icons.dart';
+import '../../../../shared/theme/styles_accent.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/bouton_action.dart';
 import '../../../../shared/widgets/champ_dropp.dart';
@@ -132,6 +134,7 @@ class _PageConnexionState extends ConsumerState<PageConnexion> {
                   typeClavier: TextInputType.emailAddress,
                   indicesAutoRemplissage: const [AutofillHints.username],
                   actif: !_envoi,
+                  icone: IconesDropp.solidUser,
                 ),
                 const SizedBox(height: Espacements.l),
                 ChampMotDePasse(
@@ -151,6 +154,7 @@ class _PageConnexionState extends ConsumerState<PageConnexion> {
                 cheminAvecRetour(context, Routes.motDePasseOublie),
               ),
             ),
+            style: lienAccent(context),
             child: Text(l10n.motDePasseOublieLien),
           ),
         ),
@@ -167,6 +171,7 @@ class _PageConnexionState extends ConsumerState<PageConnexion> {
             onPressed: () => unawaited(
               context.push<void>(cheminAvecRetour(context, Routes.inscription)),
             ),
+            style: boutonContourAccent(context),
             child: Text(l10n.creerUnCompte),
           ),
         ),

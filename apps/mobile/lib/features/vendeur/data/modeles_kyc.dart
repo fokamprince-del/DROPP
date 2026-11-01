@@ -1,5 +1,5 @@
 /// Plafond de l'API pour un document.
-const tailleMaxDocumentKyc = 10 ;
+const tailleMaxDocumentKyc = 10;
 
 enum TypeDocumentKyc {
   cniRecto('CNI_RECTO'),

@@ -90,16 +90,18 @@ class _PageBienvenueState extends ConsumerState<PageBienvenue> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: Espacements.xl),
-                            IllustrationBienvenue(icones: _icones[i]),
+                            Center(
+                              child: IllustrationBienvenue(icones: _icones[i])
+                            ),
                             const SizedBox(height: Espacements.xl),
                             Text(
                               titres[i],
-                              style: theme.textTheme.headlineSmall,
+                              style: theme.textTheme.headlineMedium,
                             ),
                             const SizedBox(height: Espacements.s),
                             Text(
                               textes[i],
-                              style: theme.textTheme.bodyMedium?.copyWith(
+                              style: theme.textTheme.bodyLarge?.copyWith(
                                 color: theme.colorScheme.onSurface.withValues(
                                   alpha: 0.75,
                                 ),
@@ -134,7 +136,8 @@ class _PageBienvenueState extends ConsumerState<PageBienvenue> {
                     ),
                   ),
                   const SizedBox(height: Espacements.l),
-                  SizedBox(
+                    if (_index == 2) ...[
+                    SizedBox(
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: () => _continuer(Routes.inscription),
@@ -149,6 +152,7 @@ class _PageBienvenueState extends ConsumerState<PageBienvenue> {
                       child: Text(l10n.jaiDejaUnCompte),
                     ),
                   ),
+                    ],
                 ],
               ),
             ),

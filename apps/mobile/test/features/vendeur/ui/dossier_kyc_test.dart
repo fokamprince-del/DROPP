@@ -77,5 +77,4 @@ void main() {
     expect(routePourEtape(EtapeKyc.cni), Routes.kycCni);
     expect(routePourEtape(EtapeKyc.recapitulatif), Routes.kycRecapitulatif);
   });
-
 }

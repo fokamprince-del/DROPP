@@ -65,6 +65,9 @@
   "inscriptionSousTitre": "Un code d'activation te sera envoyé par SMS.",
   "inscriptionBouton": "Recevoir le code par SMS",
   "inscriptionConditions": "En continuant, tu acceptes les conditions d'utilisation.",
+  "continuer": "Continuer",
+  "inscriptionSousTitreIdentite": "Dis-nous qui tu es.",
+  "inscriptionSousTitreCompte": "Choisis comment te connecter. Un code d'activation te sera envoyé par SMS.",
   "jaiDejaUnCompte": "J'ai déjà un compte",
   "connexionTitre": "Content de te revoir",
   "connexionSousTitre": "Connecte-toi avec ton numéro ou ton email.",
@@ -802,7 +805,6 @@
     }
   },
   "kycDossierRefuseSansMotif": "Ton dossier a été refusé. Reprends tes documents.",
-
   "kycEnVerificationTitre": "Vérification en cours",
   "kycEnVerificationTexte": "Nous vérifions ton identité pour protéger les acheteurs. Prévois 24 à 48 h.",
   "kycEtapeTelephone": "Téléphone vérifié",
@@ -811,8 +813,8 @@
   "kycEtapeValidation": "Validation par l'équipe DROPP",
   "kycActualiser": "Actualiser",
   "kycRetourProfil": "Retour au profil",
-  "kycEtapeSur": "Étape {etape} sur {total}",
-  "@kycEtapeSur": {
+  "etapeSur": "Étape {etape} sur {total}",
+  "@etapeSur": {
     "placeholders": {
       "etape": { "type": "int" },
       "total": { "type": "int" }
@@ -833,5 +835,13 @@
   "kycAgrandir": "Toucher pour agrandir",
   "kycFermer": "Fermer",
   "kycCommencer": "Commencer la vérification",
-  "kycReprendre": "Reprendre ma vérification"
+  "kycReprendre": "Reprendre ma vérification",
+  "kycTonParcours": "Ton parcours",
+  "kycEtapeCniTitre": "Carte d'identité",
+  "kycEtapeInfosTitre": "Informations de la carte",
+  "kycEtapeSelfieTitre": "Selfie de vérification",
+  "kycEtapeRecapTitre": "Récapitulatif et envoi",
+  "kycEtapeTerminee": "Terminé · toucher pour modifier",
+  "kycEtapeAFaire": "À faire",
+  "kycEtapeVerrouillee": "Disponible après l'étape précédente"
 }

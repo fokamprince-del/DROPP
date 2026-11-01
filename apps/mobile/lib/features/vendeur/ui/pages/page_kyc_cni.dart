@@ -47,11 +47,11 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
     } on FichierRefuse catch (e) {
       if (!mounted) return;
       setState(() {
-       _erreur = e.raison == FichierRefuseRaison.formatNonSupporte
-              ? l10n.kycFormatNonSupporte
-              : e.raison == FichierRefuseRaison.indisponible
-              ? l10n.kycCameraIndisponible
-              : l10n.fichierTropGros(e.tailleMaxMo ?? tailleMaxDocumentKyc);
+        _erreur = e.raison == FichierRefuseRaison.formatNonSupporte
+            ? l10n.kycFormatNonSupporte
+            : e.raison == FichierRefuseRaison.indisponible
+            ? l10n.kycCameraIndisponible
+            : l10n.fichierTropGros(e.tailleMaxMo ?? tailleMaxDocumentKyc);
       });
     }
   }
@@ -109,19 +109,18 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
       String titre,
       String description, {
       required bool actif,
-    }) =>
-        _EmplacementCni(
-          titre: titre,
-          description: description,
-          photo: brouillon.photo(type),
-          document: donnees?.document(type),
-          enAttente: brouillon.enAttenteDEnvoi(type),
-          enCours: _enCours.contains(type),
-          actif: actif,
-          indice: actif ? null : l10n.kycVersoApresRecto,
-          surChoisir: (galerie) => _choisir(type, galerie: galerie),
-          surEnvoyer: () => _envoyer(type),
-        );
+    }) => _EmplacementCni(
+      titre: titre,
+      description: description,
+      photo: brouillon.photo(type),
+      document: donnees?.document(type),
+      enAttente: brouillon.enAttenteDEnvoi(type),
+      enCours: _enCours.contains(type),
+      actif: actif,
+      indice: actif ? null : l10n.kycVersoApresRecto,
+      surChoisir: (galerie) => _choisir(type, galerie: galerie),
+      surEnvoyer: () => _envoyer(type),
+    );
 
     return PageEtapeKyc(
       etape: 1,
@@ -131,7 +130,10 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
       enfants: [
         if (dossier.hasError && !dossier.hasValue) ...[
           BandeauMessage(
-            message: messageErreurApi(l10n, ApiException.depuis(dossier.error!)),
+            message: messageErreurApi(
+              l10n,
+              ApiException.depuis(dossier.error!),
+            ),
           ),
           const SizedBox(height: Espacements.l),
         ],
@@ -253,9 +255,7 @@ class _EmplacementCni extends StatelessWidget {
           if (photo != null)
             ApercuPhoto(fichier: photo!.fichier, description: description)
           else
-            _ApercuVide(
-              texte: document != null ? l10n.kycApercuAbsent : null,
-            ),
+            _ApercuVide(texte: document != null ? l10n.kycApercuAbsent : null),
           if (indice != null) ...[
             const SizedBox(height: Espacements.s),
             Text(indice!, style: theme.textTheme.bodySmall),

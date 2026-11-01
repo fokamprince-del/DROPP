@@ -33,7 +33,7 @@ class IllustrationBienvenue extends StatelessWidget {
               colors: _degrades[i],
             ),
           ),
-          child: Icon(icones[i], size: taille * 0.4, color: Couleurs.blanc),
+          child: Icon(icones[i], size: taille * 0.5, color: Couleurs.blanc),
         ),
       ),
     );
@@ -47,9 +47,9 @@ class IllustrationBienvenue extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            _carte(1, 120, 0.12, const Offset(70, -20)),
-            _carte(2, 110, -0.10, const Offset(-70, 30)),
-            _carte(0, 140, -0.03, Offset.zero),
+            _carte(1, 130, 0.15, const Offset(80, -25)),
+            _carte(2, 120, -0.10, const Offset(-85, 35)),
+            _carte(0, 150, -0.03, Offset.zero),
           ],
         ),
       ),

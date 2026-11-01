@@ -6,7 +6,6 @@ import 'package:dropp/shared/theme/theme_dropp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 Widget _app(Widget enfant) => MaterialApp(
   theme: ThemeDropp.clair,
   locale: const Locale('fr'),

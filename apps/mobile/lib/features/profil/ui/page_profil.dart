@@ -144,24 +144,23 @@ class _PageProfilState extends ConsumerState<PageProfil> {
 
     void aller(String route) => unawaited(context.push<void>(route));
     Widget entree(
-    FaIconData icone,
-    String titre,
-    VoidCallback surAppui, {
-    String? sousTitre,
-  }) =>
-      ListTile(
-        leading: SizedBox(
-          width: 32,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: FaIcon(icone, size: 20),
-          ),
+      FaIconData icone,
+      String titre,
+      VoidCallback surAppui, {
+      String? sousTitre,
+    }) => ListTile(
+      leading: SizedBox(
+        width: 32,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: FaIcon(icone, size: 20),
         ),
-        title: Text(titre),
-        subtitle: sousTitre == null ? null : Text(sousTitre),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: surAppui,
-      );
+      ),
+      title: Text(titre),
+      subtitle: sousTitre == null ? null : Text(sousTitre),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: surAppui,
+    );
     Widget section(String titre) => Padding(
       padding: const EdgeInsets.fromLTRB(
         Espacements.l,
