@@ -88,7 +88,10 @@ class KycRepository {
   }
 
   Future<ResultatExtractionCni> extraireCni() async {
-    final json = await _api.post<Map<String, dynamic>>('/kyc/cni/extraire');
+    final json = await _api.post<Map<String, dynamic>>(
+      '/kyc/cni/extraire',
+      options: Options(receiveTimeout: const Duration(seconds: 45)),
+    );
     return ResultatExtractionCni.depuisJson(json);
   }
 
