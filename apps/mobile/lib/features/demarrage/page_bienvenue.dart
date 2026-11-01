@@ -91,7 +91,7 @@ class _PageBienvenueState extends ConsumerState<PageBienvenue> {
                           children: [
                             const SizedBox(height: Espacements.xl),
                             Center(
-                              child: IllustrationBienvenue(icones: _icones[i])
+                              child: IllustrationBienvenue(icones: _icones[i]),
                             ),
                             const SizedBox(height: Espacements.xl),
                             Text(
@@ -136,23 +136,23 @@ class _PageBienvenueState extends ConsumerState<PageBienvenue> {
                     ),
                   ),
                   const SizedBox(height: Espacements.l),
-                    if (_index == 2) ...[
+                  if (_index == 2) ...[
                     SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: () => _continuer(Routes.inscription),
-                      child: Text(l10n.creerUnCompte),
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () => _continuer(Routes.inscription),
+                        child: Text(l10n.creerUnCompte),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: Espacements.m),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () => _continuer(Routes.connexion),
-                      child: Text(l10n.jaiDejaUnCompte),
+                    const SizedBox(height: Espacements.m),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () => _continuer(Routes.connexion),
+                        child: Text(l10n.jaiDejaUnCompte),
+                      ),
                     ),
-                  ),
-                    ],
+                  ],
                 ],
               ),
             ),

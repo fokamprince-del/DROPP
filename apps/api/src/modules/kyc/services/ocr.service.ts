@@ -81,6 +81,8 @@ export class OcrService implements OnModuleDestroy {
       .map((l) => l.trim())
       .filter((l) => l.length > 0);
 
+      console.debug('Lignes extraites par l\'OCR :', lignes);
+
     const resultat: Omit<DonneesCniExtraites, 'confidence'> = {};
 
     for (const ligne of lignes) {

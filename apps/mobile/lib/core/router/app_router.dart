@@ -38,6 +38,7 @@ import '../../features/profil/ui/pages_securite.dart';
 import '../../features/stories/ui/pages/lecteur_stories.dart';
 import '../../features/vendeur/ui/pages/page_devenir_vendeur.dart';
 import '../../features/vendeur/ui/pages/page_kyc_cni.dart';
+import '../../features/vendeur/ui/pages/page_kyc_information.dart';
 import '../../shared/widgets/page_provisoire.dart';
 import '../auth/session.dart';
 import 'redirection.dart';
@@ -296,8 +297,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.kycInformations,
-        builder: (context, state) =>
-            const PageProvisoire('Informations de la CNI'),
+        builder: (context, state) => const PageKycInformations(),
       ),
       GoRoute(
         path: Routes.kycSelfie,
