@@ -36,6 +36,8 @@ export class ExtraireDonneesCniService {
     if (!image) throw new NotFoundException('Image CNI non trouvée.');
 
     const donnees = await this.ocr.extraireDonneesCni(image);
+    
+    console.debug('Données extraites de la CNI :', donnees);
     return {
       donnees,
       avertissement:

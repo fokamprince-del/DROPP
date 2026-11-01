@@ -9,5 +9,11 @@ extension LibelleErreurChamp on ErreurChamp {
     ErreurChamp.motDePasseTropCourt => l10n.erreurMotDePasseCourt,
     ErreurChamp.codeIncomplet => l10n.erreurCodeIncomplet,
     ErreurChamp.identifiantInvalide => l10n.erreurIdentifiantInvalide,
+    ErreurChamp.numeroCniInvalide => l10n.erreurNumeroCni,
+    ErreurChamp.dateInvalide => l10n.erreurDateInvalide,
+    ErreurChamp.dateNaissanceImpossible => l10n.erreurDateNaissance,
+    ErreurChamp.dateFuture => l10n.erreurDateFuture,
+    ErreurChamp.expirationAvantDelivrance =>
+      l10n.erreurExpirationAvantDelivrance,
   };
 }

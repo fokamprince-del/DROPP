@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/l10n/contexte_l10n.dart';
+import '../../../../shared/forms/champ_dropp.dart';
 import '../../../../shared/theme/couleurs_metier.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/icons.dart';
-import '../../../../shared/widgets/champ_dropp.dart';
 import '../../domain/validateurs.dart';
 
 class ChampMotDePasse extends StatefulWidget {
@@ -18,6 +18,7 @@ class ChampMotDePasse extends StatefulWidget {
     this.surSoumission,
     this.actif = true,
     this.erreurServeur,
+    this.placeholder = false,
   });
 
   final TextEditingController controleur;
@@ -30,6 +31,7 @@ class ChampMotDePasse extends StatefulWidget {
   final ValueChanged<String>? surSoumission;
   final bool actif;
   final String? erreurServeur;
+  final bool placeholder;
 
   @override
   State<ChampMotDePasse> createState() => _ChampMotDePasseState();
@@ -46,6 +48,7 @@ class _ChampMotDePasseState extends State<ChampMotDePasse> {
       children: [
         ChampDropp(
           libelle: widget.libelle ?? l10n.champMotDePasse,
+          placeholder: widget.placeholder ? '************' : null,
           controleur: widget.controleur,
           masque: !_visible,
           validateur: widget.nouveau ? validerNouveauMotDePasse : validerRequis,

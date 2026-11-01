@@ -80,6 +80,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get champMotDePasse => 'Password';
 
   @override
+  String get champIdentifiantPlaceholder => '+2376******** | example@email.com';
+
+  @override
   String get erreurRequis => 'This field is required';
 
   @override
@@ -1649,4 +1652,112 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycEtapeVerrouillee => 'Available after the previous step';
+
+  @override
+  String get kycInfosTitre => 'Your card details';
+
+  @override
+  String get kycInfosExplication =>
+      'Check that these details match your ID card exactly.';
+
+  @override
+  String get kycAutoTitre => 'Fill in automatically';
+
+  @override
+  String get kycAutoExplication =>
+      'We can read the information visible on your ID card to pre-fill this form. Check each item and correct any errors before continuing.';
+
+  @override
+  String get kycLectureEnCours => 'Reading your card…';
+
+  @override
+  String get kycLectureEchec =>
+      'We couldn\'t read your card. Please fill in the details by hand.';
+
+  @override
+  String get kycLectureIntrouvable =>
+      'We can\'t find your card. Go back to the previous step and upload it again.';
+
+  @override
+  String get kycLectureLente =>
+      'Reading is taking too long. Try again or fill in the details by hand.';
+
+  @override
+  String get kycLectureIncertaine =>
+      'Some details are hard to read. Check them carefully.';
+
+  @override
+  String get kycOuMain => 'or fill in by hand';
+
+  @override
+  String get kycChampNom => 'Last name (as on the card)';
+
+  @override
+  String get kycChampPrenom => 'First name(s) (as on the card)';
+
+  @override
+  String get kycChampNumero => 'Card number';
+
+  @override
+  String get kycChampNaissance => 'Date of birth';
+
+  @override
+  String get kycChampLieu => 'Place of birth';
+
+  @override
+  String get kycChampDelivrance => 'Issue date';
+
+  @override
+  String get kycChampExpiration => 'Expiry date';
+
+  @override
+  String get kycFormatDate => 'DD/MM/YYYY';
+
+  @override
+  String get kycChoisirDate => 'Choose a date';
+
+  @override
+  String get kycLuSurCarte => 'Read from your card: check it';
+
+  @override
+  String get kycChampAComplete => 'Not read: please complete';
+
+  @override
+  String get kycCarteExpiree => 'This card looks expired. It may be rejected.';
+
+  @override
+  String get kycInfosConformes => 'These details match my ID card.';
+
+  @override
+  String get kycInfosConfirmer => 'Confirm and continue';
+
+  @override
+  String get kycInfosRefusees =>
+      'Some details were not accepted. Please check them.';
+
+  @override
+  String get kycRemplacerSaisieTitre => 'Replace what you entered?';
+
+  @override
+  String get kycRemplacerSaisieTexte =>
+      'The details you already entered will be replaced by those read from your card.';
+
+  @override
+  String get kycRemplacer => 'Replace';
+
+  @override
+  String get erreurNumeroCni => '6 to 20 letters or digits';
+
+  @override
+  String get erreurDateInvalide => 'Invalid date (DD/MM/YYYY)';
+
+  @override
+  String get erreurDateNaissance => 'Impossible date of birth';
+
+  @override
+  String get erreurDateFuture => 'The date can\'t be in the future';
+
+  @override
+  String get erreurExpirationAvantDelivrance =>
+      'Expiry must come after the issue date';
 }
