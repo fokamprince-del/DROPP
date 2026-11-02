@@ -4,6 +4,8 @@ import type {
   MetadonneesFichier,
   StockageProvider,
 } from './stockage-provider.contract.js';
+import { DroppException } from '../http/droppException.js';
+import { UPLOAD_ERRORS } from '@dropp/contrats';
 
 /**
  * Contrôle d'un fichier annoncé comme uploadé par l'app, avant de l'enregistrer :
@@ -32,24 +34,32 @@ export async function verifierUpload(
     cleStockage.includes('..') ||
     cleStockage.includes('//')
   ) {
-    throw new BadRequestException('Fichier invalide pour cette ressource.');
+    throw DroppException.BadRequest('Fichier invalide pour cette ressource.', UPLOAD_ERRORS.INVALID_STORAGE_KEY);
   }
 
   const meta = await stockage.metadonnees(cleStockage);
   if (!meta) {
-    throw new BadRequestException('Fichier introuvable : upload non terminé.');
+    throw DroppException.BadRequest('Fichier introuvable : upload non terminé.', UPLOAD_ERRORS.UPLOAD_NOT_FOUND);
   }
 
   if (meta.taille > tailleMaxMo * 1024 * 1024) {
     await stockage.supprimer(cleStockage).catch(() => undefined);
-    throw new BadRequestException(
-      `Fichier trop volumineux. Maximum : ${tailleMaxMo} Mo.`,
+    throw DroppException.BadRequest(
+      `Fichier trop volumineux. Maximum `,
+      UPLOAD_ERRORS.FILE_TOO_LARGE,
+      {
+        tailleMaxMo,
+        taille: meta.taille,
+      }
     );
   }
 
   if (meta.typeMime && !typesMime.includes(meta.typeMime)) {
     await stockage.supprimer(cleStockage).catch(() => undefined);
-    throw new BadRequestException('Type de fichier incohérent.');
+    throw DroppException.BadRequest('Type de fichier incohérent.', UPLOAD_ERRORS.FILE_TYPE_MISMATCH, {
+      typeMime: meta.typeMime,
+      typesMimeAutorises: [...typesMime] ,
+    });
   }
 
   await stockage.marquerUtilise?.(cleStockage);

@@ -1,14 +1,13 @@
 import {
-  BadRequestException,
-  ConflictException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { NotificationService } from '../../auth/services/notification.service.js';
 import { NotificateurService } from '../../notifications/notificateur.service.js';
 import { DecisionKyc, type DecisionAdminDto } from '../dto/decision-admin.dto.js';
+import { DroppException } from '../../../infrastructure/http/droppException.js';
+import { KYC_ERRORS } from '@dropp/contrats';
 
 @Injectable()
 export class DecisionAdminService {
@@ -27,7 +26,7 @@ export class DecisionAdminService {
   async executer(dossierKycId: string, adminId: string, dto: DecisionAdminDto) {
     const estValide = dto.decision === DecisionKyc.VALIDE;
     if (!estValide && !dto.motifRejet) {
-      throw new BadRequestException('Un motif de rejet est obligatoire.');
+      throw  DroppException.BadRequest('Un motif de rejet est obligatoire.', KYC_ERRORS.REJECTION_REASON_REQUIRED);
     }
 
     const dossier = await this.prisma.dossierKyc.findUnique({
@@ -43,10 +42,11 @@ export class DecisionAdminService {
         },
       },
     });
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
+    if (!dossier) throw DroppException.NotFound('Dossier KYC introuvable.', KYC_ERRORS.KYC_DOSSIER_NOT_FOUND);
     if (dossier.statut !== 'EN_ATTENTE_REVUE_ADMIN') {
-      throw new BadRequestException(
+      throw DroppException.BadRequest(
         'Ce dossier n’est pas en attente de révision admin.',
+        KYC_ERRORS.KYC_NOT_PENDING_ADMIN_REVIEW 
       );
     }
 
@@ -63,7 +63,7 @@ export class DecisionAdminService {
         },
       });
       if (count === 0) {
-        throw new ConflictException('Une décision a déjà été prise sur ce dossier.');
+        throw DroppException.Conflict('Une décision a déjà été prise sur ce dossier.', KYC_ERRORS.KYC_DECISION_ALREADY_MADE);
       }
 
       await tx.documentKyc.updateMany({

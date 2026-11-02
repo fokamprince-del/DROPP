@@ -36,6 +36,7 @@ export class UploadDocumentService {
       utilisateurId,
       TYPE_DOCUMENT_VERS_UPLOAD[dto.typeDocument],
       dto.typeMime,
+      dto.taille,
     );
     return { ...signature, typeDocument: dto.typeDocument };
   }

@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import type { StatutKyc } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { DossierKycService } from '../services/dossier-kyc.service.js';
 import { KycStockageService } from '../services/kyc-stockage.service.js';
+import { DroppException } from '../../../infrastructure/http/droppException.js';
+import { KYC_ERRORS } from '@dropp/contrats';
 
 @Injectable()
 export class ConsulterDossierService {
@@ -103,7 +105,7 @@ export class ConsulterDossierService {
       },
     });
 
-    if (!dossier) throw new NotFoundException('Dossier KYC introuvable.');
+    if (!dossier) throw DroppException.NotFound('Dossier KYC introuvable.', KYC_ERRORS.KYC_DOSSIER_NOT_FOUND);
 
     // Audit : chaque consultation de pièces d'identité est tracée.
     await this.prisma.journalAudit.create({

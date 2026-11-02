@@ -6,9 +6,12 @@ import {
 } from '../../../infrastructure/stockage/stockage-provider.contract.js';
 import { verifierUpload } from '../../../infrastructure/stockage/verifier-upload.js';
 import {
+  MAX_TAILLE_DOCUMENT_KYC,
   MAX_TAILLE_DOCUMENT_KYC_MO,
   TYPES_MIME_KYC_AUTORISES,
 } from '../dto/DemanderSignatureDocumentKyc.dto.js';
+import { DroppException } from '../../../infrastructure/http/droppException.js';
+import { KYC_ERRORS, UPLOAD_ERRORS } from '@dropp/contrats';
 
 export type TypeDocumentKycUpload = 'cni-recto' | 'cni-verso' | 'selfie';
 
@@ -30,11 +33,32 @@ export class KycStockageService {
     vendeurId: string,
     type: TypeDocumentKycUpload,
     typeMime: string,
+    taille: number,
   ): Promise<SignatureUpload> {
+
+    if (!TYPES_MIME_KYC_AUTORISES.includes(typeMime)) {
+      throw DroppException.BadRequest(
+        `Type MIME non autorisé pour KYC : ${typeMime}.}`,
+        UPLOAD_ERRORS.INVALID_MIME_TYPE,
+        {
+          typesMimeAutorises: TYPES_MIME_KYC_AUTORISES,
+        }
+      );
+    }
+    if (taille > MAX_TAILLE_DOCUMENT_KYC) {
+      throw DroppException.BadRequest(
+        `Taille du document dépassant la limite autorisée : ${taille} octets.`,
+        UPLOAD_ERRORS.FILE_TOO_LARGE,
+        {
+          tailleMaxMo: MAX_TAILLE_DOCUMENT_KYC_MO,
+          taille: taille,
+        }
+      );
+    }
     return this.stockage.genererSignatureUpload(
       this.prefixe(vendeurId, type),
       typeMime,
-      MAX_TAILLE_DOCUMENT_KYC_MO,
+      taille,
     );
   }
 

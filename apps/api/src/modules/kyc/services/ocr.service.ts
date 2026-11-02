@@ -5,6 +5,8 @@ import {
   type OnModuleDestroy,
 } from '@nestjs/common';
 import { createWorker, type Worker } from 'tesseract.js';
+import { DroppException } from '../../../infrastructure/http/droppException.js';
+import { KYC_ERRORS } from '@dropp/contrats';
 
 export interface DonneesCniExtraites {
   nomLegal?: string;
@@ -35,9 +37,9 @@ export class OcrService implements OnModuleDestroy {
 
   async extraireDonneesCni(imageBuffer: Buffer): Promise<DonneesCniExtraites> {
     if (this.enAttente >= MAX_EN_ATTENTE) {
-      throw new ServiceUnavailableException(
+      throw DroppException.ServiceUnavailable(
         'Lecture automatique momentanément indisponible. Saisissez vos informations ou réessayez dans un instant.',
-      );
+         KYC_ERRORS.OCR_UNAVAILABLE);
     }
     this.enAttente++;
     const tache = this.file.then(() => this.reconnaitre(imageBuffer));
