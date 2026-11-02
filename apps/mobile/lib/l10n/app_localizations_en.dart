@@ -1760,4 +1760,74 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get erreurExpirationAvantDelivrance =>
       'Expiry must come after the issue date';
+
+  @override
+  String get erreurCarteExpiree => 'This card has expired';
+
+  @override
+  String get erreurNaissanceIncoherente =>
+      'Birth must come before the issue date';
+
+  @override
+  String get kycServeurCarteExpiree =>
+      'Your ID card has expired. Use a card that is still valid.';
+
+  @override
+  String get kycServeurDatesIncoherentes =>
+      'The dates on your card are inconsistent. Check the issue and expiry dates.';
+
+  @override
+  String get kycServeurNaissanceIncoherente =>
+      'Your date of birth looks inconsistent. Please check it.';
+
+  @override
+  String kycServeurAgeMinimum(int age) {
+    return 'You must be at least $age years old to sell on DROPP.';
+  }
+
+  @override
+  String get kycSelfieTitre => 'Your selfie';
+
+  @override
+  String get kycSelfieExplication =>
+      'This photo is used to check that you are the holder of the ID card.';
+
+  @override
+  String get kycConsignesTitre => 'Before you start';
+
+  @override
+  String get kycConsigne1 =>
+      'Stand somewhere well lit, with the light in front of you.';
+
+  @override
+  String get kycConsigne2 => 'Look at the camera.';
+
+  @override
+  String get kycConsigne3 => 'Keep your face fully visible and centred.';
+
+  @override
+  String get kycConsigne4 => 'Take off glasses, a cap or a mask.';
+
+  @override
+  String get kycConsigne5 => 'Avoid blurry photos and backlighting.';
+
+  @override
+  String get kycPrendreSelfie => 'Take my selfie';
+
+  @override
+  String get kycApercuSelfie => 'Preview of your selfie';
+
+  @override
+  String get kycCameraGuide => 'Place your face inside the oval';
+
+  @override
+  String get kycCameraRefusee =>
+      'Camera access is denied. Allow it in your phone\'s settings (Apps, DROPP, Permissions), then come back here.';
+
+  @override
+  String get kycCameraAvantIndisponible =>
+      'We can\'t find a front camera on this phone. The selfie is required to verify your identity.';
+
+  @override
+  String get kycCameraErreur => 'Can\'t open the camera. Try again.';
 }

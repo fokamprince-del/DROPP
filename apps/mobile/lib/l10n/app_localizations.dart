@@ -3019,6 +3019,126 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'L\'expiration doit venir après la délivrance'**
   String get erreurExpirationAvantDelivrance;
+
+  /// No description provided for @erreurCarteExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette carte est expirée'**
+  String get erreurCarteExpiree;
+
+  /// No description provided for @erreurNaissanceIncoherente.
+  ///
+  /// In fr, this message translates to:
+  /// **'La naissance doit précéder la délivrance'**
+  String get erreurNaissanceIncoherente;
+
+  /// No description provided for @kycServeurCarteExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta carte d\'identité est expirée. Utilise une carte en cours de validité.'**
+  String get kycServeurCarteExpiree;
+
+  /// No description provided for @kycServeurDatesIncoherentes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les dates de ta carte sont incohérentes. Vérifie la délivrance et l\'expiration.'**
+  String get kycServeurDatesIncoherentes;
+
+  /// No description provided for @kycServeurNaissanceIncoherente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta date de naissance semble incohérente. Vérifie-la.'**
+  String get kycServeurNaissanceIncoherente;
+
+  /// No description provided for @kycServeurAgeMinimum.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu dois avoir au moins {age} ans pour vendre sur DROPP.'**
+  String kycServeurAgeMinimum(int age);
+
+  /// No description provided for @kycSelfieTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton selfie'**
+  String get kycSelfieTitre;
+
+  /// No description provided for @kycSelfieExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette photo sert à vérifier que tu es bien le titulaire de la carte d\'identité.'**
+  String get kycSelfieExplication;
+
+  /// No description provided for @kycConsignesTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avant de commencer'**
+  String get kycConsignesTitre;
+
+  /// No description provided for @kycConsigne1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Place-toi dans un endroit bien éclairé, la lumière devant toi.'**
+  String get kycConsigne1;
+
+  /// No description provided for @kycConsigne2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Regarde l\'objectif.'**
+  String get kycConsigne2;
+
+  /// No description provided for @kycConsigne3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Garde ton visage entièrement visible et bien centré.'**
+  String get kycConsigne3;
+
+  /// No description provided for @kycConsigne4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retire tes lunettes, ta casquette ou ton masque.'**
+  String get kycConsigne4;
+
+  /// No description provided for @kycConsigne5.
+  ///
+  /// In fr, this message translates to:
+  /// **'Évite les photos floues et le contre-jour.'**
+  String get kycConsigne5;
+
+  /// No description provided for @kycPrendreSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prendre mon selfie'**
+  String get kycPrendreSelfie;
+
+  /// No description provided for @kycApercuSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu de ton selfie'**
+  String get kycApercuSelfie;
+
+  /// No description provided for @kycCameraGuide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Place ton visage dans l\'ovale'**
+  String get kycCameraGuide;
+
+  /// No description provided for @kycCameraRefusee.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'accès à la caméra est refusé. Autorise-le dans les réglages de ton téléphone (Applications, DROPP, Autorisations), puis reviens ici.'**
+  String get kycCameraRefusee;
+
+  /// No description provided for @kycCameraAvantIndisponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous ne trouvons pas de caméra avant sur ce téléphone. Le selfie est nécessaire pour vérifier ton identité.'**
+  String get kycCameraAvantIndisponible;
+
+  /// No description provided for @kycCameraErreur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir la caméra. Réessaie.'**
+  String get kycCameraErreur;
 }
 
 class _AppLocalizationsDelegate

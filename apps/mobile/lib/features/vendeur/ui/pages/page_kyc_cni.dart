@@ -8,10 +8,7 @@ import '../../../../core/api/api_exception.dart';
 import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../core/upload/choix_media.dart';
-import '../../../../core/upload/service_upload.dart';
-import '../../../../shared/theme/couleurs_metier.dart';
 import '../../../../shared/theme/espacements.dart';
-import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/brouillon_kyc.dart';
@@ -20,7 +17,7 @@ import '../../data/kyc_repository.dart';
 import '../../data/modeles_kyc.dart';
 import '../../data/selecteur_photo.dart';
 import '../../domain/etape_kyc.dart';
-import '../widgets/apercu_photo.dart';
+import '../widgets/emplacement_document.dart';
 import '../widgets/page_etape_kyc.dart';
 
 class PageKycCni extends ConsumerStatefulWidget {
@@ -109,7 +106,7 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
       String titre,
       String description, {
       required bool actif,
-    }) => _EmplacementCni(
+    }) => EmplacementDocument(
       titre: titre,
       description: description,
       photo: brouillon.photo(type),
@@ -165,170 +162,6 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
         ),
         OutlinedButton(onPressed: _retour, child: Text(l10n.kycRetour)),
       ],
-    );
-  }
-}
-
-class _EmplacementCni extends StatelessWidget {
-  const _EmplacementCni({
-    required this.titre,
-    required this.description,
-    required this.photo,
-    required this.document,
-    required this.enAttente,
-    required this.enCours,
-    required this.actif,
-    required this.surChoisir,
-    required this.surEnvoyer,
-    this.indice,
-  });
-
-  final String titre;
-  final String description;
-  final FichierLocal? photo;
-  final DocumentKyc? document;
-  final bool enAttente;
-  final bool enCours;
-  final bool actif;
-  final String? indice;
-
-  /// `true` : choisir dans la galerie.
-  final ValueChanged<bool> surChoisir;
-  final VoidCallback surEnvoyer;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final theme = Theme.of(context);
-    final metier = context.couleursMetier;
-    final refuse = document?.refuse ?? false;
-    final envoye = document != null && !refuse && !enAttente;
-
-    final IconData icone;
-    final Color couleur;
-    final String statut;
-    if (enAttente) {
-      icone = Icons.visibility_outlined;
-      couleur = theme.colorScheme.primary;
-      statut = l10n.kycStatutAVerifier;
-    } else if (refuse) {
-      icone = Icons.error_outline;
-      couleur = metier.erreur;
-      statut = l10n.kycRefuse;
-    } else if (envoye) {
-      icone = Icons.check_circle;
-      couleur = metier.succes;
-      statut = l10n.kycEnvoye;
-    } else {
-      icone = Icons.radio_button_unchecked;
-      couleur = theme.colorScheme.onSurfaceVariant;
-      statut = l10n.kycStatutAImporter;
-    }
-
-    final libelleBouton = enAttente
-        ? l10n.kycReprendrePhoto
-        : (document != null ? l10n.kycRemplacerPhoto : l10n.kycPrendrePhoto);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: Espacements.l),
-      padding: const EdgeInsets.all(Espacements.l),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: Rayons.borduresCarte,
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icone, color: couleur, size: 22),
-              const SizedBox(width: Espacements.s),
-              Expanded(child: Text(titre, style: theme.textTheme.titleSmall)),
-              Text(
-                statut,
-                style: theme.textTheme.labelMedium?.copyWith(color: couleur),
-              ),
-            ],
-          ),
-          const SizedBox(height: Espacements.m),
-          if (photo != null)
-            ApercuPhoto(fichier: photo!.fichier, description: description)
-          else
-            _ApercuVide(texte: document != null ? l10n.kycApercuAbsent : null),
-          if (indice != null) ...[
-            const SizedBox(height: Espacements.s),
-            Text(indice!, style: theme.textTheme.bodySmall),
-          ],
-          const SizedBox(height: Espacements.m),
-          if (enCours)
-            Row(
-              children: [
-                const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-                const SizedBox(width: Espacements.s),
-                Text(l10n.kycEnvoiEnCours),
-              ],
-            )
-          else
-            Wrap(
-              spacing: Espacements.s,
-              runSpacing: Espacements.s,
-              children: [
-                if (enAttente)
-                  FilledButton(
-                    onPressed: surEnvoyer,
-                    child: Text(l10n.kycUtiliserPhoto),
-                  ),
-                OutlinedButton(
-                  onPressed: actif ? () => surChoisir(false) : null,
-                  child: Text(libelleBouton),
-                ),
-                TextButton(
-                  onPressed: actif ? () => surChoisir(true) : null,
-                  child: Text(l10n.kycGalerie),
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ApercuVide extends StatelessWidget {
-  const _ApercuVide({this.texte});
-
-  final String? texte;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return AspectRatio(
-      aspectRatio: 85.6 / 54,
-      child: Container(
-        padding: const EdgeInsets.all(Espacements.l),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.04),
-          borderRadius: Rayons.borduresChamp,
-          border: Border.all(color: theme.colorScheme.outlineVariant),
-        ),
-        child: texte == null
-            ? Icon(
-                Icons.badge_outlined,
-                size: 40,
-                color: theme.colorScheme.outline,
-              )
-            : Text(
-                texte!,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall,
-              ),
-      ),
     );
   }
 }

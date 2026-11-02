@@ -38,13 +38,22 @@ ErreurChamp? validerNumeroCni(String? valeur) {
       : ErreurChamp.numeroCniInvalide;
 }
 
-ErreurChamp? validerDateNaissance(String? valeur, {DateTime? aujourdhui}) {
+ErreurChamp? validerDateNaissance(
+  String? valeur, {
+  String? delivrance,
+  DateTime? aujourdhui,
+}) {
   if (_vide(valeur)) return ErreurChamp.requis;
   final date = analyserDateSaisie(valeur);
   if (date == null) return ErreurChamp.dateInvalide;
   final limite = _jour(aujourdhui ?? DateTime.now());
   if (date.isAfter(limite) || date.year < 1900) {
     return ErreurChamp.dateNaissanceImpossible;
+  }
+  // Même règle que le serveur : la naissance précède la délivrance.
+  final debut = analyserDateSaisie(delivrance);
+  if (debut != null && !date.isBefore(debut)) {
+    return ErreurChamp.naissanceIncoherente;
   }
   return null;
 }
@@ -59,22 +68,24 @@ ErreurChamp? validerDateDelivrance(String? valeur, {DateTime? aujourdhui}) {
   return null;
 }
 
-ErreurChamp? validerDateExpiration(String? valeur, String? delivrance) {
+ErreurChamp? validerDateExpiration(
+  String? valeur,
+  String? delivrance, {
+  DateTime? aujourdhui,
+}) {
   if (_vide(valeur)) return ErreurChamp.requis;
   final date = analyserDateSaisie(valeur);
   if (date == null) return ErreurChamp.dateInvalide;
+  // Le serveur refuse une expiration dépassée, le jour même compris (la date
+  // est comparée à minuit).
+  if (!date.isAfter(_jour(aujourdhui ?? DateTime.now()))) {
+    return ErreurChamp.carteExpiree;
+  }
   final debut = analyserDateSaisie(delivrance);
   if (debut != null && !date.isAfter(debut)) {
     return ErreurChamp.expirationAvantDelivrance;
   }
   return null;
-}
-
-/// `true` si la date est valide et déjà passée. Un avertissement, pas un refus.
-bool carteExpiree(String? expiration, {DateTime? aujourdhui}) {
-  final date = analyserDateSaisie(expiration);
-  if (date == null) return false;
-  return date.isBefore(_jour(aujourdhui ?? DateTime.now()));
 }
 
 /// Valeurs saisies, sous forme de texte : ce que l'utilisateur voit et corrige.

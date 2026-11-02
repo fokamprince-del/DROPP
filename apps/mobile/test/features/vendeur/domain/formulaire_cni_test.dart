@@ -45,10 +45,49 @@ void main() {
     expect(validerNumeroCni(' '), ErreurChamp.requis);
   });
 
-  test('carte expirée : un avertissement, pas une erreur', () {
-    expect(carteExpiree('01/01/2020', aujourdhui: aujourdhui), isTrue);
-    expect(carteExpiree('01/01/2030', aujourdhui: aujourdhui), isFalse);
-    expect(carteExpiree('n/importe/quoi', aujourdhui: aujourdhui), isFalse);
+  test("l'expiration : refusée si dépassée, et doit suivre la délivrance", () {
+    final ref = DateTime.utc(2026, 10, 30);
+    expect(
+      validerDateExpiration('01/01/2020', '02/01/2019', aujourdhui: ref),
+      ErreurChamp.carteExpiree,
+    );
+    expect(
+      validerDateExpiration('30/10/2026', '02/01/2019', aujourdhui: ref),
+      ErreurChamp.carteExpiree,
+    );
+    expect(
+      validerDateExpiration(
+        '01/01/2020',
+        '02/01/2020',
+        aujourdhui: DateTime.utc(2019),
+      ),
+      ErreurChamp.expirationAvantDelivrance,
+    );
+    expect(
+      validerDateExpiration('02/01/2030', '02/01/2020', aujourdhui: ref),
+      isNull,
+    );
+    expect(validerDateExpiration('02/01/2030', '', aujourdhui: ref), isNull);
+  });
+
+  test('la naissance doit précéder la délivrance', () {
+    final ref = DateTime.utc(2026, 10, 30);
+    expect(
+      validerDateNaissance(
+        '02/01/2020',
+        delivrance: '02/01/2020',
+        aujourdhui: ref,
+      ),
+      ErreurChamp.naissanceIncoherente,
+    );
+    expect(
+      validerDateNaissance(
+        '21/05/1990',
+        delivrance: '02/01/2020',
+        aujourdhui: ref,
+      ),
+      isNull,
+    );
   });
 
   group('FormulaireCni', () {

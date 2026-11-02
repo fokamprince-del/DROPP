@@ -879,6 +879,30 @@
   "erreurDateInvalide": "Invalid date (DD/MM/YYYY)",
   "erreurDateNaissance": "Impossible date of birth",
   "erreurDateFuture": "The date can't be in the future",
-  "erreurExpirationAvantDelivrance": "Expiry must come after the issue date"
-  
+  "erreurExpirationAvantDelivrance": "Expiry must come after the issue date",
+  "erreurCarteExpiree": "This card has expired",
+  "erreurNaissanceIncoherente": "Birth must come before the issue date",
+  "kycServeurCarteExpiree": "Your ID card has expired. Use a card that is still valid.",
+  "kycServeurDatesIncoherentes": "The dates on your card are inconsistent. Check the issue and expiry dates.",
+  "kycServeurNaissanceIncoherente": "Your date of birth looks inconsistent. Please check it.",
+  "kycServeurAgeMinimum": "You must be at least {age} years old to sell on DROPP.",
+  "@kycServeurAgeMinimum": {
+    "placeholders": {
+      "age": { "type": "int" }
+    }
+  },
+  "kycSelfieTitre": "Your selfie",
+  "kycSelfieExplication": "This photo is used to check that you are the holder of the ID card.",
+  "kycConsignesTitre": "Before you start",
+  "kycConsigne1": "Stand somewhere well lit, with the light in front of you.",
+  "kycConsigne2": "Look at the camera.",
+  "kycConsigne3": "Keep your face fully visible and centred.",
+  "kycConsigne4": "Take off glasses, a cap or a mask.",
+  "kycConsigne5": "Avoid blurry photos and backlighting.",
+  "kycPrendreSelfie": "Take my selfie",
+  "kycApercuSelfie": "Preview of your selfie",
+  "kycCameraGuide": "Place your face inside the oval",
+  "kycCameraRefusee": "Camera access is denied. Allow it in your phone's settings (Apps, DROPP, Permissions), then come back here.",
+  "kycCameraAvantIndisponible": "We can't find a front camera on this phone. The selfie is required to verify your identity.",
+  "kycCameraErreur": "Can't open the camera. Try again."
 }
