@@ -1886,4 +1886,66 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get kycSoumissionEnCours =>
       'A submission is already in progress. Please wait a moment.';
+
+  @override
+  String get kycErrProfilIntrouvable =>
+      'Your seller profile can\'t be found. Go back to the “Become a seller” screen to create it.';
+
+  @override
+  String get kycErrOcrIndisponible =>
+      'Automatic card reading is unavailable right now. Please fill in the details by hand.';
+
+  @override
+  String get kycErrDossierIntrouvable =>
+      'No verification application was found. Start the verification to create one.';
+
+  @override
+  String get kycErrDossierNonModifiable =>
+      'Your application can\'t be edited in its current state.';
+
+  @override
+  String get kycErrDejaVerifie => 'Your identity is already verified.';
+
+  @override
+  String get kycErrEnCoursDeRevue =>
+      'Your application is being reviewed. You can\'t edit it right now.';
+
+  @override
+  String get kycErrDejaSoumis => 'Your application has already been submitted.';
+
+  @override
+  String get kycErrCniRectoManquant =>
+      'Upload the front of your ID card first.';
+
+  @override
+  String get kycErrNumeroCniInvalide =>
+      'Your card number isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrNaissanceInvalide =>
+      'Your date of birth isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrDelivranceInvalide =>
+      'The issue date isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrExpirationInvalide =>
+      'The expiry date isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrAgeMinimum =>
+      'You don\'t meet the minimum age required to sell on DROPP.';
+
+  @override
+  String get kycErrDonneesIncompletes =>
+      'Some details of your card are missing. Please fill in every field.';
+
+  @override
+  String get kycErrDocumentsManquants =>
+      'Documents are missing. Upload your card (front and back) and your selfie.';
+
+  @override
+  String get kycErrConsentementRequis =>
+      'You must agree to the processing of your documents to submit your application.';
 }

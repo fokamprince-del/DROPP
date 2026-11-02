@@ -919,5 +919,21 @@
   "kycSoumettreIncomplet": "Complète les étapes suivantes avant d'envoyer ton dossier.",
   "kycPhotoEnAttente": "Une photo n'a pas encore été envoyée. Termine l'étape correspondante.",
   "kycSoumissionRefusee": "Ton dossier n'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.",
-  "kycSoumissionEnCours": "Une soumission est déjà en cours. Patiente un instant."
+  "kycSoumissionEnCours": "Une soumission est déjà en cours. Patiente un instant.",
+  "kycErrProfilIntrouvable": "Ton profil vendeur est introuvable. Reviens à l'écran « Devenir vendeur » pour le créer.",
+  "kycErrOcrIndisponible": "La lecture automatique de la carte est indisponible pour le moment. Remplis les informations à la main.",
+  "kycErrDossierIntrouvable": "Aucun dossier de vérification n'a été trouvé. Commence la vérification pour en créer un.",
+  "kycErrDossierNonModifiable": "Ton dossier ne peut pas être modifié dans son état actuel.",
+  "kycErrDejaVerifie": "Ton identité est déjà vérifiée.",
+  "kycErrEnCoursDeRevue": "Ton dossier est en cours de vérification. Tu ne peux pas le modifier pour le moment.",
+  "kycErrDejaSoumis": "Ton dossier a déjà été envoyé.",
+  "kycErrCniRectoManquant": "Importe d'abord le recto de ta carte d'identité.",
+  "kycErrNumeroCniInvalide": "Le numéro de ta carte n'est pas valide. Vérifie-le.",
+  "kycErrNaissanceInvalide": "Ta date de naissance n'est pas valide. Vérifie-la.",
+  "kycErrDelivranceInvalide": "La date de délivrance n'est pas valide. Vérifie-la.",
+  "kycErrExpirationInvalide": "La date d'expiration n'est pas valide. Vérifie-la.",
+  "kycErrAgeMinimum": "Tu n'as pas l'âge minimum requis pour vendre sur DROPP.",
+  "kycErrDonneesIncompletes": "Certaines informations de ta carte sont manquantes. Complète tous les champs.",
+  "kycErrDocumentsManquants": "Il manque des documents. Importe ta carte (recto et verso) et ton selfie.",
+  "kycErrConsentementRequis": "Tu dois accepter le traitement de tes documents pour envoyer ton dossier."
 }

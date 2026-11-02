@@ -15,7 +15,6 @@ import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/defiler_vers.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/brouillon_infos_cni.dart';
 import '../../application/brouillon_kyc.dart';
 import '../../application/dossier_kyc.dart';
@@ -24,6 +23,7 @@ import '../../data/modeles_kyc.dart';
 import '../../domain/etape_kyc.dart';
 import '../../domain/formulaire_cni.dart';
 import '../../domain/libelles_etape.dart';
+import '../../domain/messages_kyc.dart';
 import '../../domain/soumission_kyc.dart';
 import '../widgets/apercu_photo.dart';
 import '../widgets/page_etape_kyc.dart';
@@ -110,7 +110,7 @@ class _PageKycRecapitulatifState extends ConsumerState<PageKycRecapitulatif> {
       }
       if (!transmis && mounted) {
         _afficherErreur(
-          messageErreurApi(
+          messageErreurKyc(
             l10n,
             e,
             specifiques: {
@@ -300,7 +300,7 @@ class _PageKycRecapitulatifState extends ConsumerState<PageKycRecapitulatif> {
     } else if (dossierAsync.hasError) {
       contenu = [
         BandeauMessage(
-          message: messageErreurApi(
+          message: messageErreurKyc(
             l10n,
             ApiException.depuis(dossierAsync.error!),
           ),

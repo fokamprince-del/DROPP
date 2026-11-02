@@ -15,7 +15,6 @@ import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/theme/styles_accent.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/brouillon_infos_cni.dart';
 import '../../application/brouillon_kyc.dart';
 import '../../application/dossier_kyc.dart';
@@ -174,7 +173,7 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
     } on ApiException catch (e) {
       if (!mounted) return;
       setState(() {
-        _erreur = messageErreurApi(
+        _erreur = messageErreurKyc(
           l10n,
           e,
           specifiques: {
@@ -208,7 +207,7 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
       continuerVers(context, Routes.kycSelfie);
     } on ApiException catch (e) {
       if (!mounted) return;
-      setState(() => _erreur = messageConfirmationCni(l10n, e));
+      setState(() => _erreur = messageErreurKyc(l10n, e));
       _defilerVersErreur();
     } finally {
       if (mounted) setState(() => _envoi = false);

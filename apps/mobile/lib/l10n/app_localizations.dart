@@ -3235,6 +3235,102 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Une soumission est déjà en cours. Patiente un instant.'**
   String get kycSoumissionEnCours;
+
+  /// No description provided for @kycErrProfilIntrouvable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton profil vendeur est introuvable. Reviens à l\'écran « Devenir vendeur » pour le créer.'**
+  String get kycErrProfilIntrouvable;
+
+  /// No description provided for @kycErrOcrIndisponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'La lecture automatique de la carte est indisponible pour le moment. Remplis les informations à la main.'**
+  String get kycErrOcrIndisponible;
+
+  /// No description provided for @kycErrDossierIntrouvable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun dossier de vérification n\'a été trouvé. Commence la vérification pour en créer un.'**
+  String get kycErrDossierIntrouvable;
+
+  /// No description provided for @kycErrDossierNonModifiable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier ne peut pas être modifié dans son état actuel.'**
+  String get kycErrDossierNonModifiable;
+
+  /// No description provided for @kycErrDejaVerifie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton identité est déjà vérifiée.'**
+  String get kycErrDejaVerifie;
+
+  /// No description provided for @kycErrEnCoursDeRevue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier est en cours de vérification. Tu ne peux pas le modifier pour le moment.'**
+  String get kycErrEnCoursDeRevue;
+
+  /// No description provided for @kycErrDejaSoumis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier a déjà été envoyé.'**
+  String get kycErrDejaSoumis;
+
+  /// No description provided for @kycErrCniRectoManquant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importe d\'abord le recto de ta carte d\'identité.'**
+  String get kycErrCniRectoManquant;
+
+  /// No description provided for @kycErrNumeroCniInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le numéro de ta carte n\'est pas valide. Vérifie-le.'**
+  String get kycErrNumeroCniInvalide;
+
+  /// No description provided for @kycErrNaissanceInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta date de naissance n\'est pas valide. Vérifie-la.'**
+  String get kycErrNaissanceInvalide;
+
+  /// No description provided for @kycErrDelivranceInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date de délivrance n\'est pas valide. Vérifie-la.'**
+  String get kycErrDelivranceInvalide;
+
+  /// No description provided for @kycErrExpirationInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date d\'expiration n\'est pas valide. Vérifie-la.'**
+  String get kycErrExpirationInvalide;
+
+  /// No description provided for @kycErrAgeMinimum.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu n\'as pas l\'âge minimum requis pour vendre sur DROPP.'**
+  String get kycErrAgeMinimum;
+
+  /// No description provided for @kycErrDonneesIncompletes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certaines informations de ta carte sont manquantes. Complète tous les champs.'**
+  String get kycErrDonneesIncompletes;
+
+  /// No description provided for @kycErrDocumentsManquants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Il manque des documents. Importe ta carte (recto et verso) et ton selfie.'**
+  String get kycErrDocumentsManquants;
+
+  /// No description provided for @kycErrConsentementRequis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu dois accepter le traitement de tes documents pour envoyer ton dossier.'**
+  String get kycErrConsentementRequis;
 }
 
 class _AppLocalizationsDelegate

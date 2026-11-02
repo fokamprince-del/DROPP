@@ -10,13 +10,13 @@ import '../../../../core/router/routes.dart';
 import '../../../../core/upload/choix_media.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/brouillon_kyc.dart';
 import '../../application/dossier_kyc.dart';
 import '../../data/kyc_repository.dart';
 import '../../data/modeles_kyc.dart';
 import '../../data/selecteur_photo.dart';
 import '../../domain/etape_kyc.dart';
+import '../../domain/messages_kyc.dart';
 import '../../domain/navigation_kyc.dart';
 import '../widgets/emplacement_document.dart';
 import '../widgets/page_etape_kyc.dart';
@@ -71,7 +71,7 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
       brouillon.marquerEnvoyee(type);
       if (mounted) ref.invalidate(dossierKycProvider);
     } on ApiException catch (e) {
-      if (mounted) setState(() => _erreur = messageErreurApi(l10n, e));
+      if (mounted) setState(() => _erreur = messageErreurKyc(l10n, e));
     } finally {
       if (mounted) setState(() => _enCours.remove(type));
     }
@@ -128,7 +128,7 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
       enfants: [
         if (dossier.hasError && !dossier.hasValue) ...[
           BandeauMessage(
-            message: messageErreurApi(
+            message: messageErreurKyc(
               l10n,
               ApiException.depuis(dossier.error!),
             ),

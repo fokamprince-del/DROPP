@@ -920,5 +920,21 @@
   "kycSoumettreIncomplet": "Complete the following steps before sending your application.",
   "kycPhotoEnAttente": "A photo hasn't been sent yet. Finish the matching step.",
   "kycSoumissionRefusee": "Your application couldn't be sent. Check each step, then try again.",
-  "kycSoumissionEnCours": "A submission is already in progress. Please wait a moment."
+  "kycSoumissionEnCours": "A submission is already in progress. Please wait a moment.",
+  "kycErrProfilIntrouvable": "Your seller profile can't be found. Go back to the “Become a seller” screen to create it.",
+  "kycErrOcrIndisponible": "Automatic card reading is unavailable right now. Please fill in the details by hand.",
+  "kycErrDossierIntrouvable": "No verification application was found. Start the verification to create one.",
+  "kycErrDossierNonModifiable": "Your application can't be edited in its current state.",
+  "kycErrDejaVerifie": "Your identity is already verified.",
+  "kycErrEnCoursDeRevue": "Your application is being reviewed. You can't edit it right now.",
+  "kycErrDejaSoumis": "Your application has already been submitted.",
+  "kycErrCniRectoManquant": "Upload the front of your ID card first.",
+  "kycErrNumeroCniInvalide": "Your card number isn't valid. Please check it.",
+  "kycErrNaissanceInvalide": "Your date of birth isn't valid. Please check it.",
+  "kycErrDelivranceInvalide": "The issue date isn't valid. Please check it.",
+  "kycErrExpirationInvalide": "The expiry date isn't valid. Please check it.",
+  "kycErrAgeMinimum": "You don't meet the minimum age required to sell on DROPP.",
+  "kycErrDonneesIncompletes": "Some details of your card are missing. Please fill in every field.",
+  "kycErrDocumentsManquants": "Documents are missing. Upload your card (front and back) and your selfie.",
+  "kycErrConsentementRequis": "You must agree to the processing of your documents to submit your application."
 }

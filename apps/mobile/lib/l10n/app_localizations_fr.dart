@@ -1905,4 +1905,66 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get kycSoumissionEnCours =>
       'Une soumission est déjà en cours. Patiente un instant.';
+
+  @override
+  String get kycErrProfilIntrouvable =>
+      'Ton profil vendeur est introuvable. Reviens à l\'écran « Devenir vendeur » pour le créer.';
+
+  @override
+  String get kycErrOcrIndisponible =>
+      'La lecture automatique de la carte est indisponible pour le moment. Remplis les informations à la main.';
+
+  @override
+  String get kycErrDossierIntrouvable =>
+      'Aucun dossier de vérification n\'a été trouvé. Commence la vérification pour en créer un.';
+
+  @override
+  String get kycErrDossierNonModifiable =>
+      'Ton dossier ne peut pas être modifié dans son état actuel.';
+
+  @override
+  String get kycErrDejaVerifie => 'Ton identité est déjà vérifiée.';
+
+  @override
+  String get kycErrEnCoursDeRevue =>
+      'Ton dossier est en cours de vérification. Tu ne peux pas le modifier pour le moment.';
+
+  @override
+  String get kycErrDejaSoumis => 'Ton dossier a déjà été envoyé.';
+
+  @override
+  String get kycErrCniRectoManquant =>
+      'Importe d\'abord le recto de ta carte d\'identité.';
+
+  @override
+  String get kycErrNumeroCniInvalide =>
+      'Le numéro de ta carte n\'est pas valide. Vérifie-le.';
+
+  @override
+  String get kycErrNaissanceInvalide =>
+      'Ta date de naissance n\'est pas valide. Vérifie-la.';
+
+  @override
+  String get kycErrDelivranceInvalide =>
+      'La date de délivrance n\'est pas valide. Vérifie-la.';
+
+  @override
+  String get kycErrExpirationInvalide =>
+      'La date d\'expiration n\'est pas valide. Vérifie-la.';
+
+  @override
+  String get kycErrAgeMinimum =>
+      'Tu n\'as pas l\'âge minimum requis pour vendre sur DROPP.';
+
+  @override
+  String get kycErrDonneesIncompletes =>
+      'Certaines informations de ta carte sont manquantes. Complète tous les champs.';
+
+  @override
+  String get kycErrDocumentsManquants =>
+      'Il manque des documents. Importe ta carte (recto et verso) et ton selfie.';
+
+  @override
+  String get kycErrConsentementRequis =>
+      'Tu dois accepter le traitement de tes documents pour envoyer ton dossier.';
 }

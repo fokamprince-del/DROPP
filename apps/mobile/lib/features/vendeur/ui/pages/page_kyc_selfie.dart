@@ -11,12 +11,12 @@ import '../../../../shared/theme/couleurs_metier.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/brouillon_kyc.dart';
 import '../../application/dossier_kyc.dart';
 import '../../data/kyc_repository.dart';
 import '../../data/modeles_kyc.dart';
 import '../../domain/etape_kyc.dart';
+import '../../domain/messages_kyc.dart';
 import '../../domain/navigation_kyc.dart';
 import '../widgets/emplacement_document.dart';
 import '../widgets/page_etape_kyc.dart';
@@ -71,7 +71,7 @@ class _PageKycSelfieState extends ConsumerState<PageKycSelfie> {
       brouillon.marquerEnvoyee(_type);
       if (mounted) ref.invalidate(dossierKycProvider);
     } on ApiException catch (e) {
-      if (mounted) setState(() => _erreur = messageErreurApi(l10n, e));
+      if (mounted) setState(() => _erreur = messageErreurKyc(l10n, e));
     } finally {
       if (mounted) setState(() => _enCours = false);
     }
