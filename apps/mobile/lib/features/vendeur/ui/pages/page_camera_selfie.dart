@@ -111,9 +111,17 @@ class _PageCameraSelfieState extends State<PageCameraSelfie>
         photo,
         tailleMaxImageMo: tailleMaxDocumentKyc,
       );
+
       if (!mounted) return;
       Navigator.of(context).pop(fichier);
     } on CameraException {
+      if (mounted) {
+        setState(() {
+          _prise = false;
+          _etat = _EtatCamera.erreur;
+        });
+      }
+    } on FichierRefuse {
       if (mounted) {
         setState(() {
           _prise = false;

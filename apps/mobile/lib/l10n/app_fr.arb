@@ -903,5 +903,21 @@
   "kycCameraGuide": "Place ton visage dans l'ovale",
   "kycCameraRefusee": "L'accès à la caméra est refusé. Autorise-le dans les réglages de ton téléphone (Applications, DROPP, Autorisations), puis reviens ici.",
   "kycCameraAvantIndisponible": "Nous ne trouvons pas de caméra avant sur ce téléphone. Le selfie est nécessaire pour vérifier ton identité.",
-  "kycCameraErreur": "Impossible d'ouvrir la caméra. Réessaie."
+  "kycCameraErreur": "Impossible d'ouvrir la caméra. Réessaie.",
+  "kycRecapTitre": "Récapitulatif",
+  "kycRecapExplication": "Vérifie ton dossier. Tu peux modifier chaque élément avant de l'envoyer.",
+  "kycRecapInfosTitre": "Informations de la carte",
+  "kycRecapDocumentsTitre": "Documents",
+  "kycModifier": "Modifier",
+  "kycAfficher": "Afficher",
+  "kycMasquer": "Masquer",
+  "kycDonneeNonRenseignee": "Non renseigné",
+  "kycConsentement": "J'accepte que ma pièce d'identité et mon selfie soient traités pour vérifier mon identité, y compris par une comparaison faciale réalisée par un prestataire externe.",
+  "kycSoumettreExplication": "En soumettant ton dossier, tu le transmets à l'équipe DROPP pour vérification. Tant qu'il est en cours d'examen, tu ne peux plus le modifier.",
+  "kycSoumettre": "Soumettre mon dossier",
+  "kycSoumisSucces": "Ton dossier a bien été transmis. Nous t'informerons dès que sa vérification sera terminée.",
+  "kycSoumettreIncomplet": "Complète les étapes suivantes avant d'envoyer ton dossier.",
+  "kycPhotoEnAttente": "Une photo n'a pas encore été envoyée. Termine l'étape correspondante.",
+  "kycSoumissionRefusee": "Ton dossier n'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.",
+  "kycSoumissionEnCours": "Une soumission est déjà en cours. Patiente un instant."
 }

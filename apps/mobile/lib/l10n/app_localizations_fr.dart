@@ -1849,4 +1849,60 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get kycCameraErreur => 'Impossible d\'ouvrir la caméra. Réessaie.';
+
+  @override
+  String get kycRecapTitre => 'Récapitulatif';
+
+  @override
+  String get kycRecapExplication =>
+      'Vérifie ton dossier. Tu peux modifier chaque élément avant de l\'envoyer.';
+
+  @override
+  String get kycRecapInfosTitre => 'Informations de la carte';
+
+  @override
+  String get kycRecapDocumentsTitre => 'Documents';
+
+  @override
+  String get kycModifier => 'Modifier';
+
+  @override
+  String get kycAfficher => 'Afficher';
+
+  @override
+  String get kycMasquer => 'Masquer';
+
+  @override
+  String get kycDonneeNonRenseignee => 'Non renseigné';
+
+  @override
+  String get kycConsentement =>
+      'J\'accepte que ma pièce d\'identité et mon selfie soient traités pour vérifier mon identité, y compris par une comparaison faciale réalisée par un prestataire externe.';
+
+  @override
+  String get kycSoumettreExplication =>
+      'En soumettant ton dossier, tu le transmets à l\'équipe DROPP pour vérification. Tant qu\'il est en cours d\'examen, tu ne peux plus le modifier.';
+
+  @override
+  String get kycSoumettre => 'Soumettre mon dossier';
+
+  @override
+  String get kycSoumisSucces =>
+      'Ton dossier a bien été transmis. Nous t\'informerons dès que sa vérification sera terminée.';
+
+  @override
+  String get kycSoumettreIncomplet =>
+      'Complète les étapes suivantes avant d\'envoyer ton dossier.';
+
+  @override
+  String get kycPhotoEnAttente =>
+      'Une photo n\'a pas encore été envoyée. Termine l\'étape correspondante.';
+
+  @override
+  String get kycSoumissionRefusee =>
+      'Ton dossier n\'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.';
+
+  @override
+  String get kycSoumissionEnCours =>
+      'Une soumission est déjà en cours. Patiente un instant.';
 }

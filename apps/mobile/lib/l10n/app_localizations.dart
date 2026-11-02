@@ -3139,6 +3139,102 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Impossible d\'ouvrir la caméra. Réessaie.'**
   String get kycCameraErreur;
+
+  /// No description provided for @kycRecapTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récapitulatif'**
+  String get kycRecapTitre;
+
+  /// No description provided for @kycRecapExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifie ton dossier. Tu peux modifier chaque élément avant de l\'envoyer.'**
+  String get kycRecapExplication;
+
+  /// No description provided for @kycRecapInfosTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de la carte'**
+  String get kycRecapInfosTitre;
+
+  /// No description provided for @kycRecapDocumentsTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Documents'**
+  String get kycRecapDocumentsTitre;
+
+  /// No description provided for @kycModifier.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier'**
+  String get kycModifier;
+
+  /// No description provided for @kycAfficher.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher'**
+  String get kycAfficher;
+
+  /// No description provided for @kycMasquer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masquer'**
+  String get kycMasquer;
+
+  /// No description provided for @kycDonneeNonRenseignee.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non renseigné'**
+  String get kycDonneeNonRenseignee;
+
+  /// No description provided for @kycConsentement.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'accepte que ma pièce d\'identité et mon selfie soient traités pour vérifier mon identité, y compris par une comparaison faciale réalisée par un prestataire externe.'**
+  String get kycConsentement;
+
+  /// No description provided for @kycSoumettreExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'En soumettant ton dossier, tu le transmets à l\'équipe DROPP pour vérification. Tant qu\'il est en cours d\'examen, tu ne peux plus le modifier.'**
+  String get kycSoumettreExplication;
+
+  /// No description provided for @kycSoumettre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Soumettre mon dossier'**
+  String get kycSoumettre;
+
+  /// No description provided for @kycSoumisSucces.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier a bien été transmis. Nous t\'informerons dès que sa vérification sera terminée.'**
+  String get kycSoumisSucces;
+
+  /// No description provided for @kycSoumettreIncomplet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Complète les étapes suivantes avant d\'envoyer ton dossier.'**
+  String get kycSoumettreIncomplet;
+
+  /// No description provided for @kycPhotoEnAttente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une photo n\'a pas encore été envoyée. Termine l\'étape correspondante.'**
+  String get kycPhotoEnAttente;
+
+  /// No description provided for @kycSoumissionRefusee.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier n\'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.'**
+  String get kycSoumissionRefusee;
+
+  /// No description provided for @kycSoumissionEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une soumission est déjà en cours. Patiente un instant.'**
+  String get kycSoumissionEnCours;
 }
 
 class _AppLocalizationsDelegate

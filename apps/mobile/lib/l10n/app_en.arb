@@ -904,5 +904,21 @@
   "kycCameraGuide": "Place your face inside the oval",
   "kycCameraRefusee": "Camera access is denied. Allow it in your phone's settings (Apps, DROPP, Permissions), then come back here.",
   "kycCameraAvantIndisponible": "We can't find a front camera on this phone. The selfie is required to verify your identity.",
-  "kycCameraErreur": "Can't open the camera. Try again."
+  "kycCameraErreur": "Can't open the camera. Try again.",
+  "kycRecapTitre": "Summary",
+  "kycRecapExplication": "Review your application. You can edit each item before sending it.",
+  "kycRecapInfosTitre": "Card details",
+  "kycRecapDocumentsTitre": "Documents",
+  "kycModifier": "Edit",
+  "kycAfficher": "Show",
+  "kycMasquer": "Hide",
+  "kycDonneeNonRenseignee": "Not provided",
+  "kycConsentement": "I agree that my ID card and selfie are processed to verify my identity, including a facial comparison carried out by an external provider.",
+  "kycSoumettreExplication": "By submitting your application, you send it to the DROPP team for verification. While it is being reviewed, you can no longer edit it.",
+  "kycSoumettre": "Submit my application",
+  "kycSoumisSucces": "Your application has been submitted. We'll let you know as soon as the verification is complete.",
+  "kycSoumettreIncomplet": "Complete the following steps before sending your application.",
+  "kycPhotoEnAttente": "A photo hasn't been sent yet. Finish the matching step.",
+  "kycSoumissionRefusee": "Your application couldn't be sent. Check each step, then try again.",
+  "kycSoumissionEnCours": "A submission is already in progress. Please wait a moment."
 }

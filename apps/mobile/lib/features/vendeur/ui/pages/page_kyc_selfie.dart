@@ -17,6 +17,7 @@ import '../../application/dossier_kyc.dart';
 import '../../data/kyc_repository.dart';
 import '../../data/modeles_kyc.dart';
 import '../../domain/etape_kyc.dart';
+import '../../domain/navigation_kyc.dart';
 import '../widgets/emplacement_document.dart';
 import '../widgets/page_etape_kyc.dart';
 import 'capture_selfie.dart';
@@ -44,10 +45,11 @@ class _PageKycSelfieState extends ConsumerState<PageKycSelfie> {
 
     final photo = await ref.read(captureSelfieProvider).capturer(context);
     if (photo == null) return;
-    if (photo.taille > tailleMaxDocumentKyc) {
+    if (photo.taille > tailleMaxDocumentKyc * 1024 * 1024) {
       if (mounted) setState(() => _erreur = l10n.kycPhotoTropLourde);
       return;
     }
+
     // Choisie, pas encore envoyée : l'utilisateur doit la valider.
     brouillon.choisir(_type, photo);
   }
@@ -125,7 +127,7 @@ class _PageKycSelfieState extends ConsumerState<PageKycSelfie> {
       actions: [
         FilledButton(
           onPressed: envoye
-              ? () => unawaited(context.push<void>(Routes.kycRecapitulatif))
+              ? () => continuerVers(context, Routes.kycRecapitulatif)
               : null,
           child: Text(l10n.kycContinuer),
         ),

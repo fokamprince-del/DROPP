@@ -1830,4 +1830,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kycCameraErreur => 'Can\'t open the camera. Try again.';
+
+  @override
+  String get kycRecapTitre => 'Summary';
+
+  @override
+  String get kycRecapExplication =>
+      'Review your application. You can edit each item before sending it.';
+
+  @override
+  String get kycRecapInfosTitre => 'Card details';
+
+  @override
+  String get kycRecapDocumentsTitre => 'Documents';
+
+  @override
+  String get kycModifier => 'Edit';
+
+  @override
+  String get kycAfficher => 'Show';
+
+  @override
+  String get kycMasquer => 'Hide';
+
+  @override
+  String get kycDonneeNonRenseignee => 'Not provided';
+
+  @override
+  String get kycConsentement =>
+      'I agree that my ID card and selfie are processed to verify my identity, including a facial comparison carried out by an external provider.';
+
+  @override
+  String get kycSoumettreExplication =>
+      'By submitting your application, you send it to the DROPP team for verification. While it is being reviewed, you can no longer edit it.';
+
+  @override
+  String get kycSoumettre => 'Submit my application';
+
+  @override
+  String get kycSoumisSucces =>
+      'Your application has been submitted. We\'ll let you know as soon as the verification is complete.';
+
+  @override
+  String get kycSoumettreIncomplet =>
+      'Complete the following steps before sending your application.';
+
+  @override
+  String get kycPhotoEnAttente =>
+      'A photo hasn\'t been sent yet. Finish the matching step.';
+
+  @override
+  String get kycSoumissionRefusee =>
+      'Your application couldn\'t be sent. Check each step, then try again.';
+
+  @override
+  String get kycSoumissionEnCours =>
+      'A submission is already in progress. Please wait a moment.';
 }

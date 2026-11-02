@@ -17,6 +17,7 @@ import '../../data/kyc_repository.dart';
 import '../../data/modeles_kyc.dart';
 import '../../data/selecteur_photo.dart';
 import '../../domain/etape_kyc.dart';
+import '../../domain/navigation_kyc.dart';
 import '../widgets/emplacement_document.dart';
 import '../widgets/page_etape_kyc.dart';
 
@@ -156,7 +157,7 @@ class _PageKycCniState extends ConsumerState<PageKycCni> {
       actions: [
         FilledButton(
           onPressed: (rectoOk && versoOk)
-              ? () => unawaited(context.push<void>(Routes.kycInformations))
+              ? () => continuerVers(context, Routes.kycInformations)
               : null,
           child: Text(l10n.kycContinuer),
         ),

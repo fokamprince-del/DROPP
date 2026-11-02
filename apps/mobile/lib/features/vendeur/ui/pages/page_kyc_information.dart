@@ -24,6 +24,7 @@ import '../../data/modeles_kyc.dart';
 import '../../domain/etape_kyc.dart';
 import '../../domain/formulaire_cni.dart';
 import '../../domain/messages_kyc.dart';
+import '../../domain/navigation_kyc.dart';
 import '../widgets/animation_scan_carte.dart';
 import '../widgets/champ_date.dart';
 import '../widgets/page_etape_kyc.dart';
@@ -196,8 +197,6 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
 
     final l10n = context.l10n;
     final depot = ref.read(kycRepositoryProvider);
-    final routeur = GoRouter.of(context);
-
     setState(() {
       _envoi = true;
       _erreur = null;
@@ -206,7 +205,7 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
       await depot.confirmerCni(donnees);
       if (!mounted) return;
       ref.invalidate(dossierKycProvider);
-      unawaited(routeur.push<void>(Routes.kycSelfie));
+      continuerVers(context, Routes.kycSelfie);
     } on ApiException catch (e) {
       if (!mounted) return;
       setState(() => _erreur = messageConfirmationCni(l10n, e));
