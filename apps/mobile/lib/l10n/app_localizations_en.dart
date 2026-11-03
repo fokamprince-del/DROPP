@@ -1760,4 +1760,192 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get erreurExpirationAvantDelivrance =>
       'Expiry must come after the issue date';
+
+  @override
+  String get erreurCarteExpiree => 'This card has expired';
+
+  @override
+  String get erreurNaissanceIncoherente =>
+      'Birth must come before the issue date';
+
+  @override
+  String get kycServeurCarteExpiree =>
+      'Your ID card has expired. Use a card that is still valid.';
+
+  @override
+  String get kycServeurDatesIncoherentes =>
+      'The dates on your card are inconsistent. Check the issue and expiry dates.';
+
+  @override
+  String get kycServeurNaissanceIncoherente =>
+      'Your date of birth looks inconsistent. Please check it.';
+
+  @override
+  String kycServeurAgeMinimum(int age) {
+    return 'You must be at least $age years old to sell on DROPP.';
+  }
+
+  @override
+  String get kycSelfieTitre => 'Your selfie';
+
+  @override
+  String get kycSelfieExplication =>
+      'This photo is used to check that you are the holder of the ID card.';
+
+  @override
+  String get kycConsignesTitre => 'Before you start';
+
+  @override
+  String get kycConsigne1 =>
+      'Stand somewhere well lit, with the light in front of you.';
+
+  @override
+  String get kycConsigne2 => 'Look at the camera.';
+
+  @override
+  String get kycConsigne3 => 'Keep your face fully visible and centred.';
+
+  @override
+  String get kycConsigne4 => 'Take off glasses, a cap or a mask.';
+
+  @override
+  String get kycConsigne5 => 'Avoid blurry photos and backlighting.';
+
+  @override
+  String get kycPrendreSelfie => 'Take my selfie';
+
+  @override
+  String get kycApercuSelfie => 'Preview of your selfie';
+
+  @override
+  String get kycCameraGuide => 'Place your face inside the oval';
+
+  @override
+  String get kycCameraRefusee =>
+      'Camera access is denied. Allow it in your phone\'s settings (Apps, DROPP, Permissions), then come back here.';
+
+  @override
+  String get kycCameraAvantIndisponible =>
+      'We can\'t find a front camera on this phone. The selfie is required to verify your identity.';
+
+  @override
+  String get kycCameraErreur => 'Can\'t open the camera. Try again.';
+
+  @override
+  String get kycRecapTitre => 'Summary';
+
+  @override
+  String get kycRecapExplication =>
+      'Review your application. You can edit each item before sending it.';
+
+  @override
+  String get kycRecapInfosTitre => 'Card details';
+
+  @override
+  String get kycRecapDocumentsTitre => 'Documents';
+
+  @override
+  String get kycModifier => 'Edit';
+
+  @override
+  String get kycAfficher => 'Show';
+
+  @override
+  String get kycMasquer => 'Hide';
+
+  @override
+  String get kycDonneeNonRenseignee => 'Not provided';
+
+  @override
+  String get kycConsentement =>
+      'I agree that my ID card and selfie are processed to verify my identity, including a facial comparison carried out by an external provider.';
+
+  @override
+  String get kycSoumettreExplication =>
+      'By submitting your application, you send it to the DROPP team for verification. While it is being reviewed, you can no longer edit it.';
+
+  @override
+  String get kycSoumettre => 'Submit my application';
+
+  @override
+  String get kycSoumisSucces =>
+      'Your application has been submitted. We\'ll let you know as soon as the verification is complete.';
+
+  @override
+  String get kycSoumettreIncomplet =>
+      'Complete the following steps before sending your application.';
+
+  @override
+  String get kycPhotoEnAttente =>
+      'A photo hasn\'t been sent yet. Finish the matching step.';
+
+  @override
+  String get kycSoumissionRefusee =>
+      'Your application couldn\'t be sent. Check each step, then try again.';
+
+  @override
+  String get kycSoumissionEnCours =>
+      'A submission is already in progress. Please wait a moment.';
+
+  @override
+  String get kycErrProfilIntrouvable =>
+      'Your seller profile can\'t be found. Go back to the “Become a seller” screen to create it.';
+
+  @override
+  String get kycErrOcrIndisponible =>
+      'Automatic card reading is unavailable right now. Please fill in the details by hand.';
+
+  @override
+  String get kycErrDossierIntrouvable =>
+      'No verification application was found. Start the verification to create one.';
+
+  @override
+  String get kycErrDossierNonModifiable =>
+      'Your application can\'t be edited in its current state.';
+
+  @override
+  String get kycErrDejaVerifie => 'Your identity is already verified.';
+
+  @override
+  String get kycErrEnCoursDeRevue =>
+      'Your application is being reviewed. You can\'t edit it right now.';
+
+  @override
+  String get kycErrDejaSoumis => 'Your application has already been submitted.';
+
+  @override
+  String get kycErrCniRectoManquant =>
+      'Upload the front of your ID card first.';
+
+  @override
+  String get kycErrNumeroCniInvalide =>
+      'Your card number isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrNaissanceInvalide =>
+      'Your date of birth isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrDelivranceInvalide =>
+      'The issue date isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrExpirationInvalide =>
+      'The expiry date isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrAgeMinimum =>
+      'You don\'t meet the minimum age required to sell on DROPP.';
+
+  @override
+  String get kycErrDonneesIncompletes =>
+      'Some details of your card are missing. Please fill in every field.';
+
+  @override
+  String get kycErrDocumentsManquants =>
+      'Documents are missing. Upload your card (front and back) and your selfie.';
+
+  @override
+  String get kycErrConsentementRequis =>
+      'You must agree to the processing of your documents to submit your application.';
 }

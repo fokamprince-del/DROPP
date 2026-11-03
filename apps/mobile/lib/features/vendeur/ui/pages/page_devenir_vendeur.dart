@@ -8,9 +8,9 @@ import '../../../../core/l10n/contexte_l10n.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
 import '../../../../shared/widgets/bouton_action.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../../../shared/widgets/page_acces.dart';
 import '../../data/vendeur_repository.dart';
+import '../../domain/messages_kyc.dart';
 import 'reprendre_dossier_kyc.dart';
 
 class PageDevenirVendeur extends ConsumerStatefulWidget {
@@ -41,7 +41,7 @@ class _PageDevenirVendeurState extends ConsumerState<PageDevenirVendeur> {
       _cleIdempotence = null;
       await session.rafraichirProfil();
     } on ApiException catch (e) {
-      if (mounted) setState(() => _erreur = messageErreurApi(l10n, e));
+      if (mounted) setState(() => _erreur = messageErreurKyc(l10n, e));
       // Le profil vendeur existe peut-être déjà côté serveur.
       if (e.type == TypeErreurApi.conflit) await session.rafraichirProfil();
     } finally {

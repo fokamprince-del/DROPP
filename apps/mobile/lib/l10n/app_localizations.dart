@@ -3019,6 +3019,318 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'L\'expiration doit venir après la délivrance'**
   String get erreurExpirationAvantDelivrance;
+
+  /// No description provided for @erreurCarteExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette carte est expirée'**
+  String get erreurCarteExpiree;
+
+  /// No description provided for @erreurNaissanceIncoherente.
+  ///
+  /// In fr, this message translates to:
+  /// **'La naissance doit précéder la délivrance'**
+  String get erreurNaissanceIncoherente;
+
+  /// No description provided for @kycServeurCarteExpiree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta carte d\'identité est expirée. Utilise une carte en cours de validité.'**
+  String get kycServeurCarteExpiree;
+
+  /// No description provided for @kycServeurDatesIncoherentes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les dates de ta carte sont incohérentes. Vérifie la délivrance et l\'expiration.'**
+  String get kycServeurDatesIncoherentes;
+
+  /// No description provided for @kycServeurNaissanceIncoherente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta date de naissance semble incohérente. Vérifie-la.'**
+  String get kycServeurNaissanceIncoherente;
+
+  /// No description provided for @kycServeurAgeMinimum.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu dois avoir au moins {age} ans pour vendre sur DROPP.'**
+  String kycServeurAgeMinimum(int age);
+
+  /// No description provided for @kycSelfieTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton selfie'**
+  String get kycSelfieTitre;
+
+  /// No description provided for @kycSelfieExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette photo sert à vérifier que tu es bien le titulaire de la carte d\'identité.'**
+  String get kycSelfieExplication;
+
+  /// No description provided for @kycConsignesTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avant de commencer'**
+  String get kycConsignesTitre;
+
+  /// No description provided for @kycConsigne1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Place-toi dans un endroit bien éclairé, la lumière devant toi.'**
+  String get kycConsigne1;
+
+  /// No description provided for @kycConsigne2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Regarde l\'objectif.'**
+  String get kycConsigne2;
+
+  /// No description provided for @kycConsigne3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Garde ton visage entièrement visible et bien centré.'**
+  String get kycConsigne3;
+
+  /// No description provided for @kycConsigne4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retire tes lunettes, ta casquette ou ton masque.'**
+  String get kycConsigne4;
+
+  /// No description provided for @kycConsigne5.
+  ///
+  /// In fr, this message translates to:
+  /// **'Évite les photos floues et le contre-jour.'**
+  String get kycConsigne5;
+
+  /// No description provided for @kycPrendreSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prendre mon selfie'**
+  String get kycPrendreSelfie;
+
+  /// No description provided for @kycApercuSelfie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu de ton selfie'**
+  String get kycApercuSelfie;
+
+  /// No description provided for @kycCameraGuide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Place ton visage dans l\'ovale'**
+  String get kycCameraGuide;
+
+  /// No description provided for @kycCameraRefusee.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'accès à la caméra est refusé. Autorise-le dans les réglages de ton téléphone (Applications, DROPP, Autorisations), puis reviens ici.'**
+  String get kycCameraRefusee;
+
+  /// No description provided for @kycCameraAvantIndisponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous ne trouvons pas de caméra avant sur ce téléphone. Le selfie est nécessaire pour vérifier ton identité.'**
+  String get kycCameraAvantIndisponible;
+
+  /// No description provided for @kycCameraErreur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir la caméra. Réessaie.'**
+  String get kycCameraErreur;
+
+  /// No description provided for @kycRecapTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récapitulatif'**
+  String get kycRecapTitre;
+
+  /// No description provided for @kycRecapExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifie ton dossier. Tu peux modifier chaque élément avant de l\'envoyer.'**
+  String get kycRecapExplication;
+
+  /// No description provided for @kycRecapInfosTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de la carte'**
+  String get kycRecapInfosTitre;
+
+  /// No description provided for @kycRecapDocumentsTitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Documents'**
+  String get kycRecapDocumentsTitre;
+
+  /// No description provided for @kycModifier.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier'**
+  String get kycModifier;
+
+  /// No description provided for @kycAfficher.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher'**
+  String get kycAfficher;
+
+  /// No description provided for @kycMasquer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masquer'**
+  String get kycMasquer;
+
+  /// No description provided for @kycDonneeNonRenseignee.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non renseigné'**
+  String get kycDonneeNonRenseignee;
+
+  /// No description provided for @kycConsentement.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'accepte que ma pièce d\'identité et mon selfie soient traités pour vérifier mon identité, y compris par une comparaison faciale réalisée par un prestataire externe.'**
+  String get kycConsentement;
+
+  /// No description provided for @kycSoumettreExplication.
+  ///
+  /// In fr, this message translates to:
+  /// **'En soumettant ton dossier, tu le transmets à l\'équipe DROPP pour vérification. Tant qu\'il est en cours d\'examen, tu ne peux plus le modifier.'**
+  String get kycSoumettreExplication;
+
+  /// No description provided for @kycSoumettre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Soumettre mon dossier'**
+  String get kycSoumettre;
+
+  /// No description provided for @kycSoumisSucces.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier a bien été transmis. Nous t\'informerons dès que sa vérification sera terminée.'**
+  String get kycSoumisSucces;
+
+  /// No description provided for @kycSoumettreIncomplet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Complète les étapes suivantes avant d\'envoyer ton dossier.'**
+  String get kycSoumettreIncomplet;
+
+  /// No description provided for @kycPhotoEnAttente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une photo n\'a pas encore été envoyée. Termine l\'étape correspondante.'**
+  String get kycPhotoEnAttente;
+
+  /// No description provided for @kycSoumissionRefusee.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier n\'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.'**
+  String get kycSoumissionRefusee;
+
+  /// No description provided for @kycSoumissionEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une soumission est déjà en cours. Patiente un instant.'**
+  String get kycSoumissionEnCours;
+
+  /// No description provided for @kycErrProfilIntrouvable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton profil vendeur est introuvable. Reviens à l\'écran « Devenir vendeur » pour le créer.'**
+  String get kycErrProfilIntrouvable;
+
+  /// No description provided for @kycErrOcrIndisponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'La lecture automatique de la carte est indisponible pour le moment. Remplis les informations à la main.'**
+  String get kycErrOcrIndisponible;
+
+  /// No description provided for @kycErrDossierIntrouvable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun dossier de vérification n\'a été trouvé. Commence la vérification pour en créer un.'**
+  String get kycErrDossierIntrouvable;
+
+  /// No description provided for @kycErrDossierNonModifiable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier ne peut pas être modifié dans son état actuel.'**
+  String get kycErrDossierNonModifiable;
+
+  /// No description provided for @kycErrDejaVerifie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton identité est déjà vérifiée.'**
+  String get kycErrDejaVerifie;
+
+  /// No description provided for @kycErrEnCoursDeRevue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier est en cours de vérification. Tu ne peux pas le modifier pour le moment.'**
+  String get kycErrEnCoursDeRevue;
+
+  /// No description provided for @kycErrDejaSoumis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton dossier a déjà été envoyé.'**
+  String get kycErrDejaSoumis;
+
+  /// No description provided for @kycErrCniRectoManquant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Importe d\'abord le recto de ta carte d\'identité.'**
+  String get kycErrCniRectoManquant;
+
+  /// No description provided for @kycErrNumeroCniInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le numéro de ta carte n\'est pas valide. Vérifie-le.'**
+  String get kycErrNumeroCniInvalide;
+
+  /// No description provided for @kycErrNaissanceInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta date de naissance n\'est pas valide. Vérifie-la.'**
+  String get kycErrNaissanceInvalide;
+
+  /// No description provided for @kycErrDelivranceInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date de délivrance n\'est pas valide. Vérifie-la.'**
+  String get kycErrDelivranceInvalide;
+
+  /// No description provided for @kycErrExpirationInvalide.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date d\'expiration n\'est pas valide. Vérifie-la.'**
+  String get kycErrExpirationInvalide;
+
+  /// No description provided for @kycErrAgeMinimum.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu n\'as pas l\'âge minimum requis pour vendre sur DROPP.'**
+  String get kycErrAgeMinimum;
+
+  /// No description provided for @kycErrDonneesIncompletes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certaines informations de ta carte sont manquantes. Complète tous les champs.'**
+  String get kycErrDonneesIncompletes;
+
+  /// No description provided for @kycErrDocumentsManquants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Il manque des documents. Importe ta carte (recto et verso) et ton selfie.'**
+  String get kycErrDocumentsManquants;
+
+  /// No description provided for @kycErrConsentementRequis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu dois accepter le traitement de tes documents pour envoyer ton dossier.'**
+  String get kycErrConsentementRequis;
 }
 
 class _AppLocalizationsDelegate

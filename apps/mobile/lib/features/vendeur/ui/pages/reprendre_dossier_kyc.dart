@@ -11,10 +11,10 @@ import '../../../../shared/theme/couleurs_metier.dart';
 import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/dossier_kyc.dart';
 import '../../data/modeles_kyc.dart';
 import '../../domain/etape_kyc.dart';
+import '../../domain/messages_kyc.dart';
 import '../widgets/dossier_en_verification.dart';
 
 /// Parcours de vérification : liste des étapes (toutes les étapes terminées
@@ -40,7 +40,7 @@ class ReprendreDossierKyc extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               BandeauMessage(
-                message: messageErreurApi(l10n, ApiException.depuis(erreur)),
+                message: messageErreurKyc(l10n, ApiException.depuis(erreur)),
               ),
               const SizedBox(height: Espacements.l),
               OutlinedButton(

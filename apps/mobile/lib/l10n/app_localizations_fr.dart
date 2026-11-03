@@ -1778,4 +1778,193 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get erreurExpirationAvantDelivrance =>
       'L\'expiration doit venir après la délivrance';
+
+  @override
+  String get erreurCarteExpiree => 'Cette carte est expirée';
+
+  @override
+  String get erreurNaissanceIncoherente =>
+      'La naissance doit précéder la délivrance';
+
+  @override
+  String get kycServeurCarteExpiree =>
+      'Ta carte d\'identité est expirée. Utilise une carte en cours de validité.';
+
+  @override
+  String get kycServeurDatesIncoherentes =>
+      'Les dates de ta carte sont incohérentes. Vérifie la délivrance et l\'expiration.';
+
+  @override
+  String get kycServeurNaissanceIncoherente =>
+      'Ta date de naissance semble incohérente. Vérifie-la.';
+
+  @override
+  String kycServeurAgeMinimum(int age) {
+    return 'Tu dois avoir au moins $age ans pour vendre sur DROPP.';
+  }
+
+  @override
+  String get kycSelfieTitre => 'Ton selfie';
+
+  @override
+  String get kycSelfieExplication =>
+      'Cette photo sert à vérifier que tu es bien le titulaire de la carte d\'identité.';
+
+  @override
+  String get kycConsignesTitre => 'Avant de commencer';
+
+  @override
+  String get kycConsigne1 =>
+      'Place-toi dans un endroit bien éclairé, la lumière devant toi.';
+
+  @override
+  String get kycConsigne2 => 'Regarde l\'objectif.';
+
+  @override
+  String get kycConsigne3 =>
+      'Garde ton visage entièrement visible et bien centré.';
+
+  @override
+  String get kycConsigne4 => 'Retire tes lunettes, ta casquette ou ton masque.';
+
+  @override
+  String get kycConsigne5 => 'Évite les photos floues et le contre-jour.';
+
+  @override
+  String get kycPrendreSelfie => 'Prendre mon selfie';
+
+  @override
+  String get kycApercuSelfie => 'Aperçu de ton selfie';
+
+  @override
+  String get kycCameraGuide => 'Place ton visage dans l\'ovale';
+
+  @override
+  String get kycCameraRefusee =>
+      'L\'accès à la caméra est refusé. Autorise-le dans les réglages de ton téléphone (Applications, DROPP, Autorisations), puis reviens ici.';
+
+  @override
+  String get kycCameraAvantIndisponible =>
+      'Nous ne trouvons pas de caméra avant sur ce téléphone. Le selfie est nécessaire pour vérifier ton identité.';
+
+  @override
+  String get kycCameraErreur => 'Impossible d\'ouvrir la caméra. Réessaie.';
+
+  @override
+  String get kycRecapTitre => 'Récapitulatif';
+
+  @override
+  String get kycRecapExplication =>
+      'Vérifie ton dossier. Tu peux modifier chaque élément avant de l\'envoyer.';
+
+  @override
+  String get kycRecapInfosTitre => 'Informations de la carte';
+
+  @override
+  String get kycRecapDocumentsTitre => 'Documents';
+
+  @override
+  String get kycModifier => 'Modifier';
+
+  @override
+  String get kycAfficher => 'Afficher';
+
+  @override
+  String get kycMasquer => 'Masquer';
+
+  @override
+  String get kycDonneeNonRenseignee => 'Non renseigné';
+
+  @override
+  String get kycConsentement =>
+      'J\'accepte que ma pièce d\'identité et mon selfie soient traités pour vérifier mon identité, y compris par une comparaison faciale réalisée par un prestataire externe.';
+
+  @override
+  String get kycSoumettreExplication =>
+      'En soumettant ton dossier, tu le transmets à l\'équipe DROPP pour vérification. Tant qu\'il est en cours d\'examen, tu ne peux plus le modifier.';
+
+  @override
+  String get kycSoumettre => 'Soumettre mon dossier';
+
+  @override
+  String get kycSoumisSucces =>
+      'Ton dossier a bien été transmis. Nous t\'informerons dès que sa vérification sera terminée.';
+
+  @override
+  String get kycSoumettreIncomplet =>
+      'Complète les étapes suivantes avant d\'envoyer ton dossier.';
+
+  @override
+  String get kycPhotoEnAttente =>
+      'Une photo n\'a pas encore été envoyée. Termine l\'étape correspondante.';
+
+  @override
+  String get kycSoumissionRefusee =>
+      'Ton dossier n\'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.';
+
+  @override
+  String get kycSoumissionEnCours =>
+      'Une soumission est déjà en cours. Patiente un instant.';
+
+  @override
+  String get kycErrProfilIntrouvable =>
+      'Ton profil vendeur est introuvable. Reviens à l\'écran « Devenir vendeur » pour le créer.';
+
+  @override
+  String get kycErrOcrIndisponible =>
+      'La lecture automatique de la carte est indisponible pour le moment. Remplis les informations à la main.';
+
+  @override
+  String get kycErrDossierIntrouvable =>
+      'Aucun dossier de vérification n\'a été trouvé. Commence la vérification pour en créer un.';
+
+  @override
+  String get kycErrDossierNonModifiable =>
+      'Ton dossier ne peut pas être modifié dans son état actuel.';
+
+  @override
+  String get kycErrDejaVerifie => 'Ton identité est déjà vérifiée.';
+
+  @override
+  String get kycErrEnCoursDeRevue =>
+      'Ton dossier est en cours de vérification. Tu ne peux pas le modifier pour le moment.';
+
+  @override
+  String get kycErrDejaSoumis => 'Ton dossier a déjà été envoyé.';
+
+  @override
+  String get kycErrCniRectoManquant =>
+      'Importe d\'abord le recto de ta carte d\'identité.';
+
+  @override
+  String get kycErrNumeroCniInvalide =>
+      'Le numéro de ta carte n\'est pas valide. Vérifie-le.';
+
+  @override
+  String get kycErrNaissanceInvalide =>
+      'Ta date de naissance n\'est pas valide. Vérifie-la.';
+
+  @override
+  String get kycErrDelivranceInvalide =>
+      'La date de délivrance n\'est pas valide. Vérifie-la.';
+
+  @override
+  String get kycErrExpirationInvalide =>
+      'La date d\'expiration n\'est pas valide. Vérifie-la.';
+
+  @override
+  String get kycErrAgeMinimum =>
+      'Tu n\'as pas l\'âge minimum requis pour vendre sur DROPP.';
+
+  @override
+  String get kycErrDonneesIncompletes =>
+      'Certaines informations de ta carte sont manquantes. Complète tous les champs.';
+
+  @override
+  String get kycErrDocumentsManquants =>
+      'Il manque des documents. Importe ta carte (recto et verso) et ton selfie.';
+
+  @override
+  String get kycErrConsentementRequis =>
+      'Tu dois accepter le traitement de tes documents pour envoyer ton dossier.';
 }

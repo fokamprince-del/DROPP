@@ -15,7 +15,6 @@ import '../../../../shared/theme/espacements.dart';
 import '../../../../shared/theme/rayons.dart';
 import '../../../../shared/theme/styles_accent.dart';
 import '../../../../shared/widgets/bandeau_message.dart';
-import '../../../../shared/widgets/messages_erreurs.dart';
 import '../../application/brouillon_infos_cni.dart';
 import '../../application/brouillon_kyc.dart';
 import '../../application/dossier_kyc.dart';
@@ -23,6 +22,8 @@ import '../../data/kyc_repository.dart';
 import '../../data/modeles_kyc.dart';
 import '../../domain/etape_kyc.dart';
 import '../../domain/formulaire_cni.dart';
+import '../../domain/messages_kyc.dart';
+import '../../domain/navigation_kyc.dart';
 import '../widgets/animation_scan_carte.dart';
 import '../widgets/champ_date.dart';
 import '../widgets/page_etape_kyc.dart';
@@ -49,6 +50,7 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
   bool _envoi = false;
   String? _erreur;
   String? _info;
+  final _cleBandeau = GlobalKey();
 
   /// Champs remplis par la lecture automatique et pas encore retouchés.
   final _lus = <ChampCni>{};
@@ -171,7 +173,7 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
     } on ApiException catch (e) {
       if (!mounted) return;
       setState(() {
-        _erreur = messageErreurApi(
+        _erreur = messageErreurKyc(
           l10n,
           e,
           specifiques: {
@@ -194,8 +196,6 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
 
     final l10n = context.l10n;
     final depot = ref.read(kycRepositoryProvider);
-    final routeur = GoRouter.of(context);
-
     setState(() {
       _envoi = true;
       _erreur = null;
@@ -204,16 +204,11 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
       await depot.confirmerCni(donnees);
       if (!mounted) return;
       ref.invalidate(dossierKycProvider);
-      unawaited(routeur.push<void>(Routes.kycSelfie));
+      continuerVers(context, Routes.kycSelfie);
     } on ApiException catch (e) {
       if (!mounted) return;
-      setState(() {
-        _erreur = messageErreurApi(
-          l10n,
-          e,
-          specifiques: {TypeErreurApi.requeteInvalide: l10n.kycInfosRefusees},
-        );
-      });
+      setState(() => _erreur = messageErreurKyc(l10n, e));
+      _defilerVersErreur();
     } finally {
       if (mounted) setState(() => _envoi = false);
     }
@@ -225,6 +220,22 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
     } else {
       context.go(Routes.devenirVendeur);
     }
+  }
+
+  /// Le message d'erreur est en haut de l'écran : on y amène l'utilisateur
+  /// s'il a défilé jusqu'au bouton.
+  void _defilerVersErreur() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final contexte = _cleBandeau.currentContext;
+      if (!mounted || contexte == null) return;
+      unawaited(
+        Scrollable.ensureVisible(
+          contexte,
+          duration: const Duration(milliseconds: 250),
+          alignment: 0.1,
+        ),
+      );
+    });
   }
 
   Widget _blocAutomatique() {
@@ -290,7 +301,6 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
     final metier = context.couleursMetier;
     final actif = !_lecture && !_envoi;
     final aujourdhui = DateTime.now();
-    final expiree = carteExpiree(_controleurs[ChampCni.expiration]!.text);
 
     String? aide(ChampCni champ) {
       if (_lus.contains(champ)) return l10n.kycLuSurCarte;
@@ -344,12 +354,8 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
       actionClavier: action,
       surChangement: (v) => _surChangement(champ, v),
       actif: actif,
-      aide: champ == ChampCni.expiration && expiree
-          ? l10n.kycCarteExpiree
-          : aide(champ),
-      couleurAide: champ == ChampCni.expiration && expiree
-          ? metier.erreur
-          : couleurAide(champ),
+      aide: aide(champ),
+      couleurAide: couleurAide(champ),
     );
 
     const espace = SizedBox(height: Espacements.l);
@@ -407,7 +413,10 @@ class _PageKycInformationsState extends ConsumerState<PageKycInformations> {
               date(
                 ChampCni.naissance,
                 l10n.kycChampNaissance,
-                validateur: validerDateNaissance,
+                validateur: (v) => validerDateNaissance(
+                  v,
+                  delivrance: _controleurs[ChampCni.delivrance]!.text,
+                ),
                 premier: DateTime(1900),
                 dernier: aujourdhui,
               ),

@@ -12,6 +12,8 @@ enum ErreurChamp {
   dateNaissanceImpossible,
   dateFuture,
   expirationAvantDelivrance,
+  carteExpiree,
+  naissanceIncoherente,
 }
 
 ErreurChamp? validerRequis(String? valeur) =>

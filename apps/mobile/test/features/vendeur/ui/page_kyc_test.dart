@@ -15,11 +15,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 class _FauxKyc extends KycRepository {
-  _FauxKyc({this.extraction, this.erreurExtraction})
+  _FauxKyc({this.extraction, this.erreurExtraction, this.erreurConfirmation})
     : super(ApiClient(Dio()), ServiceUpload(Dio()));
 
   final ResultatExtractionCni? extraction;
   final ApiException? erreurExtraction;
+  final ApiException? erreurConfirmation;
   DonneesCni? confirmees;
 
   @override
@@ -88,7 +89,7 @@ Future<void> _remplirTout(
   await _saisir(tester, 3, '21051990');
   await _saisir(tester, 4, 'Douala');
   await _saisir(tester, 5, '02012020');
-  await _saisir(tester, 6, '02012030');
+  await _saisir(tester, 6, '02012099');
 }
 
 Future<void> _cocherEtConfirmer(WidgetTester tester) async {
@@ -199,6 +200,28 @@ void main() {
 
     expect(find.text('6 à 20 lettres ou chiffres'), findsOneWidget);
     expect(kyc.confirmees, isNull);
+    expect(find.text('page selfie'), findsNothing);
+  });
+
+  testWidgets("un refus du serveur est traduit et amené à l'écran", (
+    tester,
+  ) async {
+    final kyc = _FauxKyc(
+      erreurConfirmation: const ApiException(
+        type: TypeErreurApi.requeteInvalide,
+        message: 'x',
+        statusCode: 400,
+        details: ['Vous devez avoir au moins 18 ans pour vendre sur DROPP.'],
+      ),
+    );
+    await _afficher(tester, kyc);
+    await _remplirTout(tester);
+    await _cocherEtConfirmer(tester);
+
+    expect(
+      find.text('Tu dois avoir au moins 18 ans pour vendre sur DROPP.'),
+      findsOneWidget,
+    );
     expect(find.text('page selfie'), findsNothing);
   });
 }

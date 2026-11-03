@@ -39,6 +39,8 @@ import '../../features/stories/ui/pages/lecteur_stories.dart';
 import '../../features/vendeur/ui/pages/page_devenir_vendeur.dart';
 import '../../features/vendeur/ui/pages/page_kyc_cni.dart';
 import '../../features/vendeur/ui/pages/page_kyc_information.dart';
+import '../../features/vendeur/ui/pages/page_kyc_recapitulatif.dart';
+import '../../features/vendeur/ui/pages/page_kyc_selfie.dart';
 import '../../shared/widgets/page_provisoire.dart';
 import '../auth/session.dart';
 import 'redirection.dart';
@@ -301,11 +303,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.kycSelfie,
-        builder: (context, state) => const PageProvisoire('Selfie'),
+        builder: (context, state) => const PageKycSelfie(),
       ),
       GoRoute(
         path: Routes.kycRecapitulatif,
-        builder: (context, state) => const PageProvisoire('Récapitulatif'),
+        builder: (context, state) => const PageKycRecapitulatif(),
       ),
       GoRoute(
         path: Routes.espaceVendeur,

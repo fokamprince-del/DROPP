@@ -1,8 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { DonneesCniDto } from '../dto/donnees-cni.dto.js';
 import { DossierKycService } from '../services/dossier-kyc.service.js';
+import { DroppException } from '../../../infrastructure/http/droppException.js';
+import { KYC_ERRORS } from '@dropp/contrats';
 
 /** Âge minimum pour vendre sur la plateforme. */
 const AGE_MINIMUM = 18;
@@ -20,19 +22,25 @@ export class ConfirmerDonneesCniService {
 
     const maintenant = new Date();
     if (dto.dateExpiration < maintenant) {
-      throw new BadRequestException('Votre carte d’identité est expirée.');
+      throw DroppException.UnprocessableEntity('Votre carte d’identité est expirée.', KYC_ERRORS.INVALID_EXPIRATION_DATE);
     }
     if (dto.dateEtablissement >= dto.dateExpiration) {
-      throw new BadRequestException('Dates de la carte d’identité incohérentes.');
+      throw DroppException.UnprocessableEntity('Dates de la carte d’identité incohérentes.', KYC_ERRORS.INVALID_ISSUE_DATE);
     }
     if (dto.dateNaissance >= dto.dateEtablissement) {
-      throw new BadRequestException('Date de naissance incohérente.');
+      throw DroppException.UnprocessableEntity('Date de naissance incohérente.', KYC_ERRORS.INVALID_BIRTH_DATE);
     }
     const majorite = new Date(dto.dateNaissance);
     majorite.setFullYear(majorite.getFullYear() + AGE_MINIMUM);
     if (majorite > maintenant) {
-      throw new BadRequestException(
+      throw DroppException.UnprocessableEntity(
         `Vous devez avoir au moins ${AGE_MINIMUM} ans pour vendre sur DROPP.`,
+        KYC_ERRORS.MINIMUM_AGE_NOT_MET,
+        {
+          ageMinimum: AGE_MINIMUM,
+          dateNaissance: dto.dateNaissance.toISOString(),
+          dateLimite: majorite.toISOString(),
+        }
       );
     }
 

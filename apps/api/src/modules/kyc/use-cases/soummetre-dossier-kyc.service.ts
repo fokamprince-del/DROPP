@@ -1,8 +1,9 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import type { Queue } from 'bullmq';
 import {
   JOB_KYC,
+  KYC_ERRORS,
   QUEUE_KYC,
   type JobVerifierVisageKyc,
 } from '@dropp/contrats';
@@ -11,6 +12,7 @@ import type { TypeDocumentKyc } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import { DossierKycService, STATUTS_MODIFIABLES } from '../services/dossier-kyc.service.js';
 import { KycStockageService } from '../services/kyc-stockage.service.js';
+import { DroppException } from '../../../infrastructure/http/droppException.js';
 
 const DOCUMENTS_REQUIS: TypeDocumentKyc[] = [
   'CNI_RECTO',
@@ -55,8 +57,9 @@ export class SoumettreDoissierService {
       dossier.documents.find((d) => d.typeDocument === type)?.cleStockage;
     const manquants = DOCUMENTS_REQUIS.filter((t) => !cle(t));
     if (manquants.length > 0) {
-      throw new BadRequestException(
+      throw DroppException.BadRequest(
         `Documents manquants : ${manquants.join(', ')}`,
+        KYC_ERRORS.REQUIRED_DOCUMENTS_MISSING,
       );
     }
 
@@ -69,12 +72,13 @@ export class SoumettreDoissierService {
       !dossier.dateEtablissement ||
       !dossier.dateExpiration
     ) {
-      throw new BadRequestException(
+      throw DroppException.BadRequest(
         'Les données de la carte d’identité sont incomplètes.',
+        KYC_ERRORS.INCOMPLETE_CNI_DATA,
       );
     }
     if (dossier.dateExpiration < new Date()) {
-      throw new BadRequestException('Votre carte d’identité est expirée.');
+      throw DroppException.BadRequest('Votre carte d’identité est expirée.', KYC_ERRORS.IDENTITY_CARD_EXPIRED);
     }
 
     // Passage conditionnel : une double soumission ne lance qu'une vérification.
@@ -89,7 +93,7 @@ export class SoumettreDoissierService {
       },
     });
     if (count === 0) {
-      throw new ConflictException('Ce dossier a déjà été soumis.');
+      throw DroppException.Conflict('Ce dossier a déjà été soumis.', KYC_ERRORS.KYC_ALREADY_SUBMITTED);
     }
 
     const [urlSelfie, urlCniRecto] = await Promise.all([

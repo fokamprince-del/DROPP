@@ -15,5 +15,7 @@ extension LibelleErreurChamp on ErreurChamp {
     ErreurChamp.dateFuture => l10n.erreurDateFuture,
     ErreurChamp.expirationAvantDelivrance =>
       l10n.erreurExpirationAvantDelivrance,
+    ErreurChamp.carteExpiree => l10n.erreurCarteExpiree,
+    ErreurChamp.naissanceIncoherente => l10n.erreurNaissanceIncoherente,
   };
 }
