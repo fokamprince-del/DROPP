@@ -10,6 +10,7 @@ import {
   StatutConversation,
   StatutMessage,
   TypeConversation,
+  type Prisma,
 } from '@dropp/database';
 import { PrismaService } from '../../infrastructure/database/prisma.service.js';
 import {
@@ -42,9 +43,9 @@ const conversationSelection = {
   },
 } as const;
 
-type ConversationBrute = Awaited<
-  ReturnType<ConversationsService['chargerConversation']>
->;
+type ConversationBrute = Prisma.ConversationGetPayload<{
+  select: typeof conversationSelection;
+}>;
 
 @Injectable()
 export class ConversationsService {
@@ -161,9 +162,7 @@ export class ConversationsService {
       donnees: conversations.map((c) =>
         this.presenter(utilisateurId, c, nonLus.get(c.id) ?? 0),
       ),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 
@@ -195,7 +194,7 @@ export class ConversationsService {
     return { nonLus };
   }
 
-  chargerConversation(conversationId: string) {
+  async chargerConversation(conversationId: string) {
     return this.prisma.conversation.findUnique({
       where: { id: conversationId },
       select: conversationSelection,

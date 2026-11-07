@@ -1,0 +1,7 @@
+model ParametrePlateforme {
+  cle              String   @id
+  valeur           Json
+  dateModification DateTime @updatedAt @map("date_modification") @db.Timestamptz(3)
+
+  @@map("parametres_plateforme")
+}

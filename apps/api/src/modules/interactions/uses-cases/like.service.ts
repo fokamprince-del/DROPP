@@ -18,6 +18,7 @@ export class LikeService {
     const publication = await verifierPublicationVisible(
       this.prisma,
       publicationId,
+      utilisateurId,
     );
 
     try {
@@ -73,12 +74,17 @@ export class LikeService {
   async likerCommentaire(utilisateurId: string, commentaireId: string) {
     const commentaire = await this.prisma.commentaire.findUnique({
       where: { id: commentaireId },
-      select: { id: true, statut: true },
+      select: { id: true, statut: true, publicationId: true },
     });
 
     if (!commentaire || commentaire.statut !== 'VISIBLE') {
       throw new NotFoundException('Commentaire introuvable.');
     }
+    await verifierPublicationVisible(
+      this.prisma,
+      commentaire.publicationId,
+      utilisateurId,
+    );
 
     try {
       await this.prisma.aimeCommentaire.create({

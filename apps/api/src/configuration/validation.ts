@@ -104,8 +104,18 @@ export const validationSchema = Joi.object({
     is: 'r2',
     then: Joi.string().required(),
   }),
-  // Bucket SANS accès public pour la messagerie (lu par URL signée).
-  R2_BUCKET_PRIVE: Joi.string().allow('').default(''),
+  // Bucket SANS accès public : pièces d'identité KYC, messagerie, contenus
+  // réservés aux abonnés (lus par URL signée). Obligatoire en production.
+  R2_BUCKET_PRIVE: Joi.string()
+    .allow('')
+    .default('')
+    .when('STOCKAGE_DRIVER', {
+      is: 'r2',
+      then: Joi.when('NODE_ENV', {
+        is: 'production',
+        then: Joi.string().required().invalid(Joi.ref('R2_BUCKET')),
+      }),
+    }),
   R2_ENDPOINT: Joi.string().allow('').when('STOCKAGE_DRIVER', {
     is: 'r2',
     then: Joi.string().uri({ scheme: ['https'] }).required(),

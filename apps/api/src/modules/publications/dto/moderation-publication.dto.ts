@@ -1,8 +1,7 @@
-import { IsEnum } from 'class-validator';
+import { IsIn } from 'class-validator';
 
-import { StatutPublication } from '@dropp/database';
-
+/** PUBLIEE : remise en ligne · REJETEE : retirée du public. */
 export class ModerationPublicationDto {
-  @IsEnum(StatutPublication)
-  statut!: StatutPublication;
+  @IsIn(['PUBLIEE', 'REJETEE'])
+  statut!: 'PUBLIEE' | 'REJETEE';
 }

@@ -85,7 +85,7 @@ export class FavoriProduitService {
 
     return {
       donnees: favoris,
-      pagination: { total, page, pages: Math.ceil(total / limite) },
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 

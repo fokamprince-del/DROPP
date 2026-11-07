@@ -1,0 +1,1951 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get nomApp => 'DROPP';
+
+  @override
+  String get navAccueil => 'Home';
+
+  @override
+  String get navDecouvrir => 'Discover';
+
+  @override
+  String get navPanier => 'Cart';
+
+  @override
+  String get navMessages => 'Messages';
+
+  @override
+  String get navProfil => 'Profile';
+
+  @override
+  String get baselineApp => 'Cameroon\'s marketplace in your pocket';
+
+  @override
+  String navPanierArticles(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return 'Cart, $_temp0';
+  }
+
+  @override
+  String navMessagesNonLus(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread',
+      one: '1 unread',
+    );
+    return 'Messages, $_temp0';
+  }
+
+  @override
+  String get champPrenom => 'First name';
+
+  @override
+  String get champNom => 'Last name';
+
+  @override
+  String get champSexe => 'Gender';
+
+  @override
+  String get sexeMasculin => 'Male';
+
+  @override
+  String get sexeFeminin => 'Female';
+
+  @override
+  String get sexeAutre => 'Other';
+
+  @override
+  String get champTelephone => 'Phone';
+
+  @override
+  String get champEmailFacultatif => 'Email (optional)';
+
+  @override
+  String get champMotDePasse => 'Password';
+
+  @override
+  String get champIdentifiantPlaceholder => '+2376******** | example@email.com';
+
+  @override
+  String get erreurRequis => 'This field is required';
+
+  @override
+  String get erreurTelephoneInvalide => 'Invalid phone number';
+
+  @override
+  String get erreurEmailInvalide => 'Invalid email address';
+
+  @override
+  String get erreurMotDePasseCourt => 'At least 8 characters';
+
+  @override
+  String get erreurCodeIncomplet => 'Enter the 6 digits of the code';
+
+  @override
+  String get forceMotDePasse1 =>
+      'Weak. Use at least 8 characters, with letters and numbers.';
+
+  @override
+  String get forceMotDePasse2 => 'Fair. Add numbers or capital letters.';
+
+  @override
+  String get forceMotDePasse3 => 'Strong. Add a symbol to make it very strong.';
+
+  @override
+  String get forceMotDePasse4 => 'Very strong.';
+
+  @override
+  String get champCode => 'Verification code';
+
+  @override
+  String get motDePasseAfficher => 'Show password';
+
+  @override
+  String get motDePasseMasquer => 'Hide password';
+
+  @override
+  String get champIdentifiant => 'Phone or email';
+
+  @override
+  String get champNouveauMotDePasse => 'New password';
+
+  @override
+  String get erreurIdentifiantInvalide => 'Invalid number or email';
+
+  @override
+  String get erreurReseau => 'No internet connection.';
+
+  @override
+  String get erreurDelai =>
+      'The server is taking too long to respond. Try again.';
+
+  @override
+  String get erreurTropDeTentatives =>
+      'Too many attempts. Wait a minute before trying again.';
+
+  @override
+  String get erreurServeur =>
+      'The server is having a problem. Try again later.';
+
+  @override
+  String get erreurInterdit => 'This account can\'t be used right now.';
+
+  @override
+  String get erreurRequeteInvalide => 'Check the information you entered.';
+
+  @override
+  String get erreurInconnue => 'Something went wrong. Try again.';
+
+  @override
+  String get erreurIdentifiantsIncorrects => 'Incorrect credentials.';
+
+  @override
+  String get erreurCompteExistant =>
+      'An account already exists with this number or email.';
+
+  @override
+  String get erreurCodeIncorrect =>
+      'Incorrect or expired code. Check it or request a new one.';
+
+  @override
+  String get erreurCodeExpire =>
+      'Code expired or too many attempts. Request a new code.';
+
+  @override
+  String get erreurVerificationExpiree => 'Verification expired. Start over.';
+
+  @override
+  String get erreurRequeteEnCours =>
+      'An identical request is in progress. Please wait.';
+
+  @override
+  String get sessionExpiree => 'Your session has expired. Sign in again.';
+
+  @override
+  String get inscriptionTitre => 'Create your account';
+
+  @override
+  String get inscriptionSousTitre =>
+      'An activation code will be sent to you by SMS.';
+
+  @override
+  String get inscriptionBouton => 'Get the code by SMS';
+
+  @override
+  String get inscriptionConditions =>
+      'By continuing, you accept the terms of use.';
+
+  @override
+  String get continuer => 'Continue';
+
+  @override
+  String get inscriptionSousTitreIdentite => 'Tell us who you are.';
+
+  @override
+  String get inscriptionSousTitreCompte =>
+      'Choose how you sign in. An activation code will be sent to you by SMS.';
+
+  @override
+  String get jaiDejaUnCompte => 'I already have an account';
+
+  @override
+  String get connexionTitre => 'Welcome back';
+
+  @override
+  String get connexionSousTitre => 'Sign in with your number or email.';
+
+  @override
+  String get connexionBouton => 'Sign in';
+
+  @override
+  String get creerUnCompte => 'Create an account';
+
+  @override
+  String get motDePasseOublieLien => 'Forgot password?';
+
+  @override
+  String get ouSeparateur => 'or';
+
+  @override
+  String get googleSeConnecter => 'Sign in with Google';
+
+  @override
+  String get googleSInscrire => 'Sign up with Google';
+
+  @override
+  String get fonctionnaliteBientot => 'This feature isn\'t available yet.';
+
+  @override
+  String get codeTitre => 'Enter the code received by SMS';
+
+  @override
+  String codeEnvoyeA(String numero) {
+    return 'Sent to $numero. Valid for 5 minutes.';
+  }
+
+  @override
+  String get codeEnvoyeAuCompte =>
+      'A code has just been sent by SMS to your account\'s number. Valid for 5 minutes.';
+
+  @override
+  String get codeVerifier => 'Verify';
+
+  @override
+  String get renvoyerCode => 'Resend code';
+
+  @override
+  String renvoyerCodeDans(String duree) {
+    return 'Resend code in $duree';
+  }
+
+  @override
+  String get oubliTitre => 'Forgot password';
+
+  @override
+  String get oubliSousTitre =>
+      'Enter your number or email. If an account exists, a code will be sent.';
+
+  @override
+  String get oubliSecurite =>
+      'For security, all your sessions will be signed out after the change.';
+
+  @override
+  String get oubliBouton => 'Get a code';
+
+  @override
+  String get reinitTitre => 'New password';
+
+  @override
+  String get reinitSousTitre =>
+      'Enter the code you received, then choose a new password.';
+
+  @override
+  String get reinitBouton => 'Change password';
+
+  @override
+  String get reessayer => 'Try again';
+
+  @override
+  String get rienAAfficher => 'Nothing to show yet.';
+
+  @override
+  String get tempsInstant => 'just now';
+
+  @override
+  String tempsMinutes(int n) {
+    return '$n min ago';
+  }
+
+  @override
+  String tempsHeures(int n) {
+    return '$n h ago';
+  }
+
+  @override
+  String tempsJours(int n) {
+    return '$n d ago';
+  }
+
+  @override
+  String get filPourToi => 'For you';
+
+  @override
+  String get filAbonnements => 'Following';
+
+  @override
+  String get filPourToiVide => 'No posts yet. Check back soon!';
+
+  @override
+  String get filAbonnementsVideTitre => 'Your feed is still empty';
+
+  @override
+  String get filAbonnementsVideTexte =>
+      'Follow shops to see their latest items here first.';
+
+  @override
+  String get filDecouvrirBoutiques => 'Discover shops';
+
+  @override
+  String get filConnexionTitre => 'Log in to follow shops';
+
+  @override
+  String get filConnexionTexte =>
+      'New posts from the shops you follow will show up here.';
+
+  @override
+  String get publicationTitre => 'Post';
+
+  @override
+  String publicationOuvrir(String boutique) {
+    return 'Open $boutique\'s post';
+  }
+
+  @override
+  String publicationVues(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString views',
+      one: '1 view',
+      zero: 'no views',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String publicationLikes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count likes',
+      one: '1 like',
+      zero: 'No likes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String publicationCommentaires(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comments',
+      one: '1 comment',
+      zero: 'No comments',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get publicationAbonnes => 'Followers only';
+
+  @override
+  String get publicationProduits => 'In this post';
+
+  @override
+  String get mediaVideo => 'Video';
+
+  @override
+  String mediaPosition(int position, int total) {
+    return '$position/$total';
+  }
+
+  @override
+  String get videoIllisible => 'Couldn\'t play the video. Tap to try again.';
+
+  @override
+  String storyDe(String boutique) {
+    return '$boutique\'s story';
+  }
+
+  @override
+  String storyNouvelle(String boutique) {
+    return '$boutique, new story';
+  }
+
+  @override
+  String get storySuivante => 'Next story';
+
+  @override
+  String get storyPrecedente => 'Previous story';
+
+  @override
+  String get storyFermer => 'Close';
+
+  @override
+  String get storyIllisible => 'This story can\'t be displayed.';
+
+  @override
+  String get annuler => 'Cancel';
+
+  @override
+  String get supprimer => 'Delete';
+
+  @override
+  String get erreurActionInterdite =>
+      'This account can\'t do that. Check your phone number is verified.';
+
+  @override
+  String get erreurContenuIntrouvable => 'This content is no longer available.';
+
+  @override
+  String get favoriAjouter => 'Add to favorites';
+
+  @override
+  String get favoriRetirer => 'Remove from favorites';
+
+  @override
+  String get partageTitre => 'Share';
+
+  @override
+  String get partageCopierLien => 'Copy link';
+
+  @override
+  String get partageLienCopie => 'Link copied';
+
+  @override
+  String get partageWhatsAppAbsent => 'Couldn\'t open WhatsApp on this device.';
+
+  @override
+  String partageTexte(String boutique, String lien) {
+    return 'Check out $boutique on DROPP: $lien';
+  }
+
+  @override
+  String commentairesTitre(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comments',
+      one: '1 comment',
+      zero: 'Comments',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get commentairesVide => 'No comments yet. Be the first!';
+
+  @override
+  String commentairesVoirReponses(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'View $count more replies',
+      one: 'View 1 more reply',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get commentairesConnexion => 'Log in to comment';
+
+  @override
+  String get commentaireRepondre => 'Reply';
+
+  @override
+  String get commentaireCreateur => 'Creator';
+
+  @override
+  String commentaireReponseA(String auteur) {
+    return 'Replying to $auteur';
+  }
+
+  @override
+  String get commentairePlaceholder => 'Add a comment… (@username to mention)';
+
+  @override
+  String get commentairePublier => 'Post';
+
+  @override
+  String get commentaireSupprimerTitre => 'Delete this comment?';
+
+  @override
+  String get commentaireSupprimerTexte =>
+      'It will disappear for everyone, along with its replies.';
+
+  @override
+  String get rechercheIndice => 'Dress, phone, shop…';
+
+  @override
+  String get rechercheEffacer => 'Clear search';
+
+  @override
+  String get decouvrirProduits => 'Products';
+
+  @override
+  String get decouvrirBoutiques => 'Shops';
+
+  @override
+  String get catalogueTout => 'All';
+
+  @override
+  String get catalogueVide => 'No products match these filters';
+
+  @override
+  String get catalogueEffacerFiltres => 'Clear filters';
+
+  @override
+  String get boutiquesVide => 'No shops found';
+
+  @override
+  String get triRecents => 'Newest';
+
+  @override
+  String get triPrixCroissant => 'Price: low to high';
+
+  @override
+  String get triPrixDecroissant => 'Price: high to low';
+
+  @override
+  String get triPopulaires => 'Most liked';
+
+  @override
+  String get filtresTitre => 'Filters';
+
+  @override
+  String get filtresPrix => 'Price (FCFA)';
+
+  @override
+  String get filtresPrixMin => 'Min';
+
+  @override
+  String get filtresPrixMax => 'Max';
+
+  @override
+  String get filtresTri => 'Sort by';
+
+  @override
+  String get filtresEnStock => 'In stock only';
+
+  @override
+  String get filtresReinitialiser => 'Reset';
+
+  @override
+  String get filtresAppliquer => 'Show products';
+
+  @override
+  String prixMoinsDe(String montant) {
+    return 'Under $montant';
+  }
+
+  @override
+  String prixPlusDe(String montant) {
+    return 'Over $montant';
+  }
+
+  @override
+  String prixAPartirDe(String prix) {
+    return 'From $prix';
+  }
+
+  @override
+  String get stockEnStock => 'In stock';
+
+  @override
+  String get stockRupture => 'Out of stock';
+
+  @override
+  String stockPlusQue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Only $count left',
+      one: 'Only 1 left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String varianteNumero(int numero) {
+    return 'Option $numero';
+  }
+
+  @override
+  String get avisTitre => 'Reviews';
+
+  @override
+  String avisTitreNombre(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reviews ($count)',
+      zero: 'Reviews',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String avisNombre(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reviews',
+      one: '1 review',
+      zero: 'no reviews',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get avisAucun => 'No reviews for this product yet.';
+
+  @override
+  String avisVoirTous(int count) {
+    return 'See all $count reviews';
+  }
+
+  @override
+  String avisNote(int note) {
+    return '$note out of 5 stars';
+  }
+
+  @override
+  String avisMoyenne(String note) {
+    return 'Average rating: $note out of 5';
+  }
+
+  @override
+  String get avisAchatVerifie => 'Verified purchase';
+
+  @override
+  String get boutiqueSuivre => 'Follow';
+
+  @override
+  String get boutiqueAbonne => 'Following';
+
+  @override
+  String boutiqueAbonnes(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString followers',
+      one: '1 follower',
+      zero: 'no followers',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String boutiqueAbonnesLibelle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'followers',
+      one: 'follower',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String boutiqueProduitsLibelle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'products',
+      one: 'product',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get boutiquePublications => 'Posts';
+
+  @override
+  String get boutiqueAucunProduit => 'No products online yet.';
+
+  @override
+  String get boutiqueAucunePublication => 'No posts yet.';
+
+  @override
+  String get abonnementsTitre => 'Following';
+
+  @override
+  String get abonnementsVideTitre => 'You don\'t follow any shops yet';
+
+  @override
+  String abonnementsDepuis(String date) {
+    return 'Following since $date';
+  }
+
+  @override
+  String get champEmail => 'Email address';
+
+  @override
+  String get erreurEmailUtilisee => 'This email address is already in use.';
+
+  @override
+  String get erreurMotDePasseIncorrect => 'Incorrect password.';
+
+  @override
+  String get emailTitre => 'Confirm your email address';
+
+  @override
+  String emailSousTitre(String email) {
+    return 'We sent a code to $email. You\'ll use it to recover your account.';
+  }
+
+  @override
+  String get emailConfirmer => 'Confirm';
+
+  @override
+  String get emailConfirmee => 'Email address confirmed.';
+
+  @override
+  String get emailPlusTard => 'Later';
+
+  @override
+  String get emailChangerLien => 'Change address';
+
+  @override
+  String get emailAjouterTitre => 'Add your email address';
+
+  @override
+  String get emailChangerTitre => 'Change email address';
+
+  @override
+  String get emailChangerSousTitre =>
+      'A code will be sent to the new address. The old one stays active until you confirm.';
+
+  @override
+  String get emailRecevoirCode => 'Get the code';
+
+  @override
+  String get emailTitreConfirmee => 'Email address confirmed';
+
+  @override
+  String emailDejaConfirmee(String email) {
+    return '$email is confirmed. You can use it to recover your account.';
+  }
+
+  @override
+  String get enregistrer => 'Save';
+
+  @override
+  String get aujourdhui => 'Today';
+
+  @override
+  String get hier => 'Yesterday';
+
+  @override
+  String get mediaGaleriePhoto => 'Photo from gallery';
+
+  @override
+  String get mediaPrendrePhoto => 'Take a photo';
+
+  @override
+  String get mediaGalerieVideo => 'Video from gallery';
+
+  @override
+  String get mediaFilmer => 'Record a video';
+
+  @override
+  String fichierTropGros(int mo) {
+    return 'File too large: $mo MB maximum.';
+  }
+
+  @override
+  String get fichierFormatRefuse =>
+      'Unsupported format. Choose a photo (JPEG, PNG, WebP) or a video (MP4, MOV).';
+
+  @override
+  String get panierVide => 'Your cart is empty';
+
+  @override
+  String get panierVideTexte => 'Add items from a product page.';
+
+  @override
+  String panierNombreArticles(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get panierAjouter => 'Add to cart';
+
+  @override
+  String get panierChoisirOption => 'Choose an option';
+
+  @override
+  String get panierAjoute => 'Added to cart';
+
+  @override
+  String get panierVoir => 'View';
+
+  @override
+  String get panierStockInsuffisant => 'Not enough stock for this quantity.';
+
+  @override
+  String panierStockRestant(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Only $count left: lower the quantity',
+      one: 'Only 1 left: lower the quantity',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get panierIndisponible => 'No longer available: remove it to order';
+
+  @override
+  String get panierPrixModifie => 'Price updated since you added it';
+
+  @override
+  String panierQuantite(int count) {
+    return 'Quantity: $count';
+  }
+
+  @override
+  String get panierMoins => 'Decrease quantity';
+
+  @override
+  String get panierPlus => 'Increase quantity';
+
+  @override
+  String get panierSousTotal => 'Subtotal';
+
+  @override
+  String get panierLivraison => 'Delivery';
+
+  @override
+  String get panierLivraisonPlusTard => 'Calculated at the next step';
+
+  @override
+  String get panierTotal => 'Total';
+
+  @override
+  String get panierProtection =>
+      'Protected payment: the seller is paid after delivery.';
+
+  @override
+  String get panierNonCommandable =>
+      'Remove unavailable items to place your order.';
+
+  @override
+  String panierCommander(String prix) {
+    return 'Order · $prix';
+  }
+
+  @override
+  String get commanderTitre => 'Place the order?';
+
+  @override
+  String commanderTexte(int minutes) {
+    return 'Items are reserved for $minutes minutes while you pay. Without payment, the order is cancelled and the stock released.';
+  }
+
+  @override
+  String get commanderConfirmer => 'Order';
+
+  @override
+  String get commanderPanierChange =>
+      'Your cart has changed (stock or price). Check it before ordering.';
+
+  @override
+  String get commandesTitre => 'My orders';
+
+  @override
+  String get commandesVide => 'No orders yet';
+
+  @override
+  String get commandeTitre => 'Order';
+
+  @override
+  String commandeDu(String date) {
+    return 'Order of $date';
+  }
+
+  @override
+  String get commandeAPayerAvant => 'To pay before automatic cancellation';
+
+  @override
+  String get commandeDelaiDepasse =>
+      'Time is up: the order is being cancelled.';
+
+  @override
+  String get commandePaiementBientot =>
+      'Mobile Money payment (MTN MoMo, Orange Money) is coming to the app very soon.';
+
+  @override
+  String get commandeAnnuler => 'Cancel order';
+
+  @override
+  String get commandeAnnulerTitre => 'Cancel this order?';
+
+  @override
+  String get commandeAnnulerTexte => 'The items will be put back on sale.';
+
+  @override
+  String get commandeGarder => 'Keep';
+
+  @override
+  String get commandeDejaTraitee => 'This order has already been processed.';
+
+  @override
+  String get statutEnAttentePaiement => 'Awaiting payment';
+
+  @override
+  String get statutNouvelle => 'Paid';
+
+  @override
+  String get statutEnCours => 'Being prepared';
+
+  @override
+  String get statutExpediee => 'Shipped';
+
+  @override
+  String get statutLivree => 'Delivered';
+
+  @override
+  String get statutAnnulee => 'Cancelled';
+
+  @override
+  String get statutEnLitige => 'In dispute';
+
+  @override
+  String get adressesTitre => 'My addresses';
+
+  @override
+  String get adressesVide => 'No saved address';
+
+  @override
+  String get adressesVideTexte => 'Add an address to get your orders faster.';
+
+  @override
+  String get adresseAjouter => 'Add an address';
+
+  @override
+  String get adresseModifier => 'Edit address';
+
+  @override
+  String get adresseSupprimerTitre => 'Delete this address?';
+
+  @override
+  String get adresseLivraison => 'Delivery';
+
+  @override
+  String get adresseFacturation => 'Billing';
+
+  @override
+  String get adresseAutre => 'Other';
+
+  @override
+  String get adressePrincipale => 'Default';
+
+  @override
+  String get adresseLigne1 => 'Neighbourhood, street, landmark';
+
+  @override
+  String get adresseLigne2 => 'Additional info (building, floor…)';
+
+  @override
+  String get adresseVille => 'City';
+
+  @override
+  String get adresseRegion => 'Region';
+
+  @override
+  String get adressePays => 'Country';
+
+  @override
+  String get adresseCodePostal => 'Postal code';
+
+  @override
+  String get adresseDefinirPrincipale => 'Default address';
+
+  @override
+  String get avisANoterTitre => 'Reviews to write';
+
+  @override
+  String get avisANoterVide => 'Nothing to review yet';
+
+  @override
+  String get avisANoterVideTexte => 'Your delivered items will show up here.';
+
+  @override
+  String avisCommandeLe(String date) {
+    return 'ordered on $date';
+  }
+
+  @override
+  String get avisNoter => 'Rate';
+
+  @override
+  String get avisTonAvis => 'Your review';
+
+  @override
+  String get avisCommentaireIndice => 'Quality, size, delivery… (optional)';
+
+  @override
+  String get avisPublier => 'Post review';
+
+  @override
+  String get avisModifier => 'Edit my review';
+
+  @override
+  String get avisSupprimerTitre => 'Delete your review?';
+
+  @override
+  String get avisMesActions => 'Manage my review';
+
+  @override
+  String get avisNonModifiable =>
+      'A review can no longer be changed after 30 days.';
+
+  @override
+  String get avisDejaDonne => 'You\'ve already reviewed this item.';
+
+  @override
+  String get boutiqueMessage => 'Message';
+
+  @override
+  String get boutiqueEcrire => 'Message the shop';
+
+  @override
+  String get conversationsVide => 'No conversations';
+
+  @override
+  String get conversationsVideTexte =>
+      'Message a shop from a product page or its shop page.';
+
+  @override
+  String get conversationCompteSupprime => 'Deleted account';
+
+  @override
+  String messageDeMoi(String texte) {
+    return 'You: $texte';
+  }
+
+  @override
+  String get messagePhoto => '📷 Photo';
+
+  @override
+  String get messageVideo => '🎥 Video';
+
+  @override
+  String get messagePieceJointe => '📎 Attachment';
+
+  @override
+  String get messageIndice => 'Write a message…';
+
+  @override
+  String get messageEnvoyer => 'Send';
+
+  @override
+  String get messageJoindre => 'Attach a photo or video';
+
+  @override
+  String messagePiecesMax(int max) {
+    return '$max files maximum per message.';
+  }
+
+  @override
+  String messageFichiers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count files',
+      one: '1 file',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get messageEnvoi => 'Sending…';
+
+  @override
+  String get messageEnvoye => 'Sent';
+
+  @override
+  String get messageLu => 'Read';
+
+  @override
+  String get messageEnvoiInterdit => 'You can\'t write in this conversation.';
+
+  @override
+  String get discussionDebut => 'Start of the conversation';
+
+  @override
+  String get discussionFermee => 'This conversation is closed.';
+
+  @override
+  String get plusDOptions => 'More options';
+
+  @override
+  String get discussionEcrit => 'typing…';
+
+  @override
+  String get signaler => 'Report';
+
+  @override
+  String get signalerTitre => 'Report this content';
+
+  @override
+  String get signalementDescriptionObligatoire =>
+      'Explain what\'s wrong (required)';
+
+  @override
+  String get signalementDescriptionFacultative => 'Details (optional)';
+
+  @override
+  String get signalementEnvoyer => 'Send report';
+
+  @override
+  String get signalementAnonyme =>
+      'The person you report won\'t know it was you.';
+
+  @override
+  String get signalementEnvoye => 'Thanks. Our team will review this content.';
+
+  @override
+  String get signalementDejaFait =>
+      'You\'ve already reported this content: it\'s being reviewed.';
+
+  @override
+  String get signalementPropreContenu => 'You can\'t report your own content.';
+
+  @override
+  String get signalementsTitre => 'My reports';
+
+  @override
+  String get signalementsVide => 'No reports';
+
+  @override
+  String get signalementOuvert => 'Received';
+
+  @override
+  String get signalementEnCours => 'Under review';
+
+  @override
+  String get signalementTraite => 'Resolved';
+
+  @override
+  String get signalementRejete => 'No action';
+
+  @override
+  String get ciblePublication => 'Post';
+
+  @override
+  String get cibleCommentaire => 'Comment';
+
+  @override
+  String get cibleProduit => 'Product';
+
+  @override
+  String get cibleBoutique => 'Shop';
+
+  @override
+  String get cibleMessage => 'Message';
+
+  @override
+  String get bloquer => 'Block';
+
+  @override
+  String get debloquer => 'Unblock';
+
+  @override
+  String bloquerTitre(String nom) {
+    return 'Block $nom?';
+  }
+
+  @override
+  String get bloquerTexte =>
+      'You won\'t be able to message each other, and they won\'t be able to comment on your posts or follow you. You can unblock them from your profile.';
+
+  @override
+  String bloqueConfirme(String nom) {
+    return '$nom is blocked.';
+  }
+
+  @override
+  String get bloquesTitre => 'Blocked users';
+
+  @override
+  String get bloquesVide => 'Nobody is blocked';
+
+  @override
+  String get bloquesVideTexte =>
+      'You can block someone from a conversation or a shop page.';
+
+  @override
+  String bloqueLe(String date) {
+    return 'Blocked on $date';
+  }
+
+  @override
+  String get notificationsTitre => 'Notifications';
+
+  @override
+  String notificationsNonLues(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread notifications',
+      one: '1 unread notification',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notificationsToutLire => 'Mark all as read';
+
+  @override
+  String get notificationsPreferences => 'Notification settings';
+
+  @override
+  String get notificationsVide => 'No notifications';
+
+  @override
+  String get notificationNonLue => 'Unread';
+
+  @override
+  String get preferenceMessages => 'Messages';
+
+  @override
+  String get preferenceSocial => 'Likes, comments, followers';
+
+  @override
+  String get preferencePromotions => 'Promotions';
+
+  @override
+  String get preferencesExplication =>
+      'Choose which notifications are sent to your phone. They all stay visible in the app. Orders, payments and security alerts are always sent.';
+
+  @override
+  String get favorisTitre => 'My favorites';
+
+  @override
+  String get favorisProduitsVide => 'No favorite products';
+
+  @override
+  String get favorisPublicationsVide => 'No saved posts';
+
+  @override
+  String get favoriPlusEnVente => 'no longer on sale';
+
+  @override
+  String get profilPhoto => 'Profile photo';
+
+  @override
+  String get profilChangerPhoto => 'Change photo';
+
+  @override
+  String get profilRetirerPhoto => 'Remove photo';
+
+  @override
+  String get profilModifier => 'Edit profile';
+
+  @override
+  String get profilSansPseudo => 'No username yet';
+
+  @override
+  String get profilEmail => 'Email address';
+
+  @override
+  String get profilEmailAbsent => 'No email address';
+
+  @override
+  String profilEmailAConfirmer(String email) {
+    return '$email · to confirm';
+  }
+
+  @override
+  String get profilSectionAchats => 'PURCHASES';
+
+  @override
+  String get profilSectionSocial => 'FOLLOWING AND FAVORITES';
+
+  @override
+  String get profilSectionCompte => 'ACCOUNT';
+
+  @override
+  String get profilSectionVendeur => 'SELL ON DROPP';
+
+  @override
+  String get profilEspaceVendeur => 'Seller space';
+
+  @override
+  String get profilDevenirVendeur => 'Become a seller';
+
+  @override
+  String get deconnexion => 'Log out';
+
+  @override
+  String get deconnexionTitre => 'Log out of this device?';
+
+  @override
+  String get champPseudo => 'Username (@)';
+
+  @override
+  String get pseudoDisponible => 'This username is available.';
+
+  @override
+  String get pseudoPris => 'This username is already taken.';
+
+  @override
+  String get pseudoReserve => 'This username is reserved. Choose another one.';
+
+  @override
+  String get pseudoFormat =>
+      '3 to 30 characters: lowercase letters, digits, \"_\" or \".\".';
+
+  @override
+  String get securiteTitre => 'Security';
+
+  @override
+  String get securiteIdentifiants => 'SIGN-IN DETAILS';
+
+  @override
+  String get securiteAppareils => 'CONNECTED DEVICES';
+
+  @override
+  String get securiteCompte => 'ACCOUNT';
+
+  @override
+  String get motDePasseChanger => 'Change password';
+
+  @override
+  String get motDePasseChangerTexte => 'Your other devices will be logged out.';
+
+  @override
+  String get champMotDePasseActuel => 'Current password';
+
+  @override
+  String get motDePasseChange => 'Password changed.';
+
+  @override
+  String get erreurMotDePasseActuel => 'Current password is incorrect.';
+
+  @override
+  String get erreurMotDePasseRefuse =>
+      'This password isn\'t accepted: it must differ from the current one and be stronger.';
+
+  @override
+  String get telephoneChanger => 'Change phone number';
+
+  @override
+  String get telephoneChangerTexte =>
+      'A code will be texted to the new number.';
+
+  @override
+  String get telephoneDejaUtilise =>
+      'This number is already used by another account.';
+
+  @override
+  String get telephoneChange => 'Phone number changed.';
+
+  @override
+  String get appareilInconnu => 'Device';
+
+  @override
+  String get appareilActuel => 'This device';
+
+  @override
+  String appareilDerniereUtilisation(String quand) {
+    return 'Last active: $quand';
+  }
+
+  @override
+  String get deconnecterPartout => 'Log out of all devices';
+
+  @override
+  String get deconnecterPartoutTitre => 'Log out of all devices?';
+
+  @override
+  String get deconnecterPartoutTexte =>
+      'Including this one: you\'ll have to log in again everywhere.';
+
+  @override
+  String get compteSupprimer => 'Delete my account';
+
+  @override
+  String get compteSupprimerTitre => 'Delete your account?';
+
+  @override
+  String get compteSupprimerTexte =>
+      'Your profile, favorites, messages and any shop will be deleted. This is permanent. Enter your password to confirm.';
+
+  @override
+  String get compteSupprimerConfirmer => 'Delete permanently';
+
+  @override
+  String get compteSupprime => 'Your account has been deleted.';
+
+  @override
+  String get compteCommandesEnCours =>
+      'Some orders are still in progress: wait for delivery or cancel them before deleting your account.';
+
+  @override
+  String get bienvenue1Titre => 'Follow the shops you love';
+
+  @override
+  String get bienvenue1Texte =>
+      'Discover their new arrivals in video, chat with the seller and pay with Mobile Money.';
+
+  @override
+  String get bienvenue2Titre => 'Chat with the seller';
+
+  @override
+  String get bienvenue2Texte =>
+      'Ask your questions, check a size or a colour before ordering, right in the app.';
+
+  @override
+  String get bienvenue3Titre => 'Pay with Mobile Money, with confidence';
+
+  @override
+  String get bienvenue3Texte =>
+      'MTN MoMo or Orange Money. Your money is held until the parcel arrives.';
+
+  @override
+  String bienvenuePage(int numero, int total) {
+    return 'Page $numero of $total';
+  }
+
+  @override
+  String get vendeurTitre => 'Become a seller';
+
+  @override
+  String get vendeurIntro =>
+      'Sell your products to DROPP customers. We verify your identity to protect buyers.';
+
+  @override
+  String get vendeurPrerequisTitre => 'What you need';
+
+  @override
+  String get vendeurPrerequisTelephone => 'A verified phone';
+
+  @override
+  String get vendeurPrerequisCni => 'Your national ID card';
+
+  @override
+  String get vendeurPrerequisSelfie => 'A verification selfie';
+
+  @override
+  String get vendeurDelai => 'Review by the DROPP team: allow 24 to 48 hours.';
+
+  @override
+  String get vendeurCommencer => 'Start';
+
+  @override
+  String get vendeurSuite => 'Next step: uploading your documents.';
+
+  @override
+  String get vendeurSuspendu =>
+      'Your seller account is suspended. Contact DROPP support.';
+
+  @override
+  String get kycIntro =>
+      'Send your ID card (front and back) and a selfie. These documents are only used to verify your identity.';
+
+  @override
+  String get kycTitreDocuments => 'Your documents';
+
+  @override
+  String get kycCniRecto => 'ID card · front';
+
+  @override
+  String get kycCniVerso => 'ID card · back';
+
+  @override
+  String get kycSelfie => 'Verification selfie';
+
+  @override
+  String get kycAideCni =>
+      'Lay your card flat, well lit, with no glare. All four corners must be visible.';
+
+  @override
+  String get kycAideSelfie =>
+      'Your face straight on, well lit, no glasses or cap.';
+
+  @override
+  String get kycPrendrePhoto => 'Take the photo';
+
+  @override
+  String get kycReprendrePhoto => 'Retake';
+
+  @override
+  String get kycGalerie => 'Choose from gallery';
+
+  @override
+  String get kycEnvoye => 'Sent';
+
+  @override
+  String get kycRefuse => 'Rejected, please redo';
+
+  @override
+  String get kycEnvoiEnCours => 'Sending…';
+
+  @override
+  String get kycPhotoTropLourde =>
+      'Photo too large (10 MB maximum). Retake it.';
+
+  @override
+  String get kycCameraIndisponible =>
+      'Can\'t open the camera. Check the app\'s permissions.';
+
+  @override
+  String get kycFormatNonSupporte =>
+      'Format not accepted. Use a JPEG, PNG or WebP photo.';
+
+  @override
+  String kycDossierRefuse(String motif) {
+    return 'Your application was rejected: $motif';
+  }
+
+  @override
+  String get kycDossierRefuseSansMotif =>
+      'Your application was rejected. Redo your documents.';
+
+  @override
+  String get kycEnVerificationTitre => 'Verification in progress';
+
+  @override
+  String get kycEnVerificationTexte =>
+      'We are verifying your identity to protect buyers. Allow 24 to 48 hours.';
+
+  @override
+  String get kycEtapeTelephone => 'Phone verified';
+
+  @override
+  String get kycEtapeCni => 'ID card sent';
+
+  @override
+  String get kycEtapeSelfie => 'Verification selfie';
+
+  @override
+  String get kycEtapeValidation => 'Review by the DROPP team';
+
+  @override
+  String get kycActualiser => 'Refresh';
+
+  @override
+  String get kycRetourProfil => 'Back to profile';
+
+  @override
+  String etapeSur(int etape, int total) {
+    return 'Step $etape of $total';
+  }
+
+  @override
+  String get kycCniTitre => 'Your ID card';
+
+  @override
+  String get kycCniExplication =>
+      'Upload the front, then the back. Check that the photo is sharp before continuing.';
+
+  @override
+  String get kycApercuRecto => 'Preview of the front of the ID card';
+
+  @override
+  String get kycApercuVerso => 'Preview of the back of the ID card';
+
+  @override
+  String get kycApercuAbsent =>
+      'Document sent. The preview isn\'t available on this device.';
+
+  @override
+  String get kycStatutAImporter => 'To upload';
+
+  @override
+  String get kycStatutAVerifier => 'To check';
+
+  @override
+  String get kycUtiliserPhoto => 'Use this photo';
+
+  @override
+  String get kycRemplacerPhoto => 'Replace';
+
+  @override
+  String get kycVersoApresRecto => 'Upload the front first.';
+
+  @override
+  String get kycContinuer => 'Continue';
+
+  @override
+  String get kycRetour => 'Back';
+
+  @override
+  String get kycAgrandir => 'Tap to enlarge';
+
+  @override
+  String get kycFermer => 'Close';
+
+  @override
+  String get kycCommencer => 'Start verification';
+
+  @override
+  String get kycReprendre => 'Resume my verification';
+
+  @override
+  String get kycTonParcours => 'Your progress';
+
+  @override
+  String get kycEtapeCniTitre => 'ID card';
+
+  @override
+  String get kycEtapeInfosTitre => 'Card details';
+
+  @override
+  String get kycEtapeSelfieTitre => 'Verification selfie';
+
+  @override
+  String get kycEtapeRecapTitre => 'Summary and submission';
+
+  @override
+  String get kycEtapeTerminee => 'Done · tap to edit';
+
+  @override
+  String get kycEtapeAFaire => 'To do';
+
+  @override
+  String get kycEtapeVerrouillee => 'Available after the previous step';
+
+  @override
+  String get kycInfosTitre => 'Your card details';
+
+  @override
+  String get kycInfosExplication =>
+      'Check that these details match your ID card exactly.';
+
+  @override
+  String get kycAutoTitre => 'Fill in automatically';
+
+  @override
+  String get kycAutoExplication =>
+      'We can read the information visible on your ID card to pre-fill this form. Check each item and correct any errors before continuing.';
+
+  @override
+  String get kycLectureEnCours => 'Reading your card…';
+
+  @override
+  String get kycLectureEchec =>
+      'We couldn\'t read your card. Please fill in the details by hand.';
+
+  @override
+  String get kycLectureIntrouvable =>
+      'We can\'t find your card. Go back to the previous step and upload it again.';
+
+  @override
+  String get kycLectureLente =>
+      'Reading is taking too long. Try again or fill in the details by hand.';
+
+  @override
+  String get kycLectureIncertaine =>
+      'Some details are hard to read. Check them carefully.';
+
+  @override
+  String get kycOuMain => 'or fill in by hand';
+
+  @override
+  String get kycChampNom => 'Last name (as on the card)';
+
+  @override
+  String get kycChampPrenom => 'First name(s) (as on the card)';
+
+  @override
+  String get kycChampNumero => 'Card number';
+
+  @override
+  String get kycChampNaissance => 'Date of birth';
+
+  @override
+  String get kycChampLieu => 'Place of birth';
+
+  @override
+  String get kycChampDelivrance => 'Issue date';
+
+  @override
+  String get kycChampExpiration => 'Expiry date';
+
+  @override
+  String get kycFormatDate => 'DD/MM/YYYY';
+
+  @override
+  String get kycChoisirDate => 'Choose a date';
+
+  @override
+  String get kycLuSurCarte => 'Read from your card: check it';
+
+  @override
+  String get kycChampAComplete => 'Not read: please complete';
+
+  @override
+  String get kycCarteExpiree => 'This card looks expired. It may be rejected.';
+
+  @override
+  String get kycInfosConformes => 'These details match my ID card.';
+
+  @override
+  String get kycInfosConfirmer => 'Confirm and continue';
+
+  @override
+  String get kycInfosRefusees =>
+      'Some details were not accepted. Please check them.';
+
+  @override
+  String get kycRemplacerSaisieTitre => 'Replace what you entered?';
+
+  @override
+  String get kycRemplacerSaisieTexte =>
+      'The details you already entered will be replaced by those read from your card.';
+
+  @override
+  String get kycRemplacer => 'Replace';
+
+  @override
+  String get erreurNumeroCni => '6 to 20 letters or digits';
+
+  @override
+  String get erreurDateInvalide => 'Invalid date (DD/MM/YYYY)';
+
+  @override
+  String get erreurDateNaissance => 'Impossible date of birth';
+
+  @override
+  String get erreurDateFuture => 'The date can\'t be in the future';
+
+  @override
+  String get erreurExpirationAvantDelivrance =>
+      'Expiry must come after the issue date';
+
+  @override
+  String get erreurCarteExpiree => 'This card has expired';
+
+  @override
+  String get erreurNaissanceIncoherente =>
+      'Birth must come before the issue date';
+
+  @override
+  String get kycServeurCarteExpiree =>
+      'Your ID card has expired. Use a card that is still valid.';
+
+  @override
+  String get kycServeurDatesIncoherentes =>
+      'The dates on your card are inconsistent. Check the issue and expiry dates.';
+
+  @override
+  String get kycServeurNaissanceIncoherente =>
+      'Your date of birth looks inconsistent. Please check it.';
+
+  @override
+  String kycServeurAgeMinimum(int age) {
+    return 'You must be at least $age years old to sell on DROPP.';
+  }
+
+  @override
+  String get kycSelfieTitre => 'Your selfie';
+
+  @override
+  String get kycSelfieExplication =>
+      'This photo is used to check that you are the holder of the ID card.';
+
+  @override
+  String get kycConsignesTitre => 'Before you start';
+
+  @override
+  String get kycConsigne1 =>
+      'Stand somewhere well lit, with the light in front of you.';
+
+  @override
+  String get kycConsigne2 => 'Look at the camera.';
+
+  @override
+  String get kycConsigne3 => 'Keep your face fully visible and centred.';
+
+  @override
+  String get kycConsigne4 => 'Take off glasses, a cap or a mask.';
+
+  @override
+  String get kycConsigne5 => 'Avoid blurry photos and backlighting.';
+
+  @override
+  String get kycPrendreSelfie => 'Take my selfie';
+
+  @override
+  String get kycApercuSelfie => 'Preview of your selfie';
+
+  @override
+  String get kycCameraGuide => 'Place your face inside the oval';
+
+  @override
+  String get kycCameraRefusee =>
+      'Camera access is denied. Allow it in your phone\'s settings (Apps, DROPP, Permissions), then come back here.';
+
+  @override
+  String get kycCameraAvantIndisponible =>
+      'We can\'t find a front camera on this phone. The selfie is required to verify your identity.';
+
+  @override
+  String get kycCameraErreur => 'Can\'t open the camera. Try again.';
+
+  @override
+  String get kycRecapTitre => 'Summary';
+
+  @override
+  String get kycRecapExplication =>
+      'Review your application. You can edit each item before sending it.';
+
+  @override
+  String get kycRecapInfosTitre => 'Card details';
+
+  @override
+  String get kycRecapDocumentsTitre => 'Documents';
+
+  @override
+  String get kycModifier => 'Edit';
+
+  @override
+  String get kycAfficher => 'Show';
+
+  @override
+  String get kycMasquer => 'Hide';
+
+  @override
+  String get kycDonneeNonRenseignee => 'Not provided';
+
+  @override
+  String get kycConsentement =>
+      'I agree that my ID card and selfie are processed to verify my identity, including a facial comparison carried out by an external provider.';
+
+  @override
+  String get kycSoumettreExplication =>
+      'By submitting your application, you send it to the DROPP team for verification. While it is being reviewed, you can no longer edit it.';
+
+  @override
+  String get kycSoumettre => 'Submit my application';
+
+  @override
+  String get kycSoumisSucces =>
+      'Your application has been submitted. We\'ll let you know as soon as the verification is complete.';
+
+  @override
+  String get kycSoumettreIncomplet =>
+      'Complete the following steps before sending your application.';
+
+  @override
+  String get kycPhotoEnAttente =>
+      'A photo hasn\'t been sent yet. Finish the matching step.';
+
+  @override
+  String get kycSoumissionRefusee =>
+      'Your application couldn\'t be sent. Check each step, then try again.';
+
+  @override
+  String get kycSoumissionEnCours =>
+      'A submission is already in progress. Please wait a moment.';
+
+  @override
+  String get kycErrProfilIntrouvable =>
+      'Your seller profile can\'t be found. Go back to the “Become a seller” screen to create it.';
+
+  @override
+  String get kycErrOcrIndisponible =>
+      'Automatic card reading is unavailable right now. Please fill in the details by hand.';
+
+  @override
+  String get kycErrDossierIntrouvable =>
+      'No verification application was found. Start the verification to create one.';
+
+  @override
+  String get kycErrDossierNonModifiable =>
+      'Your application can\'t be edited in its current state.';
+
+  @override
+  String get kycErrDejaVerifie => 'Your identity is already verified.';
+
+  @override
+  String get kycErrEnCoursDeRevue =>
+      'Your application is being reviewed. You can\'t edit it right now.';
+
+  @override
+  String get kycErrDejaSoumis => 'Your application has already been submitted.';
+
+  @override
+  String get kycErrCniRectoManquant =>
+      'Upload the front of your ID card first.';
+
+  @override
+  String get kycErrNumeroCniInvalide =>
+      'Your card number isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrNaissanceInvalide =>
+      'Your date of birth isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrDelivranceInvalide =>
+      'The issue date isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrExpirationInvalide =>
+      'The expiry date isn\'t valid. Please check it.';
+
+  @override
+  String get kycErrAgeMinimum =>
+      'You don\'t meet the minimum age required to sell on DROPP.';
+
+  @override
+  String get kycErrDonneesIncompletes =>
+      'Some details of your card are missing. Please fill in every field.';
+
+  @override
+  String get kycErrDocumentsManquants =>
+      'Documents are missing. Upload your card (front and back) and your selfie.';
+
+  @override
+  String get kycErrConsentementRequis =>
+      'You must agree to the processing of your documents to submit your application.';
+}

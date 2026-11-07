@@ -19,6 +19,7 @@ import {
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
 import { EnregistrerBoutiqueDto } from './dto/enregistrer-boutique.dto.js';
 import { MiseAJourBoutiqueDto } from './dto/mise-a-jour-boutique.dto.js';
+import { BOUTIQUE_VISIBLE } from './boutique-visible.js';
 
 export type TypeImageBoutique = 'logo' | 'banniere';
 
@@ -62,8 +63,7 @@ export class ShopsService {
   /** Recherche de boutiques actives par nom (les plus suivies d'abord). */
   async rechercher(q: string | undefined, page: number, limite: number) {
     const where = {
-      statut: 'ACTIVE' as const,
-      vendeur: { statutVendeur: 'ACTIF' as const },
+      ...BOUTIQUE_VISIBLE,
       ...(q && { nom: { contains: q, mode: 'insensitive' as const } }),
     };
     const [boutiques, total] = await this.prisma.$transaction([
@@ -81,6 +81,8 @@ export class ShopsService {
           description: true,
           logoCle: true,
           banniereCle: true,
+          quartier: true,
+          ville: true,
           vendeur: {
             select: {
               _count: {
@@ -97,28 +99,27 @@ export class ShopsService {
         ...this.presenter(b),
         abonnes: vendeur._count.abonnements,
       })),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 
   /** Page publique d'une boutique (profil + compteurs + état d'abonnement). */
   async obtenirPublique(boutiqueId: string, utilisateurId?: string) {
     const boutique = await this.prisma.boutique.findFirst({
-      where: { id: boutiqueId, statut: 'ACTIVE' },
+      where: { id: boutiqueId, ...BOUTIQUE_VISIBLE },
       select: {
         id: true,
         nom: true,
         description: true,
         biographie: true,
+        quartier: true,
+        ville: true,
         logoCle: true,
         banniereCle: true,
         dateCreation: true,
-        vendeur: { select: { statutVendeur: true } },
       },
     });
-    if (!boutique || boutique.vendeur.statutVendeur !== 'ACTIF') {
+    if (!boutique) {
       throw new NotFoundException('Boutique introuvable.');
     }
 
@@ -142,9 +143,8 @@ export class ShopsService {
         : null,
     ]);
 
-    const { vendeur: _vendeur, ...infos } = boutique;
     return {
-      ...this.presenter(infos),
+      ...this.presenter(boutique),
       statistiques: { abonnes, produits, publications },
       estAbonne: abonnement?.statut === 'ACTIF',
       estMaBoutique: utilisateurId === boutiqueId,
@@ -175,8 +175,10 @@ export class ShopsService {
       throw new ConflictException('Ce vendeur possède déjà une boutique.');
     }
 
+    // Le vendeur est déjà validé (KYC) : la boutique est visible tout de suite.
+    // Sa suspension passe par celle du vendeur (voir BOUTIQUE_VISIBLE).
     const boutique = await this.prisma.boutique.create({
-      data: { id: vendeurId, ...dto },
+      data: { id: vendeurId, ...dto, statut: 'ACTIVE' },
       select: boutiqueSelection,
     });
     return this.presenter(boutique);

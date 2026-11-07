@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
@@ -38,8 +39,11 @@ export class StockageProviderR2 implements StockageProvider {
     this.bucket = config.getOrThrow<string>('stockage.r2.bucket');
     this.bucketPrive = config.get<string>('stockage.r2.bucketPrive') || this.bucket;
     if (this.bucketPrive === this.bucket) {
+      if (config.get<string>('app.environment') === 'production') {
+        throw new Error('R2_BUCKET_PRIVE doit être un bucket distinct en production.');
+      }
       this.logger.warn(
-        'R2_BUCKET_PRIVE non défini : les pièces jointes de messagerie sont dans le bucket public.',
+        'R2_BUCKET_PRIVE non défini : fichiers privés (KYC, messagerie) dans le bucket public. Développement uniquement.',
       );
     }
     this.urlPubliqueBase = config
@@ -126,6 +130,20 @@ export class StockageProviderR2 implements StockageProvider {
     return `${this.urlPubliqueBase}/${chemin}`;
   }
 
+  /** Copie (éventuellement d'un bucket à l'autre) puis supprime l'original. */
+  async deplacer(source: string, destination: string): Promise<void> {
+    if (source === destination) return;
+    const chemin = source.split('/').map(encodeURIComponent).join('/');
+    await this.client.send(
+      new CopyObjectCommand({
+        Bucket: this.bucketPour(destination),
+        Key: destination,
+        CopySource: `${this.bucketPour(source)}/${chemin}`,
+      }),
+    );
+    await this.supprimer(source);
+  }
+
   async supprimer(cleStockage: string): Promise<void> {
     try {
       await this.client.send(
@@ -162,6 +180,28 @@ export class StockageProviderR2 implements StockageProvider {
         typeMime: reponse.ContentType ?? null,
       };
     } catch (erreur) {
+      if (
+        erreur instanceof S3ServiceException &&
+        (erreur.$metadata.httpStatusCode === 404 || erreur.name === 'NotFound')
+      ) {
+        return null;
+      }
+      throw erreur;
+    }
+  }
+
+  async getFile(cleStockage: string): Promise<Buffer| null> {
+    try{
+      const reponse = await this.client.send( 
+        new GetObjectCommand({ Bucket: this.bucketPour(cleStockage), Key: cleStockage }),
+      );
+
+      if(!reponse.Body)
+        return null;
+
+      const chunks = await reponse.Body.transformToByteArray();
+      return Buffer.from(chunks);
+    }catch(erreur){
       if (
         erreur instanceof S3ServiceException &&
         (erreur.$metadata.httpStatusCode === 404 || erreur.name === 'NotFound')

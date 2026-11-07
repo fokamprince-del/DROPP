@@ -1,7 +1,7 @@
 export default () => ({
   app: {
     name: process.env.APP_NAME ?? 'DROPP WORKERS',
-    environement: process.env.NODE_ENV ?? 'development',
+    environment: process.env.NODE_ENV ?? 'development',
   },
   redis: {
     host: process.env.REDIS_HOST ?? 'localhost',
@@ -19,8 +19,31 @@ export default () => ({
     // Les retours à la ligne de la clé sont échappés dans le .env.
     privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   },
+  sms: {
+    driver: process.env.SMS_DRIVER ?? 'stub',
+    twilio: {
+      accountSid: process.env.TWILIO_ACCOUNT_SID,
+      authToken: process.env.TWILIO_AUTH_TOKEN,
+      // Numéro E.164 ou identifiant alphanumérique (ex : DROPP) selon le pays.
+      expediteur: process.env.TWILIO_EXPEDITEUR,
+    },
+  },
+  faceplusplus: {
+    apiKey: process.env.FACEPP_API_KEY || undefined,
+    apiSecret: process.env.FACEPP_API_SECRET || undefined,
+  },
   database: {
     url: process.env.DATABASE_URL!,
     poolMax: process.env.DATABASE_POOL_MAX ?? 5
-  }
+  },
+  // stockage: {
+  //   driver: process.env.STOCKAGE_DRIVER ?? 'stub',
+  //   r2: {
+  //     accessKeyId: process.env.R2_ACCESS_KEY_ID,
+  //     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  //     bucket: process.env.R2_BUCKET,
+  //     bucketPrive: process.env.R2_BUCKET_PRIVE!,
+  //     endpoint: process.env.R2_ENDPOINT
+  //   }
+  // }
 });

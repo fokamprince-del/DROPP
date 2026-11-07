@@ -47,10 +47,10 @@ pnpm install
 
 `pnpm install` lance ensuite automatiquement `pnpm generer`, qui produit les fichiers générés non versionnés dans git :
 
-- le client Prisma (`apps/api/src/generated/prisma`) ;
+- le client Prisma et le package `@dropp/database` (`packages/database/src/generated/prisma` et `packages/database/dist`) ;
 - les contrats partagés compilés (`packages/contrats/dist`).
 
-Sans eux, la compilation échoue avec des centaines d'erreurs `Cannot find module '../../generated/prisma/client.js'`. Après chaque `git pull` qui modifie le schéma Prisma ou `packages/contrats`, relancez :
+Sans eux, la compilation échoue avec des centaines d'erreurs (module `@dropp/database` ou `@dropp/contrats` introuvable, propriétés Prisma inconnues). Après chaque `git pull` qui modifie `packages/database` ou `packages/contrats`, relancez :
 
 ```bash
 pnpm generer
@@ -323,7 +323,7 @@ Certains répertoires peuvent être encore incomplets ou absents pendant les pre
 Le client Prisma généré dans :
 
 ```text
-apps/api/src/generated/prisma/
+packages/database/src/generated/prisma/
 ```
 
 est généré automatiquement.

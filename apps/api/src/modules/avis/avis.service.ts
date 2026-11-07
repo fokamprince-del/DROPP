@@ -118,7 +118,12 @@ export class AvisService {
       }),
       this.resume(where),
     ]);
-    return { resume, donnees: avis.map((a) => this.presenter(a)), page, limite };
+    const total = resume.total;
+    return {
+      resume,
+      donnees: avis.map((a) => this.presenter(a)),
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
+    };
   }
 
   /** Note globale d'une boutique (tous ses produits). */

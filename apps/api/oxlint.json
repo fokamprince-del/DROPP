@@ -6,5 +6,15 @@
   },
   "env": {
     "node": true
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/configuration/*.ts"
+      ],
+      "rules": {
+        "unicorn/no-thenable": "off"
+      }
+    }
+  ]
 }

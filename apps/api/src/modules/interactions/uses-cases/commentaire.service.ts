@@ -25,6 +25,7 @@ export class CommentaireService {
     const publication = await verifierPublicationVisible(
       this.prisma,
       publicationId,
+      utilisateurId,
     );
     const bloque = await this.prisma.blocage.count({
       where: {

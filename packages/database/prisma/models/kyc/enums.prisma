@@ -2,6 +2,8 @@
 
 enum StatutKyc {
   EN_ATTENTE
+  EN_COURS_VERIFICATION // ← nouveau : face match en cours
+  EN_ATTENTE_REVUE_ADMIN // ← nouveau : face match terminé, admin doit décider
   VALIDE
   REJETE
 }

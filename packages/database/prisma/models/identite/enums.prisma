@@ -46,3 +46,14 @@ enum TypeAdresse {
   FACTURATION
   AUTRE
 }
+
+enum OperateurMobileMoney {
+  MTN
+  ORANGE
+}
+
+enum Sexe {
+  MASCULIN
+  FEMININ
+  AUTRE
+}

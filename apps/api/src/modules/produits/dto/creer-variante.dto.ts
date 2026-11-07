@@ -10,6 +10,8 @@ import {
   Min,
 } from 'class-validator';
 
+import { EstAttributsVariante } from './attributs-variante.validator.js';
+
 export class CreerVarianteDto {
   @IsString()
   @IsNotEmpty()
@@ -28,6 +30,7 @@ export class CreerVarianteDto {
    * Validé comme objet JSON simple.
    */
   @IsObject()
+  @EstAttributsVariante()
   attributs!: Record<string, string>;
 
   /** Si absent, le prix de la variante est celui du produit (prixBase). */

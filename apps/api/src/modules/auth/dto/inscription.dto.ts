@@ -1,6 +1,8 @@
+import { Sexe } from '@dropp/database';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -20,6 +22,14 @@ export class InscriptionDto {
   @MaxLength(100)
   @Transform(({ value }: { value: string }) => value?.trim())
   nom!: string;
+
+  @IsString()
+  @IsIn(Object.values(Sexe), {
+    message: `Le sexe doit être l'une des valeurs suivantes : ${Object.values(Sexe).join(
+      ', ',
+    )}.`,
+  })
+  sexe!: Sexe;
 
   @IsString()
   @IsNotEmpty()

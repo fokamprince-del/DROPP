@@ -1,16 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 
 import type {
   CanalVerification,
   MethodeAuthentification,
 } from '@dropp/database';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { RevocationService } from '../../../infrastructure/revocation/revocation.service.js';
 
 export interface PayloadJwt {
   sub: string;
+  /** Session (refresh token) ayant émis ce jeton : permet de le révoquer. */
+  sid?: string;
   statutCompte: string;
   tel: boolean; // telephoneVerifieLe != null
 }
@@ -27,19 +30,26 @@ export interface PayloadVerification {
   canalOtp: CanalVerification;
   purpose: 'inscription' | 'reinitialisation';
 }
+
 const MAX_SESSIONS = 5;
+
+/** Statuts qui autorisent l'obtention de nouveaux jetons. */
+const STATUTS_AUTORISES = new Set(['ACTIF', 'EN_ATTENTE_VERIFICATION']);
 
 @Injectable()
 export class JetonService {
   private readonly refreshTtlMs: number;
+  private readonly accessTtl: number;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly revocation: RevocationService,
   ) {
     this.refreshTtlMs =
       config.getOrThrow<number>('auth.refreshTokenTtlSeconds') * 1_000;
+    this.accessTtl = config.getOrThrow<number>('auth.accessTokenTtlSeconds');
   }
 
   async ouvrirSession(params: {
@@ -59,7 +69,7 @@ export class JetonService {
       appareilId,
     } = params;
 
-    // Révoquer la session la plus ancienne si le plafond est atteint
+    // Révoquer les sessions les plus anciennes si le plafond est atteint
     const sessions = await this.prisma.session.findMany({
       where: {
         utilisateurId,
@@ -69,55 +79,47 @@ export class JetonService {
       orderBy: { dateCreation: 'asc' },
       select: { id: true },
     });
-
-    if (sessions.length >= MAX_SESSIONS) {
-      await this.prisma.session.update({
-        where: { id: sessions[0].id },
+    const enTrop = sessions
+      .slice(0, Math.max(sessions.length - MAX_SESSIONS + 1, 0))
+      .map((s) => s.id);
+    if (enTrop.length > 0) {
+      await this.prisma.session.updateMany({
+        where: { id: { in: enTrop } },
         data: { dateRevocation: new Date() },
       });
+      await this.revocation.revoquerSessions(enTrop);
     }
 
-    const familleJeton = randomBytes(16).toString('hex');
     const refreshToken = randomBytes(48).toString('base64url');
-    const expiration = new Date(Date.now() + this.refreshTtlMs);
-
-    await this.prisma.session.create({
+    const session = await this.prisma.session.create({
       data: {
         utilisateurId,
         jetonRafraichissementHash: this.hacherRefresh(refreshToken),
-        familleJeton,
+        familleJeton: randomBytes(16).toString('hex'),
         methodeAuth,
         adresseIpCreation: adresseIp ?? null,
         appareilId: appareilId ?? null,
-        dateExpiration: expiration,
+        dateExpiration: new Date(Date.now() + this.refreshTtlMs),
+        dateDerniereUtilisation: new Date(),
       },
+      select: { id: true },
     });
 
-    const accessTtl = this.config.getOrThrow<number>(
-      'auth.accessTokenTtlSeconds',
-    );
-    const payload: PayloadJwt = {
-      sub: utilisateurId,
-      statutCompte,
-      tel: telephoneVerifie,
-    };
-
-    return {
-      accessToken: this.jwt.sign(payload),
+    return this.emettre(
+      { sub: utilisateurId, sid: session.id, statutCompte, tel: telephoneVerifie },
       refreshToken,
-      expiresIn: accessTtl,
-    };
+    );
   }
 
   /**
    * Rotation avec détection de réutilisation.
    * Un jeton déjà révoqué présenté → toute la famille est révoquée.
+   * La révocation de l'ancien jeton est conditionnelle : de deux requêtes
+   * simultanées avec le même jeton, une seule obtient de nouveaux jetons.
    */
   async rafraichir(refreshTokenBrut: string): Promise<JetonsEmis> {
-    const hash = this.hacherRefresh(refreshTokenBrut);
-
     const session = await this.prisma.session.findUnique({
-      where: { jetonRafraichissementHash: hash },
+      where: { jetonRafraichissementHash: this.hacherRefresh(refreshTokenBrut) },
       include: {
         utilisateur: {
           select: { statutCompte: true, telephoneVerifieLe: true },
@@ -128,32 +130,27 @@ export class JetonService {
     if (!session) {
       throw new UnauthorizedException('Jeton invalide.');
     }
-
     if (session.dateRevocation !== null) {
-      // Réutilisation détectée : probable vol de token
-      await this.prisma.session.updateMany({
-        where: { familleJeton: session.familleJeton },
-        data: { dateRevocation: new Date() },
-      });
-      throw new UnauthorizedException(
-        'Session compromise. Toutes vos sessions ont été révoquées.',
-      );
+      await this.compromettreFamille(session.utilisateurId, session.familleJeton);
     }
-
     if (session.dateExpiration < new Date()) {
       throw new UnauthorizedException('Session expirée. Reconnectez-vous.');
     }
 
     const { statutCompte, telephoneVerifieLe } = session.utilisateur;
-    const nouveauRefresh = randomBytes(48).toString('base64url');
-    const expiration = new Date(Date.now() + this.refreshTtlMs);
+    if (!STATUTS_AUTORISES.has(statutCompte)) {
+      await this.revoquerToutesLesSessions(session.utilisateurId);
+      throw new UnauthorizedException('Compte indisponible.');
+    }
 
-    await this.prisma.$transaction([
-      this.prisma.session.update({
-        where: { id: session.id },
+    const nouveauRefresh = randomBytes(48).toString('base64url');
+    const nouvelle = await this.prisma.$transaction(async (tx) => {
+      const { count } = await tx.session.updateMany({
+        where: { id: session.id, dateRevocation: null },
         data: { dateRevocation: new Date() },
-      }),
-      this.prisma.session.create({
+      });
+      if (count === 0) return null; // une requête concurrente a déjà tourné le jeton
+      return tx.session.create({
         data: {
           utilisateurId: session.utilisateurId,
           jetonRafraichissementHash: this.hacherRefresh(nouveauRefresh),
@@ -161,25 +158,25 @@ export class JetonService {
           methodeAuth: session.methodeAuth,
           adresseIpCreation: session.adresseIpCreation,
           appareilId: session.appareilId,
-          dateExpiration: expiration,
+          dateExpiration: new Date(Date.now() + this.refreshTtlMs),
+          dateDerniereUtilisation: new Date(),
         },
-      }),
-    ]);
+        select: { id: true },
+      });
+    });
+    if (!nouvelle) {
+      await this.compromettreFamille(session.utilisateurId, session.familleJeton);
+    }
 
-    const accessTtl = this.config.getOrThrow<number>(
-      'auth.accessTokenTtlSeconds',
+    return this.emettre(
+      {
+        sub: session.utilisateurId,
+        sid: nouvelle!.id,
+        statutCompte,
+        tel: telephoneVerifieLe !== null,
+      },
+      nouveauRefresh,
     );
-    const payload: PayloadJwt = {
-      sub: session.utilisateurId,
-      statutCompte,
-      tel: telephoneVerifieLe !== null,
-    };
-
-    return {
-      accessToken: this.jwt.sign(payload),
-      refreshToken: nouveauRefresh,
-      expiresIn: accessTtl,
-    };
   }
 
   async revoquerSession(
@@ -190,6 +187,7 @@ export class JetonService {
       where: { id: sessionId, utilisateurId, dateRevocation: null },
       data: { dateRevocation: new Date() },
     });
+    await this.revocation.revoquerSessions([sessionId]);
   }
 
   async revoquerToutesLesSessions(utilisateurId: string): Promise<void> {
@@ -197,6 +195,39 @@ export class JetonService {
       where: { utilisateurId, dateRevocation: null },
       data: { dateRevocation: new Date() },
     });
+    await this.revocation.revoquerUtilisateur(utilisateurId);
+  }
+
+  /** Réutilisation d'un jeton déjà tourné : probable vol. */
+  private async compromettreFamille(
+    utilisateurId: string,
+    familleJeton: string,
+  ): Promise<never> {
+    await this.prisma.session.updateMany({
+      where: { familleJeton },
+      data: { dateRevocation: new Date() },
+    });
+    await this.revocation.revoquerUtilisateur(utilisateurId);
+    await this.prisma.journalSecurite
+      .create({
+        data: {
+          utilisateurId,
+          evenement: 'REFRESH_REJETE',
+          details: { motif: 'reutilisation' },
+        },
+      })
+      .catch(() => undefined);
+    throw new UnauthorizedException(
+      'Session compromise. Toutes vos sessions ont été révoquées.',
+    );
+  }
+
+  private emettre(payload: PayloadJwt, refreshToken: string): JetonsEmis {
+    return {
+      accessToken: this.jwt.sign(payload),
+      refreshToken,
+      expiresIn: this.accessTtl,
+    };
   }
 
   private hacherRefresh(token: string): string {
@@ -220,7 +251,10 @@ export class JetonService {
   verifierTokenVerification(token: string): PayloadVerification {
     const secret = this.config.getOrThrow<string>('auth.verificationSecret');
     try {
-      return this.jwt.verify<PayloadVerification>(token, { secret });
+      return this.jwt.verify<PayloadVerification>(token, {
+        secret,
+        algorithms: ['HS256'],
+      });
     } catch {
       throw new UnauthorizedException(
         'Token de vérification invalide ou expiré.',

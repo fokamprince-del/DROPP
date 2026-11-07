@@ -5,7 +5,9 @@ model Boutique {
   biographie       String?
   logoCle          String?        @map("logo_cle")
   banniereCle      String?        @map("banniere_cle")
-  statut          StatutBoutique @default(EN_ATTENTE)
+  ville            String?
+  quartier         String?
+  statut           StatutBoutique @default(EN_ATTENTE)
   dateCreation     DateTime       @default(now()) @map("date_creation") @db.Timestamptz(3)
   dateModification DateTime       @updatedAt @map("date_modification") @db.Timestamptz(3)
   vendeur          Vendeur        @relation(fields: [id], references: [id], onDelete: Cascade)

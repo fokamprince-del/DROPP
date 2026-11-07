@@ -20,6 +20,16 @@ export class RealtimeService {
     }
   }
 
+  /** Ferme les sockets de l'utilisateur sur toutes les instances. Ne lève jamais. */
+  deconnecter(utilisateurId: string): void {
+    if (!this.gateway.server) return;
+    try {
+      this.gateway.server.in(roomUtilisateur(utilisateurId)).disconnectSockets(true);
+    } catch (erreur) {
+      this.logger.warn(`Déconnexion sockets ${utilisateurId} : ${String(erreur)}`);
+    }
+  }
+
   /** Vrai si au moins un appareil de l'utilisateur est connecté (toutes instances). */
   async estEnLigne(utilisateurId: string): Promise<boolean> {
     if (!this.gateway.server) return false;

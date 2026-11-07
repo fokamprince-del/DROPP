@@ -42,6 +42,10 @@ export class StockageProviderStub implements StockageProvider {
     return `http://localhost:9000/stub-bucket/${cleStockage}${params}`;
   }
 
+  async deplacer(source: string, destination: string): Promise<void> {
+    this.logger.debug(`[STOCKAGE STUB] Déplacement — ${source} → ${destination}`);
+  }
+
   async supprimer(cleStockage: string): Promise<void> {
     this.logger.debug(`[STOCKAGE STUB] Suppression — clé: ${cleStockage}`);
   }
@@ -54,5 +58,11 @@ export class StockageProviderStub implements StockageProvider {
   async metadonnees(cleStockage: string): Promise<MetadonneesFichier> {
     this.logger.debug(`[STOCKAGE STUB] Métadonnées — clé: ${cleStockage}`);
     return { taille: 1, typeMime: null };
+  }
+
+  /** récupère le contenu d'un fichier. */
+  async getFile(cleStockage: string): Promise<Buffer| null> {
+    this.logger.debug(`[STOCKAGE STUB] Récupération du fichier — clé: ${cleStockage}`);
+    return Buffer.from('stub-content');
   }
 }

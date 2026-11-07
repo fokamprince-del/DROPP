@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
+import { BOUTIQUE_VISIBLE } from '../../shops/boutique-visible.js';
 import {
   STOCKAGE_PROVIDER,
   type StockageProvider,
@@ -19,8 +20,11 @@ export class DetailProduitService {
   ) {}
 
   async executer(produitId: string, boutiqueId?: string) {
-    const produit = await this.prisma.produit.findUnique({
-      where: { id: produitId },
+    // Côté public : produit en ligne d'une boutique visible uniquement.
+    const produit = await this.prisma.produit.findFirst({
+      where: boutiqueId
+        ? { id: produitId }
+        : { id: produitId, statut: 'PUBLIE', boutique: BOUTIQUE_VISIBLE },
       select: {
         id: true,
         nom: true,
@@ -63,9 +67,6 @@ export class DetailProduitService {
     });
 
     if (!produit) throw new NotFoundException('Produit introuvable.');
-    if (!boutiqueId && produit.statut !== 'PUBLIE') {
-      throw new NotFoundException('Produit introuvable.');
-    }
     if (boutiqueId && produit.boutiqueId !== boutiqueId) {
       throw new ForbiddenException('Accès refusé.');
     }

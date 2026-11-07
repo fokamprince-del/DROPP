@@ -5,9 +5,9 @@ import { PrismaService } from '../../../infrastructure/database/prisma.service.j
 export class SessionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  /** Liste les sessions actives de l'utilisateur connecté. */
-  async lister(utilisateurId: string) {
-    return this.prisma.session.findMany({
+  /** Sessions actives de l'utilisateur ; `actuelle` = celle de cet appareil. */
+  async lister(utilisateurId: string, sessionCouranteId?: string) {
+    const sessions = await this.prisma.session.findMany({
       where: {
         utilisateurId,
         dateRevocation: null,
@@ -26,5 +26,6 @@ export class SessionsService {
       },
       orderBy: { dateCreation: 'desc' },
     });
+    return sessions.map((s) => ({ ...s, actuelle: s.id === sessionCouranteId }));
   }
 }

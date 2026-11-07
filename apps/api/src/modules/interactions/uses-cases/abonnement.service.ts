@@ -11,6 +11,7 @@ import {
   type StockageProvider,
 } from '../../../infrastructure/stockage/stockage-provider.contract.js';
 import { NotificateurService } from '../../notifications/notificateur.service.js';
+import { BOUTIQUE_VISIBLE } from '../../shops/boutique-visible.js';
 
 @Injectable()
 export class AbonnementService {
@@ -78,7 +79,7 @@ export class AbonnementService {
     const where = {
       utilisateurId,
       statut: { not: 'BLOQUE' as const },
-      vendeur: { boutique: { statut: 'ACTIVE' as const } },
+      vendeur: { boutique: BOUTIQUE_VISIBLE },
     };
     const [abonnements, total] = await this.prisma.$transaction([
       this.prisma.abonnement.findMany({
@@ -113,9 +114,7 @@ export class AbonnementService {
         muet: a.statut === 'MUET',
         depuis: a.dateCreation,
       })),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 
@@ -157,9 +156,7 @@ export class AbonnementService {
           depuis: dateCreation,
         };
       }),
-      total,
-      page,
-      limite,
+      pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
 

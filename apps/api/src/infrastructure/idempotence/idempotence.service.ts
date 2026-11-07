@@ -9,13 +9,15 @@ export interface ResultatIdempotent {
   body: unknown;
 }
 
+const EN_COURS = 'PENDING';
+
 @Injectable()
 export class IdempotenceService {
   private readonly ttl: number;
 
   constructor(
     @Inject(REDIS_CLIENT) private readonly redis: Redis,
-    private readonly config: ConfigService,
+    config: ConfigService,
   ) {
     this.ttl = config.getOrThrow<number>('redis.idempotenceTtl');
   }
@@ -24,51 +26,29 @@ export class IdempotenceService {
     return `dropp:idempotence:${key}`;
   }
 
-  async lireBrut(key: string): Promise<string | null> {
-    return await this.redis.get(this.cle(key));
-  }
-  /**
-   * Vérifie si une clé existe déjà.
-   * Retourne le résultat mis en cache ou null si première requête.
-   */
+  /** Résultat mis en cache, ou null (première requête ou encore en cours). */
   async lire(key: string): Promise<ResultatIdempotent | null> {
     const brut = await this.redis.get(this.cle(key));
-    if (!brut || brut === 'PENDING') return null;
+    if (!brut || brut === EN_COURS) return null;
     return JSON.parse(brut) as ResultatIdempotent;
   }
 
   /**
-   * Marque une clé comme "en cours" (valeur vide avec TTL court).
-   * Retourne false si la clé existe déjà (requête concurrente).
-   * Utilise SET NX pour garantir l'atomicité.
+   * Marque une clé « en cours » (SET NX, 30 s max de traitement).
+   * Retourne false si la clé existe déjà (requête concurrente ou terminée).
    */
   async marquerEnCours(key: string): Promise<boolean> {
-    const resultat = await this.redis.set(
-      this.cle(key),
-      'PENDING',
-      'EX',
-      30, // 30 secondes max pour traiter la requête
-      'NX', // Only if Not exists
-    );
+    const resultat = await this.redis.set(this.cle(key), EN_COURS, 'EX', 30, 'NX');
     return resultat === 'OK';
   }
 
-  /**
-   * Stocke le résultat final avec le TTL complet (24h).
-   */
+  /** Stocke le résultat final avec le TTL complet. */
   async stocker(key: string, resultat: ResultatIdempotent): Promise<void> {
-    await this.redis.set(
-      this.cle(key),
-      JSON.stringify(resultat),
-      'EX',
-      this.ttl,
-    );
+    await this.redis.set(this.cle(key), JSON.stringify(resultat), 'EX', this.ttl);
   }
 
-  /**
-   * Vérifie si une requête est encore en cours de traitement.
-   */
-  estEnCours(brut: string): boolean {
-    return brut === 'PENDING';
+  /** Requête en échec : la clé est libérée pour un nouvel essai. */
+  async liberer(key: string): Promise<void> {
+    await this.redis.del(this.cle(key)).catch(() => 0);
   }
 }

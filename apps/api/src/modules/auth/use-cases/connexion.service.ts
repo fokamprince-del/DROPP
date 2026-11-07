@@ -10,12 +10,17 @@ import type { ConnexionDto } from '../dto/connexion.dto.js';
 import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import { TelephoneService } from '../services/telephone.service.js';
+import { VerrouillageService } from '../services/verrouillage.service.js';
 
 /**
  * Statuts autorisant la connexion.
  * Tout autre statut (SUSPENDU_TEMP, SUSPENDU_DEF, SUPPRIME) est refusé.
  */
 const STATUTS_CONNEXION = new Set(['EN_ATTENTE_VERIFICATION', 'ACTIF']);
+
+/** Hash argon2id factice : temps de réponse identique pour un compte inconnu. */
+const HASH_FACTICE =
+  '$argon2id$v=19$m=65536,t=3,p=4$factice$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
 @Injectable()
 export class ConnexionService {
@@ -26,6 +31,7 @@ export class ConnexionService {
     private readonly otpService: OtpService,
     private readonly notificationService: NotificationService,
     private readonly telephoneService: TelephoneService,
+    private readonly verrouillage: VerrouillageService,
   ) {}
 
   /**
@@ -36,13 +42,15 @@ export class ConnexionService {
     dto: ConnexionDto,
     adresseIp?: string,
   ): Promise<
-    JetonsEmis | { verificationRequise: true; verificationToken: string }
+   { verificationRequise: boolean; verificationToken?: string } & Partial<JetonsEmis>
   > {
     const estEmail = dto.identifiant.includes('@');
     // « 650 00 00 01 » doit retrouver « +237650000001 » (format E.164 en base).
     const identifiantNormalise = estEmail
       ? dto.identifiant.trim().toLowerCase()
       : this.telephoneService.normaliserOuBrut(dto.identifiant);
+
+    await this.verrouillage.verifier(identifiantNormalise);
 
     const utilisateur = await this.prisma.utilisateur.findFirst({
       where: estEmail
@@ -60,11 +68,9 @@ export class ConnexionService {
 
     if (!utilisateur || !utilisateur.motDePasseHash) {
       await this.motDePasseService
-        .verifier(
-          dto.motDePasse,
-          '$argon2id$v=19$m=65536,t=3,p=4$factice$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        )
+        .verifier(dto.motDePasse, HASH_FACTICE)
         .catch(() => undefined);
+      await this.verrouillage.echec(identifiantNormalise);
       throw new UnauthorizedException('Identifiant ou mot de passe incorrect.');
     }
 
@@ -74,8 +80,15 @@ export class ConnexionService {
     );
 
     if (!valide) {
+      const verrouille = await this.verrouillage.echec(identifiantNormalise);
+      await this.journaliser(
+        utilisateur.id,
+        verrouille ? 'COMPTE_VERROUILLE' : 'CONNEXION_ECHOUEE',
+        adresseIp,
+      );
       throw new UnauthorizedException('Identifiant ou mot de passe incorrect.');
     }
+    await this.verrouillage.reussite(identifiantNormalise);
 
     // Compte non vérifié : renvoyer un token de vérification
     if (utilisateur.statutCompte === 'EN_ATTENTE_VERIFICATION') {
@@ -111,27 +124,38 @@ export class ConnexionService {
       throw new ForbiddenException('Compte indisponible.');
     }
 
-    // Re-hachage transparent
-    if (nouveauHash) {
-      await this.prisma.utilisateur.update({
-        where: { id: utilisateur.id },
-        data: { motDePasseHash: nouveauHash },
-      });
-    }
-
-    this.prisma.utilisateur
+    await this.prisma.utilisateur
       .update({
         where: { id: utilisateur.id },
-        data: { derniereConnexion: new Date() },
+        data: {
+          derniereConnexion: new Date(),
+          // Re-hachage transparent si les paramètres argon2 ont changé
+          ...(nouveauHash && { motDePasseHash: nouveauHash }),
+        },
       })
       .catch(() => undefined);
+    await this.journaliser(utilisateur.id, 'CONNEXION_REUSSIE', adresseIp);
 
-    return this.jetonService.ouvrirSession({
+    const jetons =await  this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
       statutCompte: utilisateur.statutCompte,
       telephoneVerifie: utilisateur.telephoneVerifieLe !== null,
       methodeAuth: estEmail ? 'EMAIL_MDP' : 'TELEPHONE_MDP',
       adresseIp,
     });
+    return {
+      verificationRequise: false,
+      ...jetons
+    }
+  }
+
+  private journaliser(
+    utilisateurId: string,
+    evenement: 'CONNEXION_REUSSIE' | 'CONNEXION_ECHOUEE' | 'COMPTE_VERROUILLE',
+    adresseIp?: string,
+  ) {
+    return this.prisma.journalSecurite
+      .create({ data: { utilisateurId, evenement, adresseIp } })
+      .catch(() => undefined);
   }
 }

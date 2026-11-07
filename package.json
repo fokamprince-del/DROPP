@@ -12,7 +12,7 @@
     "typecheck": "turbo typecheck",
 
     "postinstall": "pnpm run generer",
-    "generer": "prisma generate && pnpm --filter @dropp/contrats build",
+    "generer": "pnpm --filter @dropp/database generate && pnpm --filter @dropp/database build && pnpm --filter @dropp/contrats build",
 
     "api:dev": "pnpm --filter api start:dev",
     "api:build": "pnpm --filter api build",
@@ -54,7 +54,8 @@
     "db:restart": "docker compose restart postgres",
     "db:logs": "docker compose logs -f postgres",
     "db:status": "docker compose ps postgres",
-
+    "db:seed:admin": "pnpm --filter api seed:admin",
+    
     "redis:up": "docker compose up -d redis",
     "redis:down": "docker compose stop redis",
     "redis:restart": "docker compose restart redis",

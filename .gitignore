@@ -5,6 +5,7 @@ node_modules/
 dist/
 .next/
 .turbo/
+tsconfig.build.tsbuildinfo
 
 # Environment files
 .env
@@ -28,7 +29,6 @@ Thumbs.db
 .vscode/
 
 # Generated code
-apps/api/src/generated/
 packages/database/src/generated/
 
 todo.md

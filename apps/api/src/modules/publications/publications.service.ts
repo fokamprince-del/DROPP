@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Inject,
   Injectable,
@@ -21,20 +22,25 @@ import {
   type StockageProvider,
 } from '../../infrastructure/stockage/stockage-provider.contract.js';
 import { verifierUpload } from '../../infrastructure/stockage/verifier-upload.js';
+import { TAILLE_MAX_MEDIA_MO } from '../../infrastructure/stockage/media.js';
+import {
+  cleSelonVisibilite,
+  racineContenu,
+  urlLecture,
+} from '../../infrastructure/stockage/lecture.js';
+import {
+  filtreVisibilite,
+  verifierPublicationVisible,
+} from '../interactions/utils/publications.js';
 import type { ConfirmerMediaPublicationDto } from './dto/confirmer-media-publication.dto.js';
 
 const MAX_MEDIAS_PAR_PUBLICATION = 10;
 import type { CreerPublicationDto } from './dto/creer-publication.dto.js';
 import type { DemanderSignaturePublicationDto } from './dto/demander-signature-publication.dto.js';
 import type { MiseAJourPublicationDto } from './dto/mise-a-jour-publication.dto.js';
+import { BOUTIQUE_VISIBLE } from '../shops/boutique-visible.js';
 
-const TAILLE_MAX_PAR_TYPE: Record<string, number> = {
-  'image/jpeg': 10,
-  'image/png': 10,
-  'image/webp': 10,
-  'video/mp4': 500,
-  'video/quicktime': 500,
-};
+const TAILLE_MAX_PAR_TYPE: Record<string, number> = TAILLE_MAX_MEDIA_MO;
 
 const publicationSelection = {
   id: true,
@@ -65,6 +71,24 @@ const publicationSelection = {
     },
     orderBy: { ordre: 'asc' },
   },
+  produits: {
+    orderBy: { ordre: 'asc' },
+    where: { produit: { statut: 'PUBLIE' } },
+    select: {
+      produit: {
+        select: {
+          id: true,
+          nom: true,
+          prixBase: true,
+          medias: {
+            orderBy: { ordre: 'asc' },
+            take: 1,
+            select: { media: { select: { cleStockage: true } } },
+          },
+        },
+      },
+    },
+  },
   _count: { select: { likes: true, commentaires: true } },
 } as const;
 
@@ -83,13 +107,24 @@ export class PublicationsService {
     private readonly stockage: StockageProvider,
   ) {}
 
-  async listerPubliques(page: number, limite: number, boutiqueId?: string) {
-    const where = {
-      statut: StatutPublication.PUBLIEE,
-      visibilite: 'PUBLIC' as const,
-      boutique: { statut: 'ACTIVE' as const },
-      ...(boutiqueId && { boutiqueId }),
-    };
+  /**
+   * Fil « Pour toi » : publications publiques uniquement.
+   * Page d'une boutique (boutiqueId) : on y ajoute ses publications réservées
+   * aux abonnés si l'utilisateur la suit (ou si c'est sa boutique).
+   */
+  async listerPubliques(
+    page: number,
+    limite: number,
+    boutiqueId?: string,
+    utilisateurId?: string,
+  ) {
+    const where: Prisma.PublicationWhereInput = boutiqueId
+      ? { boutiqueId, ...filtreVisibilite(utilisateurId) }
+      : {
+          statut: StatutPublication.PUBLIEE,
+          visibilite: 'PUBLIC' as const,
+          boutique: BOUTIQUE_VISIBLE,
+        };
     return this.listerAvecFiltre(where, page, limite);
   }
 
@@ -105,8 +140,9 @@ export class PublicationsService {
     const where = {
       statut: StatutPublication.PUBLIEE,
       boutique: {
-        statut: 'ACTIVE' as const,
+        ...BOUTIQUE_VISIBLE,
         vendeur: {
+          ...BOUTIQUE_VISIBLE.vendeur,
           abonnements: { some: { utilisateurId, statut: 'ACTIF' as const } },
         },
       },
@@ -131,7 +167,7 @@ export class PublicationsService {
     ]);
 
     return {
-      donnees: publications.map((publication) => this.presenter(publication)),
+      donnees: await Promise.all(publications.map((p) => this.presenter(p))),
       pagination: { total, page, limite, pages: Math.ceil(total / limite) },
     };
   }
@@ -157,32 +193,28 @@ export class PublicationsService {
     return { publicationId };
   }
 
-  async obtenirPublique(id: string) {
-    const publication = await this.prisma.publication.findFirst({
-      where: {
-        id,
-        statut: StatutPublication.PUBLIEE,
-        visibilite: 'PUBLIC',
-        boutique: { statut: 'ACTIVE' },
-      },
+  async obtenirPublique(id: string, utilisateurId?: string) {
+    await verifierPublicationVisible(this.prisma, id, utilisateurId);
+    const publication = await this.prisma.publication.findUniqueOrThrow({
+      where: { id },
       select: publicationSelection,
     });
-    if (!publication) throw new NotFoundException('Publication introuvable.');
     return this.presenter(publication);
   }
 
   async listerMesPublications(utilisateurId: string) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
     const publications = await this.prisma.publication.findMany({
-      where: { boutiqueId: boutique.id },
+      where: { boutiqueId: boutique.id, statut: { not: StatutPublication.SUPPRIMEE } },
       select: publicationSelection,
       orderBy: { dateCreation: 'desc' },
     });
-    return publications.map((publication) => this.presenter(publication));
+    return Promise.all(publications.map((p) => this.presenter(p)));
   }
 
   async creer(utilisateurId: string, dto: CreerPublicationDto) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
+    const produitIds = await this.verifierProduits(boutique.id, dto.produitIds);
     const publication = await this.prisma.publication.create({
       data: {
         boutiqueId: boutique.id,
@@ -190,6 +222,9 @@ export class PublicationsService {
         contenu: dto.contenu,
         visibilite: dto.visibilite,
         statut: StatutPublication.PROCESSING,
+        produits: {
+          create: produitIds.map((produitId, ordre) => ({ produitId, ordre })),
+        },
       },
       select: publicationSelection,
     });
@@ -202,10 +237,26 @@ export class PublicationsService {
     dto: MiseAJourPublicationDto,
   ) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
-    await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    const actuelle = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    if (dto.visibilite && dto.visibilite !== actuelle.visibilite) {
+      await this.deplacerMedias(publicationId, dto.visibilite);
+    }
+    const { produitIds: nouveauxProduits, ...champs } = dto;
+    const produitIds =
+      nouveauxProduits === undefined
+        ? undefined
+        : await this.verifierProduits(boutique.id, nouveauxProduits);
     const publication = await this.prisma.publication.update({
       where: { id: publicationId },
-      data: { ...dto, statut: StatutPublication.PROCESSING },
+      data: {
+        ...champs,
+        ...(produitIds && {
+          produits: {
+            deleteMany: {},
+            create: produitIds.map((produitId, ordre) => ({ produitId, ordre })),
+          },
+        }),
+      },
       select: publicationSelection,
     });
     return this.presenter(publication);
@@ -226,7 +277,8 @@ export class PublicationsService {
     dto: DemanderSignaturePublicationDto,
   ) {
     const boutique = await this.obtenirBoutiqueActive(utilisateurId);
-    await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    const pub = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    this.verifierBrouillon(pub.statut);
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax || dto.taille > tailleMax * 1024 * 1024) {
       throw new BadRequestException(
@@ -237,7 +289,7 @@ export class PublicationsService {
       ? TypeMedia.VIDEO
       : TypeMedia.IMAGE;
     const signature = await this.stockage.genererSignatureUpload(
-      `boutiques/${boutique.id}/publications/${publicationId}/${typeMedia.toLowerCase()}s`,
+      `${this.dossierMedias(boutique.id, publicationId, pub.visibilite)}/${typeMedia.toLowerCase()}s`,
       dto.typeMime,
       tailleMax,
     );
@@ -254,6 +306,7 @@ export class PublicationsService {
       publicationId,
       boutique.id,
     );
+    this.verifierBrouillon(publication.statut);
     const tailleMax = TAILLE_MAX_PAR_TYPE[dto.typeMime];
     if (!tailleMax) {
       throw new BadRequestException('Type de fichier non pris en charge.');
@@ -268,7 +321,7 @@ export class PublicationsService {
     }
     const reel = await verifierUpload(this.stockage, {
       cleStockage: dto.cleStockage,
-      prefixe: `boutiques/${boutique.id}/publications/${publicationId}/`,
+      prefixe: this.dossierMedias(boutique.id, publicationId, publication.visibilite),
       tailleMaxMo: tailleMax,
       typesMime: [dto.typeMime],
     });
@@ -309,20 +362,12 @@ export class PublicationsService {
     return { publicationId: publication.id, ...media.media };
   }
 
-  async moderer(publicationId: string, statut: StatutPublication) {
-    if (
-      statut !== StatutPublication.PUBLIEE &&
-      statut !== StatutPublication.REJETEE
-    ) {
-      throw new BadRequestException('Statut de modération invalide.');
-    }
-    const statutModere = statut as
-      typeof StatutPublication.PUBLIEE | typeof StatutPublication.REJETEE;
-
+  async moderer(publicationId: string, statutModere: 'PUBLIEE' | 'REJETEE') {
     const publication = await this.prisma.publication.findUnique({
       where: { id: publicationId },
       select: {
         type: true,
+        statut: true,
         medias: {
           select: {
             media: { select: { typeMedia: true, statutTraitement: true } },
@@ -330,7 +375,9 @@ export class PublicationsService {
         },
       },
     });
-    if (!publication) throw new NotFoundException('Publication introuvable.');
+    if (!publication || publication.statut === StatutPublication.SUPPRIMEE) {
+      throw new NotFoundException('Publication introuvable.');
+    }
     if (statutModere === StatutPublication.PUBLIEE) {
       this.verifierMediasPublication(publication.type, publication.medias);
     }
@@ -341,6 +388,85 @@ export class PublicationsService {
       select: publicationSelection,
     });
     return this.presenter(resultat);
+  }
+
+  /**
+   * Mise en ligne par le vendeur, une fois les médias ajoutés (brouillon →
+   * PUBLIEE). La modération intervient ensuite, sur signalement.
+   */
+  async publier(utilisateurId: string, publicationId: string) {
+    const boutique = await this.obtenirBoutiqueActive(utilisateurId);
+    const actuelle = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    if (actuelle.statut === StatutPublication.PUBLIEE) {
+      throw new ConflictException('Cette publication est déjà en ligne.');
+    }
+    if (actuelle.statut === StatutPublication.REJETEE) {
+      throw new ForbiddenException(
+        'Cette publication a été retirée par la modération.',
+      );
+    }
+    const { type, medias } = await this.prisma.publication.findUniqueOrThrow({
+      where: { id: publicationId },
+      select: {
+        type: true,
+        medias: {
+          select: {
+            media: { select: { typeMedia: true, statutTraitement: true } },
+          },
+        },
+      },
+    });
+    this.verifierMediasPublication(type, medias);
+
+    const { count } = await this.prisma.publication.updateMany({
+      where: { id: publicationId, statut: StatutPublication.PROCESSING },
+      data: { statut: StatutPublication.PUBLIEE },
+    });
+    if (count === 0) throw new ConflictException('Publication déjà traitée.');
+    return this.presenter(
+      await this.prisma.publication.findUniqueOrThrow({
+        where: { id: publicationId },
+        select: publicationSelection,
+      }),
+    );
+  }
+
+  /** Retire un média d'une publication encore en brouillon. */
+  async retirerMedia(utilisateurId: string, publicationId: string, mediaId: string) {
+    const boutique = await this.obtenirBoutiqueActive(utilisateurId);
+    const publication = await this.obtenirPublicationVendeur(publicationId, boutique.id);
+    this.verifierBrouillon(publication.statut);
+
+    const lien = await this.prisma.mediaPublication.findUnique({
+      where: { publicationId_mediaId: { publicationId, mediaId } },
+      select: { media: { select: { cleStockage: true } } },
+    });
+    if (!lien) throw new NotFoundException('Média introuvable.');
+
+    await this.prisma.$transaction([
+      this.prisma.mediaPublication.delete({
+        where: { publicationId_mediaId: { publicationId, mediaId } },
+      }),
+      this.prisma.media.delete({ where: { id: mediaId } }),
+    ]);
+    await this.stockage.supprimer(lien.media.cleStockage).catch(() => undefined);
+  }
+
+  /** File de modération (admin) : par statut, les plus récentes d'abord. */
+  async listerPourModeration(
+    statut: StatutPublication | undefined,
+    page: number,
+    limite: number,
+  ) {
+    return this.listerAvecFiltre(statut ? { statut } : {}, page, limite);
+  }
+
+  private verifierBrouillon(statut: StatutPublication) {
+    if (statut !== StatutPublication.PROCESSING) {
+      throw new ConflictException(
+        'Les médias ne sont modifiables que tant que la publication n’est pas en ligne.',
+      );
+    }
   }
 
   private async obtenirBoutiqueActive(utilisateurId: string) {
@@ -365,10 +491,54 @@ export class PublicationsService {
         boutiqueId,
         statut: { not: StatutPublication.SUPPRIMEE },
       },
-      select: { id: true },
+      select: { id: true, visibilite: true, statut: true },
     });
     if (!publication) throw new NotFoundException('Publication introuvable.');
     return publication;
+  }
+
+  /** Produits liés : ils doivent appartenir à la boutique et ne pas être archivés. */
+  private async verifierProduits(boutiqueId: string, ids: string[] = []) {
+    if (ids.length === 0) return [];
+    const trouves = await this.prisma.produit.findMany({
+      where: { id: { in: ids }, boutiqueId, statut: { notIn: ['ARCHIVE', 'REJETE'] } },
+      select: { id: true },
+    });
+    if (trouves.length !== ids.length) {
+      throw new BadRequestException(
+        'Un des produits liés est introuvable ou n’appartient pas à ta boutique.',
+      );
+    }
+    return ids;
+  }
+
+  /** Dossier des médias : sous abonnes/ (bucket privé) si réservé aux abonnés. */
+  private dossierMedias(
+    boutiqueId: string,
+    publicationId: string,
+    visibilite: VisibiliteContenu,
+  ) {
+    return racineContenu(visibilite, `boutiques/${boutiqueId}/publications/${publicationId}`);
+  }
+
+  /**
+   * Changement de visibilité : les fichiers passent du bucket public au privé
+   * (ou l'inverse), pour qu'un lien partagé ne donne plus accès au contenu.
+   */
+  private async deplacerMedias(publicationId: string, visibilite: VisibiliteContenu) {
+    const liens = await this.prisma.mediaPublication.findMany({
+      where: { publicationId },
+      select: { media: { select: { id: true, cleStockage: true } } },
+    });
+    for (const { media } of liens) {
+      const nouvelle = cleSelonVisibilite(media.cleStockage, visibilite);
+      if (nouvelle === media.cleStockage) continue;
+      await this.stockage.deplacer(media.cleStockage, nouvelle);
+      await this.prisma.media.update({
+        where: { id: media.id },
+        data: { cleStockage: nouvelle },
+      });
+    }
   }
 
   private verifierMediasPublication(
@@ -410,10 +580,13 @@ export class PublicationsService {
     }
   }
 
-  private presenter(publication: PublicationAvecRelations) {
+  private async presenter(publication: PublicationAvecRelations) {
+    const urls = await Promise.all(
+      publication.medias.map(({ media }) => urlLecture(this.stockage, media.cleStockage)),
+    );
     return {
       ...publication,
-      medias: publication.medias.map(({ media, ...mediaPublication }) => ({
+      medias: publication.medias.map(({ media, ...mediaPublication }, i) => ({
         ...mediaPublication,
         media: {
           id: media.id,
@@ -423,8 +596,19 @@ export class PublicationsService {
           largeur: media.largeur,
           hauteur: media.hauteur,
           duree: media.duree,
-          url: this.stockage.urlPublique(media.cleStockage),
+          url: urls[i],
         },
+      })),
+      produits: publication.produits.map(({ produit }) => ({
+        id: produit.id,
+        nom: produit.nom,
+        prixBase: Number(produit.prixBase),
+        imageUrl: produit.medias[0]
+          ? this.stockage.urlPublique(produit.medias[0].media.cleStockage, {
+              largeur: 200,
+              hauteur: 200,
+            })
+          : null,
       })),
       likes: publication._count.likes,
       commentaires: publication._count.commentaires,

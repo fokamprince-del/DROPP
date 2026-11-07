@@ -2,11 +2,12 @@ model Utilisateur {
   id                      String                    @id @default(uuid()) @db.Uuid
   prenom                  String
   nom                     String
+  sexe                    Sexe?
   /// Identifiant public unique (@pseudo), en minuscules — utilisé pour les mentions.
   pseudo                  String?                   @unique
   email                   String?                   @unique
   emailVerifieLe          DateTime?                 @map("email_verifie_le") @db.Timestamptz(3)
-  telephone               String?                   @unique
+  telephone               String                    @unique
   telephoneVerifieLe      DateTime?                 @map("telephone_verifie_le") @db.Timestamptz(3)
   motDePasseHash          String?                   @map("mot_de_passe_hash")
   photoProfilCle          String?                   @map("photo_profil_cle")
@@ -41,6 +42,7 @@ model Utilisateur {
   aimesCommentaires       AimeCommentaire[]
   dossiersModeration      DossierModeration[]       @relation("AdministrateurModeration")
   journauxSecurite        JournalSecurite[]         @relation("AdministrateurSecurite")
+  journauxAudit           JournalAudit[]            @relation("AdministrateurAudit")
   blocagesEmis            Blocage[]                 @relation("BlocageEmis")
   blocagesRecus           Blocage[]                 @relation("BlocageRecu")
   vuesStories             VueStory[]

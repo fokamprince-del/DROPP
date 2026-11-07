@@ -5,10 +5,14 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service.js';
 import type { ModifierVarianteDto } from '../dto/modifier-variante.dto.js';
+import { PublicationAutoService } from '../services/publication-auto.service.js';
 
 @Injectable()
 export class ModifierVarianteService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly publicationAuto: PublicationAutoService,
+  ) {}
 
   async executer(
     produitId: string,
@@ -18,7 +22,12 @@ export class ModifierVarianteService {
   ) {
     await this.verifierAppartenance(produitId, boutiqueId);
 
-    return this.prisma.varianteProduit.update({
+    const existe = await this.prisma.varianteProduit.count({
+      where: { id: varianteId, produitId },
+    });
+    if (!existe) throw new NotFoundException('Variante introuvable.');
+
+    const variante = await this.prisma.varianteProduit.update({
       where: { id: varianteId, produitId },
       data: {
         ...(dto.nom && { nom: dto.nom }),
@@ -37,6 +46,8 @@ export class ModifierVarianteService {
         stockDisponible: true,
       },
     });
+    await this.publicationAuto.tenter(produitId);
+    return variante;
   }
 
   private async verifierAppartenance(produitId: string, boutiqueId: string) {

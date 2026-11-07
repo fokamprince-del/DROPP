@@ -6,7 +6,7 @@ model Signalement {
   produitId     String?             @map("produit_id") @db.Uuid
   boutiqueId    String?             @map("boutique_id") @db.Uuid
   messageId     String?             @map("message_id") @db.Uuid
-  motif        String
+  motif         String
   description   String?
   statut        StatutSignalement   @default(OUVERT)
   priorite      PrioriteSignalement @default(NORMALE)

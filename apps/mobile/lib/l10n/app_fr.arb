@@ -1,0 +1,939 @@
+{
+  "@@locale": "fr",
+  "nomApp": "DROPP",
+  "navAccueil": "Accueil",
+  "navDecouvrir": "Découvrir",
+  "navPanier": "Panier",
+  "navMessages": "Messages",
+  "navProfil": "Profil",
+  "baselineApp": "Le marché camerounais dans ta poche",
+  "navPanierArticles": "Panier, {count, plural, =1{1 article} other{{count} articles}}",
+  "@navPanierArticles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navMessagesNonLus": "Messages, {count, plural, =1{1 non lu} other{{count} non lus}}",
+  "@navMessagesNonLus": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "champPrenom": "Prénom",
+  "champNom": "Nom",
+  "champSexe": "Sexe",
+  "sexeMasculin": "Homme",
+  "sexeFeminin": "Femme",
+  "sexeAutre": "Autre",
+  "champTelephone": "Téléphone",
+  "champEmailFacultatif": "Email (facultatif)",
+  "champMotDePasse": "Mot de passe",
+  "champIdentifiantPlaceholder": "+2376******** ",
+  "erreurRequis": "Ce champ est obligatoire",
+  "erreurTelephoneInvalide": "Numéro de téléphone invalide",
+  "erreurEmailInvalide": "Adresse email invalide",
+  "erreurMotDePasseCourt": "8 caractères minimum",
+  "erreurCodeIncomplet": "Saisis les 6 chiffres du code",
+  "forceMotDePasse1": "Faible. Utilise 8 caractères minimum, avec lettres et chiffres.",
+  "forceMotDePasse2": "Moyen. Ajoute des chiffres ou des majuscules.",
+  "forceMotDePasse3": "Solide. Ajoute un symbole pour le rendre très solide.",
+  "forceMotDePasse4": "Très solide.",
+  "champCode": "Code de vérification",
+  "motDePasseAfficher": "Afficher le mot de passe",
+  "motDePasseMasquer": "Masquer le mot de passe",
+  "champIdentifiant": "Téléphone ou email",
+  "champNouveauMotDePasse": "Nouveau mot de passe",
+  "erreurIdentifiantInvalide": "Numéro ou email invalide",
+  "erreurReseau": "Pas de connexion internet.",
+  "erreurDelai": "Le serveur met trop de temps à répondre. Réessaie.",
+  "erreurTropDeTentatives": "Trop de tentatives. Patiente une minute avant de réessayer.",
+  "erreurServeur": "Le serveur rencontre un problème. Réessaie plus tard.",
+  "erreurInterdit": "Ce compte ne peut pas être utilisé pour le moment.",
+  "erreurRequeteInvalide": "Vérifie les informations saisies.",
+  "erreurInconnue": "Une erreur est survenue. Réessaie.",
+  "erreurIdentifiantsIncorrects": "Identifiants incorrects.",
+  "erreurCompteExistant": "Un compte existe déjà avec ce numéro ou cet email.",
+  "erreurCodeIncorrect": "Code incorrect ou expiré. Vérifie-le ou demande-en un nouveau.",
+  "erreurCodeExpire": "Code expiré ou trop d'essais. Demande un nouveau code.",
+  "erreurVerificationExpiree": "Vérification expirée. Recommence depuis le début.",
+  "erreurRequeteEnCours": "Une demande identique est en cours. Patiente un instant.",
+  "sessionExpiree": "Ta session a expiré. Reconnecte-toi.",
+  "inscriptionTitre": "Crée ton compte",
+  "inscriptionSousTitre": "Un code d'activation te sera envoyé par SMS.",
+  "inscriptionBouton": "Recevoir le code par SMS",
+  "inscriptionConditions": "En continuant, tu acceptes les conditions d'utilisation.",
+  "continuer": "Continuer",
+  "inscriptionSousTitreIdentite": "Dis-nous qui tu es.",
+  "inscriptionSousTitreCompte": "Choisis comment te connecter. Un code d'activation te sera envoyé par SMS.",
+  "jaiDejaUnCompte": "J'ai déjà un compte",
+  "connexionTitre": "Content de te revoir",
+  "connexionSousTitre": "Connecte-toi avec ton numéro ou ton email.",
+  "connexionBouton": "Se connecter",
+  "creerUnCompte": "Créer un compte",
+  "motDePasseOublieLien": "Mot de passe oublié ?",
+  "ouSeparateur": "ou",
+  "googleSeConnecter": "Se connecter avec Google",
+  "googleSInscrire": "S'inscrire avec Google",
+  "fonctionnaliteBientot": "Cette fonctionnalité n'est pas encore disponible.",
+  "codeTitre": "Entre le code reçu par SMS",
+  "codeEnvoyeA": "Envoyé au {numero}. Valable 5 minutes.",
+  "@codeEnvoyeA": {
+    "placeholders": {
+      "numero": {
+        "type": "String"
+      }
+    }
+  },
+  "codeEnvoyeAuCompte": "Un code vient d'être envoyé par SMS au numéro de ton compte. Valable 5 minutes.",
+  "codeVerifier": "Vérifier",
+  "renvoyerCode": "Renvoyer le code",
+  "renvoyerCodeDans": "Renvoyer le code dans {duree}",
+  "@renvoyerCodeDans": {
+    "placeholders": {
+      "duree": {
+        "type": "String"
+      }
+    }
+  },
+  "oubliTitre": "Mot de passe oublié",
+  "oubliSousTitre": "Saisis ton numéro ou ton email. Si un compte existe, un code te sera envoyé.",
+  "oubliSecurite": "Par sécurité, toutes tes sessions seront déconnectées après le changement.",
+  "oubliBouton": "Recevoir un code",
+  "reinitTitre": "Nouveau mot de passe",
+  "reinitSousTitre": "Saisis le code reçu, puis choisis un nouveau mot de passe.",
+  "reinitBouton": "Changer le mot de passe",
+  "reessayer": "Réessayer",
+  "rienAAfficher": "Rien à afficher pour le moment.",
+  "tempsInstant": "à l'instant",
+  "tempsMinutes": "il y a {n} min",
+  "@tempsMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tempsHeures": "il y a {n} h",
+  "@tempsHeures": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tempsJours": "il y a {n} j",
+  "@tempsJours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "filPourToi": "Pour toi",
+  "filAbonnements": "Abonnements",
+  "filPourToiVide": "Aucune publication pour le moment. Reviens bientôt !",
+  "filAbonnementsVideTitre": "Ton fil est encore vide",
+  "filAbonnementsVideTexte": "Suis des boutiques pour voir leurs nouveautés ici en premier.",
+  "filDecouvrirBoutiques": "Découvrir des boutiques",
+  "filConnexionTitre": "Connecte-toi pour suivre des boutiques",
+  "filConnexionTexte": "Les nouveautés des boutiques que tu suis apparaîtront ici.",
+  "publicationTitre": "Publication",
+  "publicationOuvrir": "Voir la publication de {boutique}",
+  "@publicationOuvrir": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      }
+    }
+  },
+  "publicationVues": "{count, plural, =0{aucune vue} =1{1 vue} other{{count} vues}}",
+  "@publicationVues": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "publicationLikes": "{count, plural, =0{Aucun j'aime} =1{1 j'aime} other{{count} j'aime}}",
+  "@publicationLikes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "publicationCommentaires": "{count, plural, =0{Aucun commentaire} =1{1 commentaire} other{{count} commentaires}}",
+  "@publicationCommentaires": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "publicationAbonnes": "Réservée aux abonnés",
+  "publicationProduits": "Dans cette publication",
+  "mediaVideo": "Vidéo",
+  "mediaPosition": "{position}/{total}",
+  "@mediaPosition": {
+    "placeholders": {
+      "position": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "videoIllisible": "Impossible de lire la vidéo. Touche pour réessayer.",
+  "storyDe": "Story de {boutique}",
+  "@storyDe": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      }
+    }
+  },
+  "storyNouvelle": "{boutique}, nouvelle story",
+  "@storyNouvelle": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      }
+    }
+  },
+  "storySuivante": "Story suivante",
+  "storyPrecedente": "Story précédente",
+  "storyFermer": "Fermer",
+  "storyIllisible": "Cette story ne peut pas être affichée.",
+  "annuler": "Annuler",
+  "supprimer": "Supprimer",
+  "erreurActionInterdite": "Action impossible avec ce compte. Vérifie ton numéro de téléphone.",
+  "erreurContenuIntrouvable": "Ce contenu n'est plus disponible.",
+  "favoriAjouter": "Ajouter aux favoris",
+  "favoriRetirer": "Retirer des favoris",
+  "partageTitre": "Partager",
+  "partageCopierLien": "Copier le lien",
+  "partageLienCopie": "Lien copié",
+  "partageWhatsAppAbsent": "Impossible d'ouvrir WhatsApp sur cet appareil.",
+  "partageTexte": "Découvre {boutique} sur DROPP : {lien}",
+  "@partageTexte": {
+    "placeholders": {
+      "boutique": {
+        "type": "String"
+      },
+      "lien": {
+        "type": "String"
+      }
+    }
+  },
+  "commentairesTitre": "{count, plural, =0{Commentaires} =1{1 commentaire} other{{count} commentaires}}",
+  "@commentairesTitre": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentairesVide": "Pas encore de commentaire. Sois le premier !",
+  "commentairesVoirReponses": "{count, plural, =1{Voir 1 autre réponse} other{Voir {count} autres réponses}}",
+  "@commentairesVoirReponses": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commentairesConnexion": "Connecte-toi pour commenter",
+  "commentaireRepondre": "Répondre",
+  "commentaireCreateur": "Créateur",
+  "commentaireReponseA": "Réponse à {auteur}",
+  "@commentaireReponseA": {
+    "placeholders": {
+      "auteur": {
+        "type": "String"
+      }
+    }
+  },
+  "commentairePlaceholder": "Ajouter un commentaire… (@pseudo pour mentionner)",
+  "commentairePublier": "Publier",
+  "commentaireSupprimerTitre": "Supprimer ce commentaire ?",
+  "commentaireSupprimerTexte": "Il disparaîtra pour tout le monde, avec ses réponses.",
+  "rechercheIndice": "Robe, téléphone, boutique…",
+  "rechercheEffacer": "Effacer la recherche",
+  "decouvrirProduits": "Produits",
+  "decouvrirBoutiques": "Boutiques",
+  "catalogueTout": "Tout",
+  "catalogueVide": "Aucun produit avec ces filtres",
+  "catalogueEffacerFiltres": "Effacer les filtres",
+  "boutiquesVide": "Aucune boutique trouvée",
+  "triRecents": "Plus récents",
+  "triPrixCroissant": "Prix croissant",
+  "triPrixDecroissant": "Prix décroissant",
+  "triPopulaires": "Les plus aimés",
+  "filtresTitre": "Filtres",
+  "filtresPrix": "Prix (FCFA)",
+  "filtresPrixMin": "Min",
+  "filtresPrixMax": "Max",
+  "filtresTri": "Trier par",
+  "filtresEnStock": "En stock uniquement",
+  "filtresReinitialiser": "Réinitialiser",
+  "filtresAppliquer": "Voir les produits",
+  "prixMoinsDe": "Moins de {montant}",
+  "@prixMoinsDe": {
+    "placeholders": {
+      "montant": {
+        "type": "String"
+      }
+    }
+  },
+  "prixPlusDe": "Plus de {montant}",
+  "@prixPlusDe": {
+    "placeholders": {
+      "montant": {
+        "type": "String"
+      }
+    }
+  },
+  "prixAPartirDe": "À partir de {prix}",
+  "@prixAPartirDe": {
+    "placeholders": {
+      "prix": {
+        "type": "String"
+      }
+    }
+  },
+  "stockEnStock": "En stock",
+  "stockRupture": "Rupture de stock",
+  "stockPlusQue": "{count, plural, =1{Plus qu'1 en stock} other{Plus que {count} en stock}}",
+  "@stockPlusQue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "varianteNumero": "Option {numero}",
+  "@varianteNumero": {
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      }
+    }
+  },
+  "avisTitre": "Avis",
+  "avisTitreNombre": "{count, plural, =0{Avis} other{Avis ({count})}}",
+  "@avisTitreNombre": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avisNombre": "{count, plural, =0{aucun avis} =1{1 avis} other{{count} avis}}",
+  "@avisNombre": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avisAucun": "Pas encore d'avis sur ce produit.",
+  "avisVoirTous": "Voir les {count} avis",
+  "@avisVoirTous": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avisNote": "{note} étoiles sur 5",
+  "@avisNote": {
+    "placeholders": {
+      "note": {
+        "type": "int"
+      }
+    }
+  },
+  "avisMoyenne": "Note moyenne : {note} sur 5",
+  "@avisMoyenne": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "avisAchatVerifie": "Achat vérifié",
+  "boutiqueSuivre": "Suivre",
+  "boutiqueAbonne": "Abonné",
+  "boutiqueAbonnes": "{count, plural, =0{aucun abonné} =1{1 abonné} other{{count} abonnés}}",
+  "@boutiqueAbonnes": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "boutiqueAbonnesLibelle": "{count, plural, =1{abonné} other{abonnés}}",
+  "@boutiqueAbonnesLibelle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "boutiqueProduitsLibelle": "{count, plural, =1{produit} other{produits}}",
+  "@boutiqueProduitsLibelle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "boutiquePublications": "Publications",
+  "boutiqueAucunProduit": "Aucun produit en ligne pour le moment.",
+  "boutiqueAucunePublication": "Aucune publication pour le moment.",
+  "abonnementsTitre": "Mes abonnements",
+  "abonnementsVideTitre": "Tu ne suis encore aucune boutique",
+  "abonnementsDepuis": "Abonné depuis le {date}",
+  "@abonnementsDepuis": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "champEmail": "Adresse email",
+  "erreurEmailUtilisee": "Cette adresse email est déjà utilisée.",
+  "erreurMotDePasseIncorrect": "Mot de passe incorrect.",
+  "emailTitre": "Confirme ton adresse email",
+  "emailSousTitre": "Nous avons envoyé un code à {email}. Elle servira à récupérer ton compte.",
+  "@emailSousTitre": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailConfirmer": "Confirmer",
+  "emailConfirmee": "Adresse email confirmée.",
+  "emailPlusTard": "Plus tard",
+  "emailChangerLien": "Changer d'adresse",
+  "emailAjouterTitre": "Ajoute ton adresse email",
+  "emailChangerTitre": "Changer d'adresse email",
+  "emailChangerSousTitre": "Un code sera envoyé à la nouvelle adresse. L'ancienne reste active jusqu'à la confirmation.",
+  "emailRecevoirCode": "Recevoir le code",
+  "emailTitreConfirmee": "Adresse email confirmée",
+  "emailDejaConfirmee": "{email} est confirmée. Tu peux t'en servir pour récupérer ton compte.",
+  "@emailDejaConfirmee": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "enregistrer": "Enregistrer",
+  "aujourdhui": "Aujourd'hui",
+  "hier": "Hier",
+  "mediaGaleriePhoto": "Photo de la galerie",
+  "mediaPrendrePhoto": "Prendre une photo",
+  "mediaGalerieVideo": "Vidéo de la galerie",
+  "mediaFilmer": "Filmer une vidéo",
+  "fichierTropGros": "Fichier trop volumineux : {mo} Mo au maximum.",
+  "@fichierTropGros": {
+    "placeholders": {
+      "mo": {
+        "type": "int"
+      }
+    }
+  },
+  "fichierFormatRefuse": "Format non pris en charge. Choisis une photo (JPEG, PNG, WebP) ou une vidéo (MP4, MOV).",
+  "panierVide": "Ton panier est vide",
+  "panierVideTexte": "Ajoute des articles depuis la fiche d'un produit.",
+  "panierNombreArticles": "{count, plural, =1{1 article} other{{count} articles}}",
+  "@panierNombreArticles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panierAjouter": "Ajouter au panier",
+  "panierChoisirOption": "Choisis une option",
+  "panierAjoute": "Ajouté au panier",
+  "panierVoir": "Voir",
+  "panierStockInsuffisant": "Stock insuffisant pour cette quantité.",
+  "panierStockRestant": "{count, plural, =1{Plus qu'1 en stock : réduis la quantité} other{Plus que {count} en stock : réduis la quantité}}",
+  "@panierStockRestant": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panierIndisponible": "Plus disponible : retire-le pour commander",
+  "panierPrixModifie": "Prix mis à jour depuis l'ajout",
+  "panierQuantite": "Quantité : {count}",
+  "@panierQuantite": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panierMoins": "Diminuer la quantité",
+  "panierPlus": "Augmenter la quantité",
+  "panierSousTotal": "Sous-total",
+  "panierLivraison": "Livraison",
+  "panierLivraisonPlusTard": "Calculée à l'étape suivante",
+  "panierTotal": "Total",
+  "panierProtection": "Paiement protégé : le vendeur est payé après la livraison.",
+  "panierNonCommandable": "Retire les articles indisponibles pour commander.",
+  "panierCommander": "Commander · {prix}",
+  "@panierCommander": {
+    "placeholders": {
+      "prix": {
+        "type": "String"
+      }
+    }
+  },
+  "commanderTitre": "Passer la commande ?",
+  "commanderTexte": "Les articles sont réservés pendant {minutes} minutes, le temps du paiement. Sans paiement, la commande est annulée et le stock rendu.",
+  "@commanderTexte": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "commanderConfirmer": "Commander",
+  "commanderPanierChange": "Ton panier a changé (stock ou prix). Vérifie-le avant de commander.",
+  "commandesTitre": "Mes commandes",
+  "commandesVide": "Aucune commande pour le moment",
+  "commandeTitre": "Commande",
+  "commandeDu": "Commande du {date}",
+  "@commandeDu": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "commandeAPayerAvant": "À payer avant l'annulation automatique",
+  "commandeDelaiDepasse": "Délai dépassé : la commande va être annulée.",
+  "commandePaiementBientot": "Le paiement par Mobile Money (MTN MoMo, Orange Money) arrive très bientôt dans l'application.",
+  "commandeAnnuler": "Annuler la commande",
+  "commandeAnnulerTitre": "Annuler cette commande ?",
+  "commandeAnnulerTexte": "Les articles seront remis en vente.",
+  "commandeGarder": "Garder",
+  "commandeDejaTraitee": "Cette commande a déjà été traitée.",
+  "statutEnAttentePaiement": "En attente de paiement",
+  "statutNouvelle": "Payée",
+  "statutEnCours": "En préparation",
+  "statutExpediee": "Expédiée",
+  "statutLivree": "Livrée",
+  "statutAnnulee": "Annulée",
+  "statutEnLitige": "En litige",
+  "adressesTitre": "Mes adresses",
+  "adressesVide": "Aucune adresse enregistrée",
+  "adressesVideTexte": "Ajoute une adresse pour être livré plus vite.",
+  "adresseAjouter": "Ajouter une adresse",
+  "adresseModifier": "Modifier l'adresse",
+  "adresseSupprimerTitre": "Supprimer cette adresse ?",
+  "adresseLivraison": "Livraison",
+  "adresseFacturation": "Facturation",
+  "adresseAutre": "Autre",
+  "adressePrincipale": "Principale",
+  "adresseLigne1": "Quartier, rue, point de repère",
+  "adresseLigne2": "Complément (bâtiment, étage…)",
+  "adresseVille": "Ville",
+  "adresseRegion": "Région",
+  "adressePays": "Pays",
+  "adresseCodePostal": "Code postal",
+  "adresseDefinirPrincipale": "Adresse principale",
+  "avisANoterTitre": "Avis à laisser",
+  "avisANoterVide": "Rien à noter pour le moment",
+  "avisANoterVideTexte": "Tes articles livrés apparaîtront ici.",
+  "avisCommandeLe": "commandé le {date}",
+  "@avisCommandeLe": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "avisNoter": "Noter",
+  "avisTonAvis": "Ton avis",
+  "avisCommentaireIndice": "Qualité, taille, livraison… (facultatif)",
+  "avisPublier": "Publier l'avis",
+  "avisModifier": "Modifier mon avis",
+  "avisSupprimerTitre": "Supprimer ton avis ?",
+  "avisMesActions": "Gérer mon avis",
+  "avisNonModifiable": "Un avis n'est plus modifiable après 30 jours.",
+  "avisDejaDonne": "Tu as déjà donné ton avis sur cet article.",
+  "boutiqueMessage": "Message",
+  "boutiqueEcrire": "Écrire à la boutique",
+  "conversationsVide": "Aucune conversation",
+  "conversationsVideTexte": "Écris à une boutique depuis la fiche d'un produit ou sa page.",
+  "conversationCompteSupprime": "Compte supprimé",
+  "messageDeMoi": "Toi : {texte}",
+  "@messageDeMoi": {
+    "placeholders": {
+      "texte": {
+        "type": "String"
+      }
+    }
+  },
+  "messagePhoto": "📷 Photo",
+  "messageVideo": "🎥 Vidéo",
+  "messagePieceJointe": "📎 Pièce jointe",
+  "messageIndice": "Écris un message…",
+  "messageEnvoyer": "Envoyer",
+  "messageJoindre": "Joindre une photo ou une vidéo",
+  "messagePiecesMax": "{max} fichiers au plus par message.",
+  "@messagePiecesMax": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "messageFichiers": "{count, plural, =1{1 fichier} other{{count} fichiers}}",
+  "@messageFichiers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "messageEnvoi": "Envoi…",
+  "messageEnvoye": "Envoyé",
+  "messageLu": "Lu",
+  "messageEnvoiInterdit": "Impossible d'écrire dans cette conversation.",
+  "discussionDebut": "Début de la conversation",
+  "discussionFermee": "Cette conversation est fermée.",
+  "plusDOptions": "Plus d'options",
+  "discussionEcrit": "en train d'écrire…",
+  "signaler": "Signaler",
+  "signalerTitre": "Signaler ce contenu",
+  "signalementDescriptionObligatoire": "Explique ce qui ne va pas (obligatoire)",
+  "signalementDescriptionFacultative": "Précisions (facultatif)",
+  "signalementEnvoyer": "Envoyer le signalement",
+  "signalementAnonyme": "La personne signalée ne saura pas que c'est toi.",
+  "signalementEnvoye": "Merci. Notre équipe va examiner ce contenu.",
+  "signalementDejaFait": "Tu as déjà signalé ce contenu : il est en cours d'examen.",
+  "signalementPropreContenu": "Tu ne peux pas signaler ton propre contenu.",
+  "signalementsTitre": "Mes signalements",
+  "signalementsVide": "Aucun signalement",
+  "signalementOuvert": "Reçu",
+  "signalementEnCours": "En examen",
+  "signalementTraite": "Traité",
+  "signalementRejete": "Sans suite",
+  "ciblePublication": "Publication",
+  "cibleCommentaire": "Commentaire",
+  "cibleProduit": "Produit",
+  "cibleBoutique": "Boutique",
+  "cibleMessage": "Message",
+  "bloquer": "Bloquer",
+  "debloquer": "Débloquer",
+  "bloquerTitre": "Bloquer {nom} ?",
+  "@bloquerTitre": {
+    "placeholders": {
+      "nom": {
+        "type": "String"
+      }
+    }
+  },
+  "bloquerTexte": "Vous ne pourrez plus vous écrire, et cette personne ne pourra plus commenter tes publications ni te suivre. Tu pourras la débloquer depuis ton profil.",
+  "bloqueConfirme": "{nom} est bloqué.",
+  "@bloqueConfirme": {
+    "placeholders": {
+      "nom": {
+        "type": "String"
+      }
+    }
+  },
+  "bloquesTitre": "Utilisateurs bloqués",
+  "bloquesVide": "Personne n'est bloqué",
+  "bloquesVideTexte": "Tu peux bloquer quelqu'un depuis une conversation ou une page boutique.",
+  "bloqueLe": "Bloqué le {date}",
+  "@bloqueLe": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsTitre": "Notifications",
+  "notificationsNonLues": "{count, plural, =1{1 notification non lue} other{{count} notifications non lues}}",
+  "@notificationsNonLues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationsToutLire": "Tout marquer comme lu",
+  "notificationsPreferences": "Préférences de notification",
+  "notificationsVide": "Aucune notification",
+  "notificationNonLue": "Non lue",
+  "preferenceMessages": "Messages",
+  "preferenceSocial": "J'aime, commentaires, abonnés",
+  "preferencePromotions": "Promotions",
+  "preferencesExplication": "Choisis les notifications envoyées sur ton téléphone. Elles restent toutes visibles dans l'application. Les commandes, paiements et alertes de sécurité sont toujours envoyés.",
+  "favorisTitre": "Mes favoris",
+  "favorisProduitsVide": "Aucun produit en favori",
+  "favorisPublicationsVide": "Aucune publication enregistrée",
+  "favoriPlusEnVente": "plus en vente",
+  "profilPhoto": "Photo de profil",
+  "profilChangerPhoto": "Changer la photo",
+  "profilRetirerPhoto": "Retirer la photo",
+  "profilModifier": "Modifier le profil",
+  "profilSansPseudo": "Pas encore de pseudo",
+  "profilEmail": "Adresse email",
+  "profilEmailAbsent": "Aucune adresse email",
+  "profilEmailAConfirmer": "{email} · à confirmer",
+  "@profilEmailAConfirmer": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profilSectionAchats": "ACHATS",
+  "profilSectionSocial": "SUIVIS ET FAVORIS",
+  "profilSectionCompte": "COMPTE",
+  "profilSectionVendeur": "VENDRE SUR DROPP",
+  "profilEspaceVendeur": "Espace vendeur",
+  "profilDevenirVendeur": "Devenir vendeur",
+  "deconnexion": "Se déconnecter",
+  "deconnexionTitre": "Se déconnecter de cet appareil ?",
+  "champPseudo": "Pseudo (@)",
+  "pseudoDisponible": "Ce pseudo est disponible.",
+  "pseudoPris": "Ce pseudo est déjà pris.",
+  "pseudoReserve": "Ce pseudo est réservé. Choisis-en un autre.",
+  "pseudoFormat": "3 à 30 caractères : lettres minuscules, chiffres, « _ » ou « . ».",
+  "securiteTitre": "Sécurité",
+  "securiteIdentifiants": "IDENTIFIANTS",
+  "securiteAppareils": "APPAREILS CONNECTÉS",
+  "securiteCompte": "COMPTE",
+  "motDePasseChanger": "Changer le mot de passe",
+  "motDePasseChangerTexte": "Tes autres appareils seront déconnectés.",
+  "champMotDePasseActuel": "Mot de passe actuel",
+  "motDePasseChange": "Mot de passe changé.",
+  "erreurMotDePasseActuel": "Mot de passe actuel incorrect.",
+  "erreurMotDePasseRefuse": "Ce mot de passe n'est pas accepté : il doit être différent de l'actuel et plus solide.",
+  "telephoneChanger": "Changer de numéro",
+  "telephoneChangerTexte": "Un code sera envoyé par SMS au nouveau numéro.",
+  "telephoneDejaUtilise": "Ce numéro est déjà utilisé par un autre compte.",
+  "telephoneChange": "Numéro de téléphone changé.",
+  "appareilInconnu": "Appareil",
+  "appareilActuel": "Cet appareil",
+  "appareilDerniereUtilisation": "Dernière activité : {quand}",
+  "@appareilDerniereUtilisation": {
+    "placeholders": {
+      "quand": {
+        "type": "String"
+      }
+    }
+  },
+  "deconnecterPartout": "Déconnecter tous les appareils",
+  "deconnecterPartoutTitre": "Déconnecter tous les appareils ?",
+  "deconnecterPartoutTexte": "Y compris celui-ci : il faudra te reconnecter partout.",
+  "compteSupprimer": "Supprimer mon compte",
+  "compteSupprimerTitre": "Supprimer ton compte ?",
+  "compteSupprimerTexte": "Ton profil, tes favoris, tes messages et ta boutique éventuelle seront supprimés. C'est définitif. Saisis ton mot de passe pour confirmer.",
+  "compteSupprimerConfirmer": "Supprimer définitivement",
+  "compteSupprime": "Ton compte a été supprimé.",
+  "compteCommandesEnCours": "Des commandes sont encore en cours : attends leur livraison ou annule-les avant de supprimer ton compte.",
+  "bienvenue1Titre": "Suis les boutiques que tu aimes",
+  "bienvenue1Texte": "Découvre leurs nouveautés en vidéo, discute avec le vendeur et achète en Mobile Money.",
+  "bienvenue2Titre": "Discute avec le vendeur",
+  "bienvenue2Texte": "Pose tes questions, demande une taille ou une couleur avant de commander, directement dans l'app.",
+  "bienvenue3Titre": "Paie en Mobile Money, en confiance",
+  "bienvenue3Texte": "MTN MoMo ou Orange Money. Ton argent est bloqué jusqu'à la réception du colis.",
+  "bienvenuePage": "Page {numero} sur {total}",
+  "@bienvenuePage": {
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+
+  "vendeurTitre": "Devenir vendeur",
+  "vendeurIntro": "Vends tes produits aux clients de DROPP. Nous vérifions ton identité pour protéger les acheteurs.",
+  "vendeurPrerequisTitre": "Ce qu'il te faut",
+  "vendeurPrerequisTelephone": "Un téléphone vérifié",
+  "vendeurPrerequisCni": "Ta carte nationale d'identité (CNI)",
+  "vendeurPrerequisSelfie": "Un selfie de vérification",
+  "vendeurDelai": "Validation par l'équipe DROPP : prévois 24 à 48 h.",
+  "vendeurCommencer": "Commencer",
+  "vendeurSuite": "Prochaine étape : l'envoi de tes documents.",
+  "vendeurSuspendu": "Ton compte vendeur est suspendu. Contacte le support DROPP.",
+
+  "reessayer": "Réessayer",
+
+  "kycIntro": "Envoie ta carte d'identité (recto et verso) et un selfie. Ces documents ne servent qu'à vérifier ton identité.",
+  "kycTitreDocuments": "Tes documents",
+  "kycCniRecto": "Carte d'identité · recto",
+  "kycCniVerso": "Carte d'identité · verso",
+  "kycSelfie": "Selfie de vérification",
+  "kycAideCni": "Pose ta carte à plat, bien éclairée, sans reflet. Les quatre coins doivent être visibles.",
+  "kycAideSelfie": "Ton visage de face, bien éclairé, sans lunettes ni casquette.",
+  "kycPrendrePhoto": "Prendre la photo",
+  "kycReprendrePhoto": "Reprendre",
+  "kycGalerie": "Choisir dans la galerie",
+  "kycEnvoye": "Envoyé",
+  "kycRefuse": "Refusé, à refaire",
+  "kycEnvoiEnCours": "Envoi en cours…",
+  "kycPhotoTropLourde": "Photo trop lourde (10 Mo maximum). Reprends-la.",
+  "kycCameraIndisponible": "Impossible d'ouvrir l'appareil photo. Vérifie les autorisations de l'app.",
+  "kycFormatNonSupporte": "Format non accepté. Utilise une photo JPEG, PNG ou WebP.",
+  "kycDossierRefuse": "Ton dossier a été refusé : {motif}",
+  "@kycDossierRefuse": {
+    "placeholders": {
+      "motif": { "type": "String" }
+    }
+  },
+  "kycDossierRefuseSansMotif": "Ton dossier a été refusé. Reprends tes documents.",
+  "kycEnVerificationTitre": "Vérification en cours",
+  "kycEnVerificationTexte": "Nous vérifions ton identité pour protéger les acheteurs. Prévois 24 à 48 h.",
+  "kycEtapeTelephone": "Téléphone vérifié",
+  "kycEtapeCni": "Pièce d'identité (CNI) envoyée",
+  "kycEtapeSelfie": "Selfie de vérification",
+  "kycEtapeValidation": "Validation par l'équipe DROPP",
+  "kycActualiser": "Actualiser",
+  "kycRetourProfil": "Retour au profil",
+  "etapeSur": "Étape {etape} sur {total}",
+  "@etapeSur": {
+    "placeholders": {
+      "etape": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kycCniTitre": "Ta carte d'identité",
+  "kycCniExplication": "Importe le recto, puis le verso. Vérifie que la photo est bien nette avant de continuer.",
+  "kycApercuRecto": "Aperçu du recto de la carte d'identité",
+  "kycApercuVerso": "Aperçu du verso de la carte d'identité",
+  "kycApercuAbsent": "Document envoyé. L'aperçu n'est pas disponible sur cet appareil.",
+  "kycStatutAImporter": "À importer",
+  "kycStatutAVerifier": "À vérifier",
+  "kycUtiliserPhoto": "Utiliser cette photo",
+  "kycRemplacerPhoto": "Remplacer",
+  "kycVersoApresRecto": "Importe d'abord le recto.",
+  "kycContinuer": "Continuer",
+  "kycRetour": "Retour",
+  "kycAgrandir": "Toucher pour agrandir",
+  "kycFermer": "Fermer",
+  "kycCommencer": "Commencer la vérification",
+  "kycReprendre": "Reprendre ma vérification",
+  "kycTonParcours": "Ton parcours",
+  "kycEtapeCniTitre": "Carte d'identité",
+  "kycEtapeInfosTitre": "Informations de la carte",
+  "kycEtapeSelfieTitre": "Selfie de vérification",
+  "kycEtapeRecapTitre": "Récapitulatif et envoi",
+  "kycEtapeTerminee": "Terminé · toucher pour modifier",
+  "kycEtapeAFaire": "À faire",
+  "kycEtapeVerrouillee": "Disponible après l'étape précédente",
+  "annuler": "Annuler",
+  "kycInfosTitre": "Informations de ta carte",
+  "kycInfosExplication": "Vérifie que ces informations correspondent exactement à ta carte d'identité.",
+  "kycAutoTitre": "Remplir automatiquement",
+  "kycAutoExplication": "Nous pouvons lire les informations visibles sur ta carte d'identité pour préremplir ce formulaire. Vérifie chaque information et corrige les erreurs avant de continuer.",
+  "kycLectureEnCours": "Lecture de ta carte en cours…",
+  "kycLectureEchec": "Nous n'avons pas réussi à lire ta carte. Remplis les informations à la main.",
+  "kycLectureIntrouvable": "Nous ne trouvons pas ta carte. Reviens à l'étape précédente et importe-la de nouveau.",
+  "kycLectureLente": "La lecture prend trop de temps. Réessaie ou remplis les informations à la main.",
+  "kycLectureIncertaine": "Certaines informations sont difficiles à lire. Vérifie-les avec attention.",
+  "kycOuMain": "ou remplis à la main",
+  "kycChampNom": "Nom (sur la carte)",
+  "kycChampPrenom": "Prénom(s) (sur la carte)",
+  "kycChampNumero": "Numéro de la carte",
+  "kycChampNaissance": "Date de naissance",
+  "kycChampLieu": "Lieu de naissance",
+  "kycChampDelivrance": "Date de délivrance",
+  "kycChampExpiration": "Date d'expiration",
+  "kycFormatDate": "JJ/MM/AAAA",
+  "kycChoisirDate": "Choisir une date",
+  "kycLuSurCarte": "Lu sur ta carte : vérifie",
+  "kycChampAComplete": "Non lu : à compléter",
+  "kycCarteExpiree": "Cette carte semble expirée. Elle risque d'être refusée.",
+  "kycInfosConformes": "Ces informations correspondent à ma carte d'identité.",
+  "kycInfosConfirmer": "Confirmer et continuer",
+  "kycInfosRefusees": "Certaines informations n'ont pas été acceptées. Vérifie-les.",
+  "kycRemplacerSaisieTitre": "Remplacer ta saisie ?",
+  "kycRemplacerSaisieTexte": "Les informations déjà saisies seront remplacées par celles lues sur ta carte.",
+  "kycRemplacer": "Remplacer",
+  "erreurNumeroCni": "6 à 20 lettres ou chiffres",
+  "erreurDateInvalide": "Date invalide (JJ/MM/AAAA)",
+  "erreurDateNaissance": "Date de naissance impossible",
+  "erreurDateFuture": "La date ne peut pas être dans le futur",
+  "erreurExpirationAvantDelivrance": "L'expiration doit venir après la délivrance",
+  "erreurCarteExpiree": "Cette carte est expirée",
+  "erreurNaissanceIncoherente": "La naissance doit précéder la délivrance",
+  "kycServeurCarteExpiree": "Ta carte d'identité est expirée. Utilise une carte en cours de validité.",
+  "kycServeurDatesIncoherentes": "Les dates de ta carte sont incohérentes. Vérifie la délivrance et l'expiration.",
+  "kycServeurNaissanceIncoherente": "Ta date de naissance semble incohérente. Vérifie-la.",
+  "kycServeurAgeMinimum": "Tu dois avoir au moins {age} ans pour vendre sur DROPP.",
+  "@kycServeurAgeMinimum": {
+    "placeholders": {
+      "age": { "type": "int" }
+    }
+  },
+  "kycSelfieTitre": "Ton selfie",
+  "kycSelfieExplication": "Cette photo sert à vérifier que tu es bien le titulaire de la carte d'identité.",
+  "kycConsignesTitre": "Avant de commencer",
+  "kycConsigne1": "Place-toi dans un endroit bien éclairé, la lumière devant toi.",
+  "kycConsigne2": "Regarde l'objectif.",
+  "kycConsigne3": "Garde ton visage entièrement visible et bien centré.",
+  "kycConsigne4": "Retire tes lunettes, ta casquette ou ton masque.",
+  "kycConsigne5": "Évite les photos floues et le contre-jour.",
+  "kycPrendreSelfie": "Prendre mon selfie",
+  "kycApercuSelfie": "Aperçu de ton selfie",
+  "kycCameraGuide": "Place ton visage dans l'ovale",
+  "kycCameraRefusee": "L'accès à la caméra est refusé. Autorise-le dans les réglages de ton téléphone (Applications, DROPP, Autorisations), puis reviens ici.",
+  "kycCameraAvantIndisponible": "Nous ne trouvons pas de caméra avant sur ce téléphone. Le selfie est nécessaire pour vérifier ton identité.",
+  "kycCameraErreur": "Impossible d'ouvrir la caméra. Réessaie.",
+  "kycRecapTitre": "Récapitulatif",
+  "kycRecapExplication": "Vérifie ton dossier. Tu peux modifier chaque élément avant de l'envoyer.",
+  "kycRecapInfosTitre": "Informations de la carte",
+  "kycRecapDocumentsTitre": "Documents",
+  "kycModifier": "Modifier",
+  "kycAfficher": "Afficher",
+  "kycMasquer": "Masquer",
+  "kycDonneeNonRenseignee": "Non renseigné",
+  "kycConsentement": "J'accepte que ma pièce d'identité et mon selfie soient traités pour vérifier mon identité, y compris par une comparaison faciale réalisée par un prestataire externe.",
+  "kycSoumettreExplication": "En soumettant ton dossier, tu le transmets à l'équipe DROPP pour vérification. Tant qu'il est en cours d'examen, tu ne peux plus le modifier.",
+  "kycSoumettre": "Soumettre mon dossier",
+  "kycSoumisSucces": "Ton dossier a bien été transmis. Nous t'informerons dès que sa vérification sera terminée.",
+  "kycSoumettreIncomplet": "Complète les étapes suivantes avant d'envoyer ton dossier.",
+  "kycPhotoEnAttente": "Une photo n'a pas encore été envoyée. Termine l'étape correspondante.",
+  "kycSoumissionRefusee": "Ton dossier n'a pas pu être envoyé. Vérifie chaque étape, puis réessaie.",
+  "kycSoumissionEnCours": "Une soumission est déjà en cours. Patiente un instant.",
+  "kycErrProfilIntrouvable": "Ton profil vendeur est introuvable. Reviens à l'écran « Devenir vendeur » pour le créer.",
+  "kycErrOcrIndisponible": "La lecture automatique de la carte est indisponible pour le moment. Remplis les informations à la main.",
+  "kycErrDossierIntrouvable": "Aucun dossier de vérification n'a été trouvé. Commence la vérification pour en créer un.",
+  "kycErrDossierNonModifiable": "Ton dossier ne peut pas être modifié dans son état actuel.",
+  "kycErrDejaVerifie": "Ton identité est déjà vérifiée.",
+  "kycErrEnCoursDeRevue": "Ton dossier est en cours de vérification. Tu ne peux pas le modifier pour le moment.",
+  "kycErrDejaSoumis": "Ton dossier a déjà été envoyé.",
+  "kycErrCniRectoManquant": "Importe d'abord le recto de ta carte d'identité.",
+  "kycErrNumeroCniInvalide": "Le numéro de ta carte n'est pas valide. Vérifie-le.",
+  "kycErrNaissanceInvalide": "Ta date de naissance n'est pas valide. Vérifie-la.",
+  "kycErrDelivranceInvalide": "La date de délivrance n'est pas valide. Vérifie-la.",
+  "kycErrExpirationInvalide": "La date d'expiration n'est pas valide. Vérifie-la.",
+  "kycErrAgeMinimum": "Tu n'as pas l'âge minimum requis pour vendre sur DROPP.",
+  "kycErrDonneesIncompletes": "Certaines informations de ta carte sont manquantes. Complète tous les champs.",
+  "kycErrDocumentsManquants": "Il manque des documents. Importe ta carte (recto et verso) et ton selfie.",
+  "kycErrConsentementRequis": "Tu dois accepter le traitement de tes documents pour envoyer ton dossier."
+}
