@@ -33,6 +33,10 @@ void main() {
   test("l'expiration doit suivre la délivrance", () {
     expect(
       validerDateExpiration('01/01/2020', '02/01/2020'),
+      ErreurChamp.carteExpiree,
+    );
+    expect(
+      validerDateExpiration('01/01/2027', '02/01/2027'),
       ErreurChamp.expirationAvantDelivrance,
     );
     expect(validerDateExpiration('02/01/2030', '02/01/2020'), isNull);
