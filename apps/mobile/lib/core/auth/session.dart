@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../api/api_client.dart';
 import '../api/api_exception.dart';
+import 'device_infos.dart';
 import 'jetons.dart';
 import 'stockage_session.dart';
 import 'utilisateur.dart';
@@ -44,6 +46,7 @@ final utilisateurConnecteProvider = Provider<Utilisateur?>((ref) {
 class SessionNotifier extends Notifier<EtatSession> {
   StockageSession get _stockage => ref.read(stockageSessionProvider);
   ApiClient get _api => ref.read(apiClientProvider);
+  DeviceInfosService get _deviceInfos => ref.read(deviceInfosServiceProvider);
 
   @override
   EtatSession build() {
@@ -80,6 +83,7 @@ class SessionNotifier extends Notifier<EtatSession> {
   /// Recharge `/auth/me` (après être devenu vendeur, avoir changé d'email…).
   Future<void> rafraichirProfil() async {
     try {
+      final deviceInfos = await _deviceInfos.get();
       final json = await _api.get<Map<String, dynamic>>('/auth/me');
       await _stockage.ecrireProfil(json);
       state = SessionConnectee(Utilisateur.fromJson(json));

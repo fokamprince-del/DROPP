@@ -59,6 +59,19 @@ void main() {
 
     expect(find.text('Suis les boutiques que tu aimes'), findsOneWidget);
 
+    // Parcourir les deux premières pages.
+    await tester.drag(
+      find.byType(PageView),
+      const Offset(-500, 0),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.drag(
+      find.byType(PageView),
+      const Offset(-500, 0),
+    );
+    await tester.pumpAndSettle();
+
     await tester.tap(find.text('Créer un compte'));
     await tester.pumpAndSettle();
 

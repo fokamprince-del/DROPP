@@ -11,6 +11,8 @@ import { OtpService } from '../services/otp.service.js';
 import { NotificationService } from '../services/notification.service.js';
 import { TelephoneService } from '../services/telephone.service.js';
 import { VerrouillageService } from '../services/verrouillage.service.js';
+import { MethodeAuthentification } from '@dropp/database';
+import { AppareilService } from '../services/appareil.service.js';
 
 /**
  * Statuts autorisant la connexion.
@@ -32,6 +34,7 @@ export class ConnexionService {
     private readonly notificationService: NotificationService,
     private readonly telephoneService: TelephoneService,
     private readonly verrouillage: VerrouillageService,
+    private readonly appareilService: AppareilService,
   ) {}
 
   /**
@@ -41,6 +44,8 @@ export class ConnexionService {
   async executer(
     dto: ConnexionDto,
     adresseIp?: string,
+    appareilId?: string,
+    appareilName?:string
   ): Promise<
    { verificationRequise: boolean; verificationToken?: string } & Partial<JetonsEmis>
   > {
@@ -135,13 +140,13 @@ export class ConnexionService {
       })
       .catch(() => undefined);
     await this.journaliser(utilisateur.id, 'CONNEXION_REUSSIE', adresseIp);
-
     const jetons =await  this.jetonService.ouvrirSession({
       utilisateurId: utilisateur.id,
       statutCompte: utilisateur.statutCompte,
       telephoneVerifie: utilisateur.telephoneVerifieLe !== null,
-      methodeAuth: estEmail ? 'EMAIL_MDP' : 'TELEPHONE_MDP',
+      methodeAuth: estEmail ? MethodeAuthentification.EMAIL_MDP : MethodeAuthentification.TELEPHONE_MDP,
       adresseIp,
+      appareilId
     });
     return {
       verificationRequise: false,

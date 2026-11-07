@@ -62,9 +62,9 @@ void main() {
   test('remplacer une photo envoyée la remet en attente', () {
     final conteneur = _conteneur();
     final notifier = conteneur.read(brouillonKycProvider.notifier)
-      ..choisir(TypeDocumentKyc.cniRecto, _photo(fichiersTest[1]))
+      ..choisir(TypeDocumentKyc.cniRecto, _photo(fichiersTest[0]))
       ..marquerEnvoyee(TypeDocumentKyc.cniRecto)
-      ..choisir(TypeDocumentKyc.cniRecto, _photo(fichiersTest[2]));
+      ..choisir(TypeDocumentKyc.cniRecto, _photo(fichiersTest[1]));
 
     final etat = conteneur.read(brouillonKycProvider);
     expect(etat.enAttenteDEnvoi(TypeDocumentKyc.cniRecto), isTrue);
@@ -76,7 +76,7 @@ void main() {
   test('vider efface tout', () {
     final conteneur = _conteneur();
     conteneur.read(brouillonKycProvider.notifier)
-      ..choisir(TypeDocumentKyc.photoFaciale, _photo(fichiersTest[3]))
+      ..choisir(TypeDocumentKyc.photoFaciale, _photo(fichiersTest[2]))
       ..vider();
     expect(conteneur.read(brouillonKycProvider).photos, isEmpty);
   });
