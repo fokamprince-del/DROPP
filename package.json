@@ -49,7 +49,7 @@
     "prisma:migrate:status": "pnpm --filter @dropp/database migrate:status",
     "prisma:migrate:dev": "pnpm --filter @dropp/database migrate:dev",
     "prisma:migrate:reset": "pnpm --filter @dropp/database migrate:reset",
-    "prisma:migrate:deploy": "pnpm --filter @dropp/database migraye:deploy",
+    "prisma:migrate:deploy": "pnpm --filter @dropp/database migrate:deploy",
 
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose stop postgres",

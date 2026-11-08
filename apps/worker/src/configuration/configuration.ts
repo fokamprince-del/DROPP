@@ -6,7 +6,7 @@ export default () => ({
   redis: {
     host: process.env.REDIS_HOST ?? 'localhost',
     port: process.env.REDIS_PORT ?? '6379',
-    password: process.env.REDIS_PASSWORD!,
+    password: process.env.REDIS_PASSWORD || undefined, // vide = Redis sans auth (réseau privé)
   },
   email: {
     resendApiKey: process.env.RESEND_API_KEY || undefined,
@@ -36,14 +36,14 @@ export default () => ({
     url: process.env.DATABASE_URL!,
     poolMax: process.env.DATABASE_WORKER_POOL_MAX ?? 5
   },
-  // stockage: {
-  //   driver: process.env.STOCKAGE_DRIVER ?? 'stub',
-  //   r2: {
-  //     accessKeyId: process.env.R2_ACCESS_KEY_ID,
-  //     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
-  //     bucket: process.env.R2_BUCKET,
-  //     bucketPrive: process.env.R2_BUCKET_PRIVE!,
-  //     endpoint: process.env.R2_ENDPOINT
-  //   }
-  // }
+  stockage: {
+    driver: process.env.STOCKAGE_DRIVER ?? 'stub',
+    r2: {
+      accessKeyId: process.env.R2_ACCESS_KEY_ID,
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+      bucket: process.env.R2_BUCKET,
+      bucketPrive: process.env.R2_BUCKET_PRIVE!,
+      endpoint: process.env.R2_ENDPOINT
+    }
+  }
 });

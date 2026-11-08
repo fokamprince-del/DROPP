@@ -13,7 +13,7 @@ export const RedisProvider = {
     const client = new Redis({
       host: config.getOrThrow<string>('redis.host'),
       port: config.getOrThrow<number>('redis.port'),
-      password: config.getOrThrow<string>('redis.password'),
+      password: config.get<string>('redis.password'),
       retryStrategy: (times: number) => {
         if (times > 10) {
           logger.error('Redis : trop de tentatives de reconnexion. Abandon.');

@@ -65,7 +65,7 @@ export const validationSchema = Joi.object({
 
   REDIS_HOST: Joi.string().default('localhost'),
   REDIS_PORT: Joi.number().integer().min(1).max(65535).default(6379),
-  REDIS_PASSWORD: Joi.string().required(),
+  REDIS_PASSWORD: Joi.string().allow('').default(''),
   REDIS_MAX_MEMORY: Joi.string().default('256mb'),
   REDIS_OTP_TTL: Joi.number().integer().min(60).max(3600).default(300),
   REDIS_OTP_COOLDOWN: Joi.number().integer().min(30).max(300).default(60),

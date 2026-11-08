@@ -1,73 +1,104 @@
+name: DROPP - CI
 
-# name: DROPP - CI et publication Docker
+# Render redéploie l'API à chaque push sur main. Dans Render, régler
+# "Auto-Deploy" sur "After CI Checks Pass" pour ne déployer que si ce CI passe.
 
-# on:
-#   pull_request:
-#     branches:
-#       - main
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-#   push:
-#     branches:
-#       - main
+permissions:
+  contents: read
 
-#   workflow_dispatch:
+concurrency:
+  group: dropp-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-# permissions:
-#   contents: read
+jobs:
+  backend:
+    name: Backend (API + worker)
+    runs-on: ubuntu-latest
 
-# concurrency:
-#   group: dropp-${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://test:test@localhost:5432/dropp_test
+      DIRECT_URL: postgresql://test:test@localhost:5432/dropp_test
 
-# jobs:
-#   ci:
-#     name: Vérification du projet
-#     runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
 
-#     env:
-#       NODE_ENV: test
-#       DATABASE_URL: postgresql://test:test@localhost:5432/dropp_test
-#       DIRECT_URL: postgresql://test:test@localhost:5432/dropp_test
+      # Version lue dans "packageManager" (package.json).
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
 
-#     steps:
-#       - name: Récupérer le dépôt
-#         uses: actions/checkout@v4
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
 
-#       - name: Installer pnpm
-#         uses: pnpm/action-setup@v4
-#         with:
-#           version: 12.4.1
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
 
-#       - name: Installer Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 24
-#           cache: pnpm
+      - name: Générer les packages partagés
+        run: pnpm run generer
 
-#       - name: Installer les dépendances
-#         run: pnpm install --frozen-lockfile
+      - name: Vérifier Prisma
+        run: pnpm run prisma:validate
 
-#       - name: Générer les packages partagés
-#         run: pnpm run generer
+      - name: Lint
+        run: pnpm run lint
 
-#       - name: Vérifier Prisma
-#         run: pnpm --filter @dropp/database exec prisma validate
+      - name: Vérification TypeScript
+        run: pnpm run typecheck
 
-#       - name: Lint
-#         run: pnpm run lint
+      - name: Tests
+        run: pnpm run test
 
-#       - name: Vérification TypeScript
-#         run: pnpm run typecheck
+      - name: Build API
+        run: pnpm run api:build
 
-#       - name: Tests
-#         run: pnpm run test
+      - name: Build Worker
+        run: pnpm run worker:build
 
-#       - name: Build API
-#         run: pnpm run api:build
+  mobile:
+    name: Mobile (analyse + tests)
+    runs-on: ubuntu-latest
 
-#       - name: Build Worker
-#         run: pnpm run worker:build
+    defaults:
+      run:
+        working-directory: apps/mobile
 
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Dépendances
+        run: flutter pub get
+
+      - name: Analyse
+        run: flutter analyze
+
+      - name: Tests
+        run: flutter test
+
+
+# ------------------------------------------------------------------
+# Publication Docker + déploiement OCI : désactivés (hébergement Render
+# pour la version de test). À réactiver plus tard.
+# ------------------------------------------------------------------
 
 #   publish:
 #     name: Publication des images ARM64

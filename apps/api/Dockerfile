@@ -76,6 +76,11 @@ COPY --from=build --chown=node:node /app/packages/database/dist ./packages/datab
 
 COPY --from=build --chown=node:node /app/packages/contrats/dist ./packages/contrats/dist
 
+# Données OCR (Tesseract) embarquées : évite un téléchargement au premier KYC.
+# Le dossier doit appartenir à node : Tesseract y écrit son cache.
+COPY --from=build --chown=node:node /app/apps/api/fra.traineddata ./apps/api/fra.traineddata
+RUN chown node:node /app/apps/api
+
 # Port documentaire uniquement
 EXPOSE 3000
 

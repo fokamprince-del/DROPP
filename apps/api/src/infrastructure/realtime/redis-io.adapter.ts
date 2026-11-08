@@ -23,7 +23,7 @@ export class RedisIoAdapter extends IoAdapter {
     const options = {
       host: config.getOrThrow<string>('redis.host'),
       port: config.getOrThrow<number>('redis.port'),
-      password: config.getOrThrow<string>('redis.password'),
+      password: config.get<string>('redis.password'),
     };
     const pub = new Redis(options);
     const sub = pub.duplicate();

@@ -33,7 +33,7 @@ export default () => ({
   redis: {
     host: process.env.REDIS_HOST ?? 'localhost',
     port: Number(process.env.REDIS_PORT ?? 6379),
-    password: process.env.REDIS_PASSWORD!,
+    password: process.env.REDIS_PASSWORD || undefined, // vide = Redis sans auth (réseau privé)
     otpTtl: Number(process.env.REDIS_OTP_TTL ?? 300),
     otpCooldown: Number(process.env.REDIS_OTP_COOLDOWN ?? 60),
     otpMaxTentatives: Number(process.env.REDIS_OTP_MAX_TENTATIVES ?? 5),
