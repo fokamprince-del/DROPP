@@ -17,6 +17,7 @@ import { OtpService } from './services/otp.service.js';
 import { SessionsService } from './use-cases/sessions.service.js';
 import { TelephoneService } from './services/telephone.service.js';
 import { VerrouillageService } from './services/verrouillage.service.js';
+import { AppareilService } from './services/appareil.service.js';
 
 import { ConnexionService } from './use-cases/connexion.service.js';
 import { DeconnexionService } from './use-cases/deconnexion.service.js';
@@ -65,6 +66,7 @@ import { ChangementMotDePasseService } from './use-cases/changement-mot-de-passe
     OtpService,
     TelephoneService,
     VerrouillageService,
+    AppareilService,
 
     // Cas d'usage
     ConnexionService,
