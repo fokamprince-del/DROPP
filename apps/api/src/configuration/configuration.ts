@@ -23,6 +23,9 @@ export default () => ({
     verificationTtlSeconds: dureeEnSecondes(
       process.env.AUTH_VERIFICATION_TTL ?? '15m',
     ),
+    // Mode test (bêta sans SMS) : code fixe pour une liste fermée de numéros.
+    otpTestCode: process.env.OTP_TEST_CODE ?? '',
+    otpTestDestinations: liste(process.env.OTP_TEST_DESTINATIONS),
   },
 
   database: {

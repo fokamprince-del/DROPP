@@ -79,6 +79,19 @@ export const validationSchema = Joi.object({
   AUTH_VERIFICATION_SECRET: Joi.string().min(32).required(),
   AUTH_VERIFICATION_TTL: Joi.string().pattern(DUREE).default('15m'),
 
+  // Mode test (bêta fermée sans worker SMS) : les destinations listées
+  // reçoivent toujours OTP_TEST_CODE au lieu d'un code aléatoire.
+  // Les deux variables vides = mode désactivé (comportement normal).
+  // Exemple : OTP_TEST_CODE=123456  OTP_TEST_DESTINATIONS=+237650000001,+237690000002
+  OTP_TEST_CODE: Joi.string().pattern(/^\d{6}$/).allow('').default(''),
+  OTP_TEST_DESTINATIONS: Joi.string()
+    .allow('')
+    .default('')
+    .when('OTP_TEST_CODE', {
+      is: Joi.string().min(1),
+      then: Joi.string().pattern(/^\s*[^,\s]+(\s*,\s*[^,\s]+)*\s*$/).required(),
+    }),
+
   // Délai de paiement d'une commande avant annulation auto (stock libéré).
   COMMANDE_DELAI_PAIEMENT_MINUTES: Joi.number()
     .integer()

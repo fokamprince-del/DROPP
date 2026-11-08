@@ -72,4 +72,37 @@ describe('OtpService', () => {
     const succes = [a, b].filter((r) => r.status === 'fulfilled');
     expect(succes).toHaveLength(1);
   });
+
+  describe('mode test (code fixe)', () => {
+    const avecModeTest = (code: string, destinations: string[]) => {
+      const cfg = { ...CONFIG, 'auth.otpTestCode': code, 'auth.otpTestDestinations': destinations };
+      const redis = new RedisMemoire();
+      return new OtpService(redis.commeRedis(), {
+        getOrThrow: (cle: string) => cfg[cle],
+      } as ConfigService);
+    };
+
+    it('donne le code fixe aux destinations listées, et il se valide', async () => {
+      const otp = avecModeTest('123456', [DESTINATION]);
+      const { code } = await generer(otp);
+      expect(code).toBe('123456');
+      await expect(verifier(otp, '123456')).resolves.toEqual({ utilisateurId: 'u1' });
+    });
+
+    it("n'accepte pas le code fixe pour une destination non listée", async () => {
+      const otp = avecModeTest('123456', ['+237699999999']);
+      const { code } = await generer(otp);
+      // Code aléatoire : le code fixe ne passe pas (sauf coïncidence 1/10^6).
+      if (code !== '123456') {
+        await expect(verifier(otp, '123456')).rejects.toBeInstanceOf(BadRequestException);
+      }
+      await expect(verifier(otp, code)).resolves.toEqual({ utilisateurId: 'u1' });
+    });
+
+    it('reste désactivé sans code, même avec des destinations', async () => {
+      const otp = avecModeTest('', [DESTINATION]);
+      const { code } = await generer(otp);
+      expect(code).toMatch(/^\d{6}$/);
+    });
+  });
 });
