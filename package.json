@@ -10,13 +10,13 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "typecheck": "turbo typecheck",
-
-    "postinstall": "pnpm run generer",
+    
     "generer": "pnpm --filter @dropp/database generate && pnpm --filter @dropp/database build && pnpm --filter @dropp/contrats build",
 
     "api:dev": "pnpm --filter api start:dev",
     "api:build": "pnpm --filter api build",
-    "api:start": "pnpm --filter api start:prod",
+    "api:start": "pnpm --filter api start",
+    "api:start:prod": "pnpm --filter api start:prod",
     "api:format": "pnpm --filter api format",
     "api:lint": "pnpm --filter api lint",
     "api:test": "pnpm --filter api test",
@@ -26,7 +26,8 @@
 
     "worker:dev": "pnpm --filter worker start:dev",
     "worker:build": "pnpm --filter worker build",
-    "worker:start": "pnpm --filter worker start:prod",
+    "worker:start": "pnpm --filter worker start",
+    "worker:start:prod": "pnpm --filter worker start:prod",
     "worker:format": "pnpm --filter worker format",
     "worker:lint": "pnpm --filter worker lint",
     "worker:test": "pnpm --filter worker test",
@@ -48,6 +49,7 @@
     "prisma:migrate:status": "pnpm --filter @dropp/database migrate:status",
     "prisma:migrate:dev": "pnpm --filter @dropp/database migrate:dev",
     "prisma:migrate:reset": "pnpm --filter @dropp/database migrate:reset",
+    "prisma:migrate:deploy": "pnpm --filter @dropp/database migraye:deploy",
 
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose stop postgres",

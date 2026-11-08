@@ -1,0 +1,213 @@
+
+name: DROPP - CI et publication Docker
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dropp-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Vérification du projet
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://test:test@localhost:5432/dropp_test
+      DIRECT_URL: postgresql://test:test@localhost:5432/dropp_test
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.4.1
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Générer les packages partagés
+        run: pnpm run generer
+
+      - name: Vérifier Prisma
+        run: pnpm --filter @dropp/database exec prisma validate
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Vérification TypeScript
+        run: pnpm run typecheck
+
+      - name: Tests
+        run: pnpm run test
+
+      - name: Build API
+        run: pnpm run api:build
+
+      - name: Build Worker
+        run: pnpm run worker:build
+
+
+  publish:
+    name: Publication des images ARM64
+    runs-on: ubuntu-latest
+    needs: ci
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - service: api
+            dockerfile: apps/api/Dockerfile
+
+          - service: worker
+            dockerfile: apps/worker/Dockerfile
+
+          - service: migrations
+            dockerfile: infrastructure/docker/Dockerfile.migrations
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Normaliser le propriétaire
+        id: owner
+        shell: bash
+        run: |
+          echo "name=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@v3
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Connexion GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build et publication
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/arm64
+          push: true
+          tags: ghcr.io/${{ steps.owner.outputs.name }}/dropp-${{ matrix.service }}:${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
+
+
+  deploy:
+    name: Déploiement sur OCI
+    runs-on: ubuntu-latest
+
+    needs:
+      - publish
+
+    if: >
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.DROPP_DEPLOY_ENABLED == 'true'
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+        
+      - name: Valider le SHA
+        shell: bash
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          [[ "$COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]] || {
+            echo "SHA invalide"
+            exit 1
+          }
+
+      - name: Préparer la clé SSH
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DROPP_DEPLOY_SSH_KEY }}
+        run: |
+          test -n "$SSH_PRIVATE_KEY" || exit 1
+
+          KEY_FILE="$RUNNER_TEMP/dropp_deploy_key"
+
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$KEY_FILE"
+          chmod 600 "$KEY_FILE"
+
+          echo "DROPP_SSH_KEY_FILE=$KEY_FILE" >> "$GITHUB_ENV"
+
+      - name: Vérifier la configuration SSH
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DROPP_DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DROPP_DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DROPP_DEPLOY_USER }}
+          KNOWN_HOSTS: ${{ secrets.DROPP_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          test -n "$DEPLOY_HOST"
+          test -n "$DEPLOY_PORT"
+          test -n "$DEPLOY_USER"
+          test -n "$KNOWN_HOSTS"
+
+          printf '%s\n' "$KNOWN_HOSTS" \
+            > "$RUNNER_TEMP/dropp_known_hosts"
+
+          chmod 600 "$RUNNER_TEMP/dropp_known_hosts"
+
+          echo "DROPP_KNOWN_HOSTS_FILE=$RUNNER_TEMP/dropp_known_hosts" \
+            >> "$GITHUB_ENV"
+
+      - name: Déclencher le déploiement
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DROPP_DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DROPP_DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DROPP_DEPLOY_USER }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          [[ "$COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]]
+
+          ssh \
+            -i "$DROPP_SSH_KEY_FILE" \
+            -p "$DEPLOY_PORT" \
+            -o IdentitiesOnly=yes \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$DROPP_KNOWN_HOSTS_FILE" \
+            -o ConnectTimeout=15 \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "deploy $COMMIT_SHA"

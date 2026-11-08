@@ -1,0 +1,175 @@
+name: dropp
+
+services:
+  redis:
+    image: redis:7.4-alpine
+    container_name: dropp-redis
+    restart: unless-stopped
+
+    command:
+      - sh
+      - -c
+      - |
+        exec redis-server \
+          --appendonly yes \
+          --appendfsync everysec \
+          --save 900 1 300 10 60 10000 \
+          --maxmemory 384mb \
+          --maxmemory-policy noeviction \
+          --requirepass "$$REDIS_PASSWORD"
+
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD obligatoire}
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - backend
+
+    mem_limit: 512m
+    cpus: 0.25
+    pids_limit: 100
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  api:
+    image: ${DROPP_API_IMAGE:?DROPP_API_IMAGE obligatoire}
+    container_name: dropp-api
+    restart: unless-stopped
+    init: true
+
+    env_file:
+      - /etc/dropp/app.env
+
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD obligatoire}
+
+    ports:
+      - "127.0.0.1:3000:3000"
+
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    networks:
+      - backend
+
+    mem_limit: 1536m
+    cpus: 0.75
+    pids_limit: 200
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    stop_grace_period: 30s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  worker:
+    image: ${DROPP_WORKER_IMAGE:?DROPP_WORKER_IMAGE obligatoire}
+    container_name: dropp-worker
+    restart: unless-stopped
+    init: true
+
+    env_file:
+      - /etc/dropp/app.env
+
+    environment:
+      NODE_ENV: production
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD obligatoire}
+
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    networks:
+      - backend
+
+    mem_limit: 1536m
+    cpus: 0.75
+    pids_limit: 200
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    stop_grace_period: 60s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+        
+  migrations:
+    image: ${DROPP_MIGRATIONS_IMAGE:?DROPP_MIGRATIONS_IMAGE obligatoire}
+    container_name: dropp-migrations
+
+    profiles:
+      - maintenance
+
+    restart: "no"
+
+    env_file:
+      - /etc/dropp/app.env
+
+    environment:
+      NODE_ENV: production
+
+    networks:
+      - backend
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    mem_limit: 512m
+    cpus: 0.5
+    pids_limit: 100
+
+networks:
+  backend:
+    name: dropp-backend
+    driver: bridge
+
+volumes:
+  redis_data:
+    name: dropp-redis-data
