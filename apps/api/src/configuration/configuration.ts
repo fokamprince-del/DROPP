@@ -34,9 +34,7 @@ export default () => ({
   },
 
   redis: {
-    host: process.env.REDIS_HOST ?? 'localhost',
-    port: Number(process.env.REDIS_PORT ?? 6379),
-    password: process.env.REDIS_PASSWORD || undefined, // vide = Redis sans auth (réseau privé)
+    ...connexionRedis(),
     otpTtl: Number(process.env.REDIS_OTP_TTL ?? 300),
     otpCooldown: Number(process.env.REDIS_OTP_COOLDOWN ?? 60),
     otpMaxTentatives: Number(process.env.REDIS_OTP_MAX_TENTATIVES ?? 5),
@@ -81,4 +79,20 @@ function liste(valeur: string | undefined): string[] {
     .split(',')
     .map((v) => v.trim())
     .filter((v) => v.length > 0);
+}
+
+/**
+ * Connexion Redis tolérante : REDIS_URL ou REDIS_HOST peuvent contenir
+ * "hote", "hote:port" ou "redis://[:motdepasse@]hote:port" (URL interne Render).
+ * Le port et le mot de passe de l'URL priment sur REDIS_PORT / REDIS_PASSWORD.
+ */
+function connexionRedis(): { host: string; port: number; password?: string } {
+  const brut = (process.env.REDIS_URL || process.env.REDIS_HOST || 'localhost').trim();
+  const url = new URL(brut.includes('://') ? brut : `redis://${brut}`);
+  return {
+    host: url.hostname,
+    port: Number(url.port || process.env.REDIS_PORT || 6379),
+    // vide = Redis sans auth (réseau privé Render)
+    password: decodeURIComponent(url.password) || process.env.REDIS_PASSWORD || undefined,
+  };
 }

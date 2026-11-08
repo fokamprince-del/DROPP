@@ -5,6 +5,8 @@ export const validationSchema = Joi.object({
   NODE_ENV: Joi.string()
     .valid('development', 'test', 'production')
     .default('development'),
+  // URL complète (ex. URL interne Render redis://red-xxx:6379) : prime sur REDIS_HOST.
+  REDIS_URL: Joi.string().allow('').default(''),
   REDIS_HOST: Joi.string().default('localhost'),
   REDIS_PORT: Joi.number().integer().default(6379),
   REDIS_PASSWORD: Joi.string().allow('').default(''),

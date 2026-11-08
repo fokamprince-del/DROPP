@@ -63,6 +63,8 @@ export const validationSchema = Joi.object({
   // app sheme de l'application
   APP_DEEP_LINK_SCHEME: Joi.string().default('dropp'),
 
+  // URL complète (ex. URL interne Render redis://red-xxx:6379) : prime sur REDIS_HOST.
+  REDIS_URL: Joi.string().allow('').default(''),
   REDIS_HOST: Joi.string().default('localhost'),
   REDIS_PORT: Joi.number().integer().min(1).max(65535).default(6379),
   REDIS_PASSWORD: Joi.string().allow('').default(''),
