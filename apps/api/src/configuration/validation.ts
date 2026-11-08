@@ -42,7 +42,7 @@ export const validationSchema = Joi.object({
     .uri({ scheme: ['postgresql', 'postgres'] })
     .required(),
 
-  DATABASE_POOL_MAX: Joi.number().integer().min(1).max(100).default(10),
+  DATABASE_API_POOL_MAX: Joi.number().integer().min(1).max(100).default(10),
 
   // Minimum 32 caractères (256 bits).
   // Générer : openssl rand -base64 48

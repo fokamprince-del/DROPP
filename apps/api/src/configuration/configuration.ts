@@ -27,7 +27,7 @@ export default () => ({
 
   database: {
     url: process.env.DATABASE_URL,
-    poolMax: Number(process.env.DATABASE_POOL_MAX ?? 10),
+    poolMax: Number(process.env.DATABASE_API_POOL_MAX ?? 10),
   },
 
   redis: {

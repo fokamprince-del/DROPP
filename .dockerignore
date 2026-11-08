@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+
+# Dépendances locales
+node_modules
+**/node_modules
+
+# Builds locaux
+**/dist
+**/.turbo
+**/coverage
+**/.next
+
+# Secrets et environnements
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+**/*.pem
+**/*.key
+
+# IDE et OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Logs et caches
+**/*.log
+**/.cache
+**/tmp
+**/temp

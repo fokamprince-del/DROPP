@@ -34,7 +34,7 @@ export default () => ({
   },
   database: {
     url: process.env.DATABASE_URL!,
-    poolMax: process.env.DATABASE_POOL_MAX ?? 5
+    poolMax: process.env.DATABASE_WORKER_POOL_MAX ?? 5
   },
   // stockage: {
   //   driver: process.env.STOCKAGE_DRIVER ?? 'stub',

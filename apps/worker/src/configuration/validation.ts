@@ -80,5 +80,5 @@ export const validationSchema = Joi.object({
   }),
 
   DATABASE_URL: Joi.string().required(),
-  DATABASE_POOL_MAX: Joi.number().default(5)
+  DATABASE_WORKER_POOL_MAX: Joi.number().default(5)
 });
