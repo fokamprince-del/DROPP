@@ -23,17 +23,18 @@ export default () => ({
     verificationTtlSeconds: dureeEnSecondes(
       process.env.AUTH_VERIFICATION_TTL ?? '15m',
     ),
+    // Mode test (bêta sans SMS) : code fixe pour une liste fermée de numéros.
+    otpTestCode: process.env.OTP_TEST_CODE ?? '',
+    otpTestDestinations: liste(process.env.OTP_TEST_DESTINATIONS),
   },
 
   database: {
     url: process.env.DATABASE_URL,
-    poolMax: Number(process.env.DATABASE_POOL_MAX ?? 10),
+    poolMax: Number(process.env.DATABASE_API_POOL_MAX ?? 10),
   },
 
   redis: {
-    host: process.env.REDIS_HOST ?? 'localhost',
-    port: Number(process.env.REDIS_PORT ?? 6379),
-    password: process.env.REDIS_PASSWORD!,
+    ...connexionRedis(),
     otpTtl: Number(process.env.REDIS_OTP_TTL ?? 300),
     otpCooldown: Number(process.env.REDIS_OTP_COOLDOWN ?? 60),
     otpMaxTentatives: Number(process.env.REDIS_OTP_MAX_TENTATIVES ?? 5),
@@ -78,4 +79,20 @@ function liste(valeur: string | undefined): string[] {
     .split(',')
     .map((v) => v.trim())
     .filter((v) => v.length > 0);
+}
+
+/**
+ * Connexion Redis tolérante : REDIS_URL ou REDIS_HOST peuvent contenir
+ * "hote", "hote:port" ou "redis://[:motdepasse@]hote:port" (URL interne Render).
+ * Le port et le mot de passe de l'URL priment sur REDIS_PORT / REDIS_PASSWORD.
+ */
+function connexionRedis(): { host: string; port: number; password?: string } {
+  const brut = (process.env.REDIS_URL || process.env.REDIS_HOST || 'localhost').trim();
+  const url = new URL(brut.includes('://') ? brut : `redis://${brut}`);
+  return {
+    host: url.hostname,
+    port: Number(url.port || process.env.REDIS_PORT || 6379),
+    // vide = Redis sans auth (réseau privé Render)
+    password: decodeURIComponent(url.password) || process.env.REDIS_PASSWORD || undefined,
+  };
 }

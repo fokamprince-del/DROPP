@@ -5,9 +5,11 @@ export const validationSchema = Joi.object({
   NODE_ENV: Joi.string()
     .valid('development', 'test', 'production')
     .default('development'),
+  // URL complète (ex. URL interne Render redis://red-xxx:6379) : prime sur REDIS_HOST.
+  REDIS_URL: Joi.string().allow('').default(''),
   REDIS_HOST: Joi.string().default('localhost'),
   REDIS_PORT: Joi.number().integer().default(6379),
-  REDIS_PASSWORD: Joi.string().required(),
+  REDIS_PASSWORD: Joi.string().allow('').default(''),
 
   // Resend (emails). Vide = stub en dev.
   RESEND_API_KEY: Joi.string()
@@ -31,25 +33,25 @@ export const validationSchema = Joi.object({
     then: Joi.string().min(100).required(),
   }),
 
-  // STOCKAGE_DRIVER: Joi.string().valid('stub', 'r2').default('stub'),
-  // R2_ACCESS_KEY_ID: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-  //   is: 'r2',
-  //   then: Joi.string().required(),
-  // }),
-  // R2_SECRET_ACCESS_KEY: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-  //   is: 'r2',
-  //   then: Joi.string().required(),
-  // }),
-  // R2_BUCKET: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-  //   is: 'r2',
-  //   then: Joi.string().required(),
-  // }),
-  // // Bucket SANS accès public pour la messagerie (lu par URL signée).
-  // R2_BUCKET_PRIVE: Joi.string().allow('').default(''),
-  // R2_ENDPOINT: Joi.string().allow('').when('STOCKAGE_DRIVER', {
-  //   is: 'r2',
-  //   then: Joi.string().uri({ scheme: ['https'] }).required(),
-  // }),
+  STOCKAGE_DRIVER: Joi.string().valid('stub', 'r2').default('stub'),
+  R2_ACCESS_KEY_ID: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  R2_SECRET_ACCESS_KEY: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  R2_BUCKET: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().required(),
+  }),
+  // Bucket SANS accès public pour la messagerie (lu par URL signée).
+  R2_BUCKET_PRIVE: Joi.string().allow('').default(''),
+  R2_ENDPOINT: Joi.string().allow('').when('STOCKAGE_DRIVER', {
+    is: 'r2',
+    then: Joi.string().uri({ scheme: ['https'] }).required(),
+  }),
 
   // SMS : "stub" en dev (codes dans les logs), "twilio" obligatoire en production.
   SMS_DRIVER: Joi.string()
@@ -80,5 +82,5 @@ export const validationSchema = Joi.object({
   }),
 
   DATABASE_URL: Joi.string().required(),
-  DATABASE_POOL_MAX: Joi.number().default(5)
+  DATABASE_WORKER_POOL_MAX: Joi.number().default(5)
 });

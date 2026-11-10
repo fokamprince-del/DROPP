@@ -67,6 +67,7 @@ class StockageSession {
   Future<void> ecrireProfil(Map<String, dynamic> profil) =>
       _stockage.write(key: _cleProfil, value: jsonEncode(profil));
 
+
   Future<void> effacer() async {
     _cache = null;
     _charge = true;

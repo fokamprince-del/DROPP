@@ -23,7 +23,7 @@ import { PrismaModule } from './infrastructure/database/database/prisma.module.j
         connection: {
           host: config.getOrThrow<string>('redis.host'),
           port: Number(config.getOrThrow<string>('redis.port')),
-          password: config.getOrThrow<string>('redis.password'),
+          password: config.get<string>('redis.password'),
           // Exigé par BullMQ pour les workers (commandes bloquantes).
           maxRetriesPerRequest: null,
         },

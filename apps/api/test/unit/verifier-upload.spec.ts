@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { DroppException } from '../../src/infrastructure/http/droppException.js';
 
 import type {
   MetadonneesFichier,
@@ -17,6 +17,9 @@ function stockage(meta: MetadonneesFichier | null) {
   return { s, supprimes, marques };
 }
 
+const estRequeteInvalide = (e: unknown) =>
+  e instanceof DroppException && e.getStatus() === 400;
+
 const params = {
   prefixe: 'utilisateurs/u1/profil',
   tailleMaxMo: 5,
@@ -31,8 +34,8 @@ describe('verifierUpload', () => {
       'utilisateurs/u1/profil/../../u2/x.jpg',
       'utilisateurs/u1/profil//x.jpg',
     ]) {
-      await expect(verifierUpload(s, { ...params, cleStockage })).rejects.toBeInstanceOf(
-        BadRequestException,
+      await expect(verifierUpload(s, { ...params, cleStockage })).rejects.toSatisfy(
+        estRequeteInvalide,
       );
     }
   });
@@ -48,13 +51,13 @@ describe('verifierUpload', () => {
     const gros = stockage({ taille: 6 * 1024 * 1024, typeMime: 'image/jpeg' });
     await expect(
       verifierUpload(gros.s, { ...params, cleStockage: 'utilisateurs/u1/profil/x.jpg' }),
-    ).rejects.toBeInstanceOf(BadRequestException);
+    ).rejects.toSatisfy(estRequeteInvalide);
     expect(gros.supprimes).toEqual(['utilisateurs/u1/profil/x.jpg']);
 
     const autre = stockage({ taille: 10, typeMime: 'text/html' });
     await expect(
       verifierUpload(autre.s, { ...params, cleStockage: 'utilisateurs/u1/profil/x.jpg' }),
-    ).rejects.toBeInstanceOf(BadRequestException);
+    ).rejects.toSatisfy(estRequeteInvalide);
     expect(autre.supprimes).toHaveLength(1);
   });
 

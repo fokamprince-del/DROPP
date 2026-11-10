@@ -1,4 +1,10 @@
-import 'dotenv/config';
+// Fichier .env local si présent (dev) ; en production (Render), les variables
+// viennent de l'environnement. Chargeur intégré à Node : pas de dépendance.
+try {
+  process.loadEnvFile('.env');
+} catch {
+  // pas de .env : normal en production
+}
 import { PrismaClient } from '@dropp/database';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as argon2 from 'argon2';
@@ -9,6 +15,12 @@ const prisma = new PrismaClient({
   }),
 });
 
+/**
+ * Crée le premier SUPER_ADMIN. Idempotent : ne fait rien si le compte existe.
+ * Lancé à chaque démarrage sur Render (start command) ; sans les variables
+ * SEED_ADMIN_*, il s'arrête sans bloquer le démarrage de l'API.
+ *   Local : pnpm api:build && pnpm db:seed:admin
+ */
 async function seedAdmin() {
   const telephone = process.env.SEED_ADMIN_TELEPHONE;
   const motDePasse = process.env.SEED_ADMIN_MOT_DE_PASSE;

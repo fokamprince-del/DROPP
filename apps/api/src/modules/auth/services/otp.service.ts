@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createHmac, randomInt, timingSafeEqual } from 'node:crypto';
@@ -35,6 +36,9 @@ export class OtpService {
   private readonly cooldown: number;
   private readonly maxTentatives: number;
   private readonly maxEnvoisHeure: number;
+  /** Mode test : code fixe pour ces destinations (bêta sans SMS). */
+  private readonly codeTest: string;
+  private readonly destinationsTest: ReadonlySet<string>;
 
   constructor(
     @Inject(REDIS_CLIENT) private readonly redis: Redis,
@@ -45,6 +49,18 @@ export class OtpService {
     this.cooldown = config.getOrThrow<number>('redis.otpCooldown');
     this.maxTentatives = config.getOrThrow<number>('redis.otpMaxTentatives');
     this.maxEnvoisHeure = config.getOrThrow<number>('redis.otpMaxEnvoisHeure');
+
+    this.codeTest = config.getOrThrow<string>('auth.otpTestCode') ?? '';
+    const destinations =
+      config.getOrThrow<string[]>('auth.otpTestDestinations') ?? [];
+    this.destinationsTest = new Set(
+      this.codeTest ? destinations.map((d) => d.toLowerCase()) : [],
+    );
+    if (this.destinationsTest.size > 0) {
+      new Logger(OtpService.name).warn(
+        `MODE TEST OTP ACTIF : code fixe pour ${this.destinationsTest.size} destination(s). À désactiver avant l'ouverture publique.`,
+      );
+    }
   }
 
   /**
@@ -86,10 +102,10 @@ export class OtpService {
     }
 
     // 3. Nouveau code : remplace le précédent et remet les tentatives à zéro.
-    const code = String(randomInt(0, 10 ** OTP_DIGITS)).padStart(
-      OTP_DIGITS,
-      '0',
-    );
+    //    Mode test : code fixe pour les destinations autorisées uniquement.
+    const code = this.destinationsTest.has(destination.toLowerCase())
+      ? this.codeTest
+      : String(randomInt(0, 10 ** OTP_DIGITS)).padStart(OTP_DIGITS, '0');
     const payload: OtpPayload = {
       codeHash: this.hacher(code, destination),
       canal,

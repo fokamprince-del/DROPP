@@ -42,7 +42,7 @@ export const validationSchema = Joi.object({
     .uri({ scheme: ['postgresql', 'postgres'] })
     .required(),
 
-  DATABASE_POOL_MAX: Joi.number().integer().min(1).max(100).default(10),
+  DATABASE_API_POOL_MAX: Joi.number().integer().min(1).max(100).default(10),
 
   // Minimum 32 caractères (256 bits).
   // Générer : openssl rand -base64 48
@@ -63,9 +63,11 @@ export const validationSchema = Joi.object({
   // app sheme de l'application
   APP_DEEP_LINK_SCHEME: Joi.string().default('dropp'),
 
+  // URL complète (ex. URL interne Render redis://red-xxx:6379) : prime sur REDIS_HOST.
+  REDIS_URL: Joi.string().allow('').default(''),
   REDIS_HOST: Joi.string().default('localhost'),
   REDIS_PORT: Joi.number().integer().min(1).max(65535).default(6379),
-  REDIS_PASSWORD: Joi.string().required(),
+  REDIS_PASSWORD: Joi.string().allow('').default(''),
   REDIS_MAX_MEMORY: Joi.string().default('256mb'),
   REDIS_OTP_TTL: Joi.number().integer().min(60).max(3600).default(300),
   REDIS_OTP_COOLDOWN: Joi.number().integer().min(30).max(300).default(60),
@@ -78,6 +80,19 @@ export const validationSchema = Joi.object({
     .default(86400),
   AUTH_VERIFICATION_SECRET: Joi.string().min(32).required(),
   AUTH_VERIFICATION_TTL: Joi.string().pattern(DUREE).default('15m'),
+
+  // Mode test (bêta fermée sans worker SMS) : les destinations listées
+  // reçoivent toujours OTP_TEST_CODE au lieu d'un code aléatoire.
+  // Les deux variables vides = mode désactivé (comportement normal).
+  // Exemple : OTP_TEST_CODE=123456  OTP_TEST_DESTINATIONS=+237650000001,+237690000002
+  OTP_TEST_CODE: Joi.string().pattern(/^\d{6}$/).allow('').default(''),
+  OTP_TEST_DESTINATIONS: Joi.string()
+    .allow('')
+    .default('')
+    .when('OTP_TEST_CODE', {
+      is: Joi.string().min(1),
+      then: Joi.string().pattern(/^\s*[^,\s]+(\s*,\s*[^,\s]+)*\s*$/).required(),
+    }),
 
   // Délai de paiement d'une commande avant annulation auto (stock libéré).
   COMMANDE_DELAI_PAIEMENT_MINUTES: Joi.number()

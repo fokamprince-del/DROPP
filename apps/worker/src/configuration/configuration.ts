@@ -4,9 +4,7 @@ export default () => ({
     environment: process.env.NODE_ENV ?? 'development',
   },
   redis: {
-    host: process.env.REDIS_HOST ?? 'localhost',
-    port: process.env.REDIS_PORT ?? '6379',
-    password: process.env.REDIS_PASSWORD!,
+    ...connexionRedis(),
   },
   email: {
     resendApiKey: process.env.RESEND_API_KEY || undefined,
@@ -34,16 +32,32 @@ export default () => ({
   },
   database: {
     url: process.env.DATABASE_URL!,
-    poolMax: process.env.DATABASE_POOL_MAX ?? 5
+    poolMax: process.env.DATABASE_WORKER_POOL_MAX ?? 5
   },
-  // stockage: {
-  //   driver: process.env.STOCKAGE_DRIVER ?? 'stub',
-  //   r2: {
-  //     accessKeyId: process.env.R2_ACCESS_KEY_ID,
-  //     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
-  //     bucket: process.env.R2_BUCKET,
-  //     bucketPrive: process.env.R2_BUCKET_PRIVE!,
-  //     endpoint: process.env.R2_ENDPOINT
-  //   }
-  // }
+  stockage: {
+    driver: process.env.STOCKAGE_DRIVER ?? 'stub',
+    r2: {
+      accessKeyId: process.env.R2_ACCESS_KEY_ID,
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+      bucket: process.env.R2_BUCKET,
+      bucketPrive: process.env.R2_BUCKET_PRIVE!,
+      endpoint: process.env.R2_ENDPOINT
+    }
+  }
 });
+
+/**
+ * Connexion Redis tolérante : REDIS_URL ou REDIS_HOST peuvent contenir
+ * "hote", "hote:port" ou "redis://[:motdepasse@]hote:port" (URL interne Render).
+ * Le port et le mot de passe de l'URL priment sur REDIS_PORT / REDIS_PASSWORD.
+ */
+function connexionRedis(): { host: string; port: number; password?: string } {
+  const brut = (process.env.REDIS_URL || process.env.REDIS_HOST || 'localhost').trim();
+  const url = new URL(brut.includes('://') ? brut : `redis://${brut}`);
+  return {
+    host: url.hostname,
+    port: Number(url.port || process.env.REDIS_PORT || 6379),
+    // vide = Redis sans auth (réseau privé Render)
+    password: decodeURIComponent(url.password) || process.env.REDIS_PASSWORD || undefined,
+  };
+}
