@@ -58,6 +58,7 @@
     "db:status": "docker compose ps postgres",
     "db:seed:admin": "pnpm --filter api seed:admin",
     "db:seed:comptes-test": "pnpm --filter api seed:comptes-test",
+    "db:seed:demo": "pnpm --filter api seed:demo",
     
     "redis:up": "docker compose up -d redis",
     "redis:down": "docker compose stop redis",
